@@ -14,7 +14,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Working branch | Complete | `main` only |
 | Supabase project | Complete | `Kingswell-Police-Simulation`, project ref `gdbzkgejyfwfackyuorl` |
 | Supabase connection | Verified | Project healthy; live SQL query succeeded |
-| Master blueprint | In progress | BP-01 to BP-44 drafted |
+| Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
 | Database schema | Verified | Private `game` schema; 40 tables, 78 foreign keys, 141 indexes; relationship smoke test passed; migrations committed to GitHub |
