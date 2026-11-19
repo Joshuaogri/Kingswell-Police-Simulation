@@ -20,6 +20,14 @@ The project is in the **master blueprint stage**. The design documents in this r
 - Do not introduce scope expansions without recording their purpose and impact.
 - This is a fictional game; its institutions, laws, people, procedures and events are fictional.
 
+## Project documents
+
+- [Master Blueprint](docs/blueprint/MASTER-BLUEPRINT.md)
+- [Blueprint Division Register](docs/blueprint/DIVISION-REGISTER.md)
+- [Implementation Register](docs/governance/IMPLEMENTATION-REGISTER.md)
+- [Project Decisions and Working Rules](docs/governance/PROJECT-DECISIONS.md)
+- [Technical Architecture](docs/architecture/TECHNICAL-ARCHITECTURE.md)
+
 ## Connected services
 
 - GitHub: source-controlled project documents and, later, code.
