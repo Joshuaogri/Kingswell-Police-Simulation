@@ -17,7 +17,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | In progress | BP-01 to BP-44 drafted |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Implemented | Private `game` schema; 40 tables, 78 foreign keys, supporting indexes; migrations committed to GitHub |
+| Database schema | Verified | Private `game` schema; 40 tables, 78 foreign keys, 141 indexes; relationship smoke test passed; migrations committed to GitHub |
 | Application/gameplay code | Not started | No simulation runtime or playable software yet |
 | Automated tests | Not started | Database structure verified; automated application/gameplay test suite not yet built |
 
