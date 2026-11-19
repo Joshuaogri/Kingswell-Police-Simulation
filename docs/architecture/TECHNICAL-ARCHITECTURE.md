@@ -2,7 +2,7 @@
 
 **Status:** Initial technical architecture outline; implementation plan to be expanded from the approved blueprint  
 **Version:** 0.1  
-**Foundation:** Implemented and verified (42-table private schema and three migrations)  
+**Foundation:** Implemented and verified (42-table private schema and four migrations)  
 **Simulation runtime:** Initial database-backed command and clock foundation implemented; domain runtime in progress
 
 ## 1. Purpose
@@ -66,4 +66,4 @@ The project uses **main only**. All work and commits go directly to `main`. Do n
 
 ## 8. Current implementation state
 
-The Supabase project is connected and healthy. The private `game` schema has 42 tables, 80 foreign keys and 147 indexes, with three migrations recorded in Supabase and committed under `database/migrations/` on GitHub `main`. RLS is enabled on all 42 tables and the schema is not exposed through the public Data API. One invoker-rights command function is installed. The singleton clock row is paused and intentionally has no fictional start time yet. The command ledger and clock history are empty. The SQL regression test passed in a transaction that rolled back its test records. No Edge Function is deployed: authentication and player/session mapping must be implemented before exposing a privileged endpoint. Natural-language parsing, fictional police identity/authority, domain handlers, world seed data, event scheduling, NPC processing, backup/recovery and CI remain outstanding. See `docs/architecture/RUNTIME-FOUNDATION.md`.
+The Supabase project is connected and healthy. The private `game` schema has 42 tables, 80 foreign keys and 147 indexes, with four migrations recorded in Supabase and committed under `database/migrations/` on GitHub `main`. RLS is enabled on all 42 tables and the schema is not exposed through the public Data API. One invoker-rights command function is installed. The singleton clock row is paused and intentionally has no fictional start time yet. The command ledger and clock history are empty. The SQL regression test passed in a transaction that rolled back its test records, including rejection of fractional and out-of-range time requests. No Edge Function is deployed: authentication and player/session mapping must be implemented before exposing a privileged endpoint. Natural-language parsing, fictional police identity/authority, domain handlers, world seed data, event scheduling, NPC processing, backup/recovery and CI remain outstanding. See `docs/architecture/RUNTIME-FOUNDATION.md`.
