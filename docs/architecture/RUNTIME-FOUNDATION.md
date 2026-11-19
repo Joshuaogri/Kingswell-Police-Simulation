@@ -42,3 +42,8 @@ The engine does not use real-world elapsed time to move the fictional clock. Lea
 ## Verification
 
 The regression script in `database/tests/runtime_foundation.sql` exercises status, uninitialized-clock rejection, explicit clock initialization, idempotent retry, idempotency conflict, time advancement, range rejection, clock history and event creation inside a transaction that rolls back.
+
+
+## Validation hardening
+
+The command entry function validates minute values as integers before casting. Fractional and out-of-range values are returned as rejected commands and retained in the command ledger. This is applied by `database/migrations/20261120020000_harden_runtime_command_validation.sql`.
