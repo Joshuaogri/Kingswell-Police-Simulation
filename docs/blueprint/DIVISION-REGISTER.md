@@ -49,7 +49,7 @@ Each division is designed with its purpose, scope, responsibilities, components,
 | BP-41 | Notifications and Reporting | Drafted; alert and reporting catalogue remains open |
 | BP-42 | Security and Permissions | Drafted; identity and access policies remain open |
 | BP-43 | Testing and Quality Assurance | Drafted; test catalogue and release gates remain open |
-| BP-44 | Configuration and Expansion | Not started |
+| BP-44 | Configuration and Expansion | Drafted; configuration and change-control details remain open |
 
 ## Proposed delivery stages
 0. Master blueprint
