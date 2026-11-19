@@ -49,7 +49,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-22 | Crime Scenes | Drafted; legal powers and specialist standards to refine |
 | BP-23 | Evidence Management | Drafted; evidential rules, retention and professional standards to refine |
 | BP-24 | Forensics | Drafted — design only; no forensic software or service implemented |
-| BP-25 | Arrests and Warrants | Not started |
+| BP-25 | Arrests and Warrants | Drafted — design only; no arrest or warrant software implemented |
 | BP-26 | Custody Management | Not started |
 | BP-27 | Legal Processes | Not started |
 | BP-28 | Courts and Outcomes | Not started |

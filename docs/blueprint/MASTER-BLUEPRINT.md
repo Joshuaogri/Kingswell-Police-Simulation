@@ -3593,3 +3593,190 @@ The design must handle insufficient material, mixed or degraded samples, contami
 
 **Draft status:** BP-24 is a working design. The fictional legal framework, forensic service structure, discipline availability, method catalogue, accreditation scope, staffing, service standards, reporting conventions and retention requirements remain to be specified. This division does not claim that forensic laboratories, forensic software or operational forensic capability have been implemented.
 
+## BP-25 — Arrests and Warrants
+
+### Purpose and scope
+Define the lawful, accountable arrest and warrant system used by the National Police Service. This division governs arrest authority, grounds, necessity, warrant applications and execution, arrest decisions, use of alternatives, person and location identity checks, operational recording, rights notification, post-arrest handover and review.
+
+Arrest is a significant interference with liberty. It is not a finding of guilt, a punishment, or a substitute for investigation. The system must distinguish suspicion, arrest, charge, remand, conviction and sentence as separate legal states. The exact fictional offences, statutory powers, thresholds, time limits, rights and authorising roles are established by the country's legal framework and remain open until designed.
+
+### Core legal principles
+Every arrest-related action must be grounded in an identifiable legal power and the facts known to the decision-maker at the time. The record must distinguish:
+- The legal power relied upon.
+- The factual grounds and source of each material fact.
+- The officer's reasonable belief or other applicable statutory test.
+- The purpose and necessity of arrest.
+- Any required proportionality, urgency or public-interest assessment.
+- Available alternatives considered and reasons they were unsuitable.
+- Any conditions, limits or safeguards attached to the power.
+- The person who made the decision and the person who carried it out.
+
+The simulation must not assume that an arrest is lawful merely because a person is suspected, identified by a witness, linked to intelligence, present at a scene, or subject to an investigative lead. A warrant does not authorise actions outside its terms. A procedural error or disputed authority is preserved for review and must not be silently cured.
+
+### Arrest grounds and decision record
+An arrest decision is a versioned, attributable record linked to the person, incident, case and relevant offence or offences. It captures:
+- Identity of the person, including uncertainty or disputed identity.
+- Date, time and location of the decision and any later execution.
+- Decision-maker, arresting officer and their current role and authority.
+- Alleged offence or legal basis, including applicable version of the law.
+- Facts supporting the grounds, with source and time known.
+- Relevant contradictory, exculpatory or uncertainty information known.
+- Required statutory test and how the known facts satisfy or fail it.
+- Necessity and proportionality assessment where required.
+- Alternatives considered, including voluntary attendance or other lawful options.
+- Risk, vulnerability, health, safeguarding, communication or accessibility needs.
+- Any warrant, authorisation, restriction or condition relied upon.
+- Decision, reasons, review and subsequent change of circumstances.
+
+The record distinguishes facts directly observed by the officer, information supplied by others, intelligence, evidence, inference and unverified allegation. The decision-maker must not present an inference as an observed fact or omit known information that materially undermines the grounds.
+
+A decision not to arrest is also recordable where relevant. It may include reasons, alternative action, supervisory consultation, outstanding risks and the conditions that would prompt reassessment. This supports accountable judgment rather than rewarding arrest volume.
+
+### Warrant architecture
+A warrant is a formal legal instrument issued by the competent fictional judicial or other legally authorised body. It is not an internal police permission and cannot be created by an officer simply entering an approval in the system.
+
+The warrant record includes:
+- Unique warrant identity and issuing authority.
+- Applicant, responsible officer and authorising judicial or statutory officer.
+- Person, premises, property or other subject precisely identified.
+- Legal power, alleged offence or purpose, and supporting grounds.
+- Scope, permitted actions and any explicit exclusions.
+- Date and time issued, effective date, expiry and territorial validity.
+- Execution conditions, reporting requirements and safeguards.
+- Service or notification requirements, where applicable.
+- Status: prepared, submitted, granted, refused, varied, suspended, expired, executed, partly executed, withdrawn, quashed or otherwise discharged.
+- Linked applications, decisions, reasons, returns and court directions.
+
+Applications retain the original submission, supporting material, amendments, judicial questions, decision and reasons. A refused or withdrawn application remains part of the audit history. A materially changed application is not silently substituted for the original.
+
+### Warrant categories and interfaces
+The fictional legal catalogue may support distinct instruments for:
+- Arrest of a named person.
+- Entry to a specified premises to locate and arrest a person, if law permits.
+- Search or seizure powers governed by their own legal process.
+- Production or attendance before a court or other competent body.
+- Other narrowly defined instruments created by statute.
+
+These instruments are not interchangeable. BP-25 covers arrest-related warrants and their interface with other instruments. Search and seizure scope must be defined by the relevant legal framework and BP-23; an arrest warrant alone must not be treated as a general search authority.
+
+Each warrant type defines eligibility, issuing authority, application content, threshold, permitted scope, duration, execution rules, reporting, challenge and remedy. No category becomes available merely because it is convenient for gameplay.
+
+### Warrant review and validity
+Before execution, an authorised officer verifies the instrument's identity, authenticity, current status, subject, scope, territorial and temporal validity, and any conditions. The record captures the source used for verification and the time of the check.
+
+A warrant may be varied, renewed, suspended, withdrawn, expired or quashed only through the route permitted by law. Changes are versioned, and the officer must be able to determine which version was valid at the relevant time. The system prevents execution against an expired, withdrawn, suspended or otherwise invalid instrument unless a separate lawful power applies.
+
+Where identity is uncertain or multiple people share similar identifiers, the system records the verification steps and uncertainty. A warrant for one person must not automatically attach to a relative, associate, occupant or person with a similar name.
+
+### Execution and operational record
+Execution records identify the warrant or other legal power, the executing personnel, supervisor or commander where applicable, date/time/location, subject and outcome. The record captures:
+- Pre-execution validity and scope checks.
+- Relevant briefing and allocation of responsibilities.
+- Any required notification, identification or explanation.
+- Whether the named person was located and how identity was confirmed.
+- Arrest, attempted arrest, non-execution or partial execution outcome.
+- Any delay, obstruction, unexpected condition or change in circumstances.
+- Any action taken beyond the initial plan and its separate legal basis.
+- Persons present and relevant safeguarding or welfare concerns.
+- Property, material or records affected and their separate authority.
+- Any injury, complaint, force report or other incident requiring referral.
+- Completion, return, supervisory review and any court reporting.
+
+The simulation records the fact and governance of operational decisions without providing real-world tactical instruction for forced entry, restraint, evasion or overcoming security. Operational methods remain governed by fictional law, training and professional standards.
+
+### Arrest event and status lifecycle
+An arrest event has its own stable identity and is linked to the person and relevant case. It records the decision, execution, location, officers, grounds, time, legal power, rights process, transport and handover to custody.
+
+Person and case statuses must remain distinct. A person may be recorded as wanted, subject to an active warrant, arrested, released, charged, bailed, remanded, acquitted, convicted or otherwise subject to a legal outcome. These are not a single linear field: multiple matters may coexist, and a person may have different statuses in different cases.
+
+An arrest does not automatically:
+- Create a charge or establish that an offence occurred.
+- Confirm identity where identity remains disputed.
+- Prove the factual grounds or the truth of an allegation.
+- Authorise a search beyond a separate legal power.
+- Establish guilt or determine a court outcome.
+- Close the investigation or remove the need to preserve alternative lines of enquiry.
+
+Arrest events can be corrected, challenged or reviewed, but their original records and audit history remain preserved.
+
+### Rights, communication and safeguarding
+The arrested person must receive the rights, explanations and procedural safeguards required by the fictional legal framework, in a form they can understand. The exact rights, timing, prescribed wording and exceptions are reserved for the legal framework and BP-26 custody rules.
+
+The arrest record supports:
+- Explanation of the fact and legal basis of arrest.
+- Communication of applicable rights and safeguards.
+- Access to legal advice or representation as required.
+- Notification of a nominated person or other permitted contact.
+- Interpreter, translation or communication assistance.
+- Disability, age, vulnerability, health and safeguarding needs.
+- Appropriate handling of children and other protected persons.
+- Recording of requests, responses, delays, refusals and reasons.
+- Complaints, allegations of mistreatment and requests for medical attention.
+
+A rights notification is not treated as complete merely because a checkbox is selected. The system records who provided the explanation, when, in what form, the person's understanding or any communication barrier, and any follow-up required. The detailed detention, welfare, interview and review procedures are handled through BP-26 and BP-19.
+
+### Force, injury and exceptional circumstances
+Any use of force or injury associated with an arrest is recorded as a separate reportable event under the applicable fictional law and professional standards. The record includes personnel, time, circumstances, stated grounds, level and duration as defined by the rules, injuries or medical attention, witnesses, available recordings, notifications and review status.
+
+The system does not reward force, presume that force was necessary, or treat an officer's report as conclusive. Allegations, injuries, disputed accounts and potential misconduct are preserved for independent review under BP-30 and BP-31. Medical needs take priority and are referred through the appropriate service interface.
+
+Exceptional powers, urgent action without a warrant, cross-jurisdiction execution, or action in rapidly changing circumstances must have an explicit legal basis, narrow conditions, time limits and post-event scrutiny. Emergency circumstances do not create an unlimited power.
+
+### Alternatives, release and failed execution
+The system supports lawful alternatives where appropriate, including voluntary attendance, summons or other process, appointment for interview, referral, safeguarding action or continued investigation without arrest. Availability depends on the fictional law and case circumstances.
+
+It records when an arrest is not made, when a warrant cannot be executed, when a person is not located, when identity cannot be confirmed, when a warrant is found invalid, and when a person is released without charge or under another lawful arrangement. Reasons, conditions, responsible decision-maker, notifications and follow-up are captured.
+
+A failed attempt does not automatically justify a new or broader warrant. A fresh application or separate legal power must satisfy its own requirements. A release decision does not erase the arrest event or automatically resolve the investigation.
+
+### Supervisory and judicial oversight
+Supervisors review decisions and execution records according to risk, law and service policy. Review checks include legal basis, grounds, necessity, proportionality, identity, warrant validity, scope, rights, safeguarding, force or injury, recording completeness and any departure from conditions.
+
+Judicial oversight includes warrant applications, execution returns, challenges, variations, complaints or other processes required by law. The system records the decision-maker, material considered, outcome, reasons, directions, deadlines and responsible person.
+
+Reviewers must be able to identify the law and facts applicable at the time, not merely the current status. A later legal change, new evidence or changed circumstances is recorded as a later event and does not rewrite the original decision.
+
+### Records, disclosure and privacy
+Arrest and warrant records are linked to:
+- BP-12 incident records and BP-15 case files.
+- BP-16 investigative grounds and enquiries.
+- BP-18 person and suspect status history.
+- BP-19 interviews and rights-related records.
+- BP-20 surveillance and other authorised operational material.
+- BP-22 scene records and BP-23 evidence custody.
+- BP-24 forensic material and reports.
+- BP-26 custody, BP-27 legal process and BP-28 court outcomes.
+- BP-30 governance, BP-31 professional standards and BP-38 authoritative records.
+
+Access to warrant applications, sensitive grounds, protected identities and operational information is limited by role and legal need. Access, amendment, export and disclosure are audited. The system supports disclosure of relevant material, including information that challenges the grounds or legality of an arrest. Privacy controls must not be used to conceal material that is lawfully disclosable.
+
+### Player experience and authority
+The player may assess whether the facts and applicable legal power support an arrest, record reasons, seek required supervision or legal authorisation, submit a warrant application through the proper channel, verify an instrument, execute an authorised decision, document the event and hand the person to custody.
+
+Available actions depend on the player's rank, appointment, training, authority, location, duty status and the fictional legal framework. A senior rank does not automatically supply judicial authority or a specialist power. The interface must state when the player lacks authority, when an application is pending, when an instrument is invalid or when a separate approval is required.
+
+The player cannot manufacture grounds, backdate an application, change the scope of an issued warrant, conceal exculpatory facts, silently amend an execution record, treat arrest as guilt or bypass custody and rights safeguards. No arrest workflow reveals hidden offender identity or supplies automatic investigative solution hints.
+
+### Exceptions and edge cases
+The design must handle mistaken identity, aliases, incomplete identity data, similar names, multiple warrants, conflicting instruments, expired or suspended warrants, invalid service, unclear territorial authority, cross-jurisdiction requests, changed circumstances, new exculpatory information, disputed grounds, insufficient necessity, vulnerable persons, children, language barriers, urgent medical need, rights-notification failure, delay in legal advice, force allegation, injury, death or serious incident, missing recording, incomplete execution return, partial execution, person not located, refusal or obstruction, incorrect premises or subject details, warrant variation, judicial challenge, unlawful arrest finding, release, re-arrest under a genuinely separate lawful basis, database outage and retrospective record correction.
+
+### Acceptance conditions
+- Every arrest decision identifies a valid legal power and the facts known at the time.
+- Grounds, necessity, proportionality and alternatives are recorded where required.
+- Decisions to arrest and decisions not to arrest can be reviewed.
+- Arrest warrants are issued only by the competent authority and retain their full application and decision history.
+- Warrant identity, subject, scope, conditions, validity and status are checked before execution.
+- Distinct legal instruments cannot be substituted for one another.
+- Execution, non-execution, partial execution and return are attributable and auditable.
+- Identity uncertainty and contradictory information are visible and preserved.
+- Arrest, charge, custody, bail/remand, conviction and sentence remain distinct legal states.
+- Rights, legal advice, communication, safeguarding and medical needs are recorded under the applicable rules.
+- Force, injury, complaints and exceptional powers receive separate review.
+- Lawful alternatives and release outcomes are supported and recorded.
+- Supervisory and judicial oversight can reconstruct the facts and law applicable at the time.
+- Relevant and exculpatory records remain available for disclosure and challenge.
+- The player cannot exceed their authority, alter warrant scope or erase arrest history.
+- Arrest does not automatically reveal guilt or resolve a case.
+
+**Draft status:** BP-25 is a working design. Exact offences, arrest thresholds, necessity tests, warrant categories, issuing authorities, territorial rules, rights wording, time limits, exceptional powers, force standards, custody handover and judicial review procedures remain to be specified in the fictional legal framework. This division does not claim that arrest or warrant software has been implemented.
+
