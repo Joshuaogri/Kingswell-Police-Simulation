@@ -508,3 +508,138 @@ The design must handle shared equipment, pooled vehicles, temporary loans, inter
 - Historical resource records remain available after transfer, replacement or retirement.
 
 **Draft status:** BP-09 is a working design. Resource categories and operational rules can be refined as later divisions define their requirements. It is not a claim that any resource-management software has been implemented.
+
+## BP-10 — Patrol Operations
+
+### Purpose
+Define how uniformed officers and patrol teams provide the everyday visible police presence across Kingswell. Patrol is the service's main front line: it responds to calls, prevents and detects crime, assists the public, identifies emerging problems and creates the first police record of many events.
+
+### Scope
+This division covers routine and directed patrol, neighbourhood presence, officer activity while on duty, field observations, public contact, patrol task completion and shift handover. It connects personnel, units, resources, dispatch and incident management.
+
+Emergency call intake and dispatch control are defined in BP-11. Formal incident ownership and progression are defined in BP-12. Investigative casework is defined in BP-15 and BP-16.
+
+### Patrol organisation
+Patrol is organised through Kingswell's geographic areas, districts, neighbourhoods and stations. Each patrol area has a defined location boundary and a responsible command or unit. The number and names of areas remain part of the city-design process.
+
+Patrol coverage may include:
+- General response patrol.
+- Neighbourhood and community patrol.
+- Commercial, business and financial district patrol.
+- Residential area patrol.
+- Port, freight, industrial and transport-area patrol.
+- Traffic and road-focused patrol.
+- Directed patrol around recurring problems or specific events.
+- Foot, vehicle, cycle or other suitable patrol methods.
+
+A specialist unit may patrol or operate in an area for a functional purpose without replacing the geographic unit's overall responsibility.
+
+### Duty and shift
+Each patrol officer works from a rostered duty period with a defined start, finish, home unit, supervisor and expected availability. The duty record connects the officer to their team, vehicle or other transport, equipment and assigned area.
+
+A shift includes briefing, readiness checks, deployment, operational work, breaks or other recorded unavailability, return or reassignment, reporting and handover. Training, leave, sickness, restrictions and other commitments affect whether an officer is available for patrol.
+
+The game must not assign an officer to two incompatible duties at once. Late starts, early finishes, overtime, extensions, missed breaks and unexpected absences are recorded as changes to the shift.
+
+### Patrol assignment
+A patrol assignment identifies:
+- The officer or team.
+- The responsible supervisor.
+- The geographic area or specific task.
+- The duty period and expected coverage.
+- Assigned vehicle and equipment, if applicable.
+- Any task-specific instructions or restrictions.
+- Current status and handover information.
+
+Assignments can be routine, directed, event-based, temporary reinforcement or incident-related. A patrol area can be rebalanced during a shift when demand changes. The reason and responsible supervisor are recorded.
+
+### Patrol activity
+Patrol activity may include:
+- Visible presence and movement through assigned areas.
+- Responding to dispatched calls.
+- Checking on vulnerable people or places where appropriate.
+- Speaking with residents, workers, visitors and business representatives.
+- Conducting traffic and road-safety activity.
+- Attending public events and local disturbances.
+- Following up on local concerns and recurring problems.
+- Observing and recording suspicious, unusual or relevant circumstances.
+- Conducting lawful fictional-game checks and enquiries within the character's role.
+- Supporting other units and assisting at incidents.
+- Completing directed tasks and returning to normal patrol.
+
+The simulation should create believable opportunities for both reactive and self-initiated work. It should not make every patrol minute produce a crime or major event.
+
+### Patrol presence and movement
+Patrol movement is tied to the city map, road network, travel mode, current location and game time. The system records enough movement to establish where an officer or vehicle was when a significant event occurred. Routine movement can be summarised rather than generating an excessive record for every minor step.
+
+Travel time depends on distance, route, transport type, traffic conditions where modelled, road restrictions and the urgency or nature of the assignment. The player should be able to understand why a patrol unit is near, far from or delayed in reaching an event.
+
+### Public contact
+Patrol officers may encounter members of the public through calls, conversations, requests for assistance, reports, complaints, community activity and chance contact. A contact can be brief and informational or may create a formal incident, safeguarding action, intelligence item or follow-up task.
+
+The system distinguishes:
+- A casual interaction that requires no formal record.
+- A recorded police contact.
+- A request for assistance.
+- A reported concern or suspected offence.
+- A formal incident requiring ownership and follow-up.
+- A contact that generates a separate intelligence or investigative record.
+
+People encountered retain their existing identity; the system must not create duplicate people because the same person is met by different officers.
+
+### Observation and field notes
+Officers can record relevant observations such as time, location, persons present, vehicles, conditions, statements volunteered, actions taken and other circumstances. A field note is not automatically proof of an offence or a formal witness statement. The system records who made the note, when it was entered, the event time if different, and any later correction or addition.
+
+Observations may be linked to a person, property, vehicle, incident, task or case. The system preserves the original context and does not silently convert an uncertain observation into an established fact.
+
+### Patrol task and incident creation
+A patrol officer may identify an event that requires formal handling. The event can be passed to dispatch or incident management, depending on how it arises. The patrol record links to the resulting incident rather than creating an unrelated duplicate.
+
+A patrol task may be completed, partially completed, deferred, reassigned or escalated. The record states what was done and what remains outstanding. An officer must not close a task merely because the shift has ended; unfinished work is handed over to a named person or unit.
+
+### Supervisor oversight
+Patrol supervisors monitor staffing, coverage, availability, tasking, workload, incidents, welfare and performance. They may redirect patrols, assign tasks, provide support, request specialist assistance and escalate significant events. Their directions and material changes are recorded.
+
+Supervisors can see whether an area is uncovered, a unit is committed elsewhere, an officer is unavailable or a task has been delayed. A nominal patrol allocation is not treated as actual coverage when the assigned team is unavailable.
+
+### Player experience
+The player can see their current duty, assigned area, team, supervisor, vehicle and issued equipment, active tasks, current location where relevant, dispatch messages, outstanding reports and handover requirements.
+
+The player can choose how to carry out ordinary patrol within the game, subject to duty instructions and the character's role. The simulation should respond to choices through believable people, events, workload, travel and consequences rather than offering a single scripted route.
+
+### Records and reporting
+The patrol system records shifts, assignments, significant movements, tasks, public contacts requiring records, field notes, attendance at incidents, actions taken, delays, handovers and supervisor directions. Records use consistent timestamps and location references.
+
+Routine activity should be summarised at a useful level. Significant events must remain individually traceable. Reports can be linked to the relevant incident, case, person, vehicle, property or unit.
+
+### Connections to other divisions
+- **BP-02 and BP-04:** city geography, streets, properties and public locations.
+- **BP-06 and BP-07:** personnel, duty status, competence and career records.
+- **BP-08:** patrol units, areas, assignments and command.
+- **BP-09:** vehicles, radios, equipment and facilities.
+- **BP-11:** emergency intake, dispatch and communications.
+- **BP-12:** formal incident creation, ownership and management.
+- **BP-13 and BP-14:** crime categories and the generation of events.
+- **BP-15 to BP-24:** case referrals, investigation, witnesses, scenes and evidence.
+- **BP-30 to BP-33:** governance, standards, training and workforce management.
+- **BP-37 to BP-43:** time, records, persistence, interface, permissions and testing.
+
+### Exceptions and edge cases
+The design must handle an officer working alone, team members separating temporarily, vehicle failure, radio failure, unavailable equipment, a sudden demand surge, overlapping incidents, a patrol area left uncovered, a change of supervisor, a shift ending during an incident, an officer becoming a witness or victim, a task spanning multiple shifts, and an event discovered outside the officer's assigned area.
+
+The system must preserve the distinction between where an officer was assigned, where they actually went, and where a significant event occurred.
+
+### Acceptance conditions
+- Patrol areas connect to the approved city geography and have clear responsibility.
+- Every patrol shift links to personnel, unit, supervisor and duty availability.
+- Patrol assignments account for staff, qualifications, vehicles and equipment.
+- The simulation supports both dispatched and self-initiated patrol activity.
+- Travel and movement are consistent with game time and geography.
+- Public contacts can be recorded without duplicating person identities.
+- Field observations preserve uncertainty, authorship, time and location.
+- Patrol activity can create or link to formal incidents without duplication.
+- Unfinished tasks and incidents are handed over rather than silently abandoned.
+- Supervisors can see real coverage, availability, demand and outstanding work.
+- Significant patrol decisions and actions can be reconstructed from records.
+
+**Draft status:** BP-10 is a working design. Patrol-area boundaries, shift patterns, response standards and detailed field procedures will be refined alongside geography, dispatch and incident management. It is not a claim that patrol software has been implemented.

@@ -34,7 +34,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-07 | Career System | Drafted; detailed rules remain open for refinement |
 | BP-08 | Units and Deployment | Drafted; detailed rules remain open for refinement |
 | BP-09 | Police Resources | Drafted; details to refine with later operational divisions |
-| BP-10 | Patrol Operations | Not started |
+| BP-10 | Patrol Operations | Drafted; links to dispatch and incident design to refine |
 | BP-11 | Emergency Communications | Not started |
 | BP-12 | Incident Management | Not started |
 | BP-13 | Crime Architecture | Not started |
