@@ -7701,3 +7701,379 @@ The system must preserve the original and corrected assertions, avoid inferring 
 - Relationship processing integrates with BP-35 without duplicating identity or authoritative domain records.
 
 **Draft status:** BP-36 is a working design. The fictional civil-status and family-law framework, household definitions, relationship taxonomy, safeguarding law, data-protection rules, social-service interfaces, sensitive-data restrictions, access and correction rights, retention schedules and exact NPC social-behaviour model remain open. No relationship graph, household-management system, social-network engine or dedicated relationship database has been implemented by this design document.
+
+
+---
+
+## BP-37 — Time and Scheduling
+
+### Purpose and scope
+Define the authoritative game calendar, clock, time zones, time advancement, schedules, shifts, appointments, deadlines, recurring events and temporal coordination rules. BP-37 ensures that every event, person, organisation, duty, legal process and simulation action can be placed on a consistent timeline and that time advances only through authorised game rules.
+
+BP-37 covers:
+- The authoritative fictional calendar and date representation.
+- Game clock, time zones and local-time conversion.
+- Simulation-time advancement and pause rules.
+- Time intervals, durations, deadlines and effective dates.
+- Person, household, business and institutional schedules.
+- Police shifts, duty rosters, appointments and availability interfaces.
+- Recurring schedules and calendar events.
+- Scheduled simulation tasks and event triggers.
+- Temporal ordering, overlapping events and conflict resolution.
+- Time-sensitive legal, operational, employment and financial obligations.
+- Historical and future-dated records.
+- Schedule changes, cancellations, exceptions and notifications.
+- Time integrity, audit, recovery and testing.
+
+BP-37 is the authoritative owner of in-world time and scheduling semantics. It does not replace:
+- BP-10 to BP-12 for operational command, dispatch and incident management.
+- BP-06 to BP-09 and BP-33 for personnel status, deployment, resources, attendance and employment facts.
+- BP-27 to BP-29 for legal deadlines, court events, sentence calculations and correctional schedules.
+- BP-32 for training attendance and course scheduling.
+- BP-34 for financial periods, payment schedules and contractual dates.
+- BP-35 for runtime processing and event execution.
+- BP-36 for social relationships and routine context.
+- BP-38 and BP-39 for authoritative storage, persistence, backup and recovery.
+- BP-40 and BP-41 for time display, calendars, alerts and notifications.
+- BP-44 for approved calendar, time-scale and scheduling configuration.
+
+Domain divisions own the meaning and authority of their deadlines and appointments. BP-37 owns how their dates, times, intervals, recurrence and conflicts are represented and calculated. The simulation engine may execute an authorised time advancement or scheduled event, but it cannot create an independent clock or advance time outside BP-37 rules.
+
+The fictional country's calendar conventions, legal time zone, daylight-saving policy, public holidays, working-time law and exact simulation time scale remain to be approved. BP-37 must not silently assume a real-world jurisdiction's rules.
+
+### Authoritative calendar and clock
+The game maintains one authoritative simulation date and time. It is the reference for:
+- Incident and event timelines.
+- Patrol, dispatch and response activity.
+- Person and NPC location and activity.
+- Business and institutional operating hours.
+- Police shifts, duty rosters and appointments.
+- Investigative actions and evidence chronology.
+- Warrants, court orders and legal deadlines.
+- Training, leave, attendance and employment events.
+- Financial periods, invoices, contracts and payment schedules.
+- Relationship, household and social events.
+- Scheduled world and simulation processes.
+
+The authoritative clock is separate from the user's device clock and real-world elapsed time. A user's local time may be displayed as interface metadata but cannot silently change the fictional game date or time.
+
+The clock record includes:
+- Current simulation date and time.
+- Calendar and time-zone configuration version.
+- Current simulation session or timeline identifier.
+- Last authorised advancement operation.
+- Previous and resulting clock values.
+- Initiating player or authorised system process.
+- Advancement amount and reason.
+- Related events processed or deferred.
+- Integrity and audit status.
+
+There is one authoritative timeline for the game world unless a future approved configuration explicitly introduces a separate scenario or isolated test timeline. Parallel timelines must never be created accidentally through separate sessions or stale cached clocks.
+
+### Calendar and date representation
+The calendar configuration defines:
+- Calendar system and epoch or starting date.
+- Year, month, day and leap-year rules.
+- Week structure and first day of the week.
+- Date display and parsing conventions.
+- Valid date ranges.
+- Time-zone identifiers and local-time rules.
+- Daylight-saving or seasonal clock changes if applicable.
+- Public holidays and institution-specific non-working days.
+- Calendar version and effective dates.
+
+Dates are stored and exchanged in an unambiguous machine-readable form. User-facing date formats may follow the configured locale but must not make an ambiguous date appear certain. Where a player enters a date such as 03/04/2027 and the format is not known, the interface requests clarification rather than guessing.
+
+The system distinguishes date-only values from exact instants and local wall-clock times. A court date, leave period, financial period and incident timestamp may have different precision and timezone requirements. A date-only event must not be silently converted into an arbitrary midnight timestamp.
+
+### Time zones and local time
+The country and its locations use approved time-zone configuration. Every exact timestamp is stored or normalised using an unambiguous instant representation, with the relevant time-zone identifier retained where local civil time matters.
+
+The system distinguishes:
+- Absolute instant on the simulation timeline.
+- Local date and time at a location.
+- Time-zone offset applicable at that instant.
+- Display time for the player.
+- Date-only or floating local-time commitments.
+- Historical time-zone rule version.
+
+A location's local time is derived from its configured time zone and the applicable calendar rules. The player must not be able to create a different local clock for the same location merely by changing device settings.
+
+If the fictional country uses one national time zone, that is configured explicitly. If future regional time zones or daylight-saving changes are introduced, they require controlled configuration and historical interpretation. The system must correctly handle ambiguous or nonexistent local times during a clock change, using an explicit disambiguation rule.
+
+### Simulation-time advancement
+Time advances only through an authorised game operation. The player may request a defined advancement, wait for a stated duration, complete an action that has a defined duration or accept a domain process that advances time under approved rules.
+
+Each advancement records:
+- Starting simulation time.
+- Requested duration or target time.
+- Initiating player or process.
+- Reason or command.
+- Applicable time-advancement rule.
+- Events and schedules eligible for processing.
+- Events completed, deferred, cancelled or failed.
+- Ending simulation time.
+- Any blocked or unresolved condition.
+
+The engine must not advance the clock before validating the request and its consequences. Where a critical event, pending decision, active emergency or unresolved action should interrupt or prevent a requested wait, the relevant domain rule determines whether time advancement is paused, shortened, rejected or continued with a notification.
+
+Time advancement is not the same as completing every scheduled event. Events are processed according to their prerequisites, priorities, availability and domain rules. A task that cannot lawfully or practically occur remains pending, fails or is rescheduled with a recorded reason.
+
+### Pause and unattended operation
+The default rule is that simulation time does not advance merely because real time passes or the player closes the game, leaves a conversation, disconnects or is inactive. No NPC schedule, shift, court deadline, business opening, crime event or other in-world event silently progresses during an unattended period.
+
+The clock remains at the last authorised simulation time until a valid advancement operation occurs. On return, the player resumes from the recorded state and is not presented with consequences from unapproved offline progression.
+
+Any future offline-progression feature requires an explicit approved blueprint change defining:
+- Which processes may continue.
+- Which entities and events are eligible.
+- How legal, safety-critical and player-controlled decisions are handled.
+- Maximum elapsed simulation time.
+- Player notice and consent.
+- Resource and performance limits.
+- Audit and recovery behaviour.
+- How the feature can be paused, disabled or reversed where appropriate.
+
+A background server process may perform technical maintenance, backups or consistency checks without advancing the fictional clock. Technical timestamps must not be confused with in-world time.
+
+### Time advancement and interruption rules
+A time-advancement request is evaluated against active conditions. These may include:
+- Emergency calls or incidents requiring player attention.
+- A player-controlled action that has not completed.
+- A pending approval or decision with a time-critical consequence.
+- A scheduled duty, appointment or hearing.
+- An expiring authorisation or legal instrument.
+- A person or resource whose availability changes during the requested interval.
+- A scheduled event whose outcome may materially affect the player's current task.
+- A safety or continuity condition defined by the relevant domain.
+
+The engine uses the declared priority and interruption rules rather than inventing dramatic interruptions. If time advancement is stopped early, the player receives the actual ending time and the reason. If an event is processed during a permitted wait, the event time and result are recorded before the engine reports the final time.
+
+The system distinguishes a player's deliberate decision to wait from an automatic delay caused by a long-running action. The player is not assumed to have consented to a long wait merely because an operation is pending.
+
+### Time intervals, duration and deadlines
+The system supports exact instants, date ranges, durations, recurring periods and deadlines. It distinguishes:
+- Start and end instants.
+- Inclusive and exclusive date boundaries.
+- Calendar days from elapsed 24-hour periods.
+- Business days from calendar days.
+- Working hours from elapsed time.
+- Local civil dates from absolute time.
+- Deadline calculation from reminder or notification time.
+- Effective date from record-entry date.
+- Event occurrence time from report or discovery time.
+
+Deadline rules are owned by the relevant domain. BP-37 provides reliable date arithmetic and calendar services; it does not decide the legal effect of a deadline. Where a legal deadline depends on service, receipt, custody, court order, holiday or other legal event, the domain rule defines the trigger and calculation.
+
+A deadline record includes the source authority, triggering event, calculation rule, start point, duration or target, calendar basis, timezone, due time, responsible actor, status, extensions, suspensions, completion evidence and audit history.
+
+The system must not assume that every deadline expires at midnight. Exact due time, grace period, holiday treatment and extension rules are explicit. If a deadline rule is unresolved, the system marks the calculation as provisional or requests an authorised decision rather than inventing a binding result.
+
+### Effective time and historical records
+The system distinguishes:
+- **Occurrence time:** when an event actually happened in the simulated world.
+- **Effective time:** when a status, appointment, authority or rule takes effect.
+- **Recorded time:** when the system received or saved the information.
+- **Discovery time:** when an event or fact became known to a person or institution.
+- **Processing time:** when the runtime processed the event.
+- **Notification time:** when a person or system was informed.
+
+A late report or retrospective correction must not overwrite the original chronology. The record preserves the actual or asserted occurrence time, the time it was entered, the source and any uncertainty.
+
+A retroactive effective date is permitted only where the relevant domain allows it and the authority is recorded. The system preserves both the date the change is said to take effect and the date the decision was made or recorded.
+
+### Scheduling model
+A schedule is a structured representation of planned activity. It may apply to a person, unit, vehicle, facility, business, institution, service, event or recurring process.
+
+A schedule record includes:
+- Schedule identifier and owner.
+- Scheduled entity or resource.
+- Activity or commitment type.
+- Start and end time or duration.
+- Location or service area where relevant.
+- Recurrence rule and exceptions.
+- Required participants and resources.
+- Availability and eligibility conditions.
+- Priority and interruption behaviour.
+- Responsible organiser or authority.
+- Status, version and change history.
+- Source and relationship to related records.
+
+The system distinguishes a plan from a confirmed appointment, an assigned duty from actual attendance, an opening-hours rule from an exceptional closure and a scheduled task from a completed action.
+
+Schedules may be tentative, proposed, confirmed, active, completed, cancelled, superseded, missed or disputed. A change creates a dated history entry and does not erase the previous arrangement.
+
+### Person and NPC routines
+Person schedules support work, education, care responsibilities, appointments, travel, household routines, social activity, rest and other ordinary activities. A routine is a pattern or expectation, not proof that a person was present at a specific place at a specific time.
+
+The simulation may represent:
+- Regular work and shift patterns.
+- Variable or flexible working hours.
+- School, study and training.
+- Household and care commitments.
+- Appointments and planned visits.
+- Travel and commuting.
+- Recurring social activity.
+- Rest, sleep and personal time.
+- Leave, sickness, absence and temporary changes.
+
+Routine schedules may include uncertainty or variation where the underlying behaviour is not fixed. The engine must not treat a general routine as a verified alibi, attendance record or location fact. Actual presence requires an appropriate event, observation, access record or other source.
+
+A person's schedule is private unless the viewer has a legitimate role and purpose. NPCs know their own commitments and relevant shared arrangements, not every other person's schedule.
+
+### Police duty, shifts and availability
+Police duty rosters and employee availability are owned by BP-06, BP-08, BP-10 and BP-33 as applicable. BP-37 provides the time and scheduling framework used by those systems.
+
+A duty schedule distinguishes:
+- Planned roster.
+- Published or confirmed roster.
+- Actual attendance.
+- Assignment or deployment.
+- Training or other commitment.
+- Leave and absence.
+- Overtime and additional duty.
+- Rest period and availability.
+- Temporary change or emergency recall.
+
+A rostered shift does not prove that an employee attended or was available throughout it. Actual attendance and duty status are recorded through the relevant personnel and operational processes. A person cannot be assigned to incompatible simultaneous duties or locations unless an explicitly permitted shared or remote function applies.
+
+Shift changes, overtime, emergency recall, rest and working-time limits are governed by the applicable BP-33 and operational rules. BP-37 calculates overlap and timing but does not invent labour-law limits or grant operational authority.
+
+### Unit, resource and facility schedules
+Schedules may be attached to units, vehicles, equipment, stations, custody facilities, courts, training venues, hospitals, businesses and other institutions.
+
+They support:
+- Planned service hours.
+- Staffing and coverage windows.
+- Vehicle or equipment reservations.
+- Maintenance and inspection windows.
+- Facility occupancy and availability.
+- Training sessions and course capacity.
+- Court hearings and other institutional appointments.
+- Planned closures and emergency restrictions.
+- Delivery, collection and service appointments.
+
+A schedule does not override the authoritative operational status of a resource. A vehicle scheduled for use may be unserviceable; a facility scheduled to open may be closed by an emergency; a unit rostered for duty may have insufficient available staff. The engine checks current state and records the resulting exception.
+
+### Recurrence and calendar rules
+Recurring schedules support daily, weekly, monthly, annual and rule-based patterns, with explicit start, end, interval, selected days, occurrence count and exception dates.
+
+The system supports:
+- A recurring event with a defined end date.
+- A recurring event with a maximum number of occurrences.
+- Excluded dates and one-off exceptions.
+- Changed individual occurrences.
+- Public holidays and institution-specific closure rules.
+- Different local times across time zones.
+- Recurrence changes that preserve previous occurrences.
+- Cancellation of future occurrences without deleting past events.
+
+Recurrence is expanded or calculated under controlled rules. It must not create an unbounded number of records without limits. A schedule change identifies whether it changes only future occurrences or also corrects historical entries.
+
+### Conflicts, overlaps and capacity
+The scheduling service detects:
+- A person assigned to two incompatible activities.
+- A vehicle or equipment item reserved for multiple exclusive tasks.
+- A room or facility double-booked beyond capacity.
+- A required participant who is unavailable.
+- An appointment outside operating hours.
+- A duty that conflicts with leave, sickness or training.
+- Insufficient rest or prohibited working-time overlap under approved rules.
+- A schedule that conflicts with a legal deadline or court order.
+- A recurring event whose occurrence falls on an excluded date.
+- A time-zone or daylight-saving ambiguity.
+- A resource reservation that remains active after cancellation or failure.
+
+A conflict is not always automatically resolved. The system identifies the conflict, affected records, priority, rule and competent decision-maker. Resolution may involve rescheduling, reassignment, cancellation, authorised override or escalation. The original schedule and decision history remain available.
+
+Capacity rules are owned by the relevant domain. BP-37 can calculate the number of overlapping reservations or available time slots but cannot decide that an operational unit has sufficient staffing, a court has legal jurisdiction or a facility meets safety standards.
+
+### Appointments, reminders and notifications
+An appointment record identifies the organiser, participants, purpose, location, time, duration, required preparation, status and authority. Invitations, acknowledgements and attendance are distinct events.
+
+Reminders and notifications are generated through BP-41 using schedule data. A notification does not change the underlying appointment or deadline. Delivery failure does not automatically cancel the event or extend a deadline.
+
+The system supports:
+- Advance reminders.
+- Changes and cancellations.
+- Overdue or missed appointment notices.
+- Conflict alerts.
+- Deadline warnings.
+- Required attendance or preparation notices.
+- Escalation to a supervisor or responsible institution where authorised.
+
+The reminder schedule is configurable and must not be confused with the actual due time. Sensitive appointment details are limited to recipients with a legitimate need to know.
+
+### Domain-specific temporal interfaces
+BP-37 provides common timing services while each domain defines its own event and deadline rules.
+
+Examples include:
+- **Police operations:** shift start and end, patrol activity, response timing, appointments and operational task windows.
+- **Emergency communications:** call receipt, dispatch, arrival, updates and closure timestamps.
+- **Investigations:** incident occurrence, report, interview, surveillance period, warrant validity and evidential chronology.
+- **Legal processes:** filing, service, hearing, custody and statutory deadlines.
+- **Corrections:** sentence start, credit periods, eligibility dates and release scheduling under BP-29 rules.
+- **Training:** course dates, attendance, assessment and qualification expiry.
+- **Human resources:** working time, leave, sickness, contract effective dates and retirement administration.
+- **Finance:** accounting periods, budget cycles, contract milestones, invoice due dates and payment schedules.
+- **Relationships and social context:** household changes, visits, appointments and time-bounded affiliations.
+
+Where two divisions use the same date or time, they use the same authoritative representation and record the applicable domain meaning. A timestamp alone does not establish legal validity, attendance, service or completion.
+
+### Player experience and authority
+The player can inspect the current simulation date and time, view permitted calendars and schedules, request time advancement, wait for an action, create or change an appointment where authorised, review deadlines and receive conflict or reminder notices.
+
+The interface must display:
+- Current simulation date and time.
+- Applicable local time zone.
+- Whether time is paused or advancing.
+- Requested and actual advancement interval.
+- Events that interrupted or limited advancement.
+- Appointment and schedule status.
+- Deadline source and calculation basis where relevant.
+- Whether a time is planned, actual, estimated or provisional.
+- Any ambiguity or unresolved calendar rule.
+
+The player cannot alter the authoritative clock directly, backdate an event to evade a rule, silently extend a legal deadline or create a schedule that overrides another division's authority. A correction or exception follows the relevant approval and audit process.
+
+### Connections to other divisions
+- **BP-01 to BP-04:** game foundations, geography, population, people, properties and organisations.
+- **BP-05 to BP-09:** police structure, personnel, careers, units, deployment and resources.
+- **BP-10 to BP-12:** patrol, communications, dispatch and incident timelines.
+- **BP-13 to BP-29:** crime, investigations, legal deadlines, court events, sentences and correctional schedules.
+- **BP-30 to BP-34:** governance, training, employment, finance, contracts and reporting periods.
+- **BP-35:** runtime processing, event ordering, NPC activity and authorised time advancement.
+- **BP-36:** household, relationship, social and community routines.
+- **BP-38 and BP-39:** timestamp storage, temporal history, persistence, backup and recovery.
+- **BP-40 and BP-41:** clock display, calendars, reminders, alerts and reports.
+- **BP-42:** authority to view or change schedules and protected calendar information.
+- **BP-43:** date arithmetic, recurrence, time-zone, interruption and schedule-conflict tests.
+- **BP-44:** calendar, time zone, holiday, time-scale and scheduling configuration.
+
+### Exceptions and edge cases
+The design must handle ambiguous date input; invalid dates; leap days; calendar-version change; local-time ambiguity; nonexistent time during a clock change; multiple time zones; a date-only record with no exact time; a late report; a retrospective correction; a time advancement request during an emergency; an interruption halfway through a wait; an action whose duration is uncertain; a deadline whose legal trigger is disputed; a deadline falling on a public holiday; a deadline with an unknown extension rule; an expired warrant or authorisation; an appointment changed after notification; a missed appointment; a person scheduled for two locations; an officer recalled during leave; sickness beginning during a shift; training overlapping duty; a vehicle reserved during maintenance; a facility closed unexpectedly; a recurring schedule with an exception; a schedule changed after some occurrences have completed; a schedule with no end date; an event scheduled before its prerequisites are met; a time-zone rule changed retrospectively; a corrupted clock value; a duplicate time-advancement command; a disconnected player; a server restart; a restored database with a stale clock; a notification delivered late; and a long period of inactivity.
+
+The system must preserve the authoritative clock, record every valid advancement, prevent unapproved offline progression and make unresolved temporal conflicts visible.
+
+### Acceptance conditions
+- One authoritative simulation clock governs the game timeline.
+- The clock is independent of real-world elapsed time and device settings.
+- Simulation time advances only through authorised game rules.
+- The game does not silently progress while the player is away.
+- Calendar, time-zone and date-parsing rules are explicit and versioned.
+- Exact instants, local times, date-only values and durations remain distinct.
+- Occurrence, effective, recorded, discovery, processing and notification times are separately represented where needed.
+- Historical and retrospective records preserve the original chronology.
+- Deadline calculation uses the applicable domain rule and does not invent legal consequences.
+- Schedules distinguish proposed, confirmed, actual, cancelled and completed states.
+- Recurrence and exceptions are controlled, bounded and historically traceable.
+- Person routines are not treated as proof of attendance or location.
+- Police rosters distinguish planned duty from actual attendance and availability.
+- Resource and facility schedules are checked against current operational status.
+- Conflicts are detected and resolved by the competent domain authority.
+- Reminders and notifications do not alter the underlying event or deadline.
+- Time advancement is auditable and can be interrupted or rejected under defined rules.
+- The engine can recover the last valid clock state without replaying time advancement twice.
+- The player can identify whether a time is actual, planned, estimated or provisional.
+
+**Draft status:** BP-37 is a working design. The fictional calendar, starting date, time zone, daylight-saving policy, simulation time scale, advancement increments, interruption priorities, public holidays, legal deadline rules, working-time law, shift standards, recurrence syntax, reminder defaults, financial period conventions and exact scheduling conflict rules remain open. No authoritative game clock, calendar service, schedule engine, roster scheduler, deadline calculator or time-advancement software has been implemented by this design document.
