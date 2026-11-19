@@ -6,7 +6,7 @@ A fictional, persistent, text-first police simulation set in the fictional sover
 
 The **44-division master blueprint has been drafted**. The project is now moving into software implementation.
 
-The repository contains the game blueprint, project records, technical architecture and versioned database migrations. The connected Supabase project now has the initial private `game` schema: 40 tables, 78 foreign-key relationships and supporting indexes. All 40 tables have row-level security enabled. The schema is empty of game-world/personnel/incident data; the simulation runtime and playable interface have not yet been implemented.
+The repository contains the game blueprint, project records, technical architecture and versioned database migrations. The connected Supabase project now has the initial private `game` schema: 40 tables, 78 foreign-key relationships and supporting indexes. All 40 tables have row-level security enabled. The schema currently contains no seeded game-world/personnel/incident data. A temporary end-to-end insert test across world, police, dispatch, case and evidence relationships passed and was rolled back cleanly. The simulation runtime and playable interface have not yet been implemented.
 
 See the [Implementation Register](docs/governance/IMPLEMENTATION-REGISTER.md) for the current build status.
 
