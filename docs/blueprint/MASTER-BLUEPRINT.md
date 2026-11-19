@@ -9832,3 +9832,393 @@ The system must fail securely, preserve audit evidence, revoke access promptly a
 - The player cannot elevate fictional authority or bypass controls through commands.
 
 **Draft status:** BP-42 is a working design. The final identity provider, authentication methods, role and attribute catalogue, character-to-user mapping, data-classification policy, RLS policy set, privileged access model, secret manager, encryption and key-management configuration, security monitoring, break-glass conditions, access-review frequency and incident-response obligations remain open. No game authentication, authorisation policies, RLS-protected game tables or security operations process has been implemented.
+
+
+---
+
+## BP-43 — Testing and Quality Assurance
+
+### Purpose and scope
+Define the verification, validation, testing, quality-assurance and release-readiness framework for the simulation. BP-43 ensures that the design is complete enough to implement, software behaves as specified, data remains accurate, permissions are enforced, simulation outcomes are coherent and changes do not silently break previously working systems.
+
+BP-43 covers:
+- Requirements traceability and acceptance criteria.
+- Test strategy, planning and governance.
+- Unit, integration, contract and end-to-end testing.
+- Database schema, migration and data-integrity testing.
+- Simulation, event, NPC and time-system testing.
+- Police workflow and domain acceptance testing.
+- Security, privacy and permission testing.
+- Performance, capacity and reliability testing.
+- Recovery, backup and disaster-recovery testing.
+- Usability, accessibility and player-experience testing.
+- Regression testing and release gates.
+- Test data, fixtures and scenario management.
+- Defect classification, triage and remediation.
+- Test evidence, results and quality reporting.
+
+BP-43 does not replace:
+- BP-30 for institutional governance and approval authority.
+- BP-35 for runtime behaviour and simulation execution.
+- BP-38 for record definitions, schemas and data integrity rules.
+- BP-39 for persistence, backup and recovery design.
+- BP-40 for interface and accessibility requirements.
+- BP-42 for security architecture and access policies.
+- BP-44 for configuration and release settings.
+
+A test passing does not prove that an entire division is implemented or that the overall simulation is complete. Verification claims must identify the tested scope, version, environment, test evidence, known limitations and approval status.
+
+### Quality principles
+Quality assurance follows:
+- Requirement traceability: each material requirement maps to one or more tests or an explicit reason why it cannot be automated.
+- Risk-based priority: testing effort reflects legal, safety, evidential, financial, privacy and operational impact.
+- Repeatability: test inputs, environment and expected outcomes are documented.
+- Independence: high-impact outcomes receive review independent of the person who implemented the change where practicable.
+- Realism: simulation tests reflect plausible operational and institutional conditions.
+- Adversarial testing: invalid, malicious, contradictory and boundary inputs are tested.
+- Evidence: results are retained and attributable.
+- Regression protection: fixes and changes do not reintroduce known failures.
+- Fail-safe behaviour: uncertain or failed checks do not produce unsafe success.
+- Continuous quality: tests run throughout design, implementation and maintenance.
+- Honest status: drafted, implemented, tested and verified remain distinct states.
+
+Testing is not postponed until the entire game is built. Each approved component has tests proportionate to its risk before it is relied upon by dependent systems.
+
+### Requirements and traceability
+Requirements are assigned stable identifiers and linked to:
+- Blueprint division and section.
+- Requirement statement.
+- Dependency and affected domain.
+- Risk and criticality.
+- Acceptance criterion.
+- Test case or verification method.
+- Test data and environment.
+- Result and evidence.
+- Defect or exception.
+- Approval and release reference.
+
+The traceability model supports forward and backward review. Every implemented requirement can be traced to its source; every approved requirement can be traced to an implementation status or an explicit outstanding gap.
+
+A requirement without a test may be covered by documented inspection, review, simulation exercise or other justified verification. The reason and approving authority are recorded. A generic statement that a system was "checked" is not sufficient evidence.
+
+### Test levels and types
+The test strategy may include:
+- **Static review:** requirements, schemas, source code, configuration and documentation inspected without executing the system.
+- **Unit tests:** individual functions, rules, validators and calculations.
+- **Component tests:** a bounded domain module tested with controlled dependencies.
+- **Integration tests:** connected modules, database operations and external interfaces tested together.
+- **Contract tests:** request, response, event and schema contracts verified between components.
+- **End-to-end tests:** complete player workflows exercised through the supported interface.
+- **Simulation tests:** time, event, NPC and world behaviour assessed over controlled scenarios.
+- **Data tests:** identity, referential integrity, provenance, temporal history and migration outcomes validated.
+- **Security tests:** authentication, authorisation, RLS, privilege boundaries and sensitive-data exposure assessed.
+- **Performance tests:** response time, throughput, queue behaviour, database load and capacity measured.
+- **Resilience tests:** failure, retry, outage, recovery and degraded operation examined.
+- **Usability and accessibility tests:** player interaction, clarity, keyboard access and non-visual usability assessed.
+- **Acceptance tests:** requirements evaluated against agreed player and project outcomes.
+- **Regression tests:** previously verified behaviour retested after changes.
+
+The test plan identifies which levels are required for each component. High-risk changes require broader testing than low-impact wording or presentation changes.
+
+### Test case design and coverage
+A test case defines:
+- Unique test identifier.
+- Requirement or risk covered.
+- Purpose and scope.
+- Preconditions and required permissions.
+- Environment and version.
+- Test data and fixture references.
+- Steps or executable procedure.
+- Expected result and invariant.
+- Actual result.
+- Pass, fail, blocked or not-run status.
+- Evidence and logs.
+- Tester and date.
+- Defect reference and retest result.
+
+Test coverage is measured against requirements, critical workflows, domain states, permissions, exception cases and failure modes. Code coverage may support analysis but does not replace requirement or risk coverage.
+
+The project maintains coverage for:
+- Normal and successful paths.
+- Boundary and limit conditions.
+- Invalid and incomplete inputs.
+- Missing, duplicated or conflicting records.
+- Concurrent and out-of-order actions.
+- Permission denial and authority failure.
+- Time and scheduling edge cases.
+- Failure, retry and recovery.
+- Privacy, security and disclosure boundaries.
+- Historical and retrospective changes.
+- Player interruption and resumption.
+
+A high percentage of passing tests cannot compensate for a missing critical test. Coverage reports identify untested high-risk requirements.
+
+### Test data and scenario management
+Test data is controlled, reproducible and separated from live authoritative game data. It may use synthetic people, properties, businesses, cases, incidents, evidence and organisations created for testing.
+
+Test fixtures identify:
+- Dataset or scenario identifier.
+- Purpose and requirements covered.
+- Data-generation method.
+- Version and creation date.
+- Dependencies and expected relationships.
+- Known limitations.
+- Reset and cleanup procedure.
+- Whether data is synthetic or approved anonymised material.
+
+Real personal, personnel, financial, evidential or sensitive information is not copied into a test environment without a lawful and approved basis. Test data must not leak into live gameplay or be mistaken for canon.
+
+Scenarios may include routine patrol, emergency response, complex investigation, evidence handling, custody, court process, HR decisions, procurement, system outage, concurrent incidents and other representative workflows. The same scenario can be replayed against a new release to identify regression.
+
+### Domain and workflow testing
+Each domain division defines tests for its own substantive rules. Cross-domain tests verify that the interfaces do not create contradictory or unauthorised outcomes.
+
+Examples include:
+- A dispatch task cannot assign an unavailable or unqualified officer.
+- An incident can progress into a case without duplicating person or location identity.
+- Evidence preserves continuity and links to the correct case and exhibit.
+- An arrest requires the appropriate authority and records its basis.
+- Custody safeguards and time limits use the correct legal rule.
+- A court order is executed only by the competent institution.
+- A sentence calculation uses the approved order and applicable rule version.
+- A disciplinary allegation is not treated as a finding.
+- Training attendance alone does not confer competence.
+- HR employment status does not independently grant police powers.
+- Procurement approval, receipt, invoice validation and payment remain separate stages.
+- A relationship does not create suspicion by association.
+- Time does not advance while the game is unattended.
+- A failed write does not appear as a completed action.
+
+The examples are illustrative test expectations; the final test catalogue is derived from approved requirements and legal configuration.
+
+### Simulation and NPC testing
+Simulation tests assess whether the world behaves consistently over controlled time intervals and under defined event sequences.
+
+They include:
+- Person identity continuity.
+- Location and travel consistency.
+- Schedule and availability constraints.
+- NPC knowledge boundaries.
+- Relationship and social-context effects.
+- Event ordering and causal dependencies.
+- Crime and incident generation constraints.
+- Relevance and processing-intensity transitions.
+- Resource allocation and release.
+- Simultaneous incidents and competing priorities.
+- Player action and NPC action conflicts.
+- Repeatability under controlled random seeds or recorded inputs.
+- No silent progression during inactivity.
+- Recovery from interrupted simulation cycles.
+
+A simulation may contain uncertainty and varied outcomes, but a repeated test must be explainable in terms of inputs, configuration, randomisation and rule version. The project records when stochastic variation is intentional and what outcomes remain within acceptable bounds.
+
+### Data, database and migration testing
+Database tests verify:
+- Primary and foreign-key constraints.
+- Identifier uniqueness and non-reuse.
+- Valid status transitions.
+- Effective-dated history.
+- Provenance and audit completeness.
+- Duplicate detection and merge safeguards.
+- Transaction atomicity.
+- Idempotency and retry behaviour.
+- Query correctness and pagination.
+- RLS and view/function restrictions.
+- Schema migration order and compatibility.
+- Data backfill and transformation.
+- Rollback or forward-repair behaviour.
+- Retention and legal-hold metadata.
+- Backup and restore integrity.
+
+Migration tests run against an isolated environment with representative data. Destructive migrations require evidence that the recovery strategy works. A migration is not accepted merely because it executes without an error; postconditions and data integrity must also be checked.
+
+### Security and privacy testing
+Security tests validate:
+- Authentication and session handling.
+- Role and attribute assignment.
+- Character-to-user mapping.
+- Default-deny behaviour.
+- Record and field access.
+- Row-level security.
+- Privileged function boundaries.
+- Service-role and secret exposure.
+- Bulk export restrictions.
+- Cross-domain relationship traversal.
+- Access revocation.
+- Break-glass expiry and audit.
+- Integration authentication and replay protection.
+- Sensitive information in logs, notifications and reports.
+- Development and test environment separation.
+
+Negative tests are mandatory. The test plan must prove that unauthorised identities cannot read or alter protected records, not merely that authorised users can complete normal workflows.
+
+Security tests do not use uncontrolled destructive actions against the live project. Any penetration or load testing against a connected service requires approval, scope and safe limits.
+
+### Performance and capacity testing
+Performance testing establishes whether the system meets approved targets under realistic and peak workloads. It may measure:
+- Command response time.
+- Database query latency.
+- Event-processing throughput.
+- Queue depth and processing delay.
+- NPC processing cost by intensity.
+- Search and report performance.
+- Concurrent player or system actions.
+- Transaction contention.
+- Storage growth and retention impact.
+- Recovery and restore duration.
+
+Targets are defined only after expected scale, hosting limits and user experience requirements are established. The test report records environment, workload, dataset size, configuration, measurements and limitations.
+
+Performance improvements must preserve authoritative outcomes, audit history, permissions and simulation fidelity. A faster result is not accepted if it silently drops events or skips required validation.
+
+### Reliability and failure testing
+The system is tested against:
+- Database or network interruption.
+- Failed transaction.
+- Partial workflow completion.
+- Duplicate command or event.
+- Queue backlog.
+- External provider failure.
+- Invalid or stale configuration.
+- Application restart.
+- Migration failure.
+- Cache divergence.
+- Backup failure.
+- Restore failure.
+- Loss of credentials.
+- Corrupted data.
+- Recovery from an earlier point.
+- Interrupted player session.
+
+Tests verify that failures are visible, state remains consistent, retries are safe and recovery does not duplicate consequential actions.
+
+### Usability and accessibility testing
+Interface testing verifies:
+- Natural-language command interpretation.
+- Clarification of ambiguous requests.
+- Clear distinction between pending and completed actions.
+- Accurate display of authority and restrictions.
+- Readability of records and timelines.
+- Search and navigation.
+- Error and warning comprehension.
+- Text-only completion of essential tasks.
+- Keyboard and assistive-technology compatibility where supported.
+- Non-colour status communication.
+- Appropriate information density.
+- Session resumption and continuity.
+
+Testing includes representative users or structured player walkthroughs where feasible. Feedback is recorded with the affected requirement and severity. An interface is not considered usable merely because a developer can operate it.
+
+### Defect classification and management
+Defects are recorded with:
+- Unique defect identifier.
+- Affected requirement, component and version.
+- Reproduction steps.
+- Expected and actual result.
+- Severity and priority.
+- Safety, legal, evidential, financial, privacy and operational impact.
+- Environment and supporting evidence.
+- Workaround where safe.
+- Owner and target resolution.
+- Root cause where established.
+- Fix reference.
+- Retest and regression result.
+- Closure authority.
+
+Severity distinguishes critical integrity or safety failure, high-impact domain failure, material functional defect, moderate usability or data issue and minor presentation issue. Exact labels and response targets are configured.
+
+A defect is not closed merely because code changed. It requires a successful retest and appropriate regression evidence. A known limitation may be accepted only by an authorised owner with documented risk, scope, mitigation and review date.
+
+### Release gates and verification status
+A release or component is not marked verified until its required tests pass and evidence is reviewed. Release gates may require:
+- Requirements and design review complete.
+- No unresolved critical defects.
+- High-risk defects resolved or formally accepted.
+- Required automated tests passing.
+- Required manual and domain acceptance tests complete.
+- Database migration validated.
+- Security and permission checks passed.
+- Recovery and rollback arrangements approved.
+- Performance and reliability targets met where applicable.
+- Documentation and implementation registers updated.
+- Release authority approval recorded.
+
+The project distinguishes:
+- Drafted: a design exists.
+- Implemented: the feature has been built.
+- Tested: specified tests have been run.
+- Verified: acceptance evidence has been reviewed and the feature is confirmed against its requirements.
+- Blocked: a documented issue prevents progress.
+
+A passing unit test does not make a division verified. A feature may be implemented but not verified. A division may be partially implemented, and the register must show the actual scope.
+
+### Test automation and continuous integration
+Automated tests run through the approved repository workflow and deployment process. The test pipeline records:
+- Commit and branch.
+- Source and dependency versions.
+- Environment and configuration.
+- Test suite and version.
+- Results and failure logs.
+- Coverage and quality checks.
+- Build and deployment status.
+
+The pipeline must not use production secrets or write to live game data during ordinary tests. Test jobs use isolated fixtures and restricted credentials. Failed critical checks block release according to the approved policy.
+
+Manual test evidence remains necessary for aspects that cannot be reliably automated, such as realistic player experience, legal interpretation, complex operational judgement and certain recovery exercises.
+
+### Test reporting and evidence retention
+A test report summarises:
+- Scope and requirements covered.
+- Version and environment.
+- Tests planned, run, passed, failed, blocked and not run.
+- Critical gaps and known limitations.
+- Defects opened, resolved and accepted.
+- Security and data-integrity results.
+- Performance and recovery measurements where relevant.
+- Evidence references.
+- Reviewer and approval status.
+
+Evidence is stored in the approved project record system with links to commits, migrations, build outputs and test artefacts. Test evidence must be reproducible where practicable and retained according to the project's records and audit requirements.
+
+### Player experience and authority
+The player should experience a stable and fair simulation, not be exposed to test controls or unfinished test data during ordinary play. Test and development functions are restricted to authorised project roles.
+
+The player may report an apparent defect or inconsistent outcome through a defined route. A reported issue is recorded for review but does not automatically alter the authoritative game state.
+
+Testers may use controlled scenarios and reset data in isolated environments. They cannot use test privileges to alter live case outcomes, erase consequences or grant fictional authority.
+
+### Connections to other divisions
+- **BP-01 to BP-42:** all requirements, domain workflows, records, runtime, interface and security controls requiring verification.
+- **BP-30:** governance, risk acceptance, audit and release authority.
+- **BP-35:** command, event, simulation, NPC, concurrency and runtime testing.
+- **BP-37:** calendar, time advancement, deadline, recurrence and scheduling tests.
+- **BP-38:** schema, record integrity, provenance, migration and query tests.
+- **BP-39:** backup, restore, continuity and recovery exercises.
+- **BP-40 and BP-41:** interface, accessibility, notification, report and delivery tests.
+- **BP-42:** authentication, authorisation, RLS, secrets and security testing.
+- **BP-44:** configuration validation, compatibility and release controls.
+
+### Exceptions and edge cases
+The design must handle an untestable requirement; an acceptance criterion with no measurable result; missing test data; unreliable test environment; flaky test; test passing only under a particular order; nondeterministic simulation result; false-positive security alert; false-negative permission test; incomplete migration coverage; destructive test affecting live data; unavailable external dependency; test credentials with excessive access; a defect that cannot be reproduced; a defect with no safe workaround; a critical issue discovered after release; a test result tied to an obsolete commit; an undocumented manual change; conflicting test evidence; a release with accepted known defects; a test suite that passes while an important requirement is untested; and a restore test that cannot meet the approved recovery target.
+
+The project must record the limitation, risk, owner, decision and next verification step. Missing evidence cannot be represented as a pass.
+
+### Acceptance conditions
+- Every approved requirement has traceable verification coverage or an approved alternative.
+- Test plans are risk-based and include positive, negative, boundary and failure cases.
+- Test cases record inputs, expected results, actual results, environment and evidence.
+- Test data is controlled and separated from live game records.
+- Domain and cross-domain workflows are tested.
+- Simulation time, NPC knowledge, event ordering and relevance processing are tested.
+- Database constraints, migrations, provenance and historical integrity are tested.
+- Security tests include unauthorised access and privilege-boundary cases.
+- Performance and reliability targets are measured against documented workloads.
+- Backup and restore procedures are tested rather than assumed.
+- Accessibility and text-only gameplay are verified.
+- Defects have severity, owner, evidence, remediation and retest.
+- Release gates prevent unverified high-risk changes from being treated as complete.
+- Automated tests are linked to source commits and run with restricted credentials.
+- Test reports identify untested scope, known limitations and approval status.
+- Implementation and verification status are kept separate in the project registers.
+
+**Draft status:** BP-43 is a working design. The detailed requirement-to-test matrix, test catalogue, automated test framework, CI pipeline, test environments, synthetic data library, performance targets, security testing scope, accessibility standards, defect severity policy, release gates, evidence-retention rules and independent review arrangements remain open. No automated test suite, quality-assurance pipeline or verified gameplay test environment has been implemented.
