@@ -11,7 +11,7 @@ Each division is designed with its purpose, scope, responsibilities, components,
 | BP-03 | Population and Individual Simulation Architecture | Drafted; processing model open |
 | BP-04 | Buildings, Properties, Businesses and Organisations | Drafted |
 | BP-05 | Police Architecture | Drafted; detailed structure open |
-| BP-06 | Personnel | Drafted |
+| BP-06 | Police Personnel | Drafted |
 | BP-07 | Career System | Drafted; detailed rules remain open for refinement |
 | BP-08 | Units and Deployment | Drafted; detailed rules remain open for refinement |
 | BP-09 | Police Resources | Drafted; details to refine with later operational divisions |
