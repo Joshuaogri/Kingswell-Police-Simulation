@@ -10,10 +10,14 @@
 5. The wider fictional country supports national institutions, jurisdiction and cross-jurisdiction activity. Other cities do not need full simulation by default.
 6. Build the complete master blueprint progressively before deep implementation.
 7. Keep the Master Blueprint, Implementation Register and Technical Architecture as separate project records.
-8. The master blueprint remains a draft until explicitly approved as final.
+8. **The master blueprint (BP-01 through BP-44) was explicitly approved by the user on 2026-11-20.** It is the accepted design baseline; material changes must be recorded as controlled revisions. Approval does not imply that open details are settled or that software has been implemented.
 9. Use plain English and practical explanations. Avoid unnecessary jargon, needless delays and routine approval loops.
 10. Keep the scope coherent and record material design changes.
 11. **GitHub branch rule: main is the only permitted working branch. Never create, switch to or commit to another branch.**
+
+## Master blueprint approval record
+
+**2026-11-20 — Approved.** The user explicitly confirmed that the complete Kingswell Master Blueprint, BP-01 through BP-44, is approved. This approval was previously absent from the repository record and is now recorded here. Preserve the existing blueprint; do not restart its divisions or seek routine reapproval. Any future material change must be documented as a controlled revision.
 
 ## Confirmed police model
 One national police service with a central headquarters and regional/city commands.
