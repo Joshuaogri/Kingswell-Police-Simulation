@@ -16,7 +16,7 @@ Each division is designed with its purpose, scope, responsibilities, components,
 | BP-08 | Units and Deployment | Drafted; detailed rules remain open for refinement |
 | BP-09 | Police Resources | Drafted; details to refine with later operational divisions |
 | BP-10 | Patrol Operations | Drafted; links to dispatch and incident design to refine |
-| BP-11 | Emergency Communications | Not started |
+| BP-11 | Emergency Communications | Drafted; incident lifecycle and service standards to refine |
 | BP-12 | Incident Management | Not started |
 | BP-13 | Crime Architecture | Not started |
 | BP-14 | Crime Generation | Not started |

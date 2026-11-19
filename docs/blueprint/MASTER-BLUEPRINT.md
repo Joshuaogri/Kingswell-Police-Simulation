@@ -643,3 +643,134 @@ The system must preserve the distinction between where an officer was assigned, 
 - Significant patrol decisions and actions can be reconstructed from records.
 
 **Draft status:** BP-10 is a working design. Patrol-area boundaries, shift patterns, response standards and detailed field procedures will be refined alongside geography, dispatch and incident management. It is not a claim that patrol software has been implemented.
+
+## BP-11 — Emergency Communications
+
+### Purpose
+Provide the communication centre that receives requests for police assistance, records what is reported, assesses urgency, creates or updates incidents and sends suitable police resources. It is the link between the public, patrol officers, supervisors and other parts of the service.
+
+### Scope
+This division covers public contact channels, call-taking, initial assessment, incident notification, dispatch, radio and operational communications, resource tracking and communication-centre supervision.
+
+It does not define the full incident lifecycle, which belongs to BP-12, or the detailed investigation of reported crime, which belongs to BP-15 and BP-16.
+
+### Communication centre
+The National Police Service operates a central communications capability with local responsibility for Kingswell. The detailed national and regional arrangement remains to be designed. Calls and events can be routed to the appropriate geographic command while allowing cross-area coordination and national support.
+
+The centre has defined operating roles such as call-taker, dispatcher, communications supervisor and system support staff. These are job assignments, not separate police ranks. Staff records, training and permissions connect to the personnel system.
+
+### Contact channels
+The public may contact the service through fictional in-game channels such as emergency telephone, non-emergency telephone, in-person reporting, digital report, alarm or referral from another institution. Additional channels can be introduced where they add useful gameplay.
+
+Each contact receives a unique contact reference. Where a contact concerns an existing event, it is linked to the existing incident rather than creating an unnecessary duplicate.
+
+### Call intake
+A call-taker records the information needed to understand and route the request:
+- Caller identity and reliable contact details, if known and relevant.
+- Whether the caller is directly involved, reporting for someone else or anonymous.
+- The reported event, concern or request.
+- Location and any location uncertainty.
+- Time of event, time reported and whether it is ongoing.
+- Immediate risks, injuries, hazards or urgent needs reported.
+- Persons, vehicles, property or other details supplied.
+- Whether police or another service has already been contacted.
+- Any immediate change or additional information during the contact.
+
+The system distinguishes what the caller says from what has been independently confirmed. Information can be corrected or supplemented without erasing the original report.
+
+### Initial assessment and priority
+The call-taker assesses the request using the fictional service's priority framework. Factors may include immediate danger, threat to life, violence in progress, vulnerability, ongoing risk, likelihood of evidence being lost, public impact, location and availability of resources.
+
+Priority is a dispatch decision, not a finding that a crime has occurred. A report may be urgent without ultimately proving an offence, and a report that initially appears minor may become urgent when new information arrives.
+
+The priority framework, labels and response targets are to be defined in the relevant service standards. The system records the reason for a priority decision and any later change.
+
+### Location handling
+The communications system resolves a reported location against Kingswell's geography: district, neighbourhood, road, property, building, unit or other identifiable place. It preserves uncertainty when a caller cannot provide an exact location.
+
+It should support landmarks, business names, intersections, public transport locations, access points and location updates. A location correction is dated and retained. The system must not silently substitute a nearby address as if it were confirmed.
+
+### Incident creation and duplicate control
+A new report may create a new incident, add information to an existing incident, or be recorded as a contact that does not require a formal incident. The call-taker or dispatcher can search for matching events by time, place, type and known reference.
+
+Possible duplicates are flagged for review. Separate events at the same location remain separate when the facts indicate that they are not the same occurrence. Merging records preserves the source contacts and audit history.
+
+### Dispatch
+The dispatcher selects and assigns resources according to incident priority, location, unit responsibility, staff availability, skills, equipment, travel time and current commitments. A suitable nearby unit may be selected even if it is not the normal geographic owner, with command responsibility made clear.
+
+A dispatch record identifies:
+- The incident or task.
+- Assigned unit, vehicle and officers.
+- Time assigned and acknowledgement.
+- Destination and any special information.
+- En-route, arrival, on-scene, available or other status changes.
+- Reassignment, cancellation, delay or escalation and the reason.
+- The person who made material dispatch decisions.
+
+The system prevents a unit from being assigned to incompatible simultaneous tasks unless the game explicitly records a split team or changed assignment.
+
+### Live resource status
+Dispatch can view the operational status and location of relevant units and resources. Statuses may include available, assigned, responding, on scene, transporting, committed, delayed, out of service and returned to availability. The exact set is defined consistently with patrol and resource records.
+
+A status update should reflect an actual communication or system event. The dispatcher must be able to identify stale or missing status information rather than treating it as current certainty.
+
+### Radio and operational communications
+The system records relevant communications between dispatch, patrol units, supervisors and other authorised participants. It can include channel, sender, recipient or unit, timestamp, message type and message content or a reference to a recording.
+
+Routine radio traffic may be summarised. Material instructions, acknowledgements, priority changes, emergency transmissions, requests for assistance and significant status changes remain individually traceable.
+
+Radio communications can refer to an incident, unit, location, vehicle or person. A communication log does not replace a formal incident report or witness statement.
+
+### Updates and escalation
+Callers may provide new information while a unit is being assigned or responding. Officers may request additional resources, report a change in circumstances or advise that another service is needed. Dispatch updates the incident and notifies relevant units.
+
+A change in threat, injury, location, offender presence, hazard or resource requirement can change priority and response. The system records who received the update and when. If a unit cannot respond, the dispatcher selects an alternative, escalates or records the delay.
+
+### Other services and cross-command support
+The communications centre may coordinate with fictional fire, medical, rescue, transport, public utility or other public services. It records requests, acknowledgements, arrival or handover where relevant. These agencies remain distinct institutions with their own responsibilities.
+
+Events spanning multiple city areas or regions can be coordinated through the appropriate command. The record identifies the lead command, supporting units and any transfer of responsibility.
+
+### Communications supervision
+A communications supervisor monitors call queues, staffing, workload, priority incidents, dispatch coverage, unresolved contacts and system outages. They can reassign work, escalate resource shortages and coordinate major demand periods. Significant supervisory decisions are recorded.
+
+### Player experience
+The player may receive dispatch messages, radio traffic, updates, tasking and requests for assistance according to their role and equipment. They can acknowledge assignments, report status, request assistance, provide updates and communicate relevant observations.
+
+The information shown to the player reflects what has actually been transmitted or made available to them. The player should not automatically know details held only by a caller, another unit or a restricted record.
+
+### Records and audit
+The system preserves contact records, call-taker notes, incident links, priority decisions, dispatch assignments, resource status changes, radio traffic, updates, escalations, referrals and handovers. Each record distinguishes event time from entry time where they differ.
+
+Corrections and additions are appended or versioned. The original report and decision history remain reconstructable.
+
+### Connections to other divisions
+- **BP-02 and BP-04:** geographic locations, addresses, properties and institutions.
+- **BP-06 and BP-07:** call-taker, dispatcher and officer identity, training and duty status.
+- **BP-08 and BP-09:** units, deployment, vehicles, radios and other resources.
+- **BP-10:** patrol activity, status reporting and response.
+- **BP-12:** incident creation, ownership, classification and progression.
+- **BP-13 and BP-14:** offence categories and generated events.
+- **BP-15 to BP-24:** referrals and investigative or specialist follow-up.
+- **BP-30 to BP-34:** service standards, training, staffing and costs.
+- **BP-37 to BP-43:** time, records, persistence, interface, permissions and testing.
+
+### Exceptions and edge cases
+The system must handle anonymous callers, callers unable to speak, abandoned calls, accidental calls, repeat callers, malicious or false reports, simultaneous reports of one event, conflicting locations, incomplete information, language or communication difficulties within the fictional setting, call surges, communications outages, radio dead zones, failed acknowledgements, units becoming unavailable after assignment, incidents crossing boundaries and requests better handled by another service.
+
+A false or malicious report is not assumed merely because a report is unsubstantiated. The source and evidence must be assessed separately.
+
+### Acceptance conditions
+- Every contact receives a traceable identity and timestamp.
+- Caller statements remain distinguishable from verified facts.
+- Locations can be resolved to the city geography while retaining uncertainty.
+- Contacts can be linked to existing incidents and potential duplicates reviewed.
+- Priority decisions have recorded reasons and can change when facts change.
+- Dispatch assignments respect availability, suitability, location and conflicting commitments.
+- Unit status and communication history are traceable.
+- Material updates reach the relevant assigned resources.
+- Cross-area and multi-service coordination has a clear lead and recorded handover.
+- The system handles incomplete, duplicate, abandoned and malicious contacts without corrupting incident records.
+- The player only receives information actually communicated or accessible to their role.
+
+**Draft status:** BP-11 is a working design. Exact call priorities, service targets, communication-centre staffing and detailed radio conventions will be refined with BP-12 and later operational divisions. It is not a claim that dispatch software has been implemented.
