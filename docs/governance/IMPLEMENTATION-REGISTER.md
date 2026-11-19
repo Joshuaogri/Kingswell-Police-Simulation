@@ -17,7 +17,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Runtime foundation implemented | Private `game` schema; 42 tables, 80 foreign keys and 147 indexes; three migrations applied; one paused, unconfigured clock row; no fictional world/personnel data seeded |
+| Database schema | Runtime foundation implemented | Private `game` schema; 42 tables, 80 foreign keys and 147 indexes; four migrations applied; one paused, unconfigured clock row; no fictional world/personnel data seeded |
 | Application/gameplay code | In progress | Database-backed command intake and controlled clock functions implemented; natural-language parser and domain handlers remain outstanding |
 | Runtime regression tests | Implemented; transaction smoke-tested | `database/tests/runtime_foundation.sql` covers command intake, idempotency, clock guards, time advancement and event history; test data rolls back |
 
@@ -160,9 +160,9 @@ Implemented the first database-backed runtime slice under BP-35, BP-37, BP-38, B
 - Created the singleton clock row in a paused state, with no fictional date/time selected. The game clock remains uninitialized until a fictional start point is explicitly chosen.
 - Explicit advancement is limited to 1–1,440 minutes per command. No real-world elapsed time advances the fictional clock.
 - Clock changes and matching `game_events` records commit in the same transaction.
-- Added a repeatable SQL regression script; its transaction smoke test passed and rolled back all test records.
+- Added a repeatable SQL regression script; its transaction smoke test passed and rolled back all test records. Fractional and out-of-range time requests are rejected and retained as rejected commands rather than aborting the transaction.
 - No public Edge Function was deployed because player authentication/session mapping is not yet implemented. The private database function is not exposed through the public Data API.
 
-Migration: `database/migrations/20261120010000_runtime_foundation_commands_clock.sql`.
+Migrations: `database/migrations/20261120010000_runtime_foundation_commands_clock.sql` and `database/migrations/20261120020000_harden_runtime_command_validation.sql`.
 
 The runtime is a foundation, not a playable police simulation. Natural-language parsing, fictional officer identity/authority, domain actions, event handlers, autonomous schedules and NPC processing remain to be implemented.
