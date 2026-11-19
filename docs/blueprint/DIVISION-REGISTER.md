@@ -46,7 +46,7 @@ Each division is designed with its purpose, scope, responsibilities, components,
 | BP-38 | Records and Databases | Drafted; domain schemas and security design remain open |
 | BP-39 | Persistence and Recovery | Drafted; recovery targets and backup controls remain open |
 | BP-40 | Interface | Drafted; command and presentation specifications remain open |
-| BP-41 | Notifications and Reporting | Not started |
+| BP-41 | Notifications and Reporting | Drafted; alert and reporting catalogue remains open |
 | BP-42 | Security and Permissions | Not started |
 | BP-43 | Testing and Quality Assurance | Not started |
 | BP-44 | Configuration and Expansion | Not started |
