@@ -31,7 +31,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-04 | Buildings, Properties, Businesses and Organisations | Drafted |
 | BP-05 | Police Architecture | Initial proposal drafted |
 | BP-06 | Personnel | Drafted |
-| BP-07 | Career System | Not started |
+| BP-07 | Career System | Drafted; detailed rules remain open for refinement |
 | BP-08 | Units and Deployment | Not started |
 | BP-09 | Police Resources | Not started |
 | BP-10 | Patrol Operations | Not started |
