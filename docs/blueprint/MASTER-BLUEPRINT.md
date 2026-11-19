@@ -3780,3 +3780,239 @@ The design must handle mistaken identity, aliases, incomplete identity data, sim
 
 **Draft status:** BP-25 is a working design. Exact offences, arrest thresholds, necessity tests, warrant categories, issuing authorities, territorial rules, rights wording, time limits, exceptional powers, force standards, custody handover and judicial review procedures remain to be specified in the fictional legal framework. This division does not claim that arrest or warrant software has been implemented.
 
+## BP-26 — Custody Management
+
+### Purpose and scope
+Define the safe, lawful, humane and accountable management of every person detained by the National Police Service. Custody begins when a person is accepted into police detention and continues through assessment, detention reviews, welfare, authorised procedures, release or transfer to another lawful authority.
+
+Custody is a deprivation of liberty and must be independently accountable. It is not punishment and does not establish guilt. The custody system must distinguish the arrest decision, physical handover, acceptance into detention, each period of detention authority, review decisions, charge or other legal process, and final release or transfer.
+
+The exact fictional detention powers, maximum periods, review intervals, rights, authorising roles, permitted exceptions and court procedures remain to be defined by the country's legal framework. No time limit or power is to be invented by gameplay logic.
+
+### Custody facility architecture
+The service may operate central custody suites, station-based detention facilities and specialist facilities where justified. Each facility has a persistent record containing:
+- Facility identity, location, operating status and responsible command.
+- Approved detention capacity and authorised categories of detainee.
+- Custody rooms, interview rooms, consultation areas, healthcare access and welfare facilities.
+- Staff establishment, duty roster, supervisors and required competencies.
+- Security, fire safety, environmental and accessibility systems.
+- Medical, interpretation, legal-advice and safeguarding referral arrangements.
+- Approved equipment, inspection and maintenance records.
+- Policies, local procedures, emergency arrangements and inspection history.
+
+Each custody space or cell has an individual identity, operational status, suitability restrictions, occupancy history and inspection record. Capacity is not exceeded by default. An exceptional placement requires a lawful and documented decision, risk assessment and appropriate oversight; the system must not quietly allocate a person to an unsuitable space.
+
+Facility availability accounts for staffing, maintenance, safety defects, specialist restrictions, occupancy and temporary closure. A nominally empty cell is not necessarily available for every detainee.
+
+### Custody record and identity
+Every accepted detainee receives a unique custody record linked to the arrest event, person identity, incident, case and relevant legal authority. The custody record captures:
+- Custody reference and facility.
+- Detainee's identity and any uncertainty, aliases or disputed details.
+- Arresting and escorting personnel.
+- Arrest grounds, legal power and warrant or authority relied upon.
+- Arrest location, time, circumstances and recorded rights notifications.
+- Arrival time, handover details and custody acceptance time.
+- Custody officer and supervising officer.
+- Property, medication information and immediate welfare needs.
+- Risk assessment, vulnerability, safeguarding and healthcare referrals.
+- Detention authority, legal clock and review deadlines.
+- All significant events, decisions, contacts, reviews and status changes.
+- Release, transfer or other final disposition and receiving acknowledgement.
+
+The system preserves the distinction between arrest time, arrival time, acceptance time and any legally relevant detention commencement time. The applicable rule is defined by law and recorded explicitly; software must not silently choose whichever timestamp is most convenient.
+
+If identity is unknown or disputed, the custody record may use a temporary custody identity linked to the person's existing or subsequently confirmed identity. Merging records requires verification and an auditable correction process; the original custody and identity history remains visible.
+
+### Arrival, handover and acceptance
+On arrival, custody staff conduct a formal handover and decide whether the facility can safely and lawfully accept the detainee. The handover includes:
+- Arresting officer's identity and account of the arrest.
+- Legal basis, grounds and any warrant or authorisation.
+- Relevant known facts, risks, injuries and safeguarding concerns.
+- Property and items accompanying the detainee.
+- Rights already explained, requests made and assistance required.
+- Medication, health information voluntarily or lawfully provided, and urgent concerns.
+- Any force, restraint, complaint, incident or unusual circumstance.
+- Outstanding actions, deadlines and relevant evidence or recording references.
+
+The custody officer records acceptance, conditional acceptance where lawful, refusal and reason, or referral to a more suitable facility. Refusal does not erase the arrest or permit informal detention outside lawful authority. Responsibility during transport, handover and any delay is attributable and traceable.
+
+Urgent medical needs take priority. The system records the time, decision, referral, receiving service and any continuing custody arrangements permitted by law. Police custody staff do not substitute for qualified clinical assessment.
+
+### Custody authority and legal time control
+Each detention period is linked to a specific legal authority. The record identifies the statutory or judicial basis, authorising person or body, start event, maximum permitted period, review requirements, conditions, expiry and any lawful extension or renewal.
+
+A legal-clock service calculates deadlines from the correct legally defined event and applicable rule. It must:
+- Use the law version in force at the relevant time.
+- Preserve the source timestamps and any correction history.
+- Distinguish elapsed time, suspended time and legally excluded periods only where the law expressly permits them.
+- Generate advance warnings and overdue escalations.
+- Prevent a routine administrative action from extending detention.
+- Require the correct authority and recorded reasons for any extension.
+- Record system outage or clock discrepancy and provide a controlled recovery procedure.
+
+A deadline warning does not itself grant detention authority. A pending application does not automatically extend an expiring authority. If lawful detention authority expires, the system must require release or another independently valid legal basis; it must not keep a person detained merely because an investigation remains incomplete.
+
+The exact maximum periods, review intervals, extension criteria, judicial involvement and exceptional powers are open legal-framework decisions.
+
+### Custody assessment and continuing risk review
+A competent custody officer conducts an initial assessment and repeats it when circumstances change or policy requires. Assessment covers:
+- Physical health, injury, illness, intoxication or withdrawal concerns.
+- Mental health distress, self-harm risk or risk to others.
+- Age, disability, pregnancy or other relevant vulnerability.
+- Communication, language, literacy and interpretation needs.
+- Safeguarding, exploitation, trafficking or coercion concerns.
+- Medication and urgent treatment requirements.
+- Risk of violence, intimidation, victimisation or conflict with others.
+- Risk arising from the detainee's circumstances, not merely the alleged offence.
+- Appropriate observation, support, separation or specialist referral.
+
+The record identifies the assessor, time, information relied upon, limitations, risk controls, review date and escalation. Risk classifications support care and allocation; they are not a diagnosis or a substitute for professional judgment. A person may be both vulnerable and a potential risk to others, and both dimensions must be considered fairly.
+
+Risk assessments are dynamic. A change in behaviour, disclosure, medical condition, medication, incident, new information or change of environment triggers reassessment. The system must not retain an outdated risk rating as if it were current.
+
+### Healthcare and welfare
+Custody must support access to qualified healthcare, emergency treatment, medication review and appropriate specialist care. The record includes requests for medical assistance, symptoms or observations relevant to safety, referral decisions, attendance, clinical advice as appropriately shared, treatment arrangements and follow-up.
+
+Clinical records remain governed by appropriate health confidentiality and role-based access. Police users receive only information needed for lawful custody and safety decisions. The system does not expose unnecessary clinical detail to investigators or use medical information as an investigative shortcut.
+
+Welfare provisions include access to food, water, rest, sanitation, hygiene, suitable clothing, religious or other reasonable accommodation where required by law, and contact with appropriate support. The system records provision, refusal, inability to provide, reason, follow-up and any effect on wellbeing. A refusal must not automatically be interpreted as evidence of guilt, non-cooperation or absence of need.
+
+### Rights, legal advice and communication
+The custody process supports all rights and safeguards required by the fictional legal framework, including:
+- Clear explanation of detention, reasons and applicable rights.
+- Access to legal advice or representation.
+- Notification of a permitted person or other authorised contact.
+- Interpreter and communication support.
+- Special safeguards for children and protected or vulnerable persons.
+- Access to relevant information necessary to exercise rights.
+- Complaint and request procedures.
+- Recording of any lawful delay, restriction or exception and its authority.
+
+Each rights event records what was explained or requested, who handled it, date/time, language and format, interpreter or assistance details, outcome, any refusal and reason, and next review. A tick-box alone is insufficient evidence that the person understood or was afforded the safeguard.
+
+Investigative access to a detainee is kept separate from custody welfare decisions. Investigators cannot use custody controls to obstruct legal advice, punish a detainee or obtain access outside the law. Detailed interview conduct remains under BP-19.
+
+### Property and personal belongings
+Detainee property is recorded by item, description, condition, source, handling officer, secure storage location, receipt and return or other authorised disposition. Property held for safekeeping is distinguished from evidential material seized under a separate legal power.
+
+The detainee receives an inventory or acknowledgement where required. Disputes, missing property, damage, prohibited items, medication, assistive devices and essential personal effects are recorded and reviewed. Access to property during detention is controlled by lawful safety requirements and individual needs, not arbitrary convenience.
+
+Evidential items are registered and transferred under BP-23. The custody property register must not become an alternative evidence database or obscure the legal basis for seizure.
+
+### Searches and safety procedures
+Any search or safety-related procedure in custody must have a defined legal and policy basis, appropriate authorisation, necessity, proportionality, dignity and safeguards. The record identifies the type and scope of procedure, decision-maker, personnel, reason, time, outcome, any item found, any refusal or objection, and any complaint or injury.
+
+More intrusive procedures require the stricter legal thresholds, qualified personnel, supervision and safeguards specified by the fictional law. The simulation will not provide real-world tactical instructions for conducting searches or defeating security. It models lawful authority, accountability, dignity, safety and records.
+
+### Separation, accommodation and detainee interaction
+Allocation considers age, vulnerability, safeguarding, conflict, intimidation, health, legal requirements and facility suitability. The system records the rationale for separation or shared accommodation and reviews it when circumstances change.
+
+The system prevents incompatible allocations and records occupancy intervals. It supports accessible spaces and specialist arrangements where available. A shortage of space does not silently justify unsafe or unlawful accommodation. Any exceptional placement requires explicit authority, compensating safeguards and review.
+
+### Interviews and investigative activity in custody
+Interview requests are scheduled and recorded separately from custody decisions. The system checks legal authority, interview eligibility, rights status, legal-advice requirements, vulnerability safeguards, interpreter availability, interviewer competence and any applicable time restrictions.
+
+Custody staff record arrival and departure from interview areas, responsible personnel, breaks, return to accommodation and any welfare concern. The interview record, recording and exhibits remain governed by BP-19 and BP-23. Custody staff do not decide the substance of questioning or interfere with an interview to secure a preferred outcome.
+
+No interview may be used to bypass a legal safeguard or extend detention beyond its authority. A detainee's silence, request for advice, distress or refusal to answer must not be treated as automatic evidence of guilt.
+
+### Visits, contacts and external services
+The system records permitted legal representatives, nominated contacts, interpreters, healthcare professionals, appropriate support persons, inspectors and other authorised visitors. It captures identity verification, purpose, authority, arrival/departure, relevant restrictions, decision-maker and any refusal with reasons.
+
+Communication restrictions, monitoring or delay are permitted only where the fictional law expressly authorises them and required safeguards are met. Legal consultation confidentiality is protected according to law. Visits and contact arrangements must not be restricted merely to make an investigation easier.
+
+External service referrals record the receiving organisation, referral purpose, time, information lawfully shared, consent or other basis, response, outstanding action and responsible owner.
+
+### Incidents, complaints and safeguarding referrals
+Custody incidents include injury, illness, medical emergency, self-harm concern, violence, threat, intimidation, property dispute, facility defect, fire or evacuation, escape or attempted escape, death, allegation of mistreatment, rights failure and any other serious welfare or security event.
+
+Each incident has a separate identity, time, location, persons involved, factual account, immediate safety response, medical or external referral, notifications, evidence and recording references, responsible supervisor, preservation requirements and review outcome.
+
+Complaints are recorded regardless of whether they are initially substantiated. The system preserves the complainant's account, requested action, referral, investigation status and outcome. Serious allegations or deaths in custody trigger the independent notification and investigation routes required by the fictional law. Custody staff must not investigate or close complaints in which they have a material conflict.
+
+### Reviews and supervision
+Custody reviews are performed by the role and at the intervals required by law. Each review records:
+- Current legal authority and remaining lawful period.
+- Whether continued detention remains lawful and necessary.
+- Investigative progress and outstanding actions, without treating delay alone as a reason to detain.
+- Detainee's health, welfare, risk and safeguarding status.
+- Access to legal advice, communication and other rights.
+- Any new information, complaint or change in circumstances.
+- Decision, reasons, reviewer identity, time and next deadline.
+- Any direction to release, transfer, seek further authority or take another lawful action.
+
+Reviewers must be sufficiently independent from the immediate investigative decision where required. A supervisor cannot authorise a power reserved to a court or other competent body. Missed, late, incomplete or disputed reviews are escalated and remain visible in the record.
+
+### Release, transfer and final disposition
+A custody record ends only through a recorded lawful disposition. Supported outcomes include release without charge, release on lawful conditions, bail or other attendance arrangement, charge and continued lawful detention, remand or transfer under court authority, transfer to another competent agency, transfer for healthcare, or other disposition created by law.
+
+The final record identifies:
+- Legal basis and decision-maker.
+- Date/time of decision and actual departure or transfer.
+- Person's identity and destination or receiving authority.
+- Conditions, dates, reporting obligations or restrictions where applicable.
+- Property returned and outstanding property arrangements.
+- Rights, documents and information provided.
+- Healthcare, safeguarding and welfare handover where necessary.
+- Receiving person's or agency's acknowledgement.
+- Outstanding investigation, court or notification actions.
+
+Release is not a finding that the allegation was false, and continued detention is not a finding of guilt. A person may be released while an investigation continues. If a person is transferred, responsibility changes only at the recorded and acknowledged handover point defined by law.
+
+### Death or serious medical emergency in custody
+The system treats death or a life-threatening medical emergency as a critical event requiring immediate emergency response, preservation of records and independent oversight. It records notification times, responders, clinical decisions as appropriately shared, scene preservation, access logs, relevant recordings, custody records, medication and welfare history, witnesses, family or representative notification where lawful, and the competent independent investigative authority.
+
+Records must be protected from alteration, deletion or routine retention expiry. Staff involved in the incident must not control the independent investigation or unilaterally determine its findings. The exact statutory notification and investigation process remains part of the fictional legal framework.
+
+### Records, access and audit
+Custody records are authoritative, append-only in their material history and linked to BP-38 and BP-39. Corrections are made through attributed amendments that preserve original values, reasons, time and authorisation. The system records access to sensitive health, rights, risk, complaint and detention information.
+
+Role-based permissions distinguish custody officers, custody supervisors, healthcare professionals, investigators, legal representatives, inspectors, administrators and independent oversight bodies. Access is limited to lawful need. Investigators do not automatically receive the full custody or clinical record.
+
+The system supports audit of detention duration, review timeliness, rights provision, healthcare access, complaints, incidents, release, transfers, facility capacity and disparities requiring scrutiny. Performance measures must not incentivise longer detention, unnecessary searches, denied rights or rushed release decisions.
+
+### Player experience and authority
+The player may deliver a detainee to custody, complete an arrest handover, review custody status within their authority, submit a lawful interview request, provide relevant information, respond to authorised enquiries, receive permitted notifications and participate in release or transfer arrangements.
+
+Only appropriately qualified and appointed custody personnel perform custody acceptance, detention reviews and custody decisions. Investigators cannot override a custody officer's independent welfare or legality responsibilities. The player cannot alter the legal clock, extend detention without authority, suppress a complaint, falsify a welfare check, access protected clinical records without need, or keep a person detained because the case is unfinished.
+
+The interface displays the current legal authority, relevant deadlines, responsible custody officer, outstanding rights and welfare actions, review status and any critical warning. It must distinguish an alert from a legal authorisation.
+
+### Connections to other divisions
+- **BP-05 to BP-09:** police structure, personnel, career competence, deployment, resources and facility assets.
+- **BP-11 and BP-12:** communications, incident response and custody-related incident records.
+- **BP-13 to BP-18:** offences, crime events, cases, investigations, victims, witnesses and person status.
+- **BP-19:** interview scheduling, safeguards, recordings and interview records.
+- **BP-20 and BP-21:** lawful operational information and intelligence, with access controls.
+- **BP-22 to BP-24:** scene, evidence, forensic material and specialist reports.
+- **BP-25:** arrest grounds, warrants, execution and formal handover.
+- **BP-27 and BP-28:** legal process, court authority, bail/remand and outcomes.
+- **BP-29:** corrections and post-conviction custody interfaces.
+- **BP-30 to BP-34:** governance, professional standards, training, staffing and facilities procurement.
+- **BP-35 to BP-37:** simulation events, social context, clocks and schedules.
+- **BP-38 to BP-44:** records, persistence, interface, notifications, security, testing and configuration.
+
+### Exceptions and edge cases
+The design must handle unknown or disputed identity, duplicate custody records, arrest time versus legal detention start, late arrival, refusal of acceptance, facility closure, unsuitable cell, overcrowding, staffing shortage, vulnerability discovered late, changing medical condition, intoxication or withdrawal, medication uncertainty, language barrier, disability accommodation, child detainee, safeguarding concern, conflicting risk assessments, separation need, property discrepancy, evidential item mixed with personal property, disputed search authority, missed rights notification, delayed legal advice, contact restriction, interview deadline, detention clock error, pending extension, expired authority, late review, court direction, release delay, failed transfer, receiving-agency refusal, serious injury, death, complaint against custody staff, system outage, corrupted record and emergency evacuation.
+
+### Acceptance conditions
+- Every accepted detainee has a unique custody record linked to the arrest and legal authority.
+- Arrest, arrival, acceptance and legal detention commencement times remain distinct and traceable.
+- Facility, room and cell suitability, capacity and occupancy are checked.
+- Handover, acceptance, refusal and responsibility changes are attributable.
+- Every detention period has a valid legal basis, correct clock and review deadlines.
+- Expiry or lack of authority triggers lawful release or another valid process, not automatic extension.
+- Initial and continuing risk assessments cover health, vulnerability, safeguarding and safety.
+- Healthcare, welfare, rights, legal advice, interpretation and contact requests are recorded and reviewed.
+- Detainee property is distinguished from evidential material and fully accounted for.
+- Searches, interviews, visits and restrictions have separate legal bases and records.
+- Complaints, incidents, injury, force, serious harm and death receive appropriate escalation and independent scrutiny.
+- Reviews are reasoned, timely, attributable and sufficiently independent where required.
+- Release and transfer are lawful, documented and acknowledged.
+- Sensitive custody and clinical information is protected through role-based access and audit.
+- Historical records cannot be silently overwritten, and retention holds protect serious incident material.
+- Custody decisions remain separate from investigative pressure and do not imply guilt.
+- The player cannot bypass custody authority, legal clocks, rights or welfare safeguards.
+
+**Draft status:** BP-26 is a working design. Exact detention powers and time limits, custody facility standards, legal rights, review roles, healthcare arrangements, search powers, visit restrictions, release conditions, inspection rules and independent oversight routes remain to be specified in the fictional legal framework. This division does not claim that custody facilities or custody software have been implemented.
+

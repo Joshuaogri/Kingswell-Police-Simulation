@@ -31,7 +31,7 @@ Each division is designed with its purpose, scope, responsibilities, components,
 | BP-23 | Evidence Management | Drafted; evidential rules, retention and professional standards to refine |
 | BP-24 | Forensics | Drafted; legal framework, service scope and method catalogue remain open |
 | BP-25 | Arrests and Warrants | Drafted; legal thresholds, warrant types and procedures remain open |
-| BP-26 | Custody Management | Not started |
+| BP-26 | Custody Management | Drafted; detention law, facility standards and safeguards remain open |
 | BP-27 | Legal Processes | Not started |
 | BP-28 | Courts and Outcomes | Not started |
 | BP-29 | Corrections | Not started |
