@@ -41,7 +41,7 @@ Each division is designed with its purpose, scope, responsibilities, components,
 | BP-33 | Human Resources | Drafted; employment law, terms, entitlements and workforce rules remain open |
 | BP-34 | Finance and Procurement | Drafted; legal and financial framework remains open |
 | BP-35 | Simulation Engine | Drafted; runtime architecture and processing rules remain open |
-| BP-36 | Relationships and Social Context | Not started |
+| BP-36 | Relationships and Social Context | Drafted; legal and social-context rules remain open |
 | BP-37 | Time and Scheduling | Not started |
 | BP-38 | Records and Databases | Not started |
 | BP-39 | Persistence and Recovery | Not started |
