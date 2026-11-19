@@ -32,9 +32,9 @@ Do not put passwords, secret keys, service-role keys or other credentials in Git
 
 ## 4. Data design approach
 
-The database should be designed from the approved game requirements, not invented ahead of them. Records will need stable unique identifiers, clear relationships, timestamps where history matters, and rules that prevent duplicate or contradictory information.
+The live database uses a dedicated private PostgreSQL schema named `game`. Records use stable UUID identities, readable unique references where needed, explicit foreign-key relationships, timestamps for historical changes, check constraints and JSONB for flexible supporting detail.
 
-Sensitive or administrative data must not be exposed publicly. Database access controls will be designed before any game tables are made available through public-facing interfaces.
+The initial schema covers geography, properties, organisations, people, police structure and personnel, duty deployment, simulation time, incidents, dispatch, cases, evidence and game-event history. All tables have row-level security enabled. The schema is not exposed through the public Data API; server-side access uses the Supabase service role. No service-role key may be placed in GitHub or client-side code.
 
 ## 5. Build approach
 
@@ -52,7 +52,7 @@ Sensitive or administrative data must not be exposed publicly. Database access c
 - `docs/blueprint/` — master game design.
 - `docs/governance/` — implementation status and project controls.
 - `docs/architecture/` — software and data architecture.
-- `database/migrations/` — future database change scripts.
+- `database/migrations/` — versioned database change scripts.
 - `src/` — future application and simulation code.
 - `tests/` — future automated and manual verification.
 - `config/` — future non-secret configuration examples.
@@ -63,6 +63,6 @@ Folders for future work do not mean that code or database structures already exi
 
 The project uses **main only**. All work and commits go directly to `main`. Do not create, switch to, or propose feature branches, development branches or other branches.
 
-## 8. Current limitations
+## 8. Current implementation state
 
-The Supabase project is connected and healthy, but it currently has no Kingswell game schema, tables, migrations, authentication setup or game data. The GitHub repository has its initial project documentation. No playable application has been built yet.
+The Supabase project is connected and healthy. The private `game` schema is implemented with 40 tables, 78 foreign keys and supporting indexes. Two migrations are recorded in Supabase and committed under `database/migrations/` on GitHub `main`. The schema currently contains no seeded fictional world or gameplay records. The simulation runtime, command/API layer, dedicated interface, backup/recovery workflow and automated gameplay tests remain to be built.
