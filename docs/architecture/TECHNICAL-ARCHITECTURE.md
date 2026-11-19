@@ -1,8 +1,9 @@
 # Kingswell Technical Architecture
 
-**Status:** Initial working outline  
+**Status:** Initial technical architecture outline; implementation plan to be expanded from the approved blueprint  
 **Version:** 0.1  
-**Implementation:** Not started
+**Foundation:** Implemented and verified (40-table private schema and two migrations)  
+**Simulation runtime:** Not started
 
 ## 1. Purpose
 
@@ -65,4 +66,4 @@ The project uses **main only**. All work and commits go directly to `main`. Do n
 
 ## 8. Current implementation state
 
-The Supabase project is connected and healthy. The private `game` schema is implemented with 40 tables, 78 foreign keys and supporting indexes. Two migrations are recorded in Supabase and committed under `database/migrations/` on GitHub `main`. The schema currently contains no seeded fictional world or gameplay records. The simulation runtime, command/API layer, dedicated interface, backup/recovery workflow and automated gameplay tests remain to be built.
+The Supabase project is connected and healthy. The private `game` schema is implemented with 40 tables, 78 foreign keys and 141 indexes. Both migrations are recorded in Supabase and committed under `database/migrations/` on GitHub `main`. All tables have RLS enabled and currently contain zero rows; the schema is not exposed through the public schema. No game routines or Edge Functions are deployed. The prior relationship smoke test passed and rolled back cleanly. The simulation runtime, command processor, seed data, runtime access layer, backup/recovery workflow and automated gameplay tests remain to be built.
