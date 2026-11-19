@@ -4947,7 +4947,7 @@ Define the governance architecture through which the national police service is 
 BP-30 governs the police institution as a whole. It does not replace:
 - BP-05 for police institutional structure, jurisdiction and command architecture.
 - BP-06 to BP-09 for personnel, careers, units, deployment and resources.
-- BP-30's linked specialist divisions BP-31 to BP-34 for professional standards, training, human resources and finance.
+- The linked specialist divisions BP-31 to BP-34 for professional standards, training, human resources and finance.
 - BP-38 to BP-44 for authoritative records, persistence, interface, notifications, security, testing and configuration.
 - BP-27 and BP-28 for independent legal and judicial authority.
 
