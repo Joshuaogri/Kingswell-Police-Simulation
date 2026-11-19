@@ -774,3 +774,144 @@ A false or malicious report is not assumed merely because a report is unsubstant
 - The player only receives information actually communicated or accessible to their role.
 
 **Draft status:** BP-11 is a working design. Exact call priorities, service targets, communication-centre staffing and detailed radio conventions will be refined with BP-12 and later operational divisions. It is not a claim that dispatch software has been implemented.
+
+## BP-12 — Incident Management
+
+### Purpose
+Give every event requiring formal police attention one clear, traceable record from first report through assessment, response, ownership, follow-up and closure. Incident management prevents events from being lost between call-taking, patrol, supervisors and specialist teams.
+
+### Scope
+This division governs the police incident record and its lifecycle. It connects incoming contacts and patrol discoveries to police ownership, response, referrals, linked events, decisions and final disposition.
+
+An incident is not automatically a criminal offence, an investigation case, or proof that anyone has done something wrong. Crime classification is defined in BP-13; case creation and investigative ownership are defined in BP-15.
+
+### What is an incident
+An incident is a recorded event, report, concern or request that requires the service to assess, respond, document or make a decision. Examples include suspected crime, public disorder, missing-person reports, welfare concerns, traffic events, suspicious circumstances, property-related complaints, sudden deaths, requests for assistance and events referred by another institution.
+
+One incident may involve several people, locations, vehicles, reports, police units and other services. One person or property may be linked to many incidents over time.
+
+### Incident identity
+Each incident receives a permanent unique reference. The record includes:
+- Date and time reported, and event time or estimated time range.
+- Source contact or discovery method.
+- Reported location and any location uncertainty.
+- Initial description and current summary.
+- Incident type and current classification.
+- Priority and reasons for any changes.
+- People, organisations, vehicles and properties linked to the event.
+- Assigned command, unit, supervisor and responsible officer where applicable.
+- Response and attendance history.
+- Actions, decisions, referrals and linked records.
+- Current status, outcome and closure information.
+
+The incident reference remains stable even when its classification, owner, location estimate or status changes.
+
+### Incident lifecycle
+A typical incident moves through these stages:
+1. **Received:** a report, request or police discovery is recorded.
+2. **Assessed:** the information is reviewed, classified provisionally and prioritised.
+3. **Assigned:** responsibility is given to a command, unit or person.
+4. **Response underway:** police or other services are responding or taking action.
+5. **Active:** the incident is being dealt with and relevant information is being gathered.
+6. **Follow-up:** further enquiries, referrals or actions remain outstanding.
+7. **Resolved or concluded:** immediate police activity has ended and the outcome is recorded.
+8. **Closed:** required records and handovers are complete, with no current action outstanding.
+
+Not every incident uses every stage. A simple request may be resolved at first contact. A complex event may remain active, be linked to several cases or require a long follow-up. Reopening is possible when significant new information or activity arises.
+
+### Classification and assessment
+Classification describes the kind of event currently reported or established. It may change as information develops. The system distinguishes:
+- Initial reported description.
+- Provisional incident classification.
+- Confirmed event facts.
+- Criminal offence classification, where established under BP-13.
+- Final administrative disposition.
+
+A change of classification does not erase the earlier assessment. The record identifies who changed it, when and why.
+
+### Priority and risk
+Incident priority reflects the urgency and potential harm requiring police attention. It considers immediate threat, injury, vulnerability, ongoing activity, risk to the public, evidence at risk, location, available resources and other relevant circumstances.
+
+Priority is separate from offence seriousness, investigative importance and eventual outcome. A non-crime welfare incident may be urgent; a serious historic allegation may require careful investigation but not an emergency response.
+
+Priority changes are recorded with the reason, author and time. Supervisors can review incidents where urgency, risk or resource demand is disputed or changes significantly.
+
+### Ownership and responsibility
+Every active incident has a clearly identified responsible command or unit and, where appropriate, a named officer or supervisor. Ownership can transfer between units, stations, city commands or regional commands. The record shows:
+- Previous owner and new owner.
+- Effective date and time.
+- Reason for transfer.
+- Outstanding actions and risks.
+- Documents, contacts and resources handed over.
+- Person accepting responsibility.
+
+An incident must never become ownerless during transfer. Shared support does not remove the need for one clearly accountable lead.
+
+### Response and attendance
+The incident record links dispatched resources, attending officers, arrival and departure times, actions taken, requests for assistance and any other service attendance. It distinguishes a unit being assigned from actually arriving or completing work.
+
+Officers can submit updates and reports against the incident. A supervisor can review response delays, resource changes, unresolved risks and incomplete actions.
+
+### People and entity links
+The incident can link callers, victims, witnesses, persons of concern, suspects, officers, business representatives, organisations, vehicles, properties and other relevant entities. Each relationship has a role and source. A person is not labelled a suspect merely because they are present, named by a caller or linked to the location.
+
+The system uses stable identities to prevent duplicate person, vehicle, property and organisation records. Uncertain identity matches remain provisional until resolved.
+
+### Actions and decision log
+Material actions and decisions are recorded with date/time, author, role, description, reason and outcome. Examples include classification changes, priority decisions, attendance, safeguarding actions, referrals, scene preservation, supervisory review, case creation, ownership transfer and closure.
+
+The log is chronological and append-only in effect: corrections are recorded as corrections, not as silent rewriting of history.
+
+### Linked incidents and related cases
+Incidents can be linked when they appear connected by people, location, method, time, property, vehicle or other circumstances. A link records the relationship and why it was created. A link does not automatically prove that events share an offender or cause.
+
+One incident may generate one or more investigative cases. A case may draw on multiple incidents. Case creation does not delete or replace the originating incident. Both records retain their own purpose and history.
+
+### Referrals and other services
+An incident may be referred to another police unit or external institution when it falls outside the current team's responsibility or requires specialist support. The record identifies the receiving body, information sent, date, acknowledgement and whether police retain any continuing responsibility.
+
+Referral does not automatically mean closure. The incident remains open while police actions or follow-up obligations remain outstanding.
+
+### Safeguarding and continuing risk
+Where an incident identifies a person or group needing protection or assistance, the record can capture the concern, immediate steps, responsible team, referrals and follow-up date. Safeguarding information is handled with appropriate access limits and is not treated as proof of criminal conduct.
+
+### Closure and reopening
+Before closure, the responsible officer or supervisor records the outcome, actions completed, unresolved matters, referrals, linked cases, outstanding risks and reason no further immediate incident action is required. Required reports and handovers must be complete or explicitly assigned.
+
+An incident can be reopened when new information, repeat activity, a failed referral or another relevant development requires further police action. The reopening reason and new owner are recorded; the previous closure remains in history.
+
+### Player experience
+The player can receive incident assignments, view the information available to their role, record attendance and actions, identify linked people or places, submit reports, request assistance and hand over work. The player sees the incident's current status and outstanding tasks without automatically seeing restricted information or investigative conclusions they have not been given.
+
+### Reporting and performance
+The service can report on incident volume, type, location, time, priority, response, ownership, transfers, outcomes, repeat locations, unresolved work and workload by command or unit. Performance measures must be interpreted fairly: raw closure counts or response times alone do not establish quality of service.
+
+### Connections to other divisions
+- **BP-02 and BP-04:** location, property, business and institutional records.
+- **BP-06 to BP-09:** personnel, career, units, deployment and resources.
+- **BP-10:** patrol discoveries, attendance and field reporting.
+- **BP-11:** public contacts, call-taking, dispatch and communications.
+- **BP-13 and BP-14:** offence classification and event generation.
+- **BP-15 and BP-16:** case creation, investigative ownership and enquiries.
+- **BP-17 to BP-24:** victims, witnesses, suspects, interviews, intelligence, scenes and evidence.
+- **BP-25 to BP-29:** arrest, custody, legal process, courts and corrections.
+- **BP-30 to BP-34:** governance, standards, training, staffing and resources.
+- **BP-37 to BP-43:** time, records, persistence, interface, permissions and testing.
+
+### Exceptions and edge cases
+The system must handle one event reported many times, several unrelated events at one address, incidents spanning boundaries, conflicting accounts, uncertain event times, delayed reports, anonymous sources, events with no confirmed crime, events that change classification, repeated incidents involving the same people, mistaken identity, transfer between commands, multiple linked cases, external referrals, reopened incidents and closure while a separate investigation remains active.
+
+### Acceptance conditions
+- Every formal incident has one stable unique reference.
+- Source reports and police observations remain distinguishable from established facts.
+- Each active incident has clear ownership and a responsible lead.
+- Lifecycle, priority and classification changes retain their history and reasons.
+- Dispatch assignments and actual attendance are separately recorded.
+- People and other entities link without duplicate identities or unsupported labels.
+- Related incidents and cases can be linked without assuming they share a cause.
+- Transfers preserve outstanding actions and never leave work ownerless.
+- Referrals, closure and reopening are traceable.
+- The system can report incident workload and outcomes without misleading performance measures.
+- The player only sees information available to their role.
+
+**Draft status:** BP-12 is a working design. The final incident categories, priority framework, response standards and closure rules will be refined alongside crime classification and case management. It is not a claim that incident-management software has been implemented.
