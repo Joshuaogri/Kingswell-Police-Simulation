@@ -43,7 +43,7 @@ Each division is designed with its purpose, scope, responsibilities, components,
 | BP-35 | Simulation Engine | Drafted; runtime architecture and processing rules remain open |
 | BP-36 | Relationships and Social Context | Drafted; legal and social-context rules remain open |
 | BP-37 | Time and Scheduling | Drafted; calendar and legal timing rules remain open |
-| BP-38 | Records and Databases | Not started |
+| BP-38 | Records and Databases | Drafted; domain schemas and security design remain open |
 | BP-39 | Persistence and Recovery | Not started |
 | BP-40 | Interface | Not started |
 | BP-41 | Notifications and Reporting | Not started |
