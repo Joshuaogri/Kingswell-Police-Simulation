@@ -1674,3 +1674,212 @@ The system must handle an investigation with no known suspect, several competing
 - The player retains control of investigative choices and receives no automatic solution disclosure.
 
 **Draft status:** BP-16 is a working design. Detailed investigative procedures, formal legal powers, specialist workflows and evidential thresholds will be completed with the dedicated divisions and the fictional legal framework. It is not a claim that investigation software has been implemented.
+
+## BP-17 — Victims and Witnesses
+
+### Purpose
+Define how the police service identifies, records, communicates with, supports and safeguards victims and witnesses, and how their information is handled throughout an incident, investigation and subsequent legal process. The division ensures that people are treated as individuals, their accounts are accurately recorded, their safety and welfare are considered, and their participation is never assumed or coerced.
+
+### Scope and role distinctions
+A person may be a victim, complainant, reporting person, witness, informant, next of kin, representative or other affected person. These are distinct roles and may overlap. A person can hold different roles in different incidents or cases, and a role can change as reliable information develops.
+
+- **Victim:** a person who has suffered or may have suffered harm, loss or impact connected with an alleged event.
+- **Complainant:** a person who makes a complaint or allegation; they may or may not be the victim.
+- **Reporting person:** a person who brings information to police attention.
+- **Witness:** a person who may have observed, heard, experienced or otherwise possess relevant information.
+- **Informant:** a person who provides information, potentially under confidentiality arrangements governed by BP-21 and applicable fictional law.
+- **Next of kin or representative:** a person with a relevant personal, family, legal or support relationship; this status does not automatically grant access to confidential case information.
+
+These labels describe case roles, not credibility, guilt or legal status.
+
+### Core principles
+All victim and witness contact must be respectful, impartial, proportionate, accessible and properly recorded. Police personnel must:
+- Treat people with dignity and avoid discrimination, intimidation, retaliation or unnecessary distress.
+- Explain the officer's role, the purpose of contact and relevant process in understandable language.
+- Distinguish a person's own words from summaries, interpretations and officer observations.
+- Avoid leading, coaching, pressuring or promising a particular outcome.
+- Record uncertainty, memory limitations, corrections and inconsistencies accurately.
+- Consider the person's safety, welfare, accessibility, privacy and support needs.
+- Explain that reporting or providing information does not guarantee prosecution or a particular result.
+- Preserve a person's right to decline voluntary participation, subject to lawful duties or processes established by fictional law.
+- Protect confidential information and disclose it only through authorised processes.
+- Consider both information that supports and information that challenges an investigative theory.
+
+### Victim and witness records
+Each person receives a persistent person identity under BP-03 and a case-specific role record. The role record links the person to the incident and case without duplicating or overwriting their core identity.
+
+The case-specific record may include:
+- Person identifier and verified identity status.
+- Role or roles and the basis for assigning them.
+- Contact and safe-contact arrangements.
+- Relationship to the event, location, people or property.
+- Initial report or account references.
+- Known injury, loss, harm or other impact, where relevant.
+- Communication, language, accessibility and support requirements.
+- Safeguarding assessment and review history.
+- Contact attempts, appointments and outcomes.
+- Consent, permissions, restrictions and lawful disclosure decisions.
+- Statement and interview references.
+- Relevant changes in availability, contact details or willingness to participate.
+- Responsible officer, supervisor and handover history.
+
+Sensitive personal information is restricted according to BP-42. Records retain provenance, access history and correction history. A person's role or account is not silently rewritten when new information emerges.
+
+### Identification and verification
+Personnel take reasonable steps to establish identity and distinguish people with similar names or incomplete details. Identity may be confirmed, provisional, disputed or unknown. The system must not merge records solely because names, addresses or dates of birth appear similar.
+
+Where a person cannot or should not be identified immediately, an appropriately restricted provisional record can be created and reconciled later. Reconciliation preserves source records and requires an auditable reason.
+
+### First contact and initial response
+The first interaction should establish immediate safety and urgent needs before detailed evidential questioning where circumstances require. Personnel should:
+- Determine whether urgent medical, fire, rescue or other assistance is required.
+- Identify immediate threats, continuing harm or risk of retaliation.
+- Establish whether the person can communicate safely and effectively.
+- Arrange an appropriate interpreter or communication support where needed.
+- Obtain essential information for immediate response and preservation of material.
+- Explain what will happen next and how the person can contact the responsible police unit.
+- Avoid unnecessary repeated retelling of distressing events.
+
+The initial account is recorded with its context, time, author, method and any limitations. A later formal statement is a separate record linked to the initial account.
+
+### Victim impact and needs assessment
+The service records relevant physical, psychological, financial, property, social, occupational and other impacts when they are voluntarily disclosed or otherwise lawfully established. The assessment is proportionate and is not a clinical diagnosis.
+
+Needs may include medical assistance, immediate protection, safe accommodation, specialist support, translation, disability access, communication adjustments, practical assistance or referral to another institution. The record identifies whether a need was reported, observed, assessed or confirmed by a qualified professional.
+
+A person's needs and circumstances can change. Assessments are reviewed after significant developments, threats, changes in contact arrangements or changes in the case.
+
+### Safeguarding and risk management
+Safeguarding considers risks of further harm, intimidation, coercion, exploitation, retaliation, self-neglect, neglect by others and risks arising from contact with other case participants. Risk assessment considers the person's circumstances and the available information; it must not be based on stereotypes or unsupported assumptions.
+
+The record captures:
+- The risk or concern and its source.
+- The person potentially at risk and any relevant other person.
+- Severity, immediacy, likelihood and uncertainty.
+- Protective factors and existing support.
+- Actions taken, referrals and responsible personnel.
+- Review date or triggering event.
+- Reasons for accepting, escalating or reducing a risk assessment.
+
+Immediate threats are escalated through operational command and relevant emergency procedures. Longer-term safeguarding is coordinated with authorised specialist units and appropriate public services. Police must not imply that a referral guarantees that another agency will provide a particular service.
+
+### Vulnerability, capacity and additional support
+A person's support needs are assessed individually and can arise from age, disability, health, trauma, language, dependency, coercion, isolation, unfamiliarity with the process or other circumstances. A label must not be treated as a complete assessment.
+
+Where age or legal capacity affects the process, the applicable fictional law and specialist procedures govern. Appropriate safeguards may include a suitable adult, guardian, advocate, interpreter, specialist interviewer or other support person. Their role and any limits on participation must be recorded.
+
+Support persons must not answer for the witness, influence their account or receive confidential information without an appropriate basis. Conflicts of interest and relationships with other case participants are assessed.
+
+### Communication and updates
+A responsible officer or designated contact point should be recorded for each victim or witness where practicable. Contact plans identify preferred safe methods, permitted times, language or accessibility needs, privacy risks and any restrictions.
+
+Communications may cover:
+- Acknowledgement of a report and reference details.
+- The identity or contact route for the responsible unit.
+- Requests for further information or attendance.
+- Safety advice and changes to safeguarding arrangements.
+- Procedural milestones that may lawfully be shared.
+- Delays, transfer of responsibility or case closure.
+- Available support and complaint routes.
+
+Updates must be accurate and proportionate. Investigators must not disclose confidential investigative tactics, protected personal data, another person's private information or unapproved case material. If no update can be provided, the reason and next review point should be recorded where appropriate.
+
+### Statements and accounts
+A statement or account is a distinct source record. It should preserve the person's words as accurately as the recording method allows, identify the questions or prompts used where relevant, and distinguish direct recollection from inference, hearsay, later learning and uncertainty.
+
+The record includes:
+- Author, recorder, date, time, place and method.
+- Whether the account was spontaneous, prompted, written, audio-recorded, video-recorded or otherwise obtained.
+- Any interpreter, intermediary or support person and their role.
+- Relevant cautions, explanations or procedural information given.
+- The person's opportunity to review, correct or clarify the record.
+- Amendments, additions, omissions and reasons.
+- Signature, confirmation or reason confirmation was not possible.
+- Any recording failure, interruption or limitation.
+
+The original account is retained. Corrections are appended or versioned; they do not erase the original. A summary is not represented as a verbatim statement.
+
+### Witness reliability and evidential assessment
+Reliability is assessed by reference to the particular account and circumstances, not by a permanent credibility score attached to a person. Relevant considerations may include opportunity to perceive, distance, lighting, duration, stress, memory, time elapsed, intoxication or impairment where established, prior familiarity, consistency, contamination risk, possible motive, bias, suggestibility, communication barriers and corroboration.
+
+The system must:
+- Record the factual basis for any concern or assessment.
+- Distinguish observed impairment from speculation.
+- Preserve inconsistencies and changes of account.
+- Record whether a witness has discussed the event with others or encountered media or other information.
+- Avoid treating confidence, demeanour, emotion or lack of emotion as proof of accuracy.
+- Allow an account to be both partly supported and partly disputed.
+- Keep the investigator's assessment separate from the witness's own words.
+
+No automated score should determine whether an account is true or whether a person is credible.
+
+### Witness contact and identification procedures
+Contact attempts, appointments, attendance, non-attendance and outcomes are recorded. The record distinguishes inability to contact, refusal, postponement, withdrawal, unavailability, fear, illness and other reasons where known.
+
+Any identification procedure must follow a separate legally governed process, with safeguards against suggestion and contamination. The system records the procedure, participants, instructions, sequence, administrator, result and any irregularity. Informal recognition, a formal identification and an investigator's belief are not interchangeable.
+
+### Intimidation, threats and witness protection
+Threats, approaches, pressure, inducements, harassment or retaliation connected with a person's involvement are recorded as separate incidents or linked events where appropriate. Immediate danger is escalated without waiting for a routine case review.
+
+Protective measures may include safe-contact protocols, risk-led patrol attention, referral to specialist protection, secure accommodation or other measures authorised by fictional law and available resources. Restricted identity or location information must be accessible only to personnel with a legitimate role. The system records the authority, scope, review and expiry of protective measures.
+
+Protection must not be promised when it cannot be guaranteed. Any limitations and safe reporting channels should be explained appropriately.
+
+### Withdrawal, reluctance and non-cooperation
+A victim or witness may become reluctant, unavailable or unwilling to continue. The system records the person's stated reason where voluntarily provided, the circumstances of the contact, any apparent pressure or safety concern, support offered and steps taken to preserve existing material lawfully.
+
+Withdrawal does not automatically invalidate an earlier account, prove that the allegation was false, or require the case to close. Equally, the service must not coerce participation or misrepresent the person's wishes. Whether an investigation can continue depends on the available material and applicable fictional law.
+
+### Special categories and sensitive cases
+Additional specialist procedures may apply to children, people with communication needs, survivors of sexual or domestic violence, trafficking or exploitation, bereaved families, protected witnesses, people at risk from organised groups and people whose identity or location must be restricted.
+
+This division defines the shared record and coordination requirements. Detailed interviewing methods, specialist safeguarding thresholds, protective powers and referral protocols are defined in dedicated operational and legal specifications. Personnel must not improvise specialist procedures outside their competence.
+
+### Disclosure, privacy and information sharing
+Victim and witness information may be relevant to investigation, defence rights, court proceedings, safeguarding or lawful inter-agency work. Collection and sharing must have a defined purpose and legal basis under fictional law.
+
+The system records what was shared, with whom, when, by whom, for what purpose, under what authority and subject to what restrictions. It supports disclosure review without allowing a witness to control whether relevant material is disclosed where law requires otherwise. Confidentiality is not absolute and must not be promised as such.
+
+### Complaints, feedback and service quality
+People can raise concerns about treatment, communication, delay, privacy, safety or the handling of their information. Complaints are recorded and routed under BP-30 and BP-31, with an auditable response and separation from the evidential assessment of the underlying case.
+
+Service quality can be assessed through timeliness, contact reliability, accessibility, safeguarding review, complaint handling and compliance with procedure. Performance measures must not reward officers for pressuring people to make statements or remain involved.
+
+### Player experience
+The player can identify and register victim and witness roles, record initial accounts, arrange appropriate contact, assess and review safeguarding concerns, request support, document statements, record threats or reluctance, and maintain communication within their authority.
+
+The player must see only information permitted by their role and clearance. The system should present practical prompts for required safeguards and missing record fields, but must not invent a person's account, determine credibility automatically or reveal hidden offender identities.
+
+### Connections to other divisions
+- **BP-03:** persistent person identity, life status and relationships.
+- **BP-06 to BP-08:** personnel roles, competence, supervision and deployment.
+- **BP-11 and BP-12:** first contact, emergency response and incident records.
+- **BP-13 and BP-14:** offence categories and generated events.
+- **BP-15 and BP-16:** case ownership, investigative tasks, leads and enquiries.
+- **BP-18:** suspect and offender role records, including role overlap.
+- **BP-19:** formal interviews and interrogations.
+- **BP-20 and BP-21:** surveillance and intelligence safeguards.
+- **BP-22 to BP-24:** scenes, evidence continuity and forensic material.
+- **BP-25 to BP-29:** arrest, legal process, courts and outcomes.
+- **BP-30 and BP-31:** governance, complaints and professional standards.
+- **BP-37 to BP-43:** time, records, persistence, interface, notifications, security and testing.
+
+### Exceptions and edge cases
+The system must handle anonymous or unidentified victims, witnesses who cannot communicate conventionally, mistaken or duplicate identities, multiple victims in one event, a person who is both victim and witness, a witness who later becomes a suspect, conflicting accounts, recantation, memory changes, delayed disclosure, deceased or missing witnesses, minors, interpreter errors, unsafe contact methods, threats from associates, witness relocation, withdrawal, refusal to sign, inability to attend court, lost contact, confidentiality restrictions, and a case where a victim's account is not supported by other evidence.
+
+### Acceptance conditions
+- Person identity and case-specific roles are distinct and traceable.
+- Role changes do not erase earlier roles or records.
+- Initial reports, formal statements and later corrections remain distinct.
+- Accounts preserve source, context, method, uncertainty and amendment history.
+- Safeguarding risks have a documented basis, owner, action and review.
+- Support needs are individualised and referrals are traceable.
+- Safe-contact and privacy restrictions are respected.
+- Reliability assessment is account-specific, reasoned and non-automated.
+- Threats and intimidation trigger appropriate escalation and protection review.
+- Reluctance or withdrawal is recorded without coercion or automatic case closure.
+- Information sharing has a recorded purpose, recipient and authority.
+- Complaints are routed independently of evidential conclusions.
+- Player access follows role and clearance; no hidden solution or automatic credibility verdict is disclosed.
+
+**Draft status:** BP-17 is a working design. Specialist safeguarding, interview procedures, witness protection powers, disclosure rules and detailed fictional legal standards will be refined in the relevant divisions. It is not a claim that victim or witness management software has been implemented.

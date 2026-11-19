@@ -22,7 +22,7 @@ Each division is designed with its purpose, scope, responsibilities, components,
 | BP-14 | Crime Generation | Drafted; frequency and behaviour tuning to follow |
 | BP-15 | Case Management | Drafted; investigative methods and legal review to refine |
 | BP-16 | Investigation | Drafted; specialist procedures and legal powers to refine |
-| BP-17 | Victims and Witnesses | Not started |
+| BP-17 | Victims and Witnesses | Drafted; specialist safeguarding and legal procedures to refine |
 | BP-18 | Suspects and Offenders | Not started |
 | BP-19 | Interviews and Interrogations | Not started |
 | BP-20 | Surveillance | Not started |
