@@ -29,7 +29,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-02 | Country, City and Geographical Architecture | Drafted; several details open |
 | BP-03 | Population and Individual Simulation Architecture | Drafted; processing model open |
 | BP-04 | Buildings, Properties, Businesses and Organisations | Drafted |
-| BP-05 | Police Architecture | Initial proposal drafted |
+| BP-05 | Police Architecture | Drafted — initial proposal; detailed structure remains open |
 | BP-06 | Police Personnel | Drafted |
 | BP-07 | Career System | Drafted; detailed rules remain open for refinement |
 | BP-08 | Units and Deployment | Drafted; detailed rules remain open for refinement |
