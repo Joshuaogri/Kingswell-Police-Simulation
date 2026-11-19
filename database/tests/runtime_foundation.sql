@@ -11,6 +11,9 @@ begin
     raise exception 'Status test failed: %', r;
   end if;
 
+  r := game.submit_command('Reject decimal duration','advance_time','{"minutes":1.5}'::jsonb,'runtime-test-decimal-0001');
+  if r->>'code' <> 'invalid_duration' then raise exception 'Decimal duration validation failed: %', r; end if;
+
   r := game.submit_command('Advance before clock setup','advance_time','{"minutes":60}'::jsonb,'runtime-test-no-clock-0001');
   if r->>'code' <> 'clock_not_initialized' then
     raise exception 'Uninitialized-clock guard failed: %', r;
