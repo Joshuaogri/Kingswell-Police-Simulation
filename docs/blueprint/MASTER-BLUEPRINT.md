@@ -305,3 +305,73 @@ Employees can view their own career information and relevant opportunities. Supe
 - Performance, allegations, findings and career consequences are separately recorded.
 - Availability and career status correctly affect deployment eligibility.
 - Former employees remain traceable in historical records.
+
+
+## BP-08 — Units and Deployment
+
+### Purpose
+Define how the police service is divided into working units and how people, vehicles, equipment and other resources are assigned to actual duties. This division connects the organisation chart to day-to-day operations.
+
+### What counts as a unit
+A unit is a recognised part of the service with a defined purpose, supervisor or commander, staffing, responsibilities and place in the organisational structure. Units may be permanent or temporary, geographic or specialist, operational or support. A unit is not the same thing as an individual employee's rank or appointment.
+
+### Unit types
+- **Command units:** national, regional and city commands that hold management responsibility for a defined area or function.
+- **Geographic units:** districts, areas, stations, neighbourhood teams and patrol sectors responsible for policing a defined location.
+- **Functional units:** teams responsible for a particular kind of work, such as investigations, intelligence, traffic, custody or training.
+- **Specialist units:** teams with additional selection, training, equipment or authorisation for specialist tasks.
+- **Temporary units:** task forces, major-incident teams, event teams or joint groups created for a defined purpose and period.
+- **Support units:** teams providing communications, fleet, logistics, records, facilities, technology or administrative support.
+
+### Unit identity and records
+Each unit has a stable identifier, official name, unit type, parent command, purpose, responsibilities, geographic or functional remit, supervisor, authorised staffing level, current staffing, operating status, base location and history. Changes to name, remit, parent command, location or status are dated and retained.
+
+### Organisational hierarchy
+Units sit within a clear parent-child structure. Each employee has one substantive home unit at a time, while temporary attachments and cross-unit duties are separately recorded. The system must be able to reconstruct which unit was responsible for a person, function or area on any historical date.
+
+### Geographic responsibility
+Geographic units have defined areas of responsibility using the city geography. Boundaries should be clear enough to determine which unit normally handles a call, incident, patrol assignment or local enquiry. Overlapping specialist responsibilities are recorded separately from geographic ownership.
+
+### Staffing establishment
+Each unit has an authorised staffing establishment by role, rank or skill where appropriate. Actual staffing is calculated from current personnel records and postings. Vacancies, temporary attachments, leave, training and restricted duty must be visible so a unit's apparent headcount is not mistaken for its available operational strength.
+
+### Deployment types
+- **Substantive posting:** the employee's normal organisational home.
+- **Rostered duty:** the scheduled shift or work period.
+- **Operational assignment:** the specific task, area, vehicle, team or incident to which the employee is assigned for a period.
+- **Temporary attachment:** a time-limited assignment to another unit while retaining the substantive posting unless formally changed.
+- **Acting appointment:** temporary performance of a defined higher or different position, with explicit limits.
+- **Mutual aid or cross-command support:** a recorded deployment outside the employee's usual command, with clear command and reporting arrangements.
+
+### Deployment decision factors
+Assignments consider operational demand, location, workload, staff availability, rank and supervisory needs, qualifications, authorisations, equipment, fatigue and safety. A person must not be assigned to duties for which they lack required competence or authority. The system should show why a deployment is unavailable rather than silently assigning an unsuitable employee.
+
+### Command during deployment
+Every deployment has a responsible supervisor or incident commander. When staff from different units work together, the record identifies who directs the task, who retains personnel responsibility, how information is shared and when command returns to the normal structure. Temporary command arrangements have start and end conditions.
+
+### Resource deployment
+Vehicles, radios, specialist equipment, facilities and other resources can be assigned to units and duties. Each resource has an identity, status, location, availability and any required operator qualification. The system prevents a resource from being committed to incompatible assignments at the same time.
+
+### Unit operating status
+A unit may be active, forming, temporarily reinforced, reduced, suspended, reorganised or disbanded. The reason, authorising command, effective dates, staff movements and transfer of open work are recorded. Disbanding a unit does not erase its historical cases, actions or accountability.
+
+### Work allocation and continuity
+Work can be allocated to a unit, then assigned to a team or individual. The record shows the current owner, responsible supervisor, status, due dates where relevant and handover history. Transfers between units preserve the work history and prevent cases or incidents from becoming ownerless.
+
+### Player interaction
+The player can view their home unit, supervisors, team, current duty, available assignments and relevant deployment instructions. The player may express preferences where the service allows, but operational requirements and eligibility determine the final assignment. The game communicates the reason for significant changes in deployment.
+
+### Permissions and records
+Unit commanders can manage work and staffing within their authority. Personnel administrators manage formal postings. Dispatchers and operational supervisors can view live availability and make permitted operational assignments. Resource managers control equipment status. All significant changes record who made them and when.
+
+### Acceptance conditions
+- Every unit has a stable identity, purpose, parent and responsible supervisor.
+- Unit structure and responsibility can be reconstructed for any historical date.
+- Geographic responsibilities can be used to route work to the correct command or unit.
+- Authorised establishment is distinct from actual and available staffing.
+- Substantive posting, rostered duty, operational assignment and temporary attachment are distinct.
+- Deployments respect availability, competence, authority and resource constraints.
+- Cross-unit deployments have clear command and reporting arrangements.
+- Vehicles and equipment cannot be double-booked for incompatible tasks.
+- Unit reorganisation preserves historical records and transfers open work.
+- Every significant assignment and handover is traceable.
