@@ -1,6 +1,6 @@
 # Kingswell Master Blueprint
 
-**Status:** Working draft — not yet approved  
+**Status:** Approved by the user on 2026-11-20  
 **Version:** 0.1  
 **Setting:** Fictional sovereign country; capital city of Kingswell  
 **Rule:** This document defines the intended game. It is separate from the implementation register and technical architecture.
@@ -127,7 +127,7 @@ A proposed feature or system addition must identify:
 - any new entities, state changes, commands or records it requires;
 - how it will be tested against existing rules.
 
-A proposal is not an implemented feature merely because it appears in the blueprint. A drafted design is not approved until its status is explicitly changed through the project's decision process. A software feature is not complete merely because its design has been written.
+A proposal is not an implemented feature merely because it appears in the blueprint. The master blueprint was approved by the user on 2026-11-20. Any subsequent material change must be recorded through the project's controlled decision process. A software feature is not complete merely because its design has been written.
 
 ### 13. Division ownership and cross-system consistency
 The following divisions own the detailed rules for their respective areas:
@@ -168,11 +168,11 @@ BP-01 is ready for approval when all of the following can be demonstrated at the
 15. New scope and changes are recorded rather than silently introduced.
 
 ### 15. Status and unresolved detail
-This revision strengthens the foundational rules and makes their implications testable. It does not by itself approve BP-01, settle every detailed subsystem rule or declare any software feature implemented.
+This revision strengthens the foundational rules and makes their implications testable. BP-01 is approved as part of the user-approved master blueprint. Approval establishes the accepted design baseline; it does not mean every open detail is settled or that any software feature has been implemented.
 
 Detailed command syntax, calendar mechanics, simulation processing, record schemas, persistence controls, permissions and test procedures remain owned by their respective divisions and must be completed there.
 
-**Draft status:** BP-01 remains a working draft pending review and explicit approval.
+**Approval status:** BP-01 is approved as part of the master blueprint. Remaining detailed subsystem rules are owned by their respective divisions and may be refined through controlled revisions.
 
 ## BP-02 — Country, City and Geographical Architecture
 
