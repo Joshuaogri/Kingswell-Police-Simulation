@@ -1,55 +1,59 @@
 # Kingswell Master Blueprint — Division Register
 
-**Status:** Working register. This is not a declaration that all divisions are approved or complete.
+**Status:** All 44 divisions BP-01 to BP-44 are approved as the Kingswell design baseline on 2026-11-20. This register records design approval, not software implementation or closure of every refinement note.
 
 Each division is designed with its purpose, scope, responsibilities, components, required information, inputs, outputs, dependencies, connections, operating rules, permissions, exceptions, tests and acceptance conditions.
 
 | ID | Division | Current status |
 |---|---|---|
-| BP-01 | Game Identity, Foundations and Governing Rules | Drafted |
-| BP-02 | Country, City and Geographical Architecture | Drafted; details open |
-| BP-03 | Population and Individual Simulation Architecture | Drafted; processing model open |
-| BP-04 | Buildings, Properties, Businesses and Organisations | Drafted |
-| BP-05 | Police Architecture | Drafted; detailed structure open |
-| BP-06 | Police Personnel | Drafted |
-| BP-07 | Career System | Drafted; detailed rules remain open for refinement |
-| BP-08 | Units and Deployment | Drafted; detailed rules remain open for refinement |
-| BP-09 | Police Resources | Drafted; details to refine with later operational divisions |
-| BP-10 | Patrol Operations | Drafted; links to dispatch and incident design to refine |
-| BP-11 | Emergency Communications | Drafted; incident lifecycle and service standards to refine |
-| BP-12 | Incident Management | Drafted; offence and case connections to refine |
-| BP-13 | Crime Architecture | Drafted; detailed fictional offence catalogue to populate |
-| BP-14 | Crime Generation | Drafted; frequency and behaviour tuning to follow |
-| BP-15 | Case Management | Drafted; investigative methods and legal review to refine |
-| BP-16 | Investigation | Drafted; specialist procedures and legal powers to refine |
-| BP-17 | Victims and Witnesses | Drafted; specialist safeguarding and legal procedures to refine |
-| BP-18 | Suspects and Offenders | Drafted; legal-status interfaces and specialist procedures to refine |
-| BP-19 | Interviews and Interrogations | Drafted; legal safeguards and specialist procedures to refine |
-| BP-20 | Surveillance | Drafted; statutory definitions, authorisations and oversight to refine |
-| BP-21 | Intelligence | Drafted; statutory powers, source handling and governance to refine |
-| BP-22 | Crime Scenes | Drafted; legal powers and specialist standards to refine |
-| BP-23 | Evidence Management | Drafted; evidential rules, retention and professional standards to refine |
-| BP-24 | Forensics | Drafted; legal framework, service scope and method catalogue remain open |
-| BP-25 | Arrests and Warrants | Drafted; legal thresholds, warrant types and procedures remain open |
-| BP-26 | Custody Management | Drafted; detention law, facility standards and safeguards remain open |
-| BP-27 | Legal Processes | Drafted; legal framework, charging model and procedural rules remain open |
-| BP-28 | Courts and Outcomes | Drafted; court hierarchy, jurisdiction and judicial rules remain open |
-| BP-29 | Corrections | Drafted; correctional law, sentence rules and institutional model remain open |
-| BP-30 | Department Governance | Drafted; statutory mandate, oversight and delegation framework remain open |
-| BP-31 | Professional Standards | Drafted; conduct code, complaints jurisdiction and disciplinary framework remain open |
-| BP-32 | Training and Development | Drafted; competency catalogue, statutory requirements and qualification rules remain open |
-| BP-33 | Human Resources | Drafted; employment law, terms, entitlements and workforce rules remain open |
-| BP-34 | Finance and Procurement | Drafted; legal and financial framework remains open |
-| BP-35 | Simulation Engine | Drafted; runtime architecture and processing rules remain open |
-| BP-36 | Relationships and Social Context | Drafted; legal and social-context rules remain open |
-| BP-37 | Time and Scheduling | Drafted; calendar and legal timing rules remain open |
-| BP-38 | Records and Databases | Drafted; domain schemas and security design remain open |
-| BP-39 | Persistence and Recovery | Drafted; recovery targets and backup controls remain open |
-| BP-40 | Interface | Drafted; command and presentation specifications remain open |
-| BP-41 | Notifications and Reporting | Drafted; alert and reporting catalogue remains open |
-| BP-42 | Security and Permissions | Drafted; identity and access policies remain open |
-| BP-43 | Testing and Quality Assurance | Drafted; test catalogue and release gates remain open |
-| BP-44 | Configuration and Expansion | Drafted; configuration and change-control details remain open |
+| BP-01 | Game Identity, Foundations and Governing Rules | Approved |
+| BP-02 | Country, City and Geographical Architecture | Approved; details open |
+| BP-03 | Population and Individual Simulation Architecture | Approved; processing model open |
+| BP-04 | Buildings, Properties, Businesses and Organisations | Approved |
+| BP-05 | Police Architecture | Approved; detailed structure open |
+| BP-06 | Police Personnel | Approved |
+| BP-07 | Career System | Approved; detailed rules remain open for refinement |
+| BP-08 | Units and Deployment | Approved; detailed rules remain open for refinement |
+| BP-09 | Police Resources | Approved; details to refine with later operational divisions |
+| BP-10 | Patrol Operations | Approved; links to dispatch and incident design to refine |
+| BP-11 | Emergency Communications | Approved; incident lifecycle and service standards to refine |
+| BP-12 | Incident Management | Approved; offence and case connections to refine |
+| BP-13 | Crime Architecture | Approved; detailed fictional offence catalogue to populate |
+| BP-14 | Crime Generation | Approved; frequency and behaviour tuning to follow |
+| BP-15 | Case Management | Approved; investigative methods and legal review to refine |
+| BP-16 | Investigation | Approved; specialist procedures and legal powers to refine |
+| BP-17 | Victims and Witnesses | Approved; specialist safeguarding and legal procedures to refine |
+| BP-18 | Suspects and Offenders | Approved; legal-status interfaces and specialist procedures to refine |
+| BP-19 | Interviews and Interrogations | Approved; legal safeguards and specialist procedures to refine |
+| BP-20 | Surveillance | Approved; statutory definitions, authorisations and oversight to refine |
+| BP-21 | Intelligence | Approved; statutory powers, source handling and governance to refine |
+| BP-22 | Crime Scenes | Approved; legal powers and specialist standards to refine |
+| BP-23 | Evidence Management | Approved; evidential rules, retention and professional standards to refine |
+| BP-24 | Forensics | Approved; legal framework, service scope and method catalogue remain open |
+| BP-25 | Arrests and Warrants | Approved; legal thresholds, warrant types and procedures remain open |
+| BP-26 | Custody Management | Approved; detention law, facility standards and safeguards remain open |
+| BP-27 | Legal Processes | Approved; legal framework, charging model and procedural rules remain open |
+| BP-28 | Courts and Outcomes | Approved; court hierarchy, jurisdiction and judicial rules remain open |
+| BP-29 | Corrections | Approved; correctional law, sentence rules and institutional model remain open |
+| BP-30 | Department Governance | Approved; statutory mandate, oversight and delegation framework remain open |
+| BP-31 | Professional Standards | Approved; conduct code, complaints jurisdiction and disciplinary framework remain open |
+| BP-32 | Training and Development | Approved; competency catalogue, statutory requirements and qualification rules remain open |
+| BP-33 | Human Resources | Approved; employment law, terms, entitlements and workforce rules remain open |
+| BP-34 | Finance and Procurement | Approved; legal and financial framework remains open |
+| BP-35 | Simulation Engine | Approved; runtime architecture and processing rules remain open |
+| BP-36 | Relationships and Social Context | Approved; legal and social-context rules remain open |
+| BP-37 | Time and Scheduling | Approved; calendar and legal timing rules remain open |
+| BP-38 | Records and Databases | Approved; domain schemas and security design remain open |
+| BP-39 | Persistence and Recovery | Approved; recovery targets and backup controls remain open |
+| BP-40 | Interface | Approved; command and presentation specifications remain open |
+| BP-41 | Notifications and Reporting | Approved; alert and reporting catalogue remains open |
+| BP-42 | Security and Permissions | Approved; identity and access policies remain open |
+| BP-43 | Testing and Quality Assurance | Approved; test catalogue and release gates remain open |
+| BP-44 | Configuration and Expansion | Approved; configuration and change-control details remain open |
+
+## Design approval and implementation status
+
+Approval applies to the complete master blueprint as the accepted design baseline. Existing refinement notes in the division rows remain visible and are not reasons to restart or reapprove divisions. Software implementation is tracked separately in the Implementation Register.
 
 ## Proposed delivery stages
 0. Master blueprint
