@@ -2540,3 +2540,284 @@ The system must handle refused or expired authority, emergency activity, mistake
 - The player cannot bypass authority and receives no automatic solution disclosure.
 
 **Draft status:** BP-20 is a working design. Exact surveillance definitions, authorising roles, thresholds, emergency powers, duration limits, oversight and disclosure protections must be established by the fictional legal framework. It is not a claim that surveillance capability has been implemented.
+
+## BP-21 — Intelligence
+
+### Purpose
+Define the police service's intelligence function: how information is received, collected, recorded, evaluated, analysed, developed, disseminated, reviewed and retained to support prevention, safeguarding, threat assessment, resource planning and investigations.
+
+The intelligence system must help decision-makers understand what is known, how it is known, how reliable the information may be, what remains uncertain and what action is legally justified. It must not convert unverified information into fact, treat association as proof of offending, or replace evidence and due process.
+
+### Scope
+This division governs:
+- Intelligence requirements and priorities.
+- Information intake from police and authorised external sources.
+- Source registration, handling and protection.
+- Information records, provenance and access controls.
+- Assessment of source reliability and information credibility.
+- Analysis, corroboration, confidence and uncertainty.
+- Intelligence products, briefings, alerts and referrals.
+- Threat, harm, vulnerability and pattern assessment.
+- Intelligence development and review.
+- Sharing, dissemination, retention and deletion.
+- Governance, audit, complaints and correction.
+
+Investigative case strategy is governed by BP-15 and BP-16. Interviews are governed by BP-19. Surveillance operations and authorisations are governed by BP-20. Evidence continuity and forensic examination are governed by BP-23 and BP-24. Legal powers and disclosure are governed by BP-25 to BP-27. This division defines the information-intelligence lifecycle and its interfaces with those systems.
+
+This is a fictional governance and simulation design. It does not provide instructions for infiltrating groups, covertly recruiting sources, evading oversight, targeting protected communities or conducting intrusive collection unlawfully.
+
+### Fundamental principles
+The intelligence function must:
+- Have a legitimate policing purpose and a defined requirement.
+- Collect only information that is necessary and proportionate.
+- Distinguish fact, allegation, observation, inference, opinion and unknown information.
+- Preserve the original source, context, date, method and chain of handling.
+- Assess source reliability separately from the credibility of each item supplied.
+- Record uncertainty, contradictions, alternative explanations and gaps.
+- Avoid discriminatory profiling and unsupported generalisations.
+- Treat association, presence, reputation and prior contact as context, not proof of guilt.
+- Protect sources, witnesses, victims and other vulnerable people.
+- Restrict access according to lawful purpose, role and need.
+- Share information only through authorised channels and with handling conditions.
+- Correct inaccurate records while preserving an audit history.
+- Keep intelligence distinct from admissible evidence and formal findings of guilt.
+- Ensure that intelligence never automatically determines arrest, charge, employment, immigration or other coercive outcomes.
+
+### Intelligence governance and command
+The police service maintains a defined intelligence function with accountable command, trained personnel, specialist analytical support and clear referral routes to operational units. The structure identifies:
+- National intelligence leadership and policy responsibility.
+- Regional and city intelligence functions.
+- Intelligence officers and analysts.
+- Source-management responsibility where permitted by fictional law.
+- Specialist analytical and safeguarding support.
+- Authorising and reviewing roles.
+- Independent oversight and complaint routes.
+
+The exact rank, appointment, clearance and statutory powers of each role are defined by BP-05, BP-06, BP-08, BP-30 and BP-42. An intelligence role does not automatically confer investigative, surveillance, search, arrest or disclosure authority.
+
+### Intelligence requirements and priorities
+Intelligence work begins with a defined requirement. Requirements may arise from:
+- A specific investigation or incident.
+- A credible threat to life, safety or public order.
+- A pattern of serious or repeat offending.
+- Safeguarding and vulnerability concerns.
+- Organised criminal activity.
+- A geographic or thematic problem.
+- Operational planning and resource allocation.
+- A lawful request from an authorised partner agency.
+
+Each requirement records its owner, purpose, scope, priority, decision-maker, review date and intended use. It should identify the question to be answered rather than request unrestricted information about a person or community.
+
+Priorities are assessed using seriousness, likelihood, potential harm, vulnerability, urgency, confidence in the available information, legal constraints and available resources. Priority scores support human judgement; they do not replace it.
+
+### Information intake
+Information may be received from:
+- Police officers and staff.
+- Victims, witnesses and members of the public.
+- Other police units and authorised agencies.
+- Publicly available material where lawful and relevant.
+- Case records, incident reports and evidence systems.
+- Authorised partner organisations.
+- Sources handled under the fictional legal framework.
+
+Every intake is recorded with a unique identifier, date and time received, receiving person or system, origin, method, original wording or material where practicable, stated purpose, handling restrictions and initial assessment.
+
+Anonymous, indirect, second-hand, translated, incomplete or potentially manipulated information is explicitly labelled. The system must not fabricate an identifiable source where none is known. A report that cannot be verified remains an unverified report.
+
+### Source records and source protection
+Where fictional law permits human or confidential sources, source information is managed through restricted records separated from general intelligence products. The source record may include:
+- Unique source reference.
+- Responsible handler and supervisor.
+- Lawful basis and authorisation references.
+- Date of registration and review.
+- Contact and handling history.
+- Known risks, vulnerabilities and safeguarding requirements.
+- Restrictions on use and dissemination.
+- Payments, benefits or other declared arrangements, where lawful.
+- Reliability assessment history.
+- Complaints, concerns or adverse information.
+- Closure or inactive status and retention decision.
+
+Identity details are accessible only to specifically authorised personnel. General users may receive a protected source reference and an appropriately sanitised assessment. The system must not expose a source's identity through ordinary search, reports, notifications, exports or linked case screens.
+
+No source may be pressured, promised immunity, directed to commit offences or exposed to avoidable danger through an automated game mechanic. Any permitted source activity must be controlled by fictional law and recorded for review.
+
+### Source reliability and information credibility
+The system assesses two separate questions:
+
+1. **Source reliability:** What is known about the origin's history, access, opportunity to know, possible motive, accuracy and limitations?
+2. **Information credibility:** Is this particular account internally coherent, specific, plausible in context, independently corroborated, contradicted or otherwise supported?
+
+A source with a strong historical record may provide inaccurate information. A new or anonymous source may provide accurate information. Neither status settles the truth of an individual report.
+
+Assessments use a configurable, documented framework established by police policy. The system records the reasoning and evidence behind an assessment, not merely a letter or numerical score. Unknown reliability remains unknown; it must not be silently converted to a neutral or positive rating.
+
+### Information evaluation and provenance
+Each intelligence item retains:
+- Unique intelligence reference.
+- Original source reference and provenance.
+- Date received and date the underlying event allegedly occurred.
+- Location and persons or entities referenced, with identity confidence.
+- Original content or preserved source artefact.
+- Receiving officer and recording time.
+- Source reliability assessment.
+- Item credibility assessment.
+- Corroboration and contradiction.
+- Relevance to the intelligence requirement.
+- Handling and dissemination restrictions.
+- Review date and current status.
+- Links to related items, incidents, cases and products.
+
+The system distinguishes the date an event allegedly occurred from the date information was received and the date it was entered. Late entry and retrospective reconstruction are visibly marked.
+
+### Identity resolution and entity matching
+Intelligence may refer to a person, organisation, property, vehicle, account, device, event or location. The system must not merge records solely because names, descriptions or identifiers are similar.
+
+Entity matching records the identifiers compared, match rationale, confidence, reviewer and any unresolved ambiguity. Possible matches remain separate until properly resolved. Aliases and known identity changes are linked with provenance and access restrictions.
+
+Incorrect links must be reversible. A correction updates downstream views and alerts relevant users while preserving the original link, correction reason and audit history.
+
+### Analysis and assessment
+Analysis may identify patterns, connections, chronology, geographic concentration, recurring methods, emerging risks, information gaps and competing explanations.
+
+Analytical work records:
+- The intelligence requirement addressed.
+- Information included and excluded.
+- Analytical method at an appropriate descriptive level.
+- Assumptions and limitations.
+- Corroborating and contradictory material.
+- Alternative hypotheses.
+- Confidence and uncertainty.
+- Analyst identity, reviewer and date.
+- Conclusions and recommended decision points.
+
+The system distinguishes a descriptive pattern from a causal explanation. Correlation, proximity, association or repeated appearance in records does not by itself establish coordination or criminality.
+
+Analytical conclusions are reviewable and must be updated when material new information arrives. The system must preserve prior versions so that a decision can be reconstructed as it appeared at the time.
+
+### Threat, harm and vulnerability assessment
+Intelligence may support assessment of threats to individuals, groups, locations, infrastructure or public safety. The assessment records the nature of the potential harm, affected parties, likelihood, impact, urgency, information confidence, protective factors, uncertainty, mitigation and review trigger.
+
+Vulnerability is not an indicator of criminality. Protected characteristics, lawful beliefs, peaceful association, occupation, nationality or residence must not be treated as risk factors without a specific lawful and evidence-based justification.
+
+A threat assessment is not a finding that the person identified intends or will commit an offence. The system must present the basis, confidence and limitations alongside any risk category.
+
+### Intelligence products
+Permitted products include:
+- Intelligence briefing.
+- Threat or harm assessment.
+- Pattern and trend report.
+- Entity or network assessment.
+- Geographic problem profile.
+- Case-support intelligence summary.
+- Operational briefing.
+- Information gap and collection requirement.
+- Strategic assessment.
+- Safeguarding referral.
+- Intelligence alert or advisory.
+
+Each product has a unique reference, author, reviewer, intended audience, purpose, date, source references, confidence statement, restrictions, expiry or review date and version history.
+
+Products must be clear about what is established, alleged, assessed or unknown. They should not reveal protected source identities or restricted details unless the recipient is specifically authorised and disclosure is necessary.
+
+### Dissemination and information sharing
+Before dissemination, the system checks the recipient's role, purpose, legal basis, need to know, security clearance and any source or handling restrictions. Sharing records the sender, recipient, time, information supplied, purpose, authority, conditions and acknowledgement where required.
+
+External sharing follows the fictional country's data-sharing framework and any applicable agreement. A request from another agency does not automatically authorise disclosure. The system supports partial disclosure, sanitisation, refusal, escalation and recorded review.
+
+Recipients must be able to report inaccuracies or newly discovered contradictions. Restrictions travel with the information through exports and linked systems where technically supported.
+
+### Intelligence and evidence separation
+Intelligence is information used to guide understanding and decisions. Evidence is material gathered and handled under the applicable evidential and legal rules. The same underlying information may later become evidence, but its status does not change automatically.
+
+When intelligence generates an investigative lead:
+- The lead is transferred with provenance and limitations.
+- Investigators determine what lawful enquiries are required.
+- Evidence is collected and recorded under BP-23 and BP-24.
+- The original intelligence record is preserved.
+- Any restrictions, source-protection issues and disclosure obligations are referred for legal review.
+
+An intelligence assessment must not be presented as a witness statement, forensic result, admission, conviction or proven fact. Intelligence grades do not establish guilt and cannot alone satisfy the requirements for arrest or charge.
+
+### Case and operational referrals
+Intelligence may be referred to an investigation, incident, patrol unit, safeguarding team, surveillance proposal or another authorised function. The referral records:
+- Sending and receiving units.
+- Requirement and purpose.
+- Relevant intelligence references.
+- Confidence and limitations.
+- Restrictions and source-protection conditions.
+- Requested decision or action.
+- Acceptance, rejection or clarification.
+- Outcome and feedback.
+
+A referral does not direct the receiving officer to take an unlawful action. Surveillance must separately meet BP-20 authorisation requirements. Investigative decisions remain under BP-15 and BP-16.
+
+### Review, correction and challenge
+Intelligence records are reviewed according to relevance, reliability, age, legal basis, risk and retention policy. Review may confirm, downgrade, qualify, correct, restrict, archive or delete information where authorised.
+
+A person or agency may challenge information through the applicable complaint or correction process. The system records the challenge, decision-maker, evidence considered, outcome, reasons and any downstream notification.
+
+Corrections must not silently overwrite history. Where information is found to be false or materially misleading, linked products and recipients are flagged for reassessment. The system must not continue to display a discredited assessment as current.
+
+### Retention, archival and deletion
+Retention is governed by lawful purpose, necessity, sensitivity, source protection, evidential value, review outcomes and statutory requirements. Each record has a retention category, review date, responsible owner and disposition history.
+
+Deletion is authorised, recorded and applied to linked systems as required. Where preservation is required for an investigation, legal proceedings, complaint or audit, a lawful hold prevents routine deletion. The system distinguishes active intelligence from archived material and records any access to retained historical information.
+
+### Security, access and audit
+Access is role-based and purpose-limited. Sensitive source identities, protected intelligence, analytical products and general intelligence records may have different access levels. Users must not browse intelligence records without a legitimate work purpose.
+
+Audit records include search, view, create, edit, link, unlink, export, print, share, correction, retention, deletion and permission changes. Alerts may identify unusual or unauthorised access for review, but automated alerts are not themselves findings of misconduct.
+
+The security model, classification scheme, encryption, authentication, permissions and audit controls are defined with BP-38, BP-39 and BP-42. Data access must remain available to authorised oversight and lawful disclosure processes.
+
+### Bias, fairness and protected information
+Intelligence processes must guard against confirmation bias, stereotyping, circular reporting, source manipulation, mistaken identity and over-reliance on historical police contact.
+
+The system must:
+- Require a specific lawful purpose for collecting sensitive information.
+- Record the evidential or intelligence basis for sensitive inferences.
+- Distinguish an individual's conduct from the conduct of associates or groups.
+- Avoid treating protected characteristics or lawful activity as proxies for suspicion.
+- Include exculpatory, contradictory and alternative information.
+- Flag low-confidence or stale assessments.
+- Support independent review of consequential intelligence decisions.
+
+### Player experience
+The player may receive an intelligence briefing, submit information, assess a report, review provenance, identify gaps, request lawful analysis, compare competing explanations, prepare an intelligence product, disseminate it to an authorised recipient and refer a lead for investigation.
+
+The interface must show the distinction between established facts, reports, assessments and unknowns. It must not reveal hidden offender identities, silently resolve uncertainty or provide automatic solution hints. The player decides how to investigate and what conclusions the available material supports.
+
+### Connections to other divisions
+- **BP-02 to BP-04:** geography, population, properties and organisations.
+- **BP-05 to BP-09:** police structure, personnel, career, units and resources.
+- **BP-10 to BP-12:** patrol, emergency communications and incidents.
+- **BP-13 to BP-16:** offences, crime generation, cases and investigations.
+- **BP-17 to BP-19:** victims, witnesses, suspects and interviews.
+- **BP-20:** surveillance proposals, authority and operational results.
+- **BP-22 to BP-24:** scenes, evidence and forensic material.
+- **BP-25 to BP-29:** legal powers, custody, prosecution, courts and corrections.
+- **BP-30 to BP-34:** governance, standards, training, HR and resources.
+- **BP-35 to BP-37:** simulation, social context and time.
+- **BP-38 to BP-44:** records, persistence, interface, reporting, security, testing and configuration.
+
+### Exceptions and edge cases
+The system must handle anonymous and malicious reports, deliberate misinformation, conflicting accounts, source deception, uncertain identity, duplicate reports, stale information, incorrect entity links, source compromise, source safety concerns, accidental disclosure, unauthorised access, protected or privileged information, cross-jurisdiction requests, emergency threat referrals, contradictory or exculpatory material, a change in legal basis, retention holds, deletion requests, corrections after dissemination and intelligence later used as an evidential lead.
+
+### Acceptance conditions
+- Every intelligence requirement and item has a unique reference, purpose, owner and provenance.
+- Source reliability and item credibility are assessed separately and transparently.
+- Original information and later assessments remain distinguishable and auditable.
+- Facts, allegations, inferences, opinions and unknowns are clearly labelled.
+- Contradictions, alternative explanations, confidence and uncertainty are retained.
+- Entity matching cannot silently merge uncertain identities.
+- Intelligence products identify sources, limitations, audience, restrictions and review dates.
+- Dissemination is purpose-limited, authorised and recorded.
+- Intelligence referrals do not bypass surveillance, investigative or evidential authority.
+- Intelligence is not automatically treated as evidence or proof of guilt.
+- Corrections, retention, deletion and legal holds preserve an audit trail.
+- Sensitive sources and information receive appropriate access controls and oversight.
+- Bias safeguards and exculpatory information are supported.
+- The player receives useful intelligence without hidden-solution disclosure or automatic investigative conclusions.
+
+**Draft status:** BP-21 is a working design. Exact intelligence powers, source-handling rules, classification standards, retention periods, sharing authorities, oversight and legal disclosure requirements remain to be defined by the fictional legal and governance frameworks. No intelligence software or operational capability is claimed to have been implemented.
