@@ -6,7 +6,7 @@ A fictional, persistent, text-first police simulation set in the fictional sover
 
 The **44-division master blueprint has been drafted**. The project is now moving into software implementation.
 
-The repository currently contains the game blueprint, project records and an initial technical architecture. The connected Supabase project is active and healthy, but no Kingswell game tables, migrations or game data have been created yet. No playable application or simulation runtime has been implemented.
+The repository contains the game blueprint, project records, technical architecture and versioned database migrations. The connected Supabase project now has the initial private `game` schema: 40 tables, 78 foreign-key relationships and supporting indexes. All 40 tables have row-level security enabled. The schema is empty of game-world/personnel/incident data; the simulation runtime and playable interface have not yet been implemented.
 
 See the [Implementation Register](docs/governance/IMPLEMENTATION-REGISTER.md) for the current build status.
 
@@ -46,4 +46,4 @@ Kingswell is the political and economic capital of a fictional sovereign country
 
 ## Immediate implementation direction
 
-Build the persistent game database and core simulation foundation, then connect the first complete playable police workflow: personnel deployment, dispatch, incident response, reporting and saved game records.
+Populate the fictional world and police foundations, then build the command/runtime layer and connect the first complete playable police workflow: personnel deployment, dispatch, incident response, reporting and saved game records.
