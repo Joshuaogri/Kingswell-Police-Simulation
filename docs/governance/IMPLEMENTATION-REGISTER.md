@@ -14,7 +14,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Working branch | Complete | `main` only |
 | Supabase project | Complete | `Kingswell-Police-Simulation`, project ref `gdbzkgejyfwfackyuorl` |
 | Supabase connection | Verified | Project healthy; live SQL query succeeded |
-| Master blueprint | In progress | BP-01 to BP-05 drafted |
+| Master blueprint | In progress | BP-01 to BP-09 drafted; later divisions remain outstanding |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
 | Database schema | Not started | No game tables or migrations |
@@ -33,7 +33,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-06 | Personnel | Drafted |
 | BP-07 | Career System | Drafted; detailed rules remain open for refinement |
 | BP-08 | Units and Deployment | Drafted; detailed rules remain open for refinement |
-| BP-09 | Police Resources | Not started |
+| BP-09 | Police Resources | Drafted; details to refine with later operational divisions |
 | BP-10 | Patrol Operations | Not started |
 | BP-11 | Emergency Communications | Not started |
 | BP-12 | Incident Management | Not started |

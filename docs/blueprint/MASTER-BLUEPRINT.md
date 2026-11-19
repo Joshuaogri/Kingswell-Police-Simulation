@@ -375,3 +375,136 @@ Unit commanders can manage work and staffing within their authority. Personnel a
 - Vehicles and equipment cannot be double-booked for incompatible tasks.
 - Unit reorganisation preserves historical records and transfers open work.
 - Every significant assignment and handover is traceable.
+
+## BP-09 — Police Resources
+
+### Purpose
+Ensure the National Police Service has the vehicles, equipment, communications devices, facilities, supplies and specialist assets needed to perform its work. Resources must be identifiable, available when required, assigned to the right people and units, maintained, replaced and accounted for throughout their working life.
+
+### Scope
+This division covers the service's physical and operational resources and their day-to-day availability. It connects resource ownership and condition to units, personnel, rosters, deployments, incidents and specialist work.
+
+It does not own:
+- Employee identity, staffing or qualifications, which belong to BP-06 and BP-07.
+- Unit structure and deployment authority, which belong to BP-08.
+- The design of buildings, land and business premises, which belongs to BP-04.
+- Budget policy, purchasing rules and financial accounting, which belong to BP-34.
+- The detailed operation of dispatch, patrol or investigations, which belong to their respective divisions.
+
+### Resource groups
+The service may hold and manage the following resource groups:
+
+1. **Vehicles:** patrol cars, response vehicles, motorcycles, vans, transport vehicles, traffic vehicles, command vehicles, specialist vehicles and trailers.
+2. **Personal issue equipment:** uniforms, protective clothing, identification, duty belts, safety equipment and role-specific items.
+3. **Operational equipment:** torches, barriers, scene equipment, search tools, measuring devices, recording equipment and other task-specific tools.
+4. **Communications:** radios, mobile devices, headsets, chargers, repeaters and related accessories.
+5. **Technology:** computers, tablets, printers, body-worn devices, cameras, storage devices and approved software equipment.
+6. **Specialist assets:** equipment held for forensic work, public-order operations, roads policing, search, rescue support, surveillance and other specialist functions.
+7. **Facilities and bases:** stations, offices, briefing rooms, garages, stores, interview rooms, custody-related facilities and other police-controlled premises. Their physical identity remains part of the property system.
+8. **Consumables and supplies:** fuel, stationery, batteries, medical supplies, protective disposables, evidence packaging and routine operational stock.
+
+These categories are expandable where a genuine policing need exists. They do not require every possible item to be individually modelled from the beginning.
+
+### Resource identity and record
+Every managed asset receives a stable unique identifier appropriate to its type. Its record may include:
+- Official name, category, description and identifying number.
+- Owning service or external provider.
+- Responsible unit and normal storage or base location.
+- Current custodian or assigned user, where applicable.
+- Current condition and operational status.
+- Purchase, receipt, issue or commissioning date.
+- Manufacturer, model and serial number where relevant.
+- Required operator qualification or authorisation.
+- Inspection, servicing, calibration and renewal history.
+- Damage, loss, repair, restriction and retirement history.
+- Linked documents and inventory checks.
+
+Consumables may be tracked by stock item, quantity, location, batch or expiry date where that level of detail is useful. They do not each need a permanent individual identity.
+
+### Availability and condition
+A resource has a clear current state. Typical states include available, assigned, in use, reserved, under inspection, under repair, damaged, missing, restricted, out of service and retired. The exact states depend on the resource type.
+
+Availability is not the same as existence. A vehicle that is under repair, a radio with a fault or a device assigned to another team must not appear as freely available. Condition and restrictions affect what the resource can be used for.
+
+### Assignment and custody
+Resources can be assigned to a service, command, unit, team, vehicle, employee, location, incident or specific task as appropriate. The record distinguishes:
+- Ownership by the service.
+- Responsibility for the asset.
+- Physical custody.
+- Temporary issue to a user or team.
+- Operational assignment for a particular duty.
+- Return, transfer or handover.
+
+A resource can have only one incompatible active assignment at a time. Temporary issue and return are dated. Handover records identify the outgoing and incoming custodian where that matters.
+
+### Vehicles and fleet
+Vehicle records include registration or fleet identifier, type, make/model, operational role, home base, assigned unit, status, mileage or usage readings, fuel or energy status where modelled, inspection dates, service history, damage, faults and availability.
+
+Vehicle assignment must account for:
+- Whether it is available and roadworthy in the fictional game.
+- Whether the intended driver is authorised and suitably qualified.
+- Whether the vehicle is suitable for the task and operating area.
+- Whether required equipment is present.
+- Whether it is already committed to another duty.
+
+Vehicle use can generate records such as allocation, crew, start/end readings, refuelling, defect reports, collision/damage reports and return-to-base. A vehicle is not silently teleported between locations; its movement follows the game's time and travel rules.
+
+### Equipment issue and compatibility
+Some duties require particular equipment, and some equipment may only be used by suitably trained or authorised personnel. The system checks requirements when an assignment is made and can identify missing, expired, incompatible or unserviceable items.
+
+Standard issue lists may be defined by role, unit or duty type. They are baselines rather than proof that an item is physically present. Actual issue, return, replacement and loss are recorded.
+
+### Maintenance and inspection
+Assets that require maintenance have service intervals, inspection schedules or condition checks. The system can generate due and overdue work, record inspection outcomes, identify defects and restrict unsafe or unserviceable assets. Repair history remains attached to the asset.
+
+A resource returns to available status only when the required repair, inspection or check has been recorded as complete. A user cannot clear a defect merely by changing the displayed status without the required record.
+
+### Stock and replenishment
+Stores track quantities received, issued, transferred, reserved, consumed, damaged, expired and written off. Minimum stock levels can trigger replenishment notices. Stock movements identify the item, quantity, source, destination, date and responsible person or unit.
+
+The procurement and financial process is handled by BP-34. This division supplies the operational need and records receipt, storage and issue.
+
+### Loss, damage and misuse
+Lost, damaged, stolen, contaminated, misused or unaccounted-for resources create a traceable report. The record may link to an incident, employee, unit, vehicle, location or investigation. A report does not itself establish fault; any employment or misconduct finding belongs to the relevant personnel and professional-standards processes.
+
+### Resource planning
+Commanders can view resource holdings, current assignments, availability, shortages, maintenance needs and demand by unit or function. Resource planning considers workload, geographic coverage, specialist capability, shift patterns and expected demand. A unit's inventory total must not be mistaken for the number of assets currently serviceable and available.
+
+### Connections to other divisions
+- **BP-04:** facilities, bases, stores and physical locations.
+- **BP-06:** personnel identity, issue responsibility and employee records.
+- **BP-07:** qualifications and role eligibility for resource use.
+- **BP-08:** unit ownership, staffing and operational deployment.
+- **BP-10 to BP-12:** patrol, dispatch and incident-related resource allocation.
+- **BP-16 to BP-24:** investigation, scene, surveillance and forensic equipment.
+- **BP-30 to BP-34:** governance, training, workforce and procurement responsibilities.
+- **BP-37 to BP-39:** schedules, asset history, records and persistence.
+- **BP-42 and BP-43:** access control, audit and verification.
+
+### Player interaction
+The player can see resources issued to them, the condition and availability of assigned equipment, the vehicle or team resources allocated to a duty, and any return or defect-reporting requirements. The player can report a fault, request an item, record a return or identify a shortage through the relevant in-game interaction. The game communicates when missing or unserviceable resources affect an assignment.
+
+### Permissions and accountability
+- Employees can view and report on resources relevant to their duties.
+- Custodians can record issue, return and condition changes within their responsibility.
+- Unit supervisors can view and manage unit holdings within their authority.
+- Fleet, stores and specialist resource staff manage maintenance and inventory records for their areas.
+- Procurement and finance staff handle purchasing and financial records under BP-34.
+- Significant issue, transfer, repair, write-off and retirement actions retain who, what and when information.
+
+### Exceptions and edge cases
+The design must handle shared equipment, pooled vehicles, temporary loans, inter-unit transfers, emergency allocation, external hire, equipment attached to a vehicle, missing serial numbers, consumable batches, expired stock, damaged returns, staff leaving while holding issued property, assets moved between bases, and resources temporarily unavailable during an incident. Historical records must remain intact when an asset is replaced, renamed, transferred or retired.
+
+### Acceptance conditions
+- Every managed asset can be uniquely identified and its current status established.
+- Ownership, responsibility, custody and operational assignment are distinguishable.
+- An unavailable or unserviceable asset cannot be allocated as if it were ready for use.
+- Vehicle assignment checks driver eligibility, vehicle suitability and conflicting commitments.
+- Equipment requirements can be linked to roles, qualifications and duties.
+- Issue, return, transfer, maintenance, inspection, loss and retirement are traceable.
+- Consumable stock movements reconcile quantities over time.
+- Unit commanders can distinguish total holdings from serviceable available resources.
+- Resource shortages and faults can affect deployment and are visible to the relevant users.
+- Historical resource records remain available after transfer, replacement or retirement.
+
+**Draft status:** BP-09 is a working design. Resource categories and operational rules can be refined as later divisions define their requirements. It is not a claim that any resource-management software has been implemented.
