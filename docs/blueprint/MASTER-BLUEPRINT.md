@@ -5252,3 +5252,492 @@ The design must handle conflicting legal and policy instruments, expired delegat
 
 **Draft status:** BP-30 is a working design. The police statute, executive and board model, oversight institutions, ministerial relationship, delegation schedule, public reporting obligations, audit mandates, risk appetite, policy hierarchy and exact governance authorities remain open. No governance board, audit, policy-control or performance-management software has been implemented by this design document.
 
+## BP-31 — Professional Standards
+
+### Purpose and scope
+Define the professional conduct, integrity, ethics, complaint-handling, misconduct, discipline, intervention, accountability and learning framework for the national police service. This division establishes the standards expected of every person exercising police authority or performing police service functions, the mechanisms for identifying and addressing conduct concerns, and the safeguards that ensure fair, independent and proportionate handling.
+
+BP-31 covers:
+- Professional values, ethics and conduct obligations.
+- Standards of behaviour and service.
+- Misconduct, serious misconduct and criminal conduct distinctions.
+- Complaints from the public and internal reporting.
+- Whistleblowing and protection against retaliation.
+- Early intervention and supervisory concern management.
+- Professional standards investigations and evidence.
+- Suspension, restriction, reassignment and other interim safeguards.
+- Disciplinary proceedings, outcomes, review and appeal.
+- Corruption, abuse of authority, discrimination, harassment and improper relationships.
+- Use-of-force conduct review and serious incident referrals.
+- Independent oversight, transparency, learning and record governance.
+
+BP-31 does not replace:
+- BP-05 for police structure, command and institutional jurisdiction.
+- BP-06 and BP-07 for personnel identity, employment and career administration.
+- BP-19 for the conduct and recording of investigative interviews.
+- BP-25 and BP-26 for arrest, warrants and custody processes.
+- BP-27 and BP-28 for legal proceedings and judicial outcomes.
+- BP-30 for institutional governance, audit and enterprise accountability.
+- BP-32 for training and professional development.
+- BP-33 for human resources and employment administration.
+- BP-38 and BP-39 for authoritative records and persistence.
+
+Professional standards must not be reduced to a simple misconduct score or an automatic disciplinary engine. Allegations are not findings. Complaints are not proof. A criminal investigation, employment process and professional standards investigation may overlap, but each has its own legal purpose, decision-maker, safeguards and outcome.
+
+The fictional country's police statute, employment law, criminal law, human-rights framework, independent complaints authority, disciplinary code and exact appeal rights remain to be defined. This division sets the architecture and design requirements, not binding legal thresholds or implemented procedures.
+
+### Foundational professional principles
+Every police employee and person exercising police functions is expected to:
+- Act lawfully and within the authority of their role.
+- Protect life, safety, dignity and fundamental rights.
+- Exercise powers only for legitimate policing purposes.
+- Treat people fairly, respectfully and without unlawful discrimination.
+- Be honest, truthful and accurate in statements, records and testimony.
+- Preserve evidence and disclose relevant material through lawful processes.
+- Respect confidentiality, privacy and information security.
+- Avoid corruption, bribery, favouritism and personal benefit from office.
+- Declare and manage conflicts of interest.
+- Use force and intrusive powers only when lawful, necessary and proportionate.
+- Follow valid policy and lawful orders, while refusing or reporting unlawful instructions.
+- Cooperate with lawful scrutiny, audit and investigations.
+- Take responsibility for decisions, omissions and professional conduct.
+- Intervene or report when witnessing serious misconduct or risk of harm.
+- Maintain competence and seek guidance where authority or knowledge is insufficient.
+
+These principles apply on duty, in professional dealings and in relevant off-duty conduct where a genuine connection to police integrity, public trust, safety or fitness for role exists. Off-duty scrutiny must remain lawful, proportionate and respectful of private life.
+
+### Scope of persons covered
+The standards framework applies, as appropriate to their status and legal authority, to:
+- Sworn police officers of every rank and appointment.
+- Recruits, probationers and trainees.
+- Civilian police employees.
+- Temporary, seconded and contract personnel performing police functions.
+- Specialist personnel exercising delegated police powers.
+- Volunteers or auxiliary personnel where formally authorised.
+- Former employees in relation to conduct during service or continuing legal obligations.
+
+Different employment and legal regimes may require distinct procedures. The system records each person's status, applicable code, authority, supervisor, service dates and procedural protections. A contractor is not treated as a sworn officer merely because they work in a police facility. A former employee remains subject to lawful investigation of conduct during service where jurisdiction persists.
+
+### Standards instruments and conduct framework
+The service maintains a controlled professional standards framework comprising:
+- Code of ethics and professional values.
+- Standards of professional behaviour.
+- Rules on honesty, integrity and disclosure.
+- Rules on use of police powers and authority.
+- Respect, equality, dignity and non-discrimination standards.
+- Confidentiality, privacy and information-handling rules.
+- Conflicts, gifts, hospitality and outside interests policy.
+- Rules on relationships, contact and boundaries.
+- Social media, public communication and political activity standards.
+- Appearance, attendance, readiness and fitness-for-duty requirements.
+- Duty to report, intervene and preserve information.
+- Standards for supervisory conduct and command responsibility.
+- Misconduct and disciplinary procedures.
+- Complaint, whistleblowing and investigation procedures.
+
+Each instrument has a unique identifier, owner, approving authority, version, effective date, review date, affected roles, legal basis, training requirements and supersession history. Draft guidance is not treated as binding policy. No local instruction may weaken a statutory right or contradict the higher-level code.
+
+### Categories of conduct concern
+The system distinguishes concerns by nature and seriousness, without treating initial classification as a finding. Categories may include:
+- Service or performance concern.
+- Minor conduct concern.
+- Misconduct.
+- Serious misconduct or gross misconduct.
+- Criminal allegation.
+- Corruption or abuse of public office.
+- Discrimination, harassment or victimisation.
+- Sexual misconduct or inappropriate relationship.
+- Abuse of authority or unlawful exercise of powers.
+- Dishonesty, falsification or misleading statements.
+- Evidence interference, concealment or disclosure failure.
+- Confidentiality or data misuse.
+- Neglect of duty or failure to intervene.
+- Unprofessional treatment of the public, victims, witnesses or colleagues.
+- Unsafe practice or reckless disregard of risk.
+- Breach of financial, procurement or asset controls.
+- Supervisory or command failure.
+- Retaliation against complainants, witnesses or whistleblowers.
+
+A concern may involve more than one category and may change as reliable facts emerge. Classification determines routing and safeguards, not guilt or a predetermined outcome.
+
+### Complaints and concern intake
+Complaints may be received from:
+- Members of the public.
+- Victims, witnesses, suspects, detainees and their representatives.
+- Family members or other affected persons where permitted.
+- Police employees and supervisors.
+- Partner agencies and professional bodies.
+- Courts, prosecutors, inspectors and statutory authorities.
+- Anonymous or confidential sources.
+- Whistleblowers acting internally or externally.
+
+Intake channels may include in-person reporting, telephone, written correspondence, secure digital submission, formal referral and legally required notification. Access must be reasonable for people with disabilities, language needs, limited literacy or restricted access to digital services.
+
+Every complaint or concern receives a persistent reference and records:
+- Date/time and method received.
+- Complainant identity and safe contact preferences, where provided.
+- Whether anonymity or confidentiality is requested.
+- Person or unit complained about, if known.
+- Description of alleged conduct and relevant period/location.
+- Immediate safety, safeguarding or retaliation risks.
+- Supporting material and potential witnesses.
+- Consent and legal restrictions relevant to contact or disclosure.
+- Intake officer and receiving authority.
+- Initial classification and reasons.
+- Referral, acknowledgement and next communication date.
+
+Anonymous reports are assessed on their information and risk; anonymity does not automatically invalidate or substantiate an allegation. A complainant's request for confidentiality is respected as far as lawful, but absolute secrecy must not be promised where fair process or legal duties require disclosure.
+
+### Triage, referral and jurisdiction
+Each incoming matter is triaged by an appropriately authorised person or body. Triage considers:
+- Immediate danger or ongoing harm.
+- Alleged criminality, corruption or serious abuse.
+- Vulnerability of complainant, affected person or witness.
+- Risk of evidence loss, interference or retaliation.
+- Conflict of interest or seniority of the subject.
+- Need for independent investigation.
+- Relevant limitation periods and procedural deadlines.
+- Employment, criminal, civil, regulatory or safeguarding jurisdiction.
+- Related cases, complaints or previous findings.
+
+Possible routes include service recovery, management action, early intervention, formal professional standards investigation, criminal investigation, independent complaints authority, safeguarding referral, employment process or external regulator.
+
+Referral does not imply that an allegation is true. A matter may have parallel routes where lawful, with separate records, authority, evidence access and decision-making. The receiving body must acknowledge acceptance or explain refusal and identify the correct alternative route. No complaint may be silently closed because it is inconvenient or involves a senior officer.
+
+### Independence, conflicts and external referral
+Professional standards investigations must be impartial and protected from improper influence. Independence safeguards apply where:
+- The subject is senior to the proposed investigator or decision-maker.
+- The allegation concerns a command team or specialist unit.
+- The investigator has a personal, financial, professional or operational conflict.
+- The allegation concerns corruption, serious violence, death, sexual misconduct or serious rights violations.
+- A complainant or witness has a reasonable concern about local handling.
+- Law or oversight rules require external investigation.
+
+The system records conflict declarations, assessment, recusal, investigator appointment, oversight conditions and any transfer of jurisdiction. A commander cannot select an investigator to guarantee a preferred outcome. A subject's rank, influence, reputation or performance history cannot justify a lower standard of scrutiny.
+
+Independent bodies retain their own statutory decision rights. Internal police staff must not direct their findings, restrict lawful access or pre-approve their conclusions. Where the police retain a parallel internal process, safeguards prevent interference with external investigations.
+
+### Early intervention and supervisory action
+Not every concern requires formal discipline. A proportionate early-intervention framework may address emerging patterns, support needs, minor performance issues, training gaps, workload, wellbeing or policy misunderstanding.
+
+Possible measures include:
+- Private supervisory discussion.
+- Clarification of policy or role expectations.
+- Coaching and mentoring.
+- Refresher or remedial training.
+- Additional supervision or quality checks.
+- Workload or deployment review.
+- Occupational health or wellbeing referral where appropriate.
+- Voluntary service improvement plan.
+- Formal referral where facts indicate a more serious matter.
+
+Early intervention is not a hidden disciplinary finding. The system records its purpose, factual basis, support offered, employee response, agreed actions and review date, with appropriate privacy and retention limits. Repeated concerns may justify formal review, but pattern analysis must consider context, source reliability and whether previous reports were substantiated.
+
+A serious allegation cannot be diverted to informal coaching merely to avoid statutory notification or independent scrutiny. Support for an employee does not replace protection for affected members of the public.
+
+### Professional standards investigation
+A formal investigation is opened only by a competent authority and records:
+- Case identifier and jurisdiction.
+- Allegation or allegations, separately stated.
+- Applicable standards and potential breaches.
+- Subject and affected persons, with identity uncertainty preserved.
+- Investigating authority and assigned investigator.
+- Independence and conflict assessment.
+- Investigation plan, scope and proportionality.
+- Potential criminal, employment and external proceedings.
+- Legal advice and procedural safeguards.
+- Evidence preservation and disclosure responsibilities.
+- Expected review dates and procedural deadlines.
+
+The investigation tests the allegation fairly. It gathers inculpatory, exculpatory and contextual material, including evidence that may undermine the allegation or support the subject's account. It must not begin with a predetermined conclusion.
+
+Investigators may obtain relevant records, policies, duty rosters, dispatch records, body-worn video, custody logs, communications, financial records, training records and witness accounts only through lawful authority and appropriate access. Evidence is handled under BP-23 and forensic work under BP-24. Criminal investigative techniques and intrusive powers remain governed by the relevant specialist divisions and legal framework.
+
+### Evidence, disclosure and investigative integrity
+Professional standards evidence may include:
+- Original complaints and contemporaneous notes.
+- Witness and subject accounts.
+- Duty, deployment and supervision records.
+- Communications and dispatch material.
+- Body-worn video and other recordings.
+- Policies, training and competence records.
+- Relevant case, custody and evidence records.
+- Financial, procurement or access logs.
+- Digital records and system audit trails.
+- Expert or specialist reports.
+- Material supporting or contradicting the allegation.
+
+Originals, copies, extracts and working notes are distinguished. Provenance, collection authority, date/time, handling, access and integrity are recorded. The investigator must not edit, selectively omit or misrepresent source material.
+
+Potentially exculpatory, contradictory, unused or credibility-relevant material is identified and retained under the applicable rules. Disclosure obligations are assessed separately for criminal proceedings, disciplinary hearings, civil claims and external oversight. The system records disclosure decisions, reasons, recipients, redactions, restrictions and review.
+
+A subject must have a fair opportunity to understand and answer the case, subject to lawful restrictions protecting witnesses, ongoing investigations, security and privacy. Confidentiality cannot be used as a blanket reason to withhold material required for a fair hearing.
+
+### Subject rights and procedural fairness
+The person subject to an allegation is treated fairly and without presumption of guilt. Depending on the applicable legal and employment framework, safeguards may include:
+- Clear notice of the allegation and applicable standard.
+- Information about the process and potential outcomes.
+- Access to representation, advice or a staff association.
+- Reasonable opportunity to respond and provide material.
+- Interpretation or accessibility support.
+- Impartial investigator and decision-maker.
+- Protection against unnecessary public identification.
+- Reasonable time to prepare.
+- Access to relevant material subject to lawful restrictions.
+- A reasoned decision and applicable review or appeal.
+- Protection against retaliation for exercising procedural rights.
+
+The system distinguishes a person being named in a complaint, notified as a subject, formally investigated, charged with a criminal offence, subject to a disciplinary allegation, found to have breached a standard and convicted by a court. These statuses are not interchangeable.
+
+A subject's silence, request for representation or exercise of a legal right is not automatically evidence of misconduct. No confession or admission is presumed. Any interview is conducted under the applicable legal and procedural rules and recorded accurately.
+
+### Interim safeguards and duty status
+Where necessary to protect people, evidence, operations or the integrity of an investigation, the competent authority may consider interim measures under applicable law and employment rules. These may include:
+- Temporary reassignment.
+- Restriction from a particular duty or system.
+- Change of reporting line.
+- Additional supervision.
+- Temporary removal from public-facing or sensitive functions.
+- Suspension where legally justified.
+- Preservation of access logs and relevant records.
+- Contact or non-interference directions where authorised.
+
+An interim measure is precautionary, not a finding or punishment. The record identifies the risk, legal basis, alternatives, decision-maker, scope, pay or employment consequences where relevant, start date, review date and conditions for ending or varying the measure.
+
+Measures must be necessary, proportionate, time-limited and reviewed. They must not be used to punish a complainant or subject before a finding. Suspension is not automatic when an allegation is serious. The subject's welfare, reputation, livelihood and fair-trial interests are considered alongside public protection and evidence integrity.
+
+### Criminal investigations and parallel proceedings
+Where conduct may constitute a criminal offence, the matter is referred to the competent criminal investigative authority and prosecutor under the applicable law. The professional standards process remains distinct.
+
+Parallel proceedings require a coordination protocol addressing:
+- Which authority leads each process.
+- Evidence ownership and access.
+- Interview sequencing and legal cautions.
+- Disclosure and privilege.
+- Risk of prejudice to criminal proceedings.
+- Suspension, continuation or sequencing of disciplinary steps.
+- Limitation periods and statutory deadlines.
+- Communications to the subject and complainant.
+- Independent oversight and review.
+
+A criminal investigation does not automatically establish professional misconduct. A criminal acquittal does not necessarily resolve a distinct employment standard, but the disciplinary decision must respect the facts and legal findings that are binding or relevant under the law. A criminal conviction may be relevant but does not remove the need for a lawful employment decision and proper process.
+
+No internal investigator may obstruct a criminal investigation, pressure a prosecutor, alter evidence or promise a particular charging outcome. No criminal investigator may use the professional standards process as an informal route around legal safeguards.
+
+### Interviews, statements and witness protection
+Interviews of complainants, witnesses and subjects are planned and conducted under the appropriate legal and procedural rules. Records identify interviewer, participants, date/time, location or medium, purpose, rights and notices given, recording method, breaks, exhibits and outcome.
+
+Witnesses receive appropriate safeguarding and protection from intimidation or retaliation. Their identities and contact details are restricted where lawful. Anonymous or protected evidence is handled under applicable fairness and disclosure rules; it is not treated as automatically reliable.
+
+Subject interviews must not be coercive or misleading. Any admission is assessed in context and corroborated where appropriate. Interview records preserve the questions, answers, interruptions, corrections and any material deviation from procedure.
+
+### Disciplinary decision and standard of proof
+A disciplinary matter is determined by an impartial person or panel with authority under the applicable code. The decision-maker must not have investigated the allegation or have a material conflict, except where law expressly provides otherwise with safeguards.
+
+The process records:
+- Formal allegation and applicable standard.
+- Notice and service of documents.
+- Hearing date, participants and representation.
+- Admitted, disputed and excluded material.
+- Procedural applications and rulings.
+- Findings on each allegation.
+- Applicable standard of proof as defined by law or policy.
+- Reasons and treatment of conflicting evidence.
+- Mitigating and aggravating factors where relevant.
+- Outcome and sanction, if any.
+- Appeal or review rights and deadlines.
+
+Each allegation is decided separately. Findings may include substantiated, not substantiated, unfounded, unable to determine, withdrawn, outside jurisdiction or referred elsewhere, subject to the approved legal vocabulary. A not-substantiated outcome does not automatically mean the complainant acted dishonestly. A malicious complaint finding requires its own evidence and process.
+
+### Disciplinary outcomes and proportionality
+Where a breach is established, possible outcomes may include:
+- No disciplinary action or formal exoneration.
+- Advice or management instruction.
+- Formal warning.
+- Written reprimand.
+- Required training or supervised practice.
+- Restriction of specified duties or authority.
+- Demotion or change of appointment where lawfully available.
+- Financial or employment sanction where authorised.
+- Dismissal or removal from service.
+- Referral to a professional regulator or other competent body.
+
+The available outcomes and thresholds depend on the fictional legal and employment framework. Decisions consider seriousness, harm, culpability, intent, recklessness, repetition, role, training, context, mitigation, consistency and relevant prior substantiated findings.
+
+Prior complaints that were unsubstantiated or unrelated cannot be treated as proof of propensity. A sanction must not exceed the decision-maker's authority. Reasons must explain why the outcome is lawful and proportionate. A disciplinary sanction does not automatically determine criminal liability, civil liability or a court's view of evidence.
+
+### Review, appeal and correction
+The framework provides appropriate routes to challenge:
+- Intake or jurisdiction decisions where review is available.
+- Interim measures.
+- Procedural rulings.
+- Findings and sanctions.
+- Delays or failure to follow required process.
+- Record accuracy and disclosure decisions.
+- Conflicts or alleged bias.
+
+The review authority, grounds, filing period, available remedies and whether the original decision is stayed must be defined by law or policy. Reviewers must be sufficiently independent and must not simply repeat the original decision without examining the stated grounds.
+
+Possible remedies include confirming, varying, setting aside or remitting a decision, ordering further investigation, correcting a record, changing an interim measure or referring a matter to another authority. Historical records remain intact and show the correction, reason and reviewing authority.
+
+### Corruption, abuse and integrity threats
+The professional standards framework must identify and respond to risks including:
+- Bribery, extortion and improper payments.
+- Theft, fraud and misuse of public assets.
+- Favouritism, nepotism and improper influence.
+- Protection of criminal activity or organised groups.
+- Unauthorised disclosure or sale of information.
+- Evidence tampering, fabrication or concealment.
+- Abuse of arrest, search, detention or force powers.
+- Misuse of surveillance or intelligence access.
+- Improper relationships with suspects, witnesses or regulated businesses.
+- Retaliation, intimidation and witness interference.
+- Procurement and recruitment corruption.
+- Unexplained conflicts or undisclosed financial interests.
+
+Reports are routed to specialist or independent investigators according to risk and jurisdiction. Sensitive integrity information is restricted and protected from unauthorised access. The system must not expose confidential sources or whistleblowers through ordinary personnel screens.
+
+### Discrimination, harassment and inappropriate conduct
+The framework addresses unlawful discrimination, harassment, bullying, sexual harassment, victimisation, degrading treatment and inappropriate relationships involving colleagues or members of the public.
+
+It records the alleged behaviour, context, affected persons, power imbalance, safeguarding needs, relevant policy and evidence. Reports are handled sensitively and without retaliation. Informal resolution is not imposed where serious misconduct, safety risk or legal duties require formal action.
+
+The system distinguishes protected characteristics and relevant legal concepts from stereotypes or assumptions. Demographic data is collected and used only for lawful equality monitoring or other defined purposes with appropriate controls. It must not be used to infer misconduct or risk.
+
+### Use of force and serious incident conduct review
+Where an incident involves death, serious injury, firearm discharge, serious force, restraint, alleged assault, unlawful detention or other significant rights concern, the relevant operational and independent review requirements apply.
+
+BP-31 ensures professional conduct concerns are identified and routed, but does not replace:
+- Immediate medical response and incident command.
+- Independent criminal investigation where required.
+- Scene and evidence preservation.
+- Judicial or coroner processes.
+- Specialist use-of-force review.
+- Employment and disciplinary safeguards.
+
+The record distinguishes tactical or operational review, criminal investigation, professional standards investigation and final disciplinary finding. An officer's involvement in a serious incident does not itself establish misconduct. Equally, an operational debrief cannot substitute for an independent investigation where one is required.
+
+### Supervisory and command responsibility
+Professional standards apply to supervisors and commanders as well as individual officers. Potential concerns include:
+- Failure to supervise or intervene.
+- Improper orders or pressure.
+- Suppression of complaints or evidence.
+- Failure to report serious incidents.
+- Retaliation or discriminatory treatment.
+- Misuse of performance targets.
+- Conflicts of interest.
+- Neglect of staff welfare or competence.
+- Repeated failure to implement known corrective actions.
+
+Command responsibility is assessed using the actual authority, knowledge, duties, opportunity to act and relevant legal standard. A commander is not automatically liable for every subordinate act, and cannot avoid responsibility merely by delegating a task. The system records the chain of command, actual decisions, warnings, available resources and actions taken.
+
+### Whistleblowing and protected disclosures
+Employees and other eligible persons may report suspected wrongdoing, danger, legal breach, corruption, abuse or serious institutional failure through protected channels.
+
+The system supports:
+- Confidential or anonymous reporting where permitted.
+- Direct reporting outside the subject's command chain.
+- Referral to independent authorities.
+- Safe contact preferences.
+- Restricted identity and source information.
+- Risk assessment for retaliation.
+- Secure preservation of supporting material.
+- Acknowledgement and progress updates where safe and lawful.
+- Review of alleged retaliatory acts.
+
+The organisation must not penalise, threaten, isolate, disadvantage or improperly investigate a person for making a protected disclosure. Knowingly false or malicious allegations may be addressed only through a separate fair process; inability to substantiate a report is not proof of bad faith.
+
+### Public communication and transparency
+The service provides clear information about complaint routes, expected stages, available support and independent review. Public statements about an individual matter require authorised review, legal basis and consideration of privacy, fair-trial rights, witness safety and ongoing proceedings.
+
+Published statistics may include complaint volumes, categories, timeliness, outcomes, sanctions and systemic themes, subject to data quality and privacy protections. Definitions and reporting periods must be transparent. Figures must distinguish allegations, investigations, findings and criminal convictions.
+
+Transparency reporting must not expose protected identities or imply guilt before a finding. Suppression of unfavourable statistics, misleading presentation or manipulation of categories is itself a governance concern.
+
+### Professional learning and organisational improvement
+Findings, complaints themes, audit results, serious incident reviews and external recommendations inform policy, supervision, training and institutional change.
+
+Learning records identify:
+- Source and verified finding.
+- Systemic issue or individual competence gap.
+- Affected roles and processes.
+- Recommended action and accountable owner.
+- Training or policy changes.
+- Implementation deadline.
+- Evidence of effectiveness.
+- Review and closure authority.
+
+Learning reviews do not replace individual accountability. Conversely, individual discipline alone is not a sufficient response to a systemic policy, staffing, training or technology failure.
+
+### Records, confidentiality and retention
+BP-31 maintains authoritative records for complaints, concerns, referrals, investigations, interim measures, interviews, evidence links, hearings, findings, sanctions, appeals, external oversight and learning.
+
+Records distinguish:
+- Raw allegation.
+- Initial assessment.
+- Investigation hypothesis.
+- Evidence and source.
+- Interim risk decision.
+- Formal finding.
+- Disciplinary outcome.
+- Criminal or judicial outcome.
+- Appeal or correction.
+- Published or disclosed information.
+
+Access is role-based and purpose-limited. Complainant, witness, whistleblower and subject information receive safeguards appropriate to their status. Sensitive allegations must not become unrestricted personnel gossip or informal intelligence.
+
+Retention, review, deletion, legal holds and disclosure periods are governed by law and approved schedules. A correction never erases the original allegation or finding history. Access and changes are logged. Records cannot be destroyed to avoid accountability, nor retained indefinitely without lawful purpose.
+
+### Player experience and authority
+The player may be a complainant, witness, subject, supervisor, investigator, decision-maker or recipient of a professional standards direction only where their role and permissions permit. These roles must be separated when impartiality or law requires.
+
+As an ordinary officer, the player can receive a complaint, preserve relevant material, report a concern, comply with a lawful request, respond to an allegation and participate in required training. The player cannot decide their own complaint, alter an investigation record, intimidate a witness, suppress a referral or access confidential files without a legitimate purpose.
+
+If the player later holds an authorised professional standards role, that role requires defined appointment, training, independence, access, investigative authority, supervision and conflict controls. Rank alone does not grant access to every professional standards case.
+
+The interface distinguishes allegation, triage, formal investigation, interim measure, hearing, finding, sanction, appeal and final status. It displays the responsible authority, next procedural milestone, permitted actions and access restrictions without exposing protected identities or prejudicing an outcome.
+
+### Connections to other divisions
+- **BP-01 to BP-05:** foundational rules, population, institutions, police structure and jurisdiction.
+- **BP-06 and BP-07:** personnel records, employment status, career and service history.
+- **BP-08 and BP-09:** units, deployment, supervision and resources.
+- **BP-10 to BP-12:** patrol, communications and incident records.
+- **BP-13 to BP-18:** offences, crime generation, cases, investigation, victims, witnesses, suspects and offenders.
+- **BP-19 to BP-24:** interviews, surveillance, intelligence, crime scenes, evidence and forensics.
+- **BP-25 and BP-26:** arrest, warrants and custody.
+- **BP-27 and BP-28:** legal process, prosecution, courts and judicial outcomes.
+- **BP-29:** correctional interfaces and post-conviction status.
+- **BP-30:** institutional governance, risk, audit, public accountability and corrective action.
+- **BP-32:** ethics, conduct, legal compliance and specialist professional training.
+- **BP-33:** employment procedures, employee support and personnel administration.
+- **BP-34:** financial integrity, procurement and asset controls.
+- **BP-35 to BP-37:** simulation processing, relationships and time.
+- **BP-38 to BP-44:** authoritative records, persistence, interface, notifications, security, testing and configuration.
+
+### Exceptions and edge cases
+The design must handle anonymous or maliciously fabricated reports, mistaken identity, duplicate complaints, conflicting accounts, unavailable witnesses, complainant withdrawal, vulnerable complainants, protected disclosures, retaliation, senior subject, investigator conflict, external jurisdiction, parallel criminal proceedings, limitation deadlines, subject retirement or resignation, death of a subject or complainant, disputed employment status, anonymous evidence, unreliable recording, missing or altered source material, disclosure disputes, legal privilege, interim suspension challenge, pay or welfare consequences, inconsistent prior outcomes, repeat unsubstantiated complaints, substantiated complaint without disciplinary breach, criminal acquittal with separate employment question, conviction subject to appeal, whistleblower identity exposure, data breach, media disclosure, public interest request, external inspector demand, command interference, emergency reassignment, policy change during investigation, and records correction after final decision.
+
+### Acceptance conditions
+- Every person covered by the framework has an identifiable applicable code and procedural status.
+- Complaints and concerns receive persistent references, triage, ownership and traceable routing.
+- Allegations are not treated as findings or proof of guilt.
+- Serious, criminal, corrupt or conflicted matters are referred to competent independent authorities where required.
+- Early intervention cannot conceal a matter requiring formal or external investigation.
+- Investigations preserve inculpatory, exculpatory and contextual material.
+- Evidence provenance, lawful access, disclosure and chain of custody are maintained.
+- Subjects receive fair notice, opportunity to respond, impartial decision-making and applicable review rights.
+- Interim measures are precautionary, lawful, proportionate, time-limited and reviewed.
+- Parallel criminal and disciplinary proceedings remain distinct and coordinated without improper interference.
+- Disciplinary findings are reasoned, allegation-specific and made under the defined standard.
+- Sanctions are within authority, proportionate and appealable where provided.
+- Complaints, whistleblowing and witnesses are protected from retaliation.
+- Conflicts, corruption, discrimination, harassment and abuse are covered by explicit controls.
+- Serious force and harm incidents receive the correct independent and specialist reviews.
+- Supervisory responsibility is based on actual authority, duties, knowledge and conduct.
+- Public reporting distinguishes allegations, findings, disciplinary outcomes and criminal convictions.
+- Learning actions have owners, deadlines and evidence of effectiveness.
+- Sensitive records are access-controlled, versioned, retained and disclosed lawfully.
+- The player cannot investigate, decide or access a matter where role conflict or lack of authority prohibits it.
+
+**Draft status:** BP-31 is a working design. The police code of ethics, conduct standards, misconduct definitions, complaints authority, independent investigation mandate, disciplinary standard of proof, hearing and appeal structure, employment-law interface, whistleblower protections, disclosure rules, retention periods and statutory deadlines remain open. No complaints authority, professional standards unit, disciplinary hearing system or conduct-investigation software has been implemented by this design document.
+
