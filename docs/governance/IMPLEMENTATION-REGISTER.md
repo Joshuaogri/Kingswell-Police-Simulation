@@ -17,7 +17,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Verified | Private `game` schema; 40 tables, 78 foreign keys, 141 indexes; relationship smoke test passed; migrations committed to GitHub |
+| Database schema | Initial foundation verified | Private `game` schema; 40 tables, 78 foreign keys, 141 indexes; two migrations applied; no game data seeded |
 | Application/gameplay code | Not started | No simulation runtime or playable software yet |
 | Automated tests | Not started | Database structure verified; automated application/gameplay test suite not yet built |
 
@@ -59,15 +59,15 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-32 | Training and Development | Approved; design only; no training or competence software implemented |
 | BP-33 | Human Resources | Approved; design only; no HR or workforce software implemented |
 | BP-34 | Finance and Procurement | Approved; design only; no finance or procurement software implemented |
-| BP-35 | Simulation Engine | Approved; design only; no simulation runtime or game code implemented |
+| BP-35 | Simulation Engine | Approved; simulation runtime and game code not yet implemented |
 | BP-36 | Relationships and Social Context | Approved; design only; no relationship or social-context system implemented |
-| BP-37 | Time and Scheduling | Approved; design only; no clock or scheduling software implemented |
-| BP-38 | Records and Databases | Approved; design only; no game schema or migrations implemented |
+| BP-37 | Time and Scheduling | Approved; clock state and roster tables exist; clock engine and scheduler not yet implemented |
+| BP-38 | Records and Databases | Approved; initial 40-table schema and two migrations implemented and verified; full domain coverage incomplete |
 | BP-39 | Persistence and Recovery | Approved; design only; no backup or restore process implemented |
-| BP-40 | Interface | Approved; design only; no dedicated game interface implemented |
+| BP-40 | Interface | Approved; ChatGPT is the intended text interface; command/runtime integration not yet implemented |
 | BP-41 | Notifications and Reporting | Approved; design only; no notification or reporting service implemented |
-| BP-42 | Security and Permissions | Approved; design only; no game authentication or RLS policies implemented |
-| BP-43 | Testing and Quality Assurance | Approved; design only; no test suite or CI pipeline implemented |
+| BP-42 | Security and Permissions | Approved; RLS enabled on all 40 tables; authentication and access policies not yet implemented |
+| BP-43 | Testing and Quality Assurance | Approved; one manual relationship smoke test passed; automated tests and CI not yet implemented |
 | BP-44 | Configuration and Expansion | Approved; design only; no configuration or expansion framework implemented |
 
 ## Delivery stages
