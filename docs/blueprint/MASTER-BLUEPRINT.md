@@ -8853,3 +8853,336 @@ The system must isolate uncertain data, prevent unsafe replay, preserve audit ev
 - The project can recover without relying on undocumented manual knowledge or a single operator.
 
 **Draft status:** BP-39 is a working design. The actual Supabase backup and point-in-time recovery configuration, independent backup destination, backup frequency, retention periods, RPO, RTO, maximum tolerable downtime, encryption and key-management design, restore authority, recovery environment, restore-test schedule and disaster-recovery procedures remain open. No backup policy, automated backup job, restore exercise or disaster-recovery process has been implemented or verified for the Kingswell game database.
+
+
+---
+
+## BP-40 — Interface
+
+### Purpose and scope
+Define how the player interacts with the simulation, issues commands, receives information, reviews records, makes decisions and understands the current state of the game. BP-40 establishes a consistent, accessible, text-first interface that exposes the capabilities of the simulation without weakening domain rules, hiding uncertainty or overwhelming the player with unnecessary information.
+
+The permanent primary interface is conversational text through ChatGPT. The player experiences the game through an individual character and interacts by issuing natural-language or structured commands and receiving in-world responses, records, dispatches, decisions and status information.
+
+BP-40 covers:
+- Primary conversational interface and command interaction.
+- Command interpretation, clarification and confirmation presentation.
+- Response structure and status communication.
+- Navigation between operational and administrative contexts.
+- Record review, search and contextual display.
+- Player identity, role and current-character context.
+- Operational dashboards and concise status summaries.
+- Forms, structured choices and decision prompts where necessary.
+- Error, warning, pending and completion messages.
+- Accessibility, usability and information hierarchy.
+- Optional future visual and graphical interface extensions.
+- Interface consistency, help and discoverability.
+
+BP-40 does not replace:
+- BP-35 for command execution, simulation state and runtime orchestration.
+- BP-37 for authoritative time and scheduling.
+- BP-38 for authoritative records, schemas and query contracts.
+- BP-41 for notification delivery, reporting and alert rules.
+- BP-42 for authentication, authorisation and security.
+- BP-43 for usability, accessibility and interface testing.
+- BP-44 for configurable interface options and controlled expansion.
+
+The interface displays the outcome produced by authoritative domain systems. It does not create police powers, change records outside the approved workflow, determine legal status or invent facts to make a response appear complete.
+
+### Primary interface principles
+The interface is:
+- Text-first: all essential gameplay can be completed through text.
+- Conversational: the player can describe an intended action naturally.
+- Command-capable: stable structured commands are available for repeatable operations.
+- Context-aware: responses use the player's current character, role, location, assignment and permitted context.
+- Honest: it distinguishes completed, pending, rejected, unavailable and uncertain outcomes.
+- Concise by default: routine responses prioritise the information needed for the current decision.
+- Detailed on demand: the player can request full records, timelines, documents and explanations.
+- Consistent: the same action and record use consistent terms, identifiers and status labels.
+- Accessible: information does not depend on colour, graphics, sound or a particular input device.
+- Safe: the interface does not reveal restricted information or bypass domain permissions.
+- Recoverable: the player can understand what was last saved and what remains pending.
+- Extensible: optional visual features may supplement text but never become mandatory for core play.
+
+The interface must not require the player to learn a large command language before starting. Natural-language input remains available, while structured commands improve speed, precision and repeatability.
+
+### Player identity and active character context
+The interface identifies the active player character and displays relevant current context, such as:
+- Character name and stable identity.
+- Rank, appointment, position and unit.
+- Current posting or duty assignment.
+- Duty and availability status.
+- Current location where known and permitted.
+- Current simulation date and time.
+- Current operational or administrative context.
+- Relevant authority, qualification or access limitations.
+- Outstanding tasks, approvals or urgent matters.
+
+The interface must not confuse the user's ChatGPT account identity with the fictional character's identity. It must not assume that the player is acting as a chief officer, supervisor, investigator or other role unless the character's current appointment and authority establish that capability.
+
+A player may have multiple saved characters or scenarios only if the approved configuration supports them. Switching characters is an explicit action and must not silently transfer authority, records, possessions or ongoing duties between characters.
+
+### Natural-language commands and structured commands
+The player can issue commands in ordinary language. The command interface identifies the intended action and maps it to a documented domain operation.
+
+Structured commands may be provided for common activities, such as:
+- View current status.
+- Review duty or assignment.
+- Receive or acknowledge a dispatch.
+- Open an incident or case record.
+- Search an authorised record.
+- Submit a report or request.
+- Record an observation or action.
+- Request approval.
+- Review evidence or a timeline.
+- Check a schedule or deadline.
+- Request time advancement.
+- Review a pending task or decision.
+
+Exact command syntax remains configurable and is not required to be the only input method. Command aliases and natural-language variants must resolve to the same underlying operation and permissions.
+
+The interface distinguishes a request to view information from a request to change it. A question about whether an action is possible must not be interpreted as authorisation to perform it.
+
+### Ambiguity, clarification and confirmation
+If an essential command detail is missing or ambiguous, the interface asks a concise clarification question. It does not invent a person, location, case, time, legal authority or target.
+
+Clarification is required where ambiguity could:
+- Affect the wrong person or record.
+- Cause an irreversible or high-impact action.
+- Change legal status or authority.
+- Create or disclose sensitive information.
+- Commit expenditure or issue a payment.
+- Affect evidence, custody, employment or discipline.
+- Advance simulation time or skip a critical event.
+- Cause a resource to be assigned or released incorrectly.
+
+A confirmation prompt is used for consequential actions where the player must understand the effect before execution. The prompt states the action, target, relevant consequences and any required authority. Confirmation does not override a missing legal power or permission.
+
+The interface avoids unnecessary forms. It uses conversational clarification for a single missing detail and structured controls only where several independent inputs must be collected or a controlled choice is required.
+
+### Command outcome and status presentation
+Every action response uses clear status language. It distinguishes:
+- Completed and persisted.
+- Accepted for processing.
+- Submitted for approval.
+- Pending another actor or process.
+- Partially completed.
+- Rejected by a domain rule.
+- Blocked by missing authority or permission.
+- Unavailable because a dependency is offline.
+- Failed without a state change.
+- Outcome uncertain and requiring reconciliation.
+
+The interface never describes an action as completed when it is merely parsed, submitted, queued or acknowledged. Where a process is pending, it identifies the responsible decision-maker or next status where that information is permitted.
+
+For a failed or rejected action, the interface explains the reason at a level that helps the player correct the request without disclosing protected control details or sensitive security information.
+
+### Response structure and information hierarchy
+Responses prioritise:
+1. The immediate result or answer.
+2. The key facts needed for the current decision.
+3. Any limitation, uncertainty, authority requirement or pending state.
+4. Relevant record identifiers and references.
+5. Further detail available on request.
+
+Operational responses may include concise headers such as:
+- Current status.
+- Incident or task reference.
+- Location and time.
+- Assigned personnel or resources.
+- Required action or decision.
+- Authority or approval status.
+- Important risk or safety information.
+
+Administrative and investigative responses may use structured records, timelines, evidence lists, decision logs or document extracts. The format should fit the task rather than forcing every response into the same template.
+
+Long records may be displayed in sections or retrieved on request. The interface should not omit a material fact merely to remain brief; it should clearly indicate when a summary is not the complete record.
+
+### Navigation and working contexts
+The interface provides predictable navigation between:
+- Personal status and career.
+- Current duty and deployment.
+- Dispatch and active incidents.
+- Patrol and field activity.
+- Investigations and cases.
+- Victims, witnesses and suspects.
+- Evidence, scenes and forensic results.
+- Arrest, custody and legal processes.
+- Courts and correctional matters.
+- Department governance and professional standards.
+- Training and qualifications.
+- Human resources and finance.
+- People, properties, businesses and organisations.
+- Relationships and social context.
+- Time, calendars and schedules.
+- Records, reports and notifications.
+
+Navigation does not grant access. A user may see that a category exists while being denied access to a specific record because of role, purpose or legal restriction.
+
+The interface preserves context where safe, such as the active case or incident, but it must not assume that every later command relates to the same record. When context is ambiguous, the player is asked to identify the target.
+
+### Record views and information display
+A record view uses a consistent layout appropriate to the domain. It may include:
+- Stable identifier and title.
+- Current status and effective date.
+- Key parties and linked entities.
+- Relevant location and time.
+- Source and verification status.
+- Current owner or responsible unit.
+- Important history and recent changes.
+- Related records the player may access.
+- Pending actions and deadlines.
+- Access restrictions or redactions where appropriate.
+
+A summary is clearly labelled as a summary. A complete record can be requested where the player's permissions allow it. The interface distinguishes missing information from information that exists but is restricted.
+
+The player can request chronological views, relationship views, document lists, evidence inventories, decision histories and other domain-defined representations. These are views of authoritative records, not independent sources of truth.
+
+### Operational status and dashboards
+A dashboard is a role-appropriate summary of current responsibilities and actionable information. It may display:
+- Current duty and assignment.
+- Active task or incident.
+- Pending dispatch or acknowledgement.
+- Available or assigned resources.
+- Outstanding reports and approvals.
+- Upcoming appointments or deadlines.
+- Relevant notifications and alerts.
+- Training or qualification warnings.
+- Current restrictions or temporary limitations.
+
+Dashboards are tailored to the user's role and current context. A patrol officer should not receive the same default view as a dispatcher, investigator, HR officer, finance officer or commander.
+
+A dashboard must not become a substitute for the authoritative record. It identifies when data was last updated and whether a value is current, estimated, provisional or unavailable.
+
+### Structured choices and forms
+Structured controls are used where they materially reduce error or are required by the domain process. Examples include:
+- Selecting an identified person, incident or case.
+- Choosing a permitted status transition.
+- Entering several required fields for a formal request.
+- Confirming a high-impact action.
+- Recording a controlled classification.
+- Selecting a date or time from an unambiguous calendar.
+- Reviewing and approving a documented decision.
+
+Forms identify required and optional fields, validation rules, source requirements and the decision authority. A form submission is not equivalent to approval or completion. Partial submissions are allowed where the domain permits them and are clearly marked incomplete.
+
+The interface must not use decorative or inert controls that imply an action is available when it is not connected to an authoritative process.
+
+### Search and contextual retrieval
+Search is available through natural language and structured filters where permitted. The player may search by identifier, name, location, date range, case reference, status or other approved field.
+
+Search results distinguish exact and possible matches. They show enough information to identify the result without exposing restricted data. Search does not establish that a person is the same individual, that an allegation is true or that a record is current.
+
+The interface supports follow-up queries against the active result, but it must confirm the target when more than one record could match. A search with no results does not prove that no record exists; the system may explain that the record is unavailable or outside the user's access.
+
+### Help, guidance and discoverability
+The interface provides concise help for:
+- Available commands and actions.
+- Current character authority and restrictions.
+- Record terminology and status meanings.
+- How to search and open records.
+- How to submit reports and requests.
+- How approval and escalation work.
+- How time advancement operates.
+- How to resume after interruption.
+- How to request more detailed output.
+
+Help is contextual and does not reveal restricted system configuration, hidden case solutions or information outside the player's role.
+
+The player can ask what actions are available in the current context. The response lists permitted options and identifies actions that require approval or another role without implying that unavailable actions can be forced through.
+
+### Error handling and feedback
+The interface distinguishes user input errors, domain-rule rejection, permission denial, unavailable information, dependency failure and persistence failure.
+
+Error messages:
+- Identify the affected command or record.
+- Explain the actionable reason where safe.
+- State whether any change occurred.
+- Identify whether retry is safe.
+- Provide a correction or escalation route where appropriate.
+- Avoid exposing secrets, internal security configuration or protected records.
+
+If a write outcome is uncertain, the interface advises reconciliation rather than inviting an unsafe duplicate submission. A retry must use the command and idempotency controls defined by BP-35.
+
+### Accessibility and usability
+The text interface is usable without colour, animation, sound, maps or images. It supports clear headings, plain language, predictable terminology, readable lists and tables, and keyboard-accessible interaction through the host platform.
+
+The design considers:
+- Screen readers and semantic structure.
+- Clear labels and meaningful control names.
+- Non-colour status indicators.
+- Consistent date, time and number formats.
+- Manageable information density.
+- Clear distinction between warning, error and routine status.
+- Avoidance of unnecessary repetition.
+- User control over detail level where safe.
+- Accessible alternatives to graphical or spatial information.
+- Plain-language explanation of complex legal or administrative states.
+
+A graphical enhancement must have an equivalent text representation for every essential fact and action.
+
+### Optional visual and graphical extensions
+Future versions may add maps, diagrams, floor plans, vehicle or evidence illustrations, timelines, dashboards and other visual representations. These are optional aids, not a replacement for the text-first interface.
+
+Every visual feature must:
+- Use authoritative records and current permissions.
+- Display source, time and uncertainty where relevant.
+- Provide a text equivalent.
+- Avoid implying precision beyond the underlying data.
+- Preserve the same action and authority rules as the text interface.
+- Remain optional for core gameplay.
+- Avoid revealing hidden information or case solutions.
+
+A map pin, diagram or image is not itself proof of location, identity or evidential interpretation. Visual annotations must be traceable to their source record.
+
+### Player control and game continuity
+The interface makes the current simulation state understandable without taking control away from the player. It does not automatically make discretionary decisions on the player's behalf unless the player has expressly authorised a defined routine action and the relevant domain permits it.
+
+The interface supports:
+- Clear start and resume behaviour.
+- Identification of the active character and scenario.
+- Retrieval of the last confirmed state.
+- Review of pending actions.
+- Explicit time advancement.
+- Safe interruption and return.
+- Correction requests and audit review.
+- Distinction between in-world actions and project-development actions.
+
+Project administration, blueprint editing and software implementation are not silently treated as in-world gameplay. The player can clearly distinguish playing the officer from changing the game design.
+
+### Connections to other divisions
+- **BP-01 to BP-39:** all domain systems and authoritative records exposed through the player interface.
+- **BP-35:** command interpretation, execution status and runtime response.
+- **BP-37:** current time, schedules, calendars and time advancement.
+- **BP-38:** record retrieval, schema contracts, provenance and data status.
+- **BP-39:** save confirmation, recovery status and session continuity.
+- **BP-41:** notifications, alerts, reporting and delivery status.
+- **BP-42:** identity, permissions, restricted information and secure interaction.
+- **BP-43:** usability, accessibility, workflow and interface testing.
+- **BP-44:** display preferences, command aliases and controlled interface configuration.
+
+### Exceptions and edge cases
+The design must handle an ambiguous command; multiple matching records; an action submitted in the wrong context; an unavailable or expired authority; a user with several roles; a character whose employment or duty status changes; a pending action interrupted by session loss; a response generated before persistence confirmation; a failed or uncertain write; a duplicate command; a long record that cannot be displayed in one response; restricted information within an otherwise accessible record; a stale dashboard value; conflicting timestamps; a form with incomplete required fields; a control unavailable to the current role; a user misunderstanding a warning; a high-impact action requiring confirmation; a notification that arrives after the underlying status changes; a visual feature unavailable; an accessibility setting that changes layout; a player switching characters; a resumed session with unresolved operations; and a system error that prevents authoritative data retrieval.
+
+The interface must communicate the actual state, preserve context where safe and avoid implying that a user action succeeded when it did not.
+
+### Acceptance conditions
+- All essential gameplay can be completed through text.
+- Natural-language and structured commands use the same domain rules and permissions.
+- The active character and current role are clear.
+- The interface distinguishes questions, requests, approvals and completed actions.
+- Ambiguous high-impact commands require clarification.
+- Consequential actions receive appropriate confirmation and status feedback.
+- Responses distinguish completed, pending, rejected, failed and uncertain outcomes.
+- Record views identify authoritative status, source, time and uncertainty.
+- Search respects permissions and distinguishes exact from possible matches.
+- Dashboards are role-appropriate and do not replace authoritative records.
+- Forms and controls are connected to real domain actions and display validation.
+- Error messages are actionable without disclosing protected information.
+- The interface remains usable without graphics, sound or colour.
+- Optional visual features have equivalent text representations.
+- The player retains control over discretionary actions and simulation time.
+- Session resumption accurately identifies the last confirmed state.
+- Development administration is distinguishable from in-world gameplay.
+
+**Draft status:** BP-40 is a working design. The final command catalogue, response templates, dashboard layouts, navigation model, accessibility standards, record-view specifications, interaction confirmation thresholds, visual feature scope and host-platform integration details remain open. The intended ChatGPT conversational interface is available as the project interaction concept, but no dedicated game interface, command application, dashboard or player portal has been implemented.
