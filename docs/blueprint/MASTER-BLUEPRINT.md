@@ -8493,3 +8493,363 @@ The system must preserve source material, identify affected records, prevent sil
 - The player can distinguish authoritative records from derived, cached, provisional or inaccessible information.
 
 **Draft status:** BP-38 is a working design. The final domain register, entity catalogue, identifier formats, schema boundaries, PostgreSQL schemas and table definitions, row-level security policies, data classification scheme, audit implementation, retention schedule, legal-hold rules, migration framework, query contracts, integration standards and deployment environments remain open. The connected Supabase project currently has no Kingswell game tables or migrations. No authoritative game database schema or data-access application has been implemented by this design document.
+
+
+---
+
+## BP-39 — Persistence and Recovery
+
+### Purpose and scope
+Define how the simulation's authoritative state survives sessions, deployments, failures, accidental changes, data corruption and infrastructure disruption. BP-39 ensures that consequential records are durably saved, recoverable to a known point, protected against unauthorised loss or alteration, and restored in a way that preserves identity, chronology, evidence, legal status and player continuity.
+
+BP-39 covers:
+- Durable persistence of authoritative game state.
+- Transaction durability and commit confirmation.
+- Backup strategy, scope, frequency and retention.
+- Recovery objectives and restoration priorities.
+- Point-in-time and logical recovery approaches where supported.
+- Disaster recovery and continuity arrangements.
+- Backup protection, encryption and access controls.
+- Restore testing and recovery exercises.
+- Recovery-point selection and reconciliation.
+- Migration and release recovery.
+- Data corruption detection and repair.
+- Recovery of event queues, scheduled jobs and in-progress workflows.
+- Session continuity and safe resumption.
+- Operational monitoring, incident response and recovery governance.
+
+BP-39 does not replace:
+- BP-35 for runtime execution, event processing and transaction coordination.
+- BP-37 for authoritative simulation time and time advancement.
+- BP-38 for record definitions, data integrity, schema ownership and audit structure.
+- BP-42 for security, authentication, permissions and secrets management.
+- BP-43 for testing, verification and quality assurance.
+- BP-44 for approved recovery and infrastructure configuration.
+
+A successful database connection is not proof that data is safely backed up. A backup job reporting success is not proof that the backup can be restored. A restored database is not automatically safe to use until integrity, chronology, access controls, application compatibility and critical workflows have been checked.
+
+The connected Supabase project is the intended authoritative database platform, but the actual backup, point-in-time recovery, retention and regional recovery capabilities available to the project must be verified against its current configuration and plan. BP-39 must not claim that a capability is enabled merely because the platform may support it.
+
+### Persistence principles
+Persistence follows:
+- Durability: a confirmed consequential change survives ordinary session termination and expected service restart.
+- Consistency: committed records satisfy the applicable database and domain integrity rules.
+- Atomicity: related changes either complete together or enter an explicitly managed workflow state.
+- Isolation: concurrent operations cannot silently corrupt shared state.
+- Recoverability: authoritative data can be restored to a known valid point.
+- Traceability: recovery actions and restored state are documented.
+- Least privilege: backup and recovery access is restricted.
+- Separation: backup copies are protected from the same failure or unauthorised change that affects the primary data.
+- Verification: restore capability is tested, not assumed.
+- Continuity: recovery preserves player identity, simulation time, open cases and other critical state.
+- Honesty: the system reports what was saved, what was recovered and what remains uncertain.
+
+A user-facing response must not claim that an action is permanently saved until the authoritative persistence layer confirms the required commit. A pending or failed write must be reported as pending or failed, not as a completed game action.
+
+### Authoritative persistence model
+Supabase PostgreSQL is the intended authoritative store for live game records. Other copies may exist for backup, testing, analytics, cache, export or development, but none may silently become a competing source of truth.
+
+The architecture distinguishes:
+- Primary authoritative database.
+- Transactional event and audit records.
+- Backup copies.
+- Point-in-time recovery logs or provider-managed recovery resources where enabled.
+- Logical exports and archival copies.
+- Derived caches and search indexes.
+- Test and development databases.
+- Temporary processing state and queues.
+- User-facing session or conversation context.
+
+The authoritative database owns committed game state. A cache may accelerate reads but must be rebuildable or reconcilable. A local or conversation copy is not an authoritative backup. A spreadsheet or exported JSON file is not a valid replacement for relational constraints and audit history unless an approved recovery procedure explicitly uses it.
+
+The database architecture identifies which records must be transactionally committed together. Critical operations such as case creation, evidence registration, arrest processing, custody admission, court-order execution, personnel status change, financial payment and simulation-time advancement must not produce unexplained partial state.
+
+### Transaction durability and confirmation
+Consequential operations use database transactions or explicit workflow controls. The system confirms completion only after the authoritative write is committed and the result is available for verification.
+
+A transaction record may include:
+- Unique operation and transaction identifiers.
+- Initiating command or event.
+- Participating domain records.
+- Starting and resulting state.
+- Commit or rollback status.
+- Database and application version.
+- Processing and commit timestamps.
+- Idempotency key where applicable.
+- Error or retry information.
+- Related audit and event identifiers.
+
+If the connection fails during a write, the engine must determine whether the transaction committed before retrying. It must not blindly repeat a payment, arrest, evidence registration, appointment, time advancement or other consequential action.
+
+For long-running or multi-system workflows, the system uses explicit states and compensating actions where appropriate. A compensating action does not erase the original event; it creates a linked correction, reversal or cancellation record.
+
+### Persistence requirements by data class
+Different records have different recovery criticality. The data classification and recovery register identifies the required protection for:
+- Canonical identities and person records.
+- Police personnel and authority records.
+- Incidents, cases and investigation history.
+- Evidence, exhibits, chain of custody and forensic results.
+- Arrests, warrants, custody and legal orders.
+- Court decisions, sentences and correctional status.
+- Governance, complaints and disciplinary records.
+- Training, qualification and employment history.
+- Financial transactions, approvals, suppliers and contracts.
+- Relationships, households and social context.
+- Simulation clock and time-advancement history.
+- NPC state and relevant world activity.
+- Commands, events, queues and in-progress workflows.
+- Configuration, schema and migration history.
+- Access-control, security and audit records.
+
+The recovery register identifies which records are critical, how they are backed up, their retention requirements, their acceptable recovery point, their restore dependencies and how integrity is verified.
+
+Derived data such as caches, search indexes and non-authoritative summaries may be rebuilt only if their source records are safely preserved and the rebuild process is tested. Critical case or evidential material must not be treated as disposable derived data.
+
+### Backup strategy
+The backup strategy uses complementary mechanisms appropriate to the platform and approved risk level. These may include:
+- Provider-managed automated backups.
+- Point-in-time recovery where enabled and suitable.
+- Scheduled logical database exports.
+- Separate copies of schema and migration history.
+- Encrypted archival copies of critical configuration and documentation.
+- Independent copies of essential operational records where justified.
+- Tested export of application and integration configuration without secrets.
+
+The final combination, frequency and retention periods are configuration decisions based on actual platform capabilities, data volume, cost, legal requirements and recovery objectives.
+
+Backups must cover the data and metadata necessary to restore a coherent system. A database-only backup may be insufficient if recovery also requires schema migrations, storage objects, edge-function code, configuration, access policies, external integration settings or encryption keys.
+
+Backup procedures identify:
+- Scope and excluded data.
+- Source project and environment.
+- Backup type and method.
+- Start and completion time.
+- Consistency point.
+- Encryption and key management.
+- Destination and geographic separation.
+- Retention and expiry.
+- Access restrictions.
+- Integrity checksum or verification method.
+- Result, errors and operator or automated process.
+- Restore test history.
+
+A backup is not considered valid merely because a file exists or a provider reports a successful operation. The system verifies that the copy is complete, readable, consistent and restorable.
+
+### Backup isolation and protection
+Backup copies are protected against:
+- Accidental deletion.
+- Malicious alteration or ransomware.
+- Compromised application credentials.
+- Compromised database credentials.
+- Unauthorised staff access.
+- Primary-region or provider disruption.
+- Corruption propagated from the live database.
+- Retention expiry caused by incorrect configuration.
+
+Where supported, backup storage uses separate access controls and credentials from the primary application. Administrative deletion or retention changes require restricted authority and audit. At least one recovery copy should be protected from ordinary application write permissions.
+
+Encryption is used in transit and at rest according to the platform and approved security design. Key access, rotation, recovery and loss procedures are documented. Encryption keys and recovery credentials are not stored in the same unprotected location as the backup they secure.
+
+Secrets, service-role keys, database passwords and recovery tokens must never be committed to GitHub or placed in ordinary project documentation. A recovery procedure must explain how authorised operators regain access without exposing credentials.
+
+### Recovery objectives and priorities
+The project defines recovery objectives for each critical service and data class:
+- **Recovery Point Objective (RPO):** the maximum acceptable amount of committed data loss measured in time.
+- **Recovery Time Objective (RTO):** the target time to restore a service to an agreed operational state.
+- **Maximum Tolerable Downtime:** the longest disruption that can be accepted before a different continuity response is required.
+- **Recovery priority:** the order in which services and records are restored.
+- **Integrity requirement:** the checks required before a restored service is trusted.
+
+Exact numerical targets remain open until the expected workload, platform capability, budget and legal requirements are known. The project must not claim a one-minute RPO, one-hour RTO or any other target without an approved and tested basis.
+
+Recovery priorities consider:
+1. Identity, access control and security configuration.
+2. Authoritative database and schema integrity.
+3. Simulation clock and timeline consistency.
+4. Critical police, incident, case, evidence and legal records.
+5. Personnel authority, qualifications and operational availability.
+6. Financial and contractual records.
+7. Active event queues and in-progress workflows.
+8. NPC, relationship and world state.
+9. Notifications, reporting, caches and other rebuildable services.
+
+The exact order may change during an incident according to safety, legal and operational requirements. Restoration must not make a lower-priority service appear operational while its required authoritative dependencies are unavailable.
+
+### Recovery scenarios
+Recovery planning covers:
+- Accidental record deletion or incorrect bulk update.
+- Failed or corrupted database migration.
+- Database corruption or integrity failure.
+- Compromised credentials or unauthorised data modification.
+- Provider or regional service outage.
+- Loss of database connectivity.
+- Failed deployment or incompatible application release.
+- Damaged or unavailable backup copy.
+- Storage or integration failure.
+- Interrupted transaction or workflow.
+- Event queue duplication or loss.
+- Incorrect simulation-time advancement.
+- Loss of configuration or access policy.
+- Human error during administration.
+- Cyber incident or malicious destruction.
+- Recovery to a point before an erroneous action.
+- Full project restoration after catastrophic loss.
+
+Each scenario identifies detection, containment, decision authority, recovery source, restoration steps, validation checks, communication, return-to-service criteria and post-incident review.
+
+### Point-in-time and logical recovery
+Where the platform supports point-in-time recovery, the procedure defines how a target recovery instant is selected, how the restored environment is isolated, how the resulting state is validated and how any missing later transactions are reconciled.
+
+Logical recovery may be used to restore selected records or schemas where a full database restore would unnecessarily remove valid later activity. It requires a clear understanding of dependencies and referential integrity.
+
+A recovery operation must not overwrite the live database until:
+- The target restore point is approved.
+- The restored environment is isolated from ordinary writes.
+- Schema and migration state are checked.
+- Critical record counts and relationships are validated.
+- Evidence and audit history are checked.
+- Simulation time and event chronology are reconciled.
+- Application and access-control compatibility are verified.
+- The recovery decision and expected data loss are approved.
+
+If valid activity occurred after the chosen recovery point, it is not silently discarded. The recovery plan identifies whether those transactions can be safely replayed, reconstructed, imported or must be recorded as lost. Replay is idempotent and must not duplicate consequential outcomes.
+
+### Simulation time and continuity
+The authoritative simulation clock is stored and recovered as part of the game state. Restoring data must not cause the clock to move forward or backward without an authorised recovery decision.
+
+The system reconciles:
+- Last committed simulation time.
+- Last authorised time-advancement operation.
+- Events processed during that advancement.
+- Scheduled tasks completed or pending.
+- In-progress actions and approvals.
+- NPC and resource state affected by the interval.
+- Player commands received before interruption.
+
+If the database is restored to an earlier point, later simulation events cannot remain as unexplained facts. They must be replayed from preserved event records, reconstructed through an approved process or explicitly marked as not recovered.
+
+The default pause rule in BP-37 remains in force during outage and player absence. Real-world elapsed downtime does not automatically become simulated time.
+
+### Event queues and in-progress workflows
+Recovery includes the state of queued, processing, completed, failed and quarantined events. Each event has a stable identifier and processing status so that recovery can distinguish work that must be retried from work already committed.
+
+A workflow recovery record identifies:
+- Workflow and operation identifiers.
+- Last completed step.
+- Pending step and prerequisites.
+- Committed domain changes.
+- External side effects already performed.
+- Idempotency and retry state.
+- Compensating or reconciliation action.
+- Responsible recovery owner.
+
+External side effects such as email, payment instructions or third-party requests require reconciliation against the external service before replay. A database rollback does not automatically reverse an external payment or notification.
+
+### Migration and deployment recovery
+Every schema or application release has a recovery plan. It identifies:
+- Release identifier and versions.
+- Database migration dependencies.
+- Pre-deployment backup or recovery point.
+- Compatibility requirements.
+- Data transformations and backfills.
+- Health checks and acceptance tests.
+- Rollback, forward-fix or restore strategy.
+- Decision authority and deployment record.
+
+A migration that cannot safely be rolled back must have a forward-repair or restore strategy approved before deployment. A migration is not considered complete until post-deployment validation succeeds.
+
+The project must preserve the migration files and application source in GitHub, but GitHub history is not a substitute for a database backup. Conversely, a database backup is not a substitute for version-controlled source, migration scripts and configuration.
+
+### Restore testing and recovery exercises
+Recovery procedures are tested on an isolated environment using representative data or approved synthetic fixtures. Tests cover:
+- Backup discovery and access.
+- Integrity and checksum verification.
+- Restore execution.
+- Schema and migration reconciliation.
+- Record counts and critical relationships.
+- Identity and foreign-key integrity.
+- Case and evidence history.
+- Financial transaction consistency.
+- Simulation clock and event chronology.
+- Access-control and row-level security behaviour.
+- Application compatibility.
+- Queue and workflow resumption.
+- Recovery timing and operator steps.
+- Documentation and evidence of completion.
+
+A successful backup job is not a restore test. A restore test must demonstrate that the system can be brought to a usable, validated state.
+
+Exercises are recorded with scope, date, participants, recovery source, elapsed time, issues, corrective actions, evidence and approval. Failed exercises create tracked remediation rather than being reported as successful.
+
+### Session continuity and player resumption
+The player can resume from the last confirmed authoritative state. The system identifies the last committed command, event, simulation time and relevant workflow state.
+
+On resumption, the player receives an accurate account of:
+- Last confirmed saved state.
+- Any command or operation whose outcome is uncertain.
+- Pending approvals or workflows.
+- Records restored or unavailable.
+- Any recovery limitation affecting play.
+- Whether the simulation clock changed through an authorised process.
+
+The system must not present a partially saved action as completed. Where the outcome of a transaction cannot be established, it is held for reconciliation before a duplicate action is permitted.
+
+### Recovery governance and incident management
+A recovery action has a designated decision-maker and recorded authority. The incident record includes:
+- Incident identifier and severity.
+- Detection and notification time.
+- Affected services and data.
+- Suspected cause and scope.
+- Containment actions.
+- Recovery point and source selected.
+- Expected data loss and operational impact.
+- Approval and execution history.
+- Validation results.
+- Return-to-service decision.
+- Outstanding risks and workarounds.
+- Post-incident review and corrective actions.
+
+A person who caused or is implicated in an unauthorised change must not have sole authority to approve the recovery or certify the resulting integrity. Independent review is required according to risk.
+
+### Player experience and authority
+The player should not need to manage technical backups during ordinary gameplay. The interface may report service availability, saved-state confirmation and any material recovery interruption.
+
+Only authorised administrators and recovery roles may initiate backup, restore, migration rollback or disaster-recovery actions. A player cannot rewind the authoritative game world to avoid consequences, erase evidence, reverse a disciplinary outcome or restore an earlier financial state for personal advantage.
+
+A legitimate simulation reset, scenario restart or test restore is a separate controlled operation under BP-44 and must not overwrite the live authoritative game without explicit approval and preservation of required history.
+
+### Connections to other divisions
+- **BP-01 to BP-38:** all blueprint domains whose authoritative records, state and history require persistence.
+- **BP-35:** transaction, event, command and workflow recovery.
+- **BP-37:** authoritative clock, time advancement, schedule state and temporal consistency.
+- **BP-38:** record schemas, identifiers, provenance, audit, migrations and data integrity.
+- **BP-40 and BP-41:** player session resumption, status display and recovery notifications.
+- **BP-42:** backup permissions, credential protection, encryption and recovery access.
+- **BP-43:** backup, restore, migration, integrity and disaster-recovery tests.
+- **BP-44:** environment configuration, approved resets and controlled recovery settings.
+
+### Exceptions and edge cases
+The design must handle a backup that reports success but cannot be restored; a backup with missing storage objects or configuration; a recovery copy encrypted with an unavailable key; accidental deletion discovered after a retention period; corruption copied into several backups; an incorrect recovery point; valid transactions after the recovery point; a failed restore; a migration partially applied; a provider outage during recovery; loss of both primary and backup credentials; a compromised administrator account; a duplicate event replay; a payment made externally before database rollback; a notification delivered before recovery; a restored clock inconsistent with event history; an event queue containing unknown processing status; a workflow with an unrecorded external side effect; a backup taken during an inconsistent export; an expired legal hold; a restore that violates access policies; an incompatible application version; a missing migration file; a test restore accidentally connected to production integrations; a recovery exercise using live personal data without approval; a failed reconciliation; and a prolonged outage requiring controlled manual records.
+
+The system must isolate uncertain data, prevent unsafe replay, preserve audit evidence, identify the actual recovery point and require validation before normal operation resumes.
+
+### Acceptance conditions
+- Every confirmed consequential change is durably persisted before success is reported.
+- Critical operations use atomic transactions or explicit recoverable workflows.
+- The authoritative database is distinguished from caches, exports and test copies.
+- Backup scope, frequency, destination, retention and access are documented.
+- Backup copies are protected against common primary-system failures and unauthorised alteration.
+- Actual provider backup and point-in-time capabilities are verified rather than assumed.
+- RPO, RTO and recovery priorities are approved and tested before being claimed.
+- Restore procedures validate schema, identity, references, evidence, financial data and audit history.
+- The simulation clock and event chronology remain coherent after recovery.
+- Event queues and in-progress workflows can be safely reconciled without duplicate outcomes.
+- External side effects are checked before a workflow is replayed.
+- Database and application releases have documented recovery strategies.
+- Restore exercises demonstrate usable recovery and produce evidence.
+- Player resumption identifies the last confirmed state and any uncertain operation.
+- Recovery actions are authorised, auditable and independently reviewed where required.
+- Technical backups do not silently advance or rewind simulation time.
+- The project can recover without relying on undocumented manual knowledge or a single operator.
+
+**Draft status:** BP-39 is a working design. The actual Supabase backup and point-in-time recovery configuration, independent backup destination, backup frequency, retention periods, RPO, RTO, maximum tolerable downtime, encryption and key-management design, restore authority, recovery environment, restore-test schedule and disaster-recovery procedures remain open. No backup policy, automated backup job, restore exercise or disaster-recovery process has been implemented or verified for the Kingswell game database.
