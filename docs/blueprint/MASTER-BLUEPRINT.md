@@ -7064,3 +7064,368 @@ Every exception has a defined status, owner, authority, evidence requirement, es
 - The player can perform only the financial actions permitted by their current role and delegation.
 
 **Draft status:** BP-34 is a working design. The fictional public finance and procurement laws, accounting framework, chart of accounts, financial year, currencies, tax rules, approval thresholds, procurement thresholds, tender and challenge procedures, audit mandate, banking arrangements, payroll rules, expense limits, asset accounting policy, grant framework, retention periods and exact delegation schedule remain open. No budgeting system, accounting ledger, procurement platform, supplier register, contract-management system, payroll engine, payment integration or financial reporting software has been implemented by this design document.
+
+
+---
+
+## BP-35 — Simulation Engine
+
+### Purpose and scope
+Define the runtime architecture that turns the approved blueprint, persistent records, player commands, schedules, world conditions and non-player behaviour into a coherent, causally consistent and persistent police simulation. BP-35 governs how the game interprets actions, evaluates conditions, advances simulation processes, generates and resolves events, updates state, coordinates systems and produces responses.
+
+The simulation engine is the execution layer of the game. It does not replace the domain rules owned by the other blueprint divisions. It provides the controlled mechanisms through which those rules operate.
+
+BP-35 covers:
+- Simulation runtime and orchestration.
+- Command intake, validation, execution and response.
+- Simulation state, transactions and controlled state transitions.
+- Event creation, ordering, processing and consequences.
+- Scheduled and triggered processing.
+- Non-player character activity and decision execution.
+- Relevance-based simulation intensity and persistent activation.
+- Causal consistency, deterministic resolution and controlled uncertainty.
+- Inter-system coordination and dependency handling.
+- Simulation rules, configuration and version compatibility.
+- Error handling, degraded operation and recovery coordination.
+- Runtime monitoring, diagnostics and performance control.
+- Prevention of duplicate, contradictory, impossible or unauthorised outcomes.
+
+BP-35 does not replace:
+- BP-01 for the game's governing principles, scope and player-agency rules.
+- BP-03 and BP-04 for population, person, property, business and organisation identities.
+- BP-05 to BP-34 for the substantive rules of police, operational, investigative, legal, institutional and financial domains.
+- BP-36 for relationship and social-context models.
+- BP-37 for authoritative game time, calendars, schedules and time advancement rules.
+- BP-38 for authoritative record definitions and database architecture.
+- BP-39 for persistence, backups, recovery and continuity.
+- BP-40 and BP-41 for player interface, notifications and reporting.
+- BP-42 for identity, permissions and security.
+- BP-43 for test strategy, quality assurance and verification.
+- BP-44 for approved configuration and controlled expansion.
+
+The engine may execute a rule owned by another division but must not silently redefine that rule. Domain systems remain responsible for their own legal, operational and institutional decisions. The engine coordinates them and enforces their declared constraints.
+
+### Runtime architecture and orchestration
+The runtime is composed of cooperating services or logical modules with explicit responsibilities and interfaces. The implementation may use a modular monolith or another architecture justified by scale and reliability; the blueprint does not require microservices or distributed infrastructure merely for appearance.
+
+The runtime includes, at minimum:
+- Session and player-command coordinator.
+- Identity and permission validation interface.
+- Command parser and intent normalisation.
+- Domain command handlers.
+- Simulation state and transaction coordinator.
+- Event registry and event-processing queue.
+- Time and scheduling interface.
+- Non-player activity scheduler.
+- Relevance and simulation-intensity manager.
+- Rule and configuration resolver.
+- Persistence and record interface.
+- Notification and response composer.
+- Audit, diagnostics and runtime-health monitor.
+- Recovery and consistency-check interface.
+
+Each module has a defined purpose, input contract, output contract, authority boundary, error behaviour, dependencies and version. Modules communicate through documented interfaces rather than relying on hidden shared state or undocumented side effects.
+
+A command or event may involve multiple domain modules. The engine identifies the required participants, checks preconditions, coordinates the operation and records the resulting state changes. A failed downstream operation must not leave an unexplained partial outcome. Where a genuinely distributed or long-running process cannot be atomic, it uses an explicit workflow with pending, completed, failed, compensated or cancelled states.
+
+### Simulation state and authoritative truth
+The engine operates on authoritative state obtained from BP-38 records and maintained through BP-39 persistence controls. It must distinguish:
+- Current authoritative state.
+- Historical state at a specified time.
+- Proposed or pending state.
+- Temporary working state during an operation.
+- Derived or cached state.
+- Inferred information with an uncertainty level.
+- Player-visible information permitted by role and knowledge.
+- Simulation-only internal information not yet known to the player.
+
+A cached or calculated value is not a separate source of truth. If a cache conflicts with an authoritative record, the system follows the declared reconciliation rule and records the discrepancy. Derived values identify their source records, calculation rule and effective time where material.
+
+The engine must never convert a possibility, suspicion, estimate, forecast or unverified report into a confirmed fact without the domain process required to establish it. It preserves distinctions between reported, observed, alleged, inferred, assessed, verified, authorised, completed and adjudicated states.
+
+State transitions are explicit. Each transition identifies:
+- The entity and current state.
+- The requested new state.
+- Preconditions and applicable domain rules.
+- Actor or system process initiating the change.
+- Required authority and permissions.
+- Evidence or supporting records.
+- Effective time and processing time.
+- Result, reason and any rejected conditions.
+- Related events and downstream consequences.
+
+An invalid transition is rejected with a meaningful reason and without silently changing the authoritative state.
+
+### Player command lifecycle
+Every player command follows a controlled lifecycle:
+1. Receive the command and associate it with the active player identity and session.
+2. Preserve the original command text or structured input as required for audit and interpretation.
+3. Parse the command and identify the intended action, target and supplied parameters.
+4. Resolve ambiguous references using available context without inventing missing facts.
+5. Check the player's current identity, status, role, rank, appointment, authority, qualification and permissions as relevant.
+6. Identify applicable domain rules, legal constraints, prerequisites and approval requirements.
+7. Validate the target entity, current state, location, time and resource conditions.
+8. Present a clarification or confirmation request where an essential decision cannot safely be inferred.
+9. Execute the authorised action or create a pending request for the competent decision-maker.
+10. Apply the resulting state transitions through the transaction coordinator.
+11. Emit linked events and required audit records.
+12. Trigger eligible downstream processes and notifications.
+13. Return a response that distinguishes completed action, pending action, rejected action, unavailable information and system failure.
+
+A command is not successful merely because it was understood or acknowledged. The response must reflect the actual persisted outcome. If an action requires approval, the engine reports it as submitted or pending rather than approved. If a process fails, the engine must not claim that the requested state change occurred.
+
+The player may use natural language, structured commands or interface controls as defined by BP-40. Different input forms that represent the same authorised action must resolve to the same domain operation and validation rules.
+
+### Command identity, idempotency and duplicate prevention
+Each executable command receives a unique command identifier. The engine uses idempotency controls so that repeated delivery of the same command does not unintentionally create duplicate arrests, reports, payments, evidence exhibits, appointments, purchases, messages or other consequential records.
+
+A repeated command is assessed against its identity, payload and prior outcome. The engine distinguishes:
+- A transport retry of the same command.
+- A player deliberately submitting a new command.
+- A repeated request that is legally or operationally permitted.
+- A duplicate action that would create an invalid second outcome.
+- A correction or reversal that must be recorded as a new linked action.
+
+Idempotency keys have defined scope and retention. They do not prevent a legitimate new action merely because its wording resembles an earlier command. Where the engine cannot determine whether a request is a retry or a new action, it requests clarification or presents the existing result.
+
+### Event model and event lifecycle
+Events represent meaningful occurrences, decisions, observations, state changes, scheduled triggers and system outcomes. Each event has a unique identifier and, as applicable:
+- Event type and schema version.
+- Source and initiating actor.
+- Affected entities and relationships.
+- Event time and processing time.
+- Location and jurisdiction.
+- Preconditions and triggering condition.
+- Evidence, source references and confidence.
+- Visibility and access classification.
+- Causal parent, correlation and related event identifiers.
+- Processing status and retry information.
+- Resulting state changes.
+- Audit and provenance information.
+
+Events may be:
+- Player-initiated.
+- NPC-initiated.
+- Scheduled.
+- Environment or world-generated.
+- Triggered by a preceding event.
+- Received from an authorised external or institutional interface.
+- Generated by a system process.
+
+An event is not automatically a confirmed occurrence merely because it exists in the event store. Event status and evidential meaning are determined by the relevant domain rules. A report that a crime occurred is distinct from a verified incident, an allegation is distinct from a finding, and a simulated possibility is distinct from a realised event.
+
+Events move through defined states such as created, validated, queued, processing, completed, rejected, failed, retrying, cancelled or superseded. Invalid events are quarantined or rejected with a reason; they are not silently discarded. Event handlers record completion so that retries do not duplicate effects.
+
+### Event ordering and causal consistency
+The engine preserves causal relationships. If event B depends on event A, B cannot be treated as having occurred before A has reached the required state. The system records event time separately from processing time so that late reports, delayed imports, corrections and retrospective entries do not rewrite the actual sequence.
+
+Where several events occur at the same simulated time, the engine uses a documented deterministic ordering rule based on dependency, event priority, source sequence and stable identifiers. It must not rely on arbitrary database retrieval order or nondeterministic race conditions.
+
+The system handles:
+- Simultaneous calls and competing response tasks.
+- Multiple officers acting on the same incident.
+- Conflicting updates to one person or property.
+- Concurrent evidence submissions.
+- Time-sensitive warrants, orders and authorisations.
+- Competing resource allocations.
+- Delayed communications and late-arriving information.
+- A player action that becomes invalid while awaiting approval.
+- Events that are valid individually but incompatible together.
+
+Conflicting operations are serialised, rejected, merged under an explicit domain rule or referred for competent review. The engine must not silently choose one outcome without recording why.
+
+### Simulation time and processing cycles
+BP-37 is authoritative for the game clock, calendar, time zones, time advancement, shift schedules and scheduled commitments. BP-35 requests or coordinates processing for an authorised time interval but cannot invent a different clock or independently advance time outside BP-37 rules.
+
+The engine supports distinct processing concepts:
+- Real interaction time: when a player submits or receives a command.
+- Simulation event time: when an in-world event occurs.
+- Processing time: when the engine calculates or records the event.
+- Effective time: when a state or authority legally or operationally takes effect.
+- Historical time: the time represented by a retrospective record.
+
+The engine supports controlled processing cycles, event-triggered execution and scheduled jobs. The exact tick length, batch size, frequency and time-advancement model remain configurable under BP-37 and BP-44.
+
+No background process may silently advance the in-world clock merely because real time has passed. Offline or unattended progression is permitted only if a future approved rule explicitly defines its scope, consequences, player notice and recovery behaviour. Until then, the engine processes only time advancement authorised through the game rules and player/session lifecycle.
+
+A scheduled event is not automatically executed merely because its nominal time has arrived. The engine checks whether time has validly advanced, the event remains active, prerequisites are met, the responsible actor or service is available and the action remains lawful.
+
+### Non-player character simulation
+The engine coordinates non-player character activity using the authoritative person identities and life, employment, relationship, location and schedule information owned by the relevant divisions.
+
+An NPC may have:
+- A current activity and location.
+- A routine or planned schedule.
+- Needs, goals or commitments represented by approved domain rules.
+- Relationships and social context from BP-36.
+- Knowledge, beliefs and information limitations.
+- Available resources and constraints.
+- Employment, legal, health or other status relevant to the current action.
+- A decision process appropriate to the simulation detail required.
+
+NPC behaviour must be plausible, context-sensitive and bounded by what the individual could know, access, afford, physically do and lawfully do. A character must not act on information they have not received or inferred through a defined process. The engine must not give every NPC omniscient knowledge of the player's actions, hidden case facts or events outside their awareness.
+
+NPCs are not random action generators. Their behaviour should reflect established routines, immediate circumstances, relationships, incentives, obligations, risks and prior events. Randomness may introduce uncertainty but must not override established facts or create arbitrary contradictions.
+
+The engine supports different activity-processing levels according to relevance, current activity and required detail. Lower processing intensity does not erase identity, history, relationships or obligations. When an NPC becomes relevant to a police incident, case, decision or other defined trigger, the engine can increase processing detail while retaining the same persistent identity and historical record.
+
+### Relevance and simulation-intensity management
+Simulation intensity is a processing decision, not a change in a person's existence or record status. The engine may use levels such as:
+- **Background:** persistent identity and essential state retained; routine changes processed in aggregate or through scheduled summaries where safe.
+- **Active:** detailed activity, location, availability and relevant interactions processed for a current context.
+- **Focused:** high-detail processing for a person, location, organisation or event directly involved in an active police or institutional process.
+- **Critical:** tightly controlled high-frequency processing for time-sensitive, safety-critical or multi-actor situations.
+
+The exact levels, triggers and processing budgets are configuration decisions. A person or entity must not be downgraded in a way that loses material history, evidence, obligations, relationships or case relevance. A change in processing level does not itself change legal status or factual certainty.
+
+Relevance triggers may include:
+- Direct involvement in an incident or case.
+- Presence at or near a relevant location during a material period.
+- A witness, victim, suspect, officer or other documented connection.
+- A relationship or organisational link relevant to an active enquiry.
+- A scheduled duty, emergency, safeguarding or legal obligation.
+- A direct player interaction or authorised institutional action.
+- A credible lead or event requiring further resolution.
+
+The engine records why an entity's processing level changed, who or what triggered it, when it changed and which processes are affected. Relevance must not be used to expose restricted information or to presume wrongdoing.
+
+### NPC decision-making, knowledge and uncertainty
+NPC decisions use a bounded information model. Each character's knowledge is based on direct observation, communication, authorised access, memory and plausible inference. The engine distinguishes:
+- What actually happened in the simulated world.
+- What a character observed.
+- What a character was told.
+- What a character believes.
+- What a character remembers.
+- What a character reports.
+- What an institution has verified.
+- What the player is currently authorised to know.
+
+An NPC may be mistaken, deceptive, uncertain, forgetful or incomplete, but these behaviours must arise from defined circumstances rather than arbitrary narrative convenience. The engine records the source and basis for important knowledge claims when they affect a case, decision or consequential outcome.
+
+Uncertainty is represented explicitly where material. The system must not invent precise confidence percentages unless a calibrated model and approved interpretation exist. Qualitative confidence levels may be used where the relevant domain defines them.
+
+### Crime and incident generation interfaces
+BP-13 and BP-14 define crime categories and crime-generation rules. BP-35 executes those rules and coordinates resulting incidents; it does not create a separate uncontrolled crime system.
+
+Generated crime and incident events must respect:
+- The established population and geographic model.
+- Time, location, access and physical constraints.
+- Person capabilities, routines and knowledge.
+- Business and institutional opening or operating conditions.
+- Applicable legal and domain rules.
+- Existing case facts and historical continuity.
+- Victim, witness, suspect and offender identity consistency.
+- Plausible cause, opportunity, action and consequence relationships.
+
+A generated event receives the records required by its domain. It must not automatically create a known offender, prove an offence, reveal a hidden culprit to the player or force a predetermined investigative outcome. The engine preserves the distinction between the underlying simulated truth and what police can establish through lawful investigation.
+
+### Resource and action coordination
+When an action requires an officer, vehicle, facility, equipment, specialist, budget, authorisation or other resource, the engine checks the authoritative availability and assignment rules owned by the relevant division.
+
+A resource cannot be allocated to incompatible simultaneous tasks unless a domain rule permits shared use. A person cannot be in two locations at once. A vehicle cannot be both available and assigned to an active deployment. An expired qualification, revoked authority, unavailable facility or unserviceable asset must be considered before the action proceeds.
+
+Where a task requires multiple resources, the engine records reservations, assignments, release and failure. Temporary reservations have expiry and cancellation rules. A failed operation releases or reconciles reserved resources so that they do not remain indefinitely unavailable.
+
+### Rules, configuration and version control
+The engine executes approved rules and configuration versions. Each consequential operation can identify the rule set and configuration version applied. A configuration change has an owner, approval, effective date, scope, reason, test evidence and rollback or supersession plan.
+
+The engine must not silently change legal thresholds, offence definitions, staffing rules, financial limits, qualification requirements, time rules or other domain constants. Such values belong to the relevant domain and approved configuration process.
+
+Where a rule changes, historical events remain interpretable under the rule version applicable at the time unless an authorised retrospective correction is explicitly required. The engine records the old and new versions and any migration or recalculation.
+
+### Failure handling and degraded operation
+The engine must detect and handle:
+- Invalid command or event payload.
+- Missing or inconsistent authoritative records.
+- Unavailable domain module or database.
+- Failed transaction or partial workflow.
+- Duplicate event delivery.
+- Dependency timeout or unavailable external service.
+- Conflicting concurrent updates.
+- Expired permissions or authority during processing.
+- Invalid configuration or schema version.
+- Queue backlog or repeated processing failure.
+- Corrupted or incomplete derived data.
+- Clock or scheduling inconsistency.
+- Recovery from a prior interrupted operation.
+
+Errors are classified by severity, scope, retryability and user impact. Safe retries are bounded and idempotent. Non-retryable failures are quarantined for review. A failed action reports its actual status and does not imply success.
+
+During degraded operation, the engine may permit only functions that can be performed safely with available authoritative data and permissions. It must block high-impact actions where current authority, identity, evidence integrity or state cannot be verified. Any permitted manual or emergency workaround is recorded and reconciled after service restoration.
+
+### Runtime monitoring and performance
+The engine monitors:
+- Command volume and response time.
+- Event queue depth and processing delay.
+- Failed, retried and quarantined events.
+- Transaction conflicts and rollback frequency.
+- NPC processing load by intensity level.
+- Scheduled task backlog.
+- Database latency and persistence failures.
+- Cache consistency and invalidation.
+- Resource reservations and stale assignments.
+- Rule or configuration errors.
+- Runtime exceptions and recovery outcomes.
+
+Performance optimisation must not change domain outcomes, erase history or reduce the detail required for an active case. Background processing may be batched or deferred only where doing so preserves time, causal and operational correctness.
+
+The engine uses defined resource limits and back-pressure. When capacity is reached, it prioritises safety-critical and time-sensitive work under an approved priority model, while preserving lower-priority work for later processing. It must not silently drop events or commands to remain responsive.
+
+### Player agency, information boundaries and fairness
+The engine supports player decisions without predetermining every outcome. It enforces the player's actual authority and presents consequences based on the established world state, applicable rules and actions taken.
+
+The engine must not:
+- Reveal hidden offender or accomplice identities outside the approved game rule.
+- Present investigative suggestions as established case facts.
+- Alter evidence or witness accounts to force a desired result.
+- Give the player information their character could not lawfully or plausibly access.
+- Resolve an action before required approvals or procedures are complete.
+- Penalise a player through arbitrary hidden rule changes.
+- Treat a failed action as completed.
+- Allow NPCs or systems to bypass the same material constraints applied to the player.
+
+The response layer distinguishes fact, report, inference, uncertainty, pending process and system limitation. The player may request records or take investigative actions, but the engine does not reveal a case solution merely because an internal simulation process knows the underlying truth.
+
+### Connections to other divisions
+- **BP-01 to BP-04:** governing rules, geography, population, identity, properties, businesses and organisations.
+- **BP-05 to BP-09:** police structure, personnel, career, deployment and resources.
+- **BP-10 to BP-12:** patrol, communications, dispatch and incident execution.
+- **BP-13 to BP-29:** crime, cases, investigation, evidence, justice and correctional domain rules executed by the engine.
+- **BP-30 to BP-34:** governance, professional standards, training, HR, finance and procurement controls.
+- **BP-36:** relationship, social-context and interpersonal state.
+- **BP-37:** authoritative clock, calendars, time advancement, schedules and event timing.
+- **BP-38:** authoritative schemas, identifiers, records, relationships and data validation.
+- **BP-39:** persistence, transaction durability, backup, recovery and continuity.
+- **BP-40 and BP-41:** player commands, interface responses, notifications and reports.
+- **BP-42:** identity, authentication, authorisation, access restrictions and audit security.
+- **BP-43:** unit, integration, simulation, performance, regression and acceptance testing.
+- **BP-44:** configuration, scenario settings, controlled extensions and version compatibility.
+
+### Exceptions and edge cases
+The design must handle ambiguous commands; duplicate submissions; interrupted player sessions; simultaneous player and NPC actions; event arriving late; two events with the same nominal time; conflicting identity matches; an NPC becoming relevant during a background cycle; a person whose record is incomplete; a person whose identity is uncertain; a person with multiple legal or employment statuses; unavailable or expired authority; a warrant or order changing during processing; a resource being allocated elsewhere; an incident generated during a major event; a crime report later found false or mistaken; a witness changing an account; a correction to a historical record; an event requiring multiple domain systems; a downstream module failing after an earlier step; partial payment or delivery; a scheduled action whose prerequisites fail; a time advancement request that conflicts with a pending critical event; a long-running simulation process; a queue backlog; database outage; corrupted cache; stale configuration; incompatible schema version; restoration from backup; duplicate replay after recovery; loss of external service; NPC knowledge leakage; hidden case truth exposed through a notification; high-volume public event; mass-casualty incident; simultaneous emergencies; and a player action that is valid when submitted but no longer valid when execution begins.
+
+Each exception has a defined owner, safe response, retry or review route, state-preservation rule and audit record. The engine must preserve enough context to explain what happened and why.
+
+### Acceptance conditions
+- Every player command is identified, validated, authorised, executed and reported through a controlled lifecycle.
+- Acknowledgement is never confused with successful completion.
+- Domain rules remain owned by their designated blueprint divisions.
+- Authoritative state is distinct from cache, inference, pending change and historical state.
+- Invalid state transitions are rejected with an explainable reason.
+- Consequential events have unique identities, schemas, provenance, timing and causal links.
+- Event ordering is deterministic where dependencies or simultaneous actions require it.
+- Duplicate delivery and retry do not create duplicate consequential outcomes.
+- NPC behaviour respects identity, knowledge, capability, location, schedule and established facts.
+- Processing intensity can change without deleting identity, history or relevance.
+- A relevant entity can receive increased processing detail while retaining the same persistent identity.
+- No background process silently advances game time outside BP-37 rules.
+- Resources and authorities are checked before consequential actions proceed.
+- Failed or partial workflows have explicit states and reconciliation rules.
+- Rule and configuration versions are traceable for consequential outcomes.
+- Degraded operation blocks actions that cannot be safely validated.
+- Runtime monitoring detects backlogs, failures, conflicts and persistence problems.
+- Player-visible information respects character knowledge, role permissions and case-information boundaries.
+- Performance optimisation preserves material simulation correctness and historical continuity.
+- The engine can be tested reproducibly against defined scenarios and acceptance criteria.
+
+**Draft status:** BP-35 is a working design. The exact runtime architecture, command grammar, event catalogue, state-transition contracts, simulation-intensity thresholds, NPC decision model, randomisation and reproducibility policy, processing-cycle size, priority model, concurrency strategy, queue technology, error taxonomy, performance targets and implementation language remain open. No simulation engine, command processor, event queue, NPC runtime, scheduler, game API or playable application has been implemented by this design document.
