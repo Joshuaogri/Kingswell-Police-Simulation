@@ -6637,3 +6637,430 @@ The design must handle duplicate identity, incomplete application, false credent
 
 **Draft status:** BP-33 is a working design. The fictional labour statute, police employment regulations, collective bargaining arrangements, employment categories, recruitment and vetting standards, contract forms, working-time limits, pay scales, leave entitlements, sickness rules, pension and retirement law, grievance and capability procedures, medical confidentiality rules, redundancy framework and retention schedules remain open. No HR information system, payroll engine, recruitment platform, workforce establishment database or employee self-service portal has been implemented by this design document.
 
+
+
+---
+
+## BP-34 — Finance and Procurement
+
+### Purpose and scope
+Define the financial management, budgeting, accounting, procurement, purchasing, payment, supplier, contract and financial-assurance framework for the National Police Service. BP-34 ensures that public funds and organisational resources are planned, authorised, committed, received, paid, recorded, monitored and audited lawfully and transparently.
+
+BP-34 is the authoritative design for police financial administration and procurement. It covers:
+- Financial governance, delegated financial authority and separation of duties.
+- Strategic and operational financial planning.
+- Budget preparation, approval, allocation, monitoring and revision.
+- Financial forecasts, commitments, expenditure and variance control.
+- Accounting structure, journals, ledgers and reconciliations.
+- Procurement planning, sourcing, evaluation, award and purchasing.
+- Supplier registration, due diligence, performance and risk.
+- Contract creation, variation, monitoring, renewal and closure.
+- Purchase orders, goods receipt, invoice validation and payment.
+- Payroll funding and payment-control interfaces.
+- Staff expenses, allowances and reimbursement interfaces.
+- Financial assets, capital expenditure and lifecycle accounting.
+- Grants, donations, external funding and inter-agency financial arrangements.
+- Fraud prevention, financial misconduct referrals and financial investigation support.
+- Financial reporting, audit, assurance, retention and public accountability.
+
+BP-34 does not replace:
+- BP-09 for operational resource requirements, asset identity, assignment, condition, maintenance and inventory.
+- BP-30 for institutional governance, risk appetite, delegations, audit oversight and accountability.
+- BP-33 for employment facts, contractual pay entitlements, attendance, approved overtime, leave and employee-specific remuneration inputs.
+- BP-38 and BP-39 for authoritative record architecture, persistence, recovery and retention controls.
+- BP-42 and BP-43 for access control, security, testing and quality assurance.
+
+Financial approval does not itself confer operational command, legal authority, procurement competence or ownership of an asset. A budget allocation does not prove that a purchase is necessary, a supplier is suitable, goods were received or an invoice is valid. A purchase order does not prove delivery. An invoice does not prove liability. A payment does not prove that the underlying transaction was lawful or correctly authorised.
+
+The fictional country's public finance law, procurement statute, tax rules, accounting standards, audit mandate, public-sector employment framework and exact financial thresholds remain to be defined. BP-34 establishes the required control architecture; it must not invent binding thresholds, tax rates, accounting treatments or statutory procedures before the governing framework is approved.
+
+### Financial governance and principles
+Financial administration is governed by:
+- Legality: every receipt, commitment, purchase, payment, write-off and financial decision has an authorised basis.
+- Public stewardship: funds are used for approved policing purposes and demonstrable public value.
+- Budget discipline: expenditure is controlled against approved budgets and valid delegations.
+- Transparency: material financial decisions and procurement outcomes are traceable and reviewable.
+- Competition and fairness: procurement follows the applicable lawful method and treats suppliers consistently.
+- Value for money: cost, quality, suitability, lifecycle cost, delivery risk and public benefit are considered together.
+- Integrity: bribery, fraud, collusion, favouritism, kickbacks, undisclosed conflicts and personal benefit are prohibited.
+- Separation of duties: incompatible request, approval, ordering, receipt, invoice-validation, payment and reconciliation functions are separated or subject to documented compensating controls.
+- Accuracy: transactions are supported by evidence and recorded in the correct period, account, fund and cost centre.
+- Completeness: commitments, liabilities, assets, receipts and payments are not omitted or duplicated.
+- Proportionality: controls reflect transaction value, risk, urgency, complexity and legal requirements.
+- Auditability: each material action has an attributable actor, authority, date, source evidence and history.
+- Continuity: financial records and essential payment controls remain recoverable during system or service disruption.
+
+No officer or manager may divide, disguise, misclassify or route a transaction through another unit to evade a financial limit, procurement method, approval or audit control. Emergency conditions may activate a defined exceptional route but do not remove the obligation to record, justify, review and disclose the transaction as required.
+
+### Financial authority and delegation
+Financial authority is assigned through the BP-30 governance and delegation framework. BP-34 maintains the operational financial-authority schedule and validates it when a financial action is requested.
+
+A financial delegation records:
+- Unique delegation identifier.
+- Delegator and recipient identities.
+- The legal, policy or organisational source of authority.
+- Permitted transaction types and decision categories.
+- Maximum value, currency and aggregation rules, where applicable.
+- Budget, fund, programme, cost-centre or geographic scope.
+- Conditions, exclusions and required supporting evidence.
+- Whether the authority may be sub-delegated.
+- Effective date, expiry date and review date.
+- Suspension, revocation and replacement history.
+- Required independent approvals or additional controls.
+
+A recipient cannot delegate authority they do not hold. A temporary acting appointment does not automatically confer financial authority. Absence, vacancy, promotion or transfer does not silently change an approval limit. A delegation is checked at the time of the decision and again before execution where the authority may have expired, been suspended or been revoked.
+
+The system distinguishes:
+- Budget ownership and responsibility for monitoring an allocation.
+- Authority to approve a business need.
+- Authority to select or approve a procurement route.
+- Authority to award or vary a contract.
+- Authority to place an order.
+- Authority to confirm receipt or service completion.
+- Authority to validate an invoice.
+- Authority to release a payment.
+- Authority to reconcile an account.
+- Authority to write off, dispose of or impair an asset.
+- Independent assurance and audit authority.
+
+The same person must not perform incompatible stages of a transaction merely because they hold a senior rank. Where staffing constraints make full separation impracticable, the exception requires a recorded risk assessment, independent review and compensating controls. No person approves their own expenses, supplier interest, contract benefit or unsupported payment.
+
+### Financial structure and records
+The service maintains a controlled financial structure that may include:
+- Legal entity and reporting entity.
+- Financial year and accounting period.
+- Chart of accounts.
+- Funds and funding streams.
+- Budgets and budget versions.
+- Programmes, services and projects.
+- Departments, units and cost centres.
+- Capital and operating expenditure categories.
+- Commitments, purchase orders and contracts.
+- Accounts payable and receivable where applicable.
+- General ledger and subsidiary ledgers.
+- Bank, cash and payment accounts.
+- Financial assets and liabilities.
+- Grants, restricted funds and externally funded activities.
+
+Each financial object has a stable identifier, owner, status, effective dates, source, relationships, access classification and audit history. Codes and account definitions are versioned. A change to the chart of accounts or reporting structure must preserve historical interpretation; it must not rewrite prior-period transactions.
+
+The transaction record identifies, as appropriate:
+- Transaction identifier and type.
+- Transaction and posting dates.
+- Financial period.
+- Currency and exchange-rate source where applicable.
+- Gross, net, tax and other component amounts where legally relevant.
+- Account, fund, programme and cost centre.
+- Supplier, employee, customer or other counterparty.
+- Contract, purchase order, receipt and invoice references.
+- Requesting unit and responsible budget holder.
+- Approval chain and delegation references.
+- Supporting documents and evidence.
+- Status, reason, exception and correction history.
+
+Amounts must use an exact decimal or integer minor-unit representation appropriate to the currency, never imprecise binary floating-point arithmetic as the authoritative financial value. Currency, rounding, tax treatment and exchange-rate rules are explicit configuration, not hidden assumptions.
+
+### Financial planning and budget cycle
+The financial planning cycle includes:
+1. Establish strategic priorities, service requirements and planning assumptions.
+2. Collect budget proposals from authorised units and programmes.
+3. Assess operational need, affordability, legal obligations and lifecycle costs.
+4. Identify recurring commitments, contracts, staffing costs and capital requirements.
+5. Prepare forecasts and risk scenarios.
+6. Challenge and reconcile proposals against the available funding envelope.
+7. Submit the proposed budget to the competent approval authority.
+8. Record the approved budget and any conditions.
+9. Allocate authorised budgets to responsible owners and cost centres.
+10. Monitor actual expenditure, commitments, forecast outturn and performance.
+11. Record authorised virements, supplementary allocations or reductions.
+12. Close the financial period and prepare required accounts and reports.
+13. Review outcomes and feed lessons into the next planning cycle.
+
+A budget proposal, draft allocation or forecast is not an approved spending authority. The system distinguishes requested, proposed, reviewed, approved, allocated, frozen, revised, exhausted, closed and cancelled budget states. A transaction cannot rely on a draft budget as though it were approved.
+
+Budget owners can view approved allocations, actual expenditure, outstanding commitments, available balance, forecast expenditure and relevant restrictions. The available balance calculation accounts for approved commitments and pending obligations according to the configured accounting policy. It must not treat a purchase order, invoice, payment or accrual as interchangeable events.
+
+### Budget monitoring and financial control
+Budget monitoring identifies:
+- Original approved budget.
+- Approved revisions and transfers.
+- Actual posted expenditure and receipts.
+- Open commitments and contractual obligations.
+- Accrued liabilities where the accounting framework requires them.
+- Forecast expenditure and expected income.
+- Remaining available budget.
+- Variances, trends and forecast overspend or underspend.
+- Restricted funds and purpose limitations.
+- Unusual, duplicate or out-of-pattern transactions.
+
+A budget transfer or virement requires a defined authority, reason, source and destination, value, date, impact assessment and audit trail. Transfers cannot be used to conceal overspending, defeat a restricted grant condition or avoid a procurement threshold. A budget owner cannot approve an increase to their own authority unless the delegation expressly permits it.
+
+When a budget is exhausted, frozen or restricted, the system blocks or escalates new commitments according to the applicable rules. It must not silently permit an overrun. An exception requires a recorded lawful basis, authorised decision, amount, duration, risk and subsequent review. Critical policing need does not automatically create financial authority.
+
+### Procurement planning and sourcing
+Procurement begins with a documented requirement from an operational or corporate owner. The requirement identifies:
+- The service need and intended outcome.
+- Requesting unit and accountable sponsor.
+- Operational specification and minimum requirements.
+- Quantity, quality, compatibility and delivery expectations.
+- Estimated total lifecycle cost.
+- Funding source and budget availability.
+- Market and supplier considerations.
+- Dependencies, security and information risks.
+- Maintenance, support, training and disposal needs.
+- Procurement timetable and urgency.
+- Conflicts of interest and any restrictions.
+- Approval to commence procurement.
+
+The procurement process must consider whether an existing contract, framework, stock holding, internal capability or lawful shared-service arrangement can meet the need. Requirements must not be written to favour a named supplier without a documented lawful and defensible reason.
+
+Procurement routes may include open competition, restricted competition, quotations, approved frameworks, direct award where legally permitted, collaborative procurement, emergency procurement and other methods established by the fictional procurement law. Thresholds, advertising rules, minimum competition, permitted exceptions, standstill periods and review rights remain open until the legal framework is defined.
+
+The estimated procurement value is calculated using the applicable aggregation and contract-duration rules. Related lots, options, extensions, recurring purchases and linked requirements must not be artificially split to avoid a threshold or approval. A procurement route is selected and justified before supplier selection.
+
+### Supplier registration and due diligence
+Supplier records distinguish legal identity, trading name, beneficial ownership where lawfully collected, registration status, addresses, authorised representatives, tax or regulatory details where applicable, payment details, service categories, insurance, licences, certifications, financial standing, conflicts, sanctions or exclusion checks where legally required, and performance history.
+
+Due diligence is proportionate to value, sensitivity, criticality and risk. It may consider:
+- Identity and legal existence.
+- Ownership and control.
+- Financial stability and insolvency risk.
+- Relevant experience and technical capability.
+- Regulatory status, licences and certifications.
+- Insurance and liability coverage.
+- Employment, labour and modern-slavery risks where applicable.
+- Environmental and sustainability requirements where applicable.
+- Cybersecurity and information-handling controls.
+- Data protection and confidentiality commitments.
+- Subcontracting and supply-chain dependencies.
+- Conflicts of interest, collusion or improper influence.
+- Delivery capacity and business continuity.
+- Prior contract performance and unresolved failures.
+
+Registration does not guarantee eligibility for every procurement. A supplier may be approved for one category or risk level and restricted for another. Supplier records preserve the evidence, checks, decision, reviewer, date, conditions, expiry and reassessment outcome. False information, changed ownership, insolvency, serious performance failure or new legal restrictions trigger review.
+
+Bank or payment-detail changes require independent verification through an approved channel. A change request alone is not sufficient evidence. The person who changes supplier payment details must not be the sole approver of the resulting payment.
+
+### Tender evaluation and contract award
+Evaluation criteria and weightings are approved before bids are assessed and communicated as required by the applicable procurement route. Criteria may include price, whole-life cost, quality, technical suitability, delivery, resilience, security, accessibility, sustainability and service support.
+
+The evaluation record includes:
+- Procurement identifier and approved route.
+- Published specification and evaluation criteria.
+- Invited or responding suppliers.
+- Submission receipt time and integrity.
+- Evaluator identities and declarations.
+- Individual assessments and moderated result.
+- Clarification requests and responses.
+- Conflict management and recusals.
+- Due-diligence results.
+- Value-for-money assessment.
+- Award recommendation and approval.
+- Required notifications, review or challenge periods.
+- Contract and purchase-order references.
+
+Evaluators must not alter criteria after seeing bids to favour a preferred outcome. A clarification must not become an undisclosed opportunity to rewrite a bid or give one supplier an unfair advantage. A sole-source or direct-award decision requires the applicable legal ground, evidence, approval and publication or reporting where required.
+
+The award decision and contract signature are distinct from the operational confirmation that goods or services have been delivered. No supplier is entitled to payment merely because it was selected or a contract was signed.
+
+### Contract lifecycle and management
+Each contract has a stable identifier and records:
+- Contracting parties and authorised signatories.
+- Procurement and award references.
+- Scope, specification and deliverables.
+- Contract value, currency and payment model.
+- Start date, end date, renewal and extension options.
+- Milestones, service levels and acceptance criteria.
+- Price adjustment and variation mechanisms.
+- Insurance, warranties and liability terms.
+- Confidentiality, privacy and information-security requirements.
+- Subcontracting and supply-chain conditions.
+- Audit, inspection and access rights.
+- Dispute, termination and exit provisions.
+- Business continuity and transition arrangements.
+- Asset, data and intellectual-property ownership where relevant.
+- Contract manager, budget owner and review schedule.
+
+Contract changes require a documented need, legal and procurement review where required, financial assessment, available budget and approval by the proper authority. A variation cannot be used to make a material change that would have required a different procurement route unless the applicable law permits it. Extensions, renewals, price changes and scope changes are recorded as dated events; the original contract remains reconstructable.
+
+Contract managers monitor delivery, milestones, service levels, expenditure, risks, supplier performance, complaints, variations, insurance, security obligations and renewal dates. Poor performance produces a recorded corrective plan, escalation, remedy or termination decision where appropriate. Contract closure records final delivery, outstanding liabilities, disputes, asset and data return, access revocation, final payment and lessons learned.
+
+### Purchasing, ordering and commitment control
+A purchase request records the business need, specification, estimated cost, funding source, procurement route, requester and required approval. Approval creates permission to proceed within the approved scope; it does not itself create a supplier order unless the authorised workflow explicitly does so.
+
+A purchase order records supplier, items or services, quantities, prices, taxes where applicable, delivery location, delivery dates, contract reference, cost centre, budget, authorisation and terms. Purchase orders are issued only by authorised personnel and are uniquely identifiable.
+
+The system distinguishes:
+- Purchase request.
+- Procurement approval.
+- Tender or quotation.
+- Award decision.
+- Contract.
+- Purchase order.
+- Goods or service receipt.
+- Supplier invoice.
+- Invoice validation.
+- Payment instruction.
+- Bank settlement.
+- Ledger posting and reconciliation.
+
+A commitment is recorded at the correct point under the approved accounting policy. Amendments, cancellations and closure preserve the original order and all subsequent changes. Retrospective orders are exceptional, flagged and reviewed; they are not used as a routine substitute for prior approval.
+
+### Receipt, invoice validation and payment
+Receipt of goods or services is confirmed by a person with appropriate knowledge and authority, independent of the requester and payment releaser where practicable. The receipt record includes date, location, quantity, condition, serial or batch information where relevant, service acceptance, defects, partial delivery and supporting evidence.
+
+Invoice validation checks supplier identity, contract and purchase-order references, agreed prices, quantities, tax treatment where applicable, receipt or service acceptance, arithmetic, duplicate risk, credit notes, payment terms and approval. The system supports matching the purchase order, receipt and invoice, with controlled exceptions for services, staged payments, subscriptions, utilities, emergencies and other approved cases.
+
+A discrepancy places the invoice into a defined hold or query state. A partial delivery may support only the corresponding authorised partial payment. Duplicate invoices, changed bank details, unusual payment patterns, split invoices and unexplained price changes trigger additional review.
+
+Payment release requires:
+- A valid underlying liability.
+- Completed invoice validation or an approved alternative control.
+- Available funding and correct accounting allocation.
+- Confirmation of the authorised payee and payment details.
+- Approval within current financial delegation.
+- Separation from incompatible request, receipt and reconciliation functions.
+- A traceable payment instruction and settlement result.
+
+Payment states distinguish prepared, pending approval, approved, transmitted, settled, rejected, returned, cancelled, reversed and disputed. A failed payment does not erase the liability. A reversal or refund is a new traceable transaction linked to the original; records are never deleted to conceal a correction.
+
+### Payroll, expenses and employee payments
+BP-33 is authoritative for employment status, contract terms, approved salary or pay scale, attendance, overtime, leave, allowances and other employee-specific entitlement facts. BP-34 is authoritative for funding, financial calculation controls, payroll processing, payment execution, accounting and reconciliation.
+
+The payroll interface receives only approved and effective employment inputs. It validates identity, pay period, authorised changes, funding, duplicate payment risk and applicable configuration. It returns payment and exception status to authorised HR and finance users without granting finance authority to alter employment terms or HR authority to release payments.
+
+Payroll records distinguish gross pay, deductions, employer costs, net pay, adjustments, arrears, overpayments, recoveries and payment status as required by the fictional legal framework. Tax, pension, social contribution, benefit and deduction formulas remain configurable and must be grounded in approved law and policy. No rates or entitlements are invented by the simulation.
+
+Expenses and reimbursements require a defined purpose, eligible category, evidence, date, amount, business connection, applicable limit and approval. A claimant cannot approve their own claim. Duplicate claims, altered receipts, personal expenditure, split claims and unsupported mileage or subsistence are flagged. Emergency operational expenditure has a controlled route and post-event review.
+
+### Financial assets and capital expenditure
+BP-09 owns operational asset identity and management: what an asset is, where it is, who holds it, whether it is serviceable, its maintenance and its operational availability. BP-34 owns the financial treatment: acquisition cost, funding, capital or operating classification, depreciation or other approved accounting treatment, impairment, disposal proceeds and financial reconciliation.
+
+The financial asset record links to the BP-09 operational asset identifier where one exists. It may include acquisition date, supplier, cost, funding source, useful-life assumption, accounting category, depreciation method, impairment events, valuation evidence, disposal date and proceeds. The applicable accounting policy determines recognition thresholds and treatment; these are not invented in advance.
+
+Capital projects require an approved business case, budget, project owner, procurement route, milestones, cost forecast, change control, delivery acceptance and post-implementation review. Project cost includes relevant acquisition, installation, training, maintenance, support and disposal considerations where the approved accounting and planning rules require them.
+
+Asset disposal requires an authorised decision, condition and ownership check, valuation or disposal method where applicable, conflict screening, proceeds recording, removal from operational availability and preservation of financial history. Lost, stolen, damaged, transferred or written-off assets require coordination between BP-09, BP-34 and the appropriate incident, investigation or insurance process.
+
+### Grants, donations and external funding
+External funding is recorded with its source, legal basis, amount, currency, purpose, conditions, eligible expenditure, reporting requirements, period, restrictions, matching obligations, repayment or clawback provisions and accountable owner.
+
+Restricted funds cannot be used for unrelated expenditure. Grant claims must be supported by eligible costs and required evidence. Donations, gifts, sponsorship and in-kind contributions are assessed under BP-30 conflict-of-interest and integrity controls and the applicable law. No donor or supplier may purchase influence over policing priorities, investigations, appointments or operational decisions.
+
+Inter-agency cost sharing, service agreements, reimbursements and joint procurement arrangements record each party's responsibilities, contributions, liabilities, asset ownership, audit rights, data handling, payment schedule and dispute route. A partner's funding does not transfer police powers or command authority.
+
+### Financial misconduct, fraud and irregularity
+The framework identifies and routes suspected:
+- Fraud, theft, embezzlement and false accounting.
+- Bribery, kickbacks, collusion and bid manipulation.
+- Conflicts of interest and undisclosed beneficial interests.
+- Procurement favouritism or deliberate specification manipulation.
+- False invoices, duplicate payments and fictitious suppliers.
+- Payroll fraud, ghost employees and unauthorised pay changes.
+- Expense fraud and misuse of public funds.
+- Unauthorised commitments, budget manipulation and concealment of overspend.
+- Supplier impersonation and payment redirection.
+- Asset theft, deliberate damage or improper disposal.
+- Unauthorised access, alteration or deletion of financial records.
+
+Financial anomalies are risk indicators, not automatic proof of misconduct. The system preserves source records and routes concerns to the competent finance, internal audit, professional standards, law-enforcement or external authority under defined referral rules. BP-31 governs police employee conduct and disciplinary processes; criminal investigation and prosecution remain within their proper legal jurisdictions.
+
+Staff involved in reporting or reviewing an irregularity must be protected from retaliation. A person implicated in a transaction cannot control the investigation, suppress records or approve corrective entries relating to their own conduct. Evidence is preserved with appropriate access restrictions and chain-of-custody controls where it becomes evidential material.
+
+### Reconciliation, reporting and audit
+The service performs reconciliations at defined intervals for bank and cash accounts, supplier statements, payroll control accounts, purchase orders, receipts, invoices, payments, grants, asset registers, general-ledger balances and other relevant subsidiary records.
+
+A reconciliation identifies preparer, reviewer, period, source balances, differences, explanation, correcting action, approval and completion date. Unresolved differences are aged, risk-rated and escalated. A reconciliation cannot be marked complete merely because a balancing entry was posted; the underlying cause must be assessed.
+
+Financial reports may include:
+- Approved budget and revisions.
+- Actual expenditure and receipts.
+- Commitments and forecast outturn.
+- Budget variance and available balance.
+- Procurement pipeline and contract exposure.
+- Supplier concentration and performance risk.
+- Payment ageing and overdue liabilities.
+- Payroll totals and exception trends.
+- Capital projects and asset financial position.
+- Restricted funding and grant compliance.
+- Emergency expenditure and retrospective approvals.
+- Fraud, irregularity and control findings.
+- Audit recommendations and remediation status.
+
+Reports distinguish cash movement, accounting expenditure, commitments, accruals and forecast values. Definitions, periods, source systems and known limitations are visible. Sensitive supplier, employee, investigation and whistleblowing information is limited to authorised users. Public reporting uses lawful disclosure and aggregation rules.
+
+Internal audit and external auditors receive access under their legal mandate, with read-only or otherwise controlled access as appropriate. Management cannot alter audit evidence or suppress findings. Financial control failures are linked to BP-30 risk registers, assurance actions and corrective-action tracking. Audit closure requires evidence of effective remediation where the finding concerns a control weakness.
+
+### Records, privacy and retention
+BP-34 maintains or references authoritative records for:
+- Financial delegations and approval authorities.
+- Budgets, forecasts, revisions and allocations.
+- Chart of accounts, funds and cost centres.
+- Purchase requests, procurement plans and tender records.
+- Supplier identity, due diligence and performance.
+- Award decisions, contracts, variations and renewals.
+- Purchase orders, receipts, invoices and credit notes.
+- Payment instructions, settlement and reconciliation.
+- Payroll funding, processing, payment and exceptions.
+- Expenses, reimbursements and employee payments.
+- Capital projects, financial assets and disposals.
+- Grants, donations and inter-agency agreements.
+- Financial reports, audit findings and corrective actions.
+- Suspected irregularities and referrals, with restricted access.
+
+Access is role-based and purpose-limited. Requesters, budget holders, procurement staff, contract managers, receipt officers, invoice validators, payment releasers, accountants, auditors and system administrators have distinct permissions. Supplier bank details, employee pay data, commercially sensitive bids and suspected fraud records receive additional protection.
+
+Every material change records actor, timestamp, reason, authority, source, previous value and resulting value. Financial corrections are append-only or otherwise preserve the complete history. Retention follows approved schedules, legal holds, audit requirements and applicable disclosure law. No transaction, approval, supplier record or audit finding is silently deleted to make a report appear balanced.
+
+### Player experience and authority
+The player interacts with finance and procurement only to the extent permitted by their role. An ordinary officer may submit an operational purchase request, report a damaged or missing asset, claim an eligible expense, view relevant approved guidance or confirm receipt where formally assigned.
+
+A supervisor may validate operational need and recommend expenditure within their remit but cannot exceed delegated financial authority. A budget holder can monitor allocations and approve permitted commitments. Procurement staff manage sourcing and supplier processes within their competence. Finance staff validate accounts and payments under assigned controls. Auditors and oversight bodies review records independently within their mandate.
+
+The interface displays the request or transaction status, responsible owner, required evidence, budget position, approval route, outstanding action, deadline, supplier or contract reference and reason for any hold or rejection. It distinguishes a request from approval, approval from order, order from receipt, receipt from invoice validation and invoice validation from payment.
+
+No player is permitted to bypass required controls merely to keep an operational activity moving. Where urgent need exists, the interface explains the lawful exceptional route and the required retrospective review without implying that urgency itself is approval.
+
+### Connections to other divisions
+- **BP-01 to BP-05:** governing foundations, country institutions, geography, organisations and police architecture.
+- **BP-06 to BP-08:** personnel, career, unit structure, deployment and delegated operational responsibilities.
+- **BP-09:** operational resource requirements, asset identity, inventory, maintenance, issue and disposal coordination.
+- **BP-10 to BP-29:** operational demand, incidents, investigations, specialist capability, legal obligations and correctional interfaces that create financial requirements.
+- **BP-30:** institutional governance, financial delegations, risk, audit oversight, public accountability and corrective action.
+- **BP-31:** employee misconduct, corruption, complaints, integrity investigations and disciplinary outcomes.
+- **BP-32:** training requirements, competence, qualification and training-provider arrangements.
+- **BP-33:** employment facts, payroll inputs, allowances, expenses, workforce establishment and employee entitlements.
+- **BP-35 to BP-37:** simulation processing, relationships, time, accounting periods and scheduled financial events.
+- **BP-38 and BP-39:** authoritative financial records, data integrity, persistence, backup and recovery.
+- **BP-40 and BP-41:** finance interfaces, alerts, statements, reports and notifications.
+- **BP-42 and BP-43:** financial permissions, audit logging, control testing and quality assurance.
+- **BP-44:** configurable currencies, financial periods, accounting policies, legal thresholds and approved simulation settings.
+
+### Exceptions and edge cases
+The design must handle an urgent purchase during a major incident; unavailable approver; expired or revoked delegation; disputed authority; budget freeze; restricted grant; overspend discovered after commitment; delayed invoice; partial delivery; defective goods; supplier insolvency; supplier identity fraud; bank-detail redirection; duplicate invoice; duplicate payment; credit note after payment; returned or rejected payment; foreign-currency purchase; exchange-rate change; tax or accounting rule change; contract extension; disputed variation; failed service level; supplier subcontracting without approval; collusive bids; single-supplier market; procurement challenge; confidential tender leak; evaluator conflict; emergency direct award; retrospective purchase order; split purchase; missing receipt; invoice without purchase order; payroll overpayment; payroll underpayment; employee status correction; retroactive pay adjustment; disputed expense; fraudulent receipt; lost corporate card; cash discrepancy; unreconciled bank item; grant clawback; donor conflict; asset loss; asset impairment; disposal dispute; capital-project overrun; accounting-period closure; late journal; prior-period correction; suspected insider fraud; whistleblower retaliation; audit obstruction; legal hold; data breach; supplier data correction; system outage; unavailable banking service; failed backup; corrupted ledger; duplicate transaction after recovery; and financial continuity during emergency command.
+
+Every exception has a defined status, owner, authority, evidence requirement, escalation route and audit history. An exception must not erase the original transaction or silently convert an unauthorised action into an authorised one.
+
+### Acceptance conditions
+- Every financial decision and transaction is linked to a valid authority, purpose and accountable owner.
+- Financial delegations are scoped, current, revocable and checked at the point of decision.
+- Budgets distinguish proposed, approved, allocated, committed, spent, forecast and available amounts.
+- Budget changes and exceptions are authorised and traceable.
+- Procurement routes follow the applicable legal framework and cannot be evaded by artificial transaction splitting.
+- Supplier identity, ownership, eligibility, conflicts and payment details receive proportionate verification.
+- Tender criteria are fixed before evaluation and award decisions are evidenced.
+- Contracts have controlled versions, authorised variations, accountable managers and closure records.
+- Purchase requests, orders, receipts, invoices and payments remain distinct linked events.
+- Goods and services are independently confirmed as received or accepted before payment, subject to approved exceptions.
+- Duplicate, discrepant, unsupported or suspicious invoices and payments are held or escalated.
+- Payroll uses authorised BP-33 employment inputs and preserves separation between HR entitlement decisions and finance payment controls.
+- Expense claims cannot be approved by the claimant.
+- Operational asset records in BP-09 link to financial acquisition, valuation and disposal records without duplicating ownership of operational status.
+- Restricted grants and external funds are used only for authorised purposes.
+- Financial anomalies trigger review and are not treated as automatic proof of misconduct.
+- Financial records are accurate, historically traceable, access-controlled and recoverable.
+- Reconciliations identify unresolved differences and require independent review where appropriate.
+- Audit findings and control weaknesses are tracked to evidenced remediation.
+- The player can perform only the financial actions permitted by their current role and delegation.
+
+**Draft status:** BP-34 is a working design. The fictional public finance and procurement laws, accounting framework, chart of accounts, financial year, currencies, tax rules, approval thresholds, procurement thresholds, tender and challenge procedures, audit mandate, banking arrangements, payroll rules, expense limits, asset accounting policy, grant framework, retention periods and exact delegation schedule remain open. No budgeting system, accounting ledger, procurement platform, supplier register, contract-management system, payroll engine, payment integration or financial reporting software has been implemented by this design document.
