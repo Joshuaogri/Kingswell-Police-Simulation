@@ -180,5 +180,71 @@ Staffing grows with workload, geography, population and service responsibilities
 ### Still to be designed
 Final national and regional map; exact rank structure; headquarters departments; Kingswell command chart; station and patrol-area layout; staffing establishment; appointment powers; and detailed reporting lines.
 
+
+## BP-06 — Police Personnel
+
+### Purpose
+Define every person employed by the National Police Service as an individual, persistent member of the organisation. Personnel records support recruitment, training, deployment, supervision, performance, discipline, promotion, transfer, leave, retirement and workforce planning.
+
+### Personnel identity
+Each employee has one permanent service identity number. Their record contains:
+- Legal and preferred name, date of birth and identity details needed by the fictional service.
+- Employment status and service history.
+- Current rank, grade (if used), appointment, position and assigned unit.
+- Current posting, duty location, supervisor and command chain.
+- Qualifications, specialist skills and training history.
+- Operational authorisations and information-access permissions.
+- Duty availability, shift pattern, leave and temporary absence.
+- Performance history, commendations, development needs and formal disciplinary outcomes.
+- Relevant employment documents and dated changes.
+
+A person keeps the same service identity when promoted, transferred or assigned to a new role. Changes are recorded as history rather than overwriting the past.
+
+### Employment lifecycle
+The personnel system covers recruitment application and eligibility checks; selection and assessment; appointment and entry into service; initial training and probation; posting and operational deployment; continuing training and qualification renewal; promotion, transfer, specialist selection and temporary assignment; leave, absence, welfare support and return to duty; performance review, commendation and disciplinary processes; resignation, dismissal, retirement, death in service or other exit; and historical service records after departure.
+
+### Employment status
+The service distinguishes applicants, recruits, probationary employees, active employees, employees on leave, suspended employees, restricted-duty employees, seconded employees, employees under notice and former employees. A status change has an effective date and an authorised in-game record.
+
+### Rank, role and permission
+Personnel records keep separate fields for:
+- **Rank:** seniority within the service hierarchy.
+- **Appointment:** the post or office currently held.
+- **Position:** the actual job and duties assigned.
+- **Grade:** employment/pay band where the service uses one.
+- **Authority:** decisions and directions permitted by fictional law and service rules.
+- **Clearance:** access to protected records, locations or equipment.
+- **Qualification:** demonstrated training or competence.
+- **Posting:** the organisational unit and location to which the employee is assigned.
+
+A promotion does not automatically confer every specialist qualification, appointment or clearance. A temporary assignment does not permanently change rank.
+
+### Supervision and accountability
+Every active employee has a defined supervisor and organisational reporting line. Supervisors handle work allocation, welfare, attendance, coaching, review and escalation. Commanders are responsible for people and resources assigned to their command. Acting appointments and temporary supervisory arrangements have start and end dates.
+
+### Training and competence
+Training is recorded by course, date, result, instructor/provider, qualification awarded and renewal requirement. The game can identify whether an employee is currently qualified for a particular duty. Expired or missing qualifications can restrict assignment to duties that require them.
+
+### Duty availability
+Personnel availability is calculated from rostered duty, leave, absence, training, suspension, restricted duty, secondment and other recorded commitments. A person cannot be assigned simultaneously to incompatible duties or locations.
+
+### Fair employment processes
+Recruitment, promotion, commendation and discipline use recorded criteria and outcomes. Formal discipline includes an allegation, evidence, notice, response, decision-maker, finding, sanction (if any), review or appeal route, and final outcome. An allegation alone is not a finding of misconduct.
+
+### Personnel privacy
+Personnel information is available only to roles that need it for their duties. Operational users see information required for deployment and safety; authorised personnel and professional-standards staff may access additional employment records. Access to sensitive records is traceable.
+
+### Workforce planning
+The service monitors vacancies, staffing by rank and function, workload, skills shortages, training capacity, leave, retention and retirement forecasts. Recruitment and promotion respond to organisational needs rather than arbitrary unlimited hiring.
+
+### Acceptance conditions
+- Every employee has one stable personnel identity.
+- Current and historical rank, appointment, position, unit and supervisor can be reconstructed for any date.
+- The system prevents incompatible simultaneous assignments.
+- Required qualifications and authorisations can be checked before deployment.
+- Employment status and availability affect rostering correctly.
+- Formal disciplinary records distinguish allegations from proven findings.
+- Access to confidential personnel information is controlled and auditable.
+
 ---
-**Draft status:** BP-01 to BP-05 contain the current working decisions and proposals. Unresolved items remain explicitly open. This document is not declared final or approved.
+**Draft status:** BP-01 to BP-06 contain the current working decisions and proposals. Unresolved items remain explicitly open. This document is not declared final or approved.
