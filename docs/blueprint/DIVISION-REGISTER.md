@@ -19,7 +19,7 @@ Each division is designed with its purpose, scope, responsibilities, components,
 | BP-11 | Emergency Communications | Drafted; incident lifecycle and service standards to refine |
 | BP-12 | Incident Management | Drafted; offence and case connections to refine |
 | BP-13 | Crime Architecture | Drafted; detailed fictional offence catalogue to populate |
-| BP-14 | Crime Generation | Not started |
+| BP-14 | Crime Generation | Drafted; frequency and behaviour tuning to follow |
 | BP-15 | Case Management | Not started |
 | BP-16 | Investigation | Not started |
 | BP-17 | Victims and Witnesses | Not started |

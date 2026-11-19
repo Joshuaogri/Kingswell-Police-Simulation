@@ -1093,3 +1093,173 @@ The design must handle uncertain or changing offence classifications, multiple p
 - No real-world country's legal code is silently treated as Kingswell law.
 
 **Draft status:** BP-13 is a working design. The detailed fictional offence catalogue, legal provisions, seriousness bands and procedural consequences will be populated and reconciled with later crime, investigation and justice divisions. It is not a claim that crime-classification software has been implemented.
+
+## BP-14 — Crime Generation
+
+### Purpose
+Make Kingswell a living fictional city in which crimes and other police-relevant events can arise naturally from the people, organisations, places, opportunities, pressures and circumstances already present in the simulation. Crime generation creates believable events for police to discover and respond to, rather than relying only on pre-written cases or arbitrary random incidents.
+
+### Scope
+This division defines how criminal events originate, develop, occur, are reported or discovered, and enter the police system. It covers individual offending, repeated activity, groups and organised networks, victim and target selection, opportunity, event timing, event outcomes and the relationship between generated events and police records.
+
+The offence definitions themselves belong to BP-13. Call intake and incident records belong to BP-11 and BP-12. Investigative casework belongs to BP-15 and BP-16.
+
+### Core principles
+- Events arise from the simulated world and its circumstances, not solely from a list of random prompts.
+- Every generated event has a coherent internal history, even when the police initially know very little about it.
+- The simulation does not guarantee that every crime is reported, witnessed, detected or solved.
+- The same person, group, place or business can be involved in multiple events over time, with continuity and consequences.
+- Crime frequency and type vary by district, time, activity, opportunity and other relevant circumstances.
+- The system creates uncertainty for police while retaining consistent underlying facts for simulation logic.
+- Generated events must be varied and plausible without forcing every citizen to be an offender or every patrol to encounter a crime.
+
+### Sources of crime and other police events
+Events may arise from several overlapping sources:
+- Individual decisions, needs, pressures, conflicts, grievances, impulses or opportunities.
+- Relationships, disputes, domestic or household circumstances, workplaces and social networks.
+- Business activity, commercial disputes, fraud opportunities, theft targets and organisational misconduct.
+- Group offending, criminal enterprises and coordinated activity.
+- Public events, transport hubs, nightlife, markets, industrial activity and other concentrations of people.
+- Environmental conditions, infrastructure failures, accidents and hazards that may create police work without being crimes.
+- Repeat patterns, escalation, retaliation, imitation or changes in opportunity.
+- Unplanned encounters and events that emerge from existing simulated activity.
+
+These sources are influences, not automatic causes. A person experiencing hardship, belonging to a group or visiting a location is not automatically made criminal.
+
+### Offender and group behaviour
+Where an event involves an offender, the simulation identifies the responsible person or participants internally and determines their role according to the event's underlying facts. Roles may include principal actor, accomplice, organiser, facilitator, recruiter, supplier, lookout or other role defined by the fictional law and event model.
+
+The simulation distinguishes:
+- A person's intention or plan.
+- Preparatory behaviour.
+- Attempted conduct.
+- Completed conduct.
+- Assistance or participation by others.
+- Events abandoned, interrupted or prevented.
+- Conduct that occurs but does not meet the elements of a criminal offence.
+
+An internal simulation identity is not automatically exposed to the player or police records. It becomes known only through information the police legitimately obtain in the course of play.
+
+### Opportunity and circumstances
+The event model may consider:
+- Location type and access.
+- Time of day, day of week and seasonal or event conditions.
+- Presence, absence and movement of people.
+- Security, guardianship and routine activity.
+- Business opening patterns, staffing and deliveries.
+- Property value, accessibility and attractiveness as a target.
+- Transport and escape opportunities.
+- Existing disputes, relationships or criminal connections.
+- Prior events and local patterns.
+- Police presence and other deterrent or disruptive circumstances.
+
+The simulation should not use a single factor as a deterministic trigger. Opportunity can influence the likelihood or form of an event, while individual decisions and circumstances remain part of the model.
+
+### Victims, targets and affected parties
+An event can affect an individual, household, business, public institution, organisation, public space or the wider community. The simulation identifies the affected party or target and the nature of the impact.
+
+Victim selection must arise from event circumstances and the offender's simulated behaviour. It must not rely on sensitive personal characteristics as a simplistic deterministic rule. Some offences may have no immediately identifiable victim, may affect multiple people, or may be discovered before the intended target is harmed.
+
+### Event creation and internal record
+Every generated event receives a unique event identity and an internal event record. Depending on the event, the record may contain:
+- Offence type or possible offence types under BP-13.
+- Event date, time or estimated time window.
+- Exact or approximate location.
+- Underlying sequence of actions and outcome.
+- Persons and organisations involved and their internal roles.
+- Victims, targets, witnesses and affected property.
+- Method, tools, vehicles or other relevant objects.
+- Damage, loss, injury or other consequences.
+- Evidence traces or potential evidence sources.
+- Whether the event was completed, attempted, interrupted or abandoned.
+- Whether it was witnessed, reported, detected or remains undiscovered.
+- Links to earlier or later events.
+
+The event record is not the same as a police incident or investigative case. It represents what happened in the simulation, including facts not yet known to the police.
+
+### Hidden facts and police knowledge
+The simulation maintains a strict separation between underlying event facts and information available to the police. The event may have an internally known actor, method and timeline while the police have only a partial report or no report at all.
+
+Information reaches the police through plausible routes such as:
+- A victim or witness reporting.
+- A third party contacting the service.
+- Patrol or another officer observing something.
+- An alarm, camera or other system producing information.
+- A hospital, business or public institution making a referral.
+- An investigation connecting previously separate information.
+- A later discovery of damage, property, remains or other evidence.
+
+The player must not be given hidden culprit identities or unrevealed event facts as hints. The player works from information obtained in the game. The simulation remains internally consistent if the player makes an incorrect assumption.
+
+### Reporting and detection
+Events can be:
+- Reported immediately.
+- Reported after a delay.
+- Reported more than once.
+- Discovered by police without a public report.
+- Detected by a business, institution or automated system.
+- Known to people who choose not to report.
+- Never reported or detected during the current play period.
+
+Reporting probability depends on context such as harm, trust, awareness, fear, relationship to the offender, access to police and perceived seriousness. These influences create variation, not certainty.
+
+A report may be incomplete, mistaken, exaggerated, malicious or honestly inaccurate. The simulation stores the source's account separately from the underlying event facts and from later verified findings.
+
+### Repeat events and patterns
+The system can generate repeat activity by the same person or group, repeated targeting of a place or victim, copycat activity, escalating disputes, series offences and geographically or behaviourally linked events.
+
+Patterns are not automatically obvious to police. The simulation may expose separate events through reports, records, evidence and intelligence over time. Links can be real, coincidental, misleading or uncertain. Investigators must assess them.
+
+### Organised and coordinated crime
+Groups and criminal organisations can generate events through plans, roles, resources, relationships and internal conflict. Their activity may include recruitment, supply, movement, concealment, intimidation, financial activity and attempts to avoid detection.
+
+Organised activity should have continuity and constraints. Participants have individual motives, knowledge and reliability; they do not all know every detail. Arrests, disruptions, financial pressure, internal disputes and investigative activity can change a group's behaviour.
+
+### Non-crime events
+The living city also generates non-criminal events that require police attention, including accidents, missing-person concerns, welfare requests, disputes without an offence, public hazards, sudden deaths, lost property, noise complaints and assistance requests.
+
+These events use the same world and incident systems but are not forced into a criminal offence classification. This prevents the simulation from treating every call as a crime.
+
+### Frequency, distribution and balance
+Crime occurrence is influenced by population, activity, geography, opportunity, individual behaviour, group activity, time and previous events. The game should support different levels of activity across districts and periods without making any district uniformly dangerous or safe.
+
+The system uses adjustable parameters for event frequency and variation. Parameters are tuned through testing and can be configured for a desired game experience, but the underlying rules should remain coherent. The player should encounter quiet periods, routine work, isolated incidents and periods of increased demand.
+
+### Consequences and world change
+Generated events can change the world. Consequences may include injury, loss, property damage, fear, changed routines, business disruption, reduced trust, increased security, disputes, retaliation, further offending, public concern or changes in police deployment.
+
+Consequences persist where relevant and can influence future behaviour. A crime does not disappear from the world merely because the police close an incident or the player leaves the session.
+
+### Time and simulation processing
+Events are generated against the game's controlled clock and relevant schedules. The system can process routine background activity in batches and increase detail when an event becomes active or police-relevant. It must respect the global rule that game time does not advance merely because the player exits, unless a different time rule is explicitly established in the blueprint.
+
+Event times, discovery times, report times and police response times are distinct and preserved.
+
+### Connections to other divisions
+- **BP-02 to BP-04:** geography, population, properties, businesses and organisations.
+- **BP-06 to BP-10:** personnel, deployment, resources and patrol presence.
+- **BP-11 and BP-12:** reporting, call intake, dispatch and formal incident records.
+- **BP-13:** offence definitions and classifications.
+- **BP-15 and BP-16:** case creation and investigation.
+- **BP-17 to BP-24:** victims, witnesses, suspects, interviews, intelligence, scenes and evidence.
+- **BP-25 to BP-29:** arrest, custody and justice outcomes that may affect future activity.
+- **BP-35 to BP-39:** simulation processing, relationships, time, records and persistence.
+- **BP-40 to BP-44:** player interface, notifications, permissions, testing and configuration.
+
+### Exceptions and edge cases
+The system must handle attempted but unsuccessful offences, interrupted events, mistaken targets, multiple offenders with different knowledge, events with no direct victim, events with several victims, delayed discovery, false or duplicate reports, an event that produces several incidents, several events that appear linked, events crossing district or national boundaries, offender death or departure before discovery, and events that occur while the player is off duty.
+
+### Acceptance conditions
+- Events arise from persistent world conditions and simulated behaviour rather than only arbitrary random selection.
+- Each event has a consistent internal record and unique identity.
+- Underlying event facts remain separate from police knowledge and reports.
+- Offence types link to the BP-13 catalogue.
+- Reporting, discovery and detection are variable and not guaranteed.
+- The simulation supports individual, repeat, group and organised offending.
+- Non-criminal police work is generated alongside crime.
+- Events can create lasting effects on people, places, organisations and police demand.
+- Event timing respects the game clock and does not progress simply because the player exits.
+- The player receives no automatic disclosure of hidden event facts or responsible identities.
+- Event frequency and distribution can be tuned without breaking continuity or plausibility.
+
+**Draft status:** BP-14 is a working design. The numerical behaviour model, event-frequency settings and detailed event catalogue will be tuned through later simulation testing. It is not a claim that crime-generation software has been implemented.
