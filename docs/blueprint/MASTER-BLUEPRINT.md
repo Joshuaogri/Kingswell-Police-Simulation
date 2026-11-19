@@ -9495,3 +9495,340 @@ The system must preserve delivery history, prevent uncontrolled duplicates, dist
 - Delivery and report failures are visible and recoverable.
 
 **Draft status:** BP-41 is a working design. The final notification catalogue, priority levels, acknowledgement times, escalation matrix, channel providers, delivery service targets, reminder defaults, report catalogue, metric definitions, publication rules, retention periods and external communication integrations remain open. No dedicated notification service, reporting engine, external message integration or automated report publication system has been implemented.
+
+
+---
+
+## BP-42 — Security and Permissions
+
+### Purpose and scope
+Define how the simulation protects identities, records, services, commands, data, infrastructure and institutional capabilities against unauthorised access, misuse, disclosure, alteration and disruption. BP-42 establishes authentication, authorisation, permission models, role and attribute controls, security boundaries, secrets management, audit, privileged access and security incident response.
+
+BP-42 covers:
+- User, service and system identity.
+- Authentication and session security.
+- Role-based and attribute-based authorisation.
+- Domain, record, field and action permissions.
+- Fictional character authority and separation from platform identity.
+- Database and application access controls.
+- Row-level and other data-access enforcement.
+- Privileged and administrative access.
+- Secrets, keys and credential management.
+- Secure integration and service-to-service access.
+- Security logging, monitoring and access review.
+- Break-glass and emergency access.
+- Data protection and confidentiality controls.
+- Security incident detection, containment and recovery interfaces.
+- Permission lifecycle, revocation and periodic review.
+
+BP-42 does not replace:
+- BP-30 for institutional governance, decision rights, risk ownership and oversight.
+- BP-31 for professional standards, misconduct and disciplinary processes.
+- BP-38 for record classification, schema, provenance and data ownership.
+- BP-39 for backup, recovery and continuity.
+- BP-40 for interface presentation of permitted and denied actions.
+- BP-41 for notification routing and report access.
+- BP-43 for security testing and verification.
+- BP-44 for approved security configuration and environment settings.
+
+A technical permission does not create a fictional police power. A fictional rank or appointment does not automatically grant access to every database record. A person may be authenticated but unauthorised for a particular action. A player may have a valid ChatGPT account but still lack the fictional character authority or game permission required for an in-world action.
+
+The security architecture must be based on the actual platform capabilities and a documented threat model. It must not assume that a connected service, private repository, authenticated user or hidden interface automatically makes all data secure.
+
+### Security principles
+The security model follows:
+- Least privilege: each identity receives only the access required for its defined purpose.
+- Default deny: access is denied unless an explicit policy permits it.
+- Separation of duties: incompatible powers and approvals are separated.
+- Defence in depth: no single interface or application check is the only protection for sensitive data.
+- Explicit identity: every user, service and privileged process is attributable.
+- Purpose limitation: access is justified by a defined operational or administrative purpose.
+- Data minimisation: only required information is exposed.
+- Secure by design: security controls are part of architecture, schema and workflow design.
+- Fail secure: uncertainty or unavailable authorisation results in denial of high-impact access or action.
+- Revocation: access can be promptly withdrawn when roles, assignments or risks change.
+- Accountability: material access and privileged changes are logged and reviewable.
+- Resilience: security controls remain effective during failure, recovery and emergency operation.
+- Confidentiality with oversight: protection must not be used to obstruct lawful audit or independent review.
+
+No user, administrator, developer, model or service process may bypass the security model merely because it can technically reach the database or repository.
+
+### Identity domains and separation
+The system distinguishes:
+- The real ChatGPT account or platform identity.
+- The authenticated project user, if a separate application identity is introduced.
+- The fictional player identity.
+- The fictional police employee identity.
+- The fictional NPC identity.
+- A service or integration identity.
+- A database administrator or infrastructure identity.
+- A project developer or repository maintainer identity.
+
+These identities are not interchangeable. The real user's platform identity does not become a fictional police identity automatically. A fictional officer cannot authenticate to Supabase merely because their personnel record exists. A developer's repository access does not grant in-world command authority.
+
+Where the application uses an external identity provider, the identity mapping is explicit, unique and auditable. A single authenticated project user may control a player character only through an approved association. Character switching is explicit and cannot transfer one character's permissions to another.
+
+Service identities are separate from human users, have defined purposes, use restricted credentials and cannot be used as shared human logins. Administrative and emergency accounts are individually attributable.
+
+### Authentication and session security
+Authentication verifies the identity of a real user or service. It is distinct from authorisation and fictional character authority.
+
+The design considers:
+- Approved identity provider and authentication method.
+- Strong credential and password policy where applicable.
+- Multi-factor authentication for privileged or sensitive access where supported.
+- Session lifetime, refresh and revocation.
+- Device and token handling.
+- Failed login and suspicious activity controls.
+- Account recovery and identity verification.
+- Service-to-service authentication.
+- Secure logout and credential rotation.
+- Session invalidation after role or access changes.
+
+The actual application authentication design remains open. The project must not expose Supabase service-role credentials, database passwords, provider secrets or privileged tokens in client-side code, prompts, public repositories or ordinary logs.
+
+A session is not trusted indefinitely. Sensitive actions may require renewed authentication or an additional approval step under the security policy.
+
+### Authorisation model
+Authorisation determines whether an authenticated identity may perform a particular action on a particular resource in a particular context.
+
+The model may combine:
+- Role-based access control (RBAC).
+- Attribute-based access control (ABAC).
+- Relationship- or context-based access rules.
+- Explicit delegated authority.
+- Purpose-of-use restrictions.
+- Time-bounded and case-bounded permissions.
+
+A permission decision considers, as relevant:
+- User or service identity.
+- Active fictional character.
+- Rank, appointment, position and unit.
+- Current posting and duty status.
+- Assigned case, incident or task.
+- Legal authority and scope.
+- Required qualification or clearance.
+- Record classification.
+- Geographic or institutional jurisdiction.
+- Purpose and necessity.
+- Time, expiry and revocation.
+- Conflict of interest or restriction.
+- Approval or supervisory requirement.
+
+Roles provide reusable permission groupings but do not replace contextual checks. A user who can read one case does not automatically read all cases. A supervisor may see deployment information but not every confidential personnel, medical or disciplinary record. A finance officer may process payments but cannot alter evidence or direct investigations.
+
+### Fictional authority and technical permission
+The system separately validates:
+- Whether the player is authenticated to the platform.
+- Whether the player may access the game.
+- Which fictional character is active.
+- Whether the character is authorised for the requested action.
+- Whether the character has the required qualification, clearance or appointment.
+- Whether a legal power or warrant is required and valid.
+- Whether supervisory or institutional approval is required.
+- Whether the database policy permits the underlying record operation.
+
+All required checks must pass. Technical access cannot substitute for a missing legal authority. A valid legal authority cannot be executed by a character who lacks the required operational role or qualification unless the applicable rules expressly permit it.
+
+Rank, appointment, position, grade, clearance, qualification, legal power and delegated authority remain distinct. A higher rank does not automatically bypass record confidentiality or specialist controls.
+
+### Permission catalogue and policy ownership
+The service maintains a versioned permission catalogue. Each permission identifies:
+- Unique permission identifier.
+- Resource or domain.
+- Action allowed.
+- Scope and constraints.
+- Eligible roles or attributes.
+- Required purpose or relationship.
+- Required approval or legal basis.
+- Applicable record classification.
+- Effective date and expiry.
+- Policy owner and approving authority.
+- Audit and review requirements.
+
+Actions may include view, search, create, update, submit, approve, assign, export, disclose, delete where legally permitted, correct, archive, administer or audit.
+
+Domain owners define the legitimate business purpose and decision authority. BP-42 defines how those rules are enforced consistently across the application and database.
+
+Permissions are not granted by broad wildcard access where a narrower policy is practical. Sensitive domains use explicit access policies and review.
+
+### Record, field and action-level protection
+Access is evaluated at the appropriate granularity:
+- Domain or schema.
+- Table or record type.
+- Individual record.
+- Field or data element.
+- Action or state transition.
+- Relationship traversal.
+- Export or bulk query.
+- Administrative function.
+
+A user may be allowed to see that a record exists but not its protected contents. The interface may show a redacted or restricted status without exposing the hidden fields.
+
+A user who can access a case record does not automatically gain access to linked medical, personnel, intelligence, whistleblowing or privileged legal material. Each linked domain applies its own policy.
+
+Bulk access and export are treated as higher-risk actions than ordinary single-record viewing. The system records purpose, scope, filters, volume and approval where required.
+
+### Database security and row-level enforcement
+The database enforces access rules independently of the user interface. The intended Supabase/PostgreSQL design uses appropriate roles, grants, row-level security (RLS), secure views, controlled functions and server-side access patterns as approved.
+
+The final policies must ensure:
+- Public or anonymous access cannot read or alter private game records.
+- Authenticated users see only records permitted by their identity and purpose.
+- Users cannot forge their own fictional rank, unit, case assignment or permission attributes.
+- Service-role access is restricted to trusted server-side processes.
+- RLS is enabled and tested on exposed tables where required.
+- Views and functions do not accidentally bypass intended restrictions.
+- Security-definer functions have a controlled owner, search path and privilege scope.
+- Direct database access cannot bypass domain validation for consequential actions.
+- Cross-domain joins preserve access restrictions on every referenced record.
+- Sensitive data is not exposed through error messages, logs or public API schemas.
+
+The exact RLS policy structure must be derived from the approved identity model and tested against positive and negative access cases before any game data is introduced.
+
+### Privileged and administrative access
+Privileged access includes database administration, schema migration, policy configuration, secret management, repository administration, production deployment and recovery.
+
+Privileged access is:
+- Granted to named identities.
+- Limited to the required environment and task.
+- Protected by stronger authentication where available.
+- Time-bounded where practicable.
+- Logged and reviewed.
+- Revoked when no longer required.
+- Separated from ordinary gameplay and service identities.
+
+No shared administrator account is used for routine human actions. A developer may modify code but cannot silently alter authoritative game facts. A database administrator may manage infrastructure but cannot make an unsupported domain decision. Where a technical repair requires changing domain data, the action is approved and recorded by the accountable domain owner.
+
+### Secrets, keys and credential management
+Secrets include database passwords, service-role keys, access tokens, signing keys, encryption keys, webhook secrets and third-party credentials.
+
+Secrets must:
+- Be stored in an approved secret-management facility.
+- Be absent from GitHub source, documentation, commits and client bundles.
+- Be restricted to the smallest required service or operator set.
+- Be rotated according to risk and policy.
+- Be revocable and replaceable.
+- Be excluded from ordinary application logs and error reports.
+- Have a documented owner and recovery route.
+- Be handled safely during local development and deployment.
+
+Public client configuration and public anonymous keys are not treated as secrets, but they do not provide security by themselves. Their safe use depends on correctly enforced database and API policies. Service-role credentials are privileged and must never be exposed to a browser or player-controlled environment.
+
+A suspected credential leak triggers containment, revocation or rotation, scope assessment, audit review and incident handling. Removing a secret from the latest file does not erase it from repository history or prior exposure; the credential must be treated as compromised.
+
+### Secure integration and service access
+Each integration has a defined identity, purpose, data scope, authentication method, permission set, owner and failure behaviour.
+
+Service-to-service access uses restricted credentials and documented contracts. An integration is not trusted merely because it is connected or belongs to a recognised provider.
+
+Inbound data is validated and treated as untrusted until the relevant domain process accepts it. Outbound data is minimised and approved. Webhooks and asynchronous callbacks verify authenticity, prevent replay where appropriate and record delivery or failure.
+
+Third-party tools receive no general access to the game database unless specifically required and approved. External access is revoked when the integration is disabled or its purpose ends.
+
+### Audit, monitoring and access review
+Security-relevant events are recorded, including:
+- Authentication and session events.
+- Permission grants, changes and revocations.
+- Denied access attempts.
+- Sensitive record views and exports where required.
+- Privileged administrative actions.
+- RLS and policy changes.
+- Secret creation, rotation and revocation.
+- Integration configuration and access.
+- Break-glass activation.
+- Security incidents and remediation.
+- Changes to fictional character authority or role mappings.
+
+Logs record actor, target, action, time, source, result, purpose and relevant policy version. They must not expose credentials or unnecessary sensitive content.
+
+Access reviews verify that users and services still require their permissions. Reviews occur at defined intervals and after material changes such as transfer, promotion, departure, contract end, role change, case closure or suspected compromise.
+
+Security monitoring detects unusual access volume, repeated denied requests, privilege escalation, suspicious exports, unexpected service identities and changes outside approved release processes.
+
+### Break-glass and emergency access
+Emergency access may be necessary to protect life, preserve evidence, maintain critical service or respond to a serious incident. It is exceptional, not a routine shortcut.
+
+A break-glass process defines:
+- Qualifying emergency conditions.
+- Permitted identity and role.
+- Exact data or action scope.
+- Duration and automatic expiry.
+- Required reason and incident reference.
+- Immediate logging and notification.
+- Independent post-event review.
+- Revocation and remediation.
+- Prohibited actions and legal limits.
+
+Emergency access does not create statutory powers, override a court order or authorise an otherwise unlawful action. Where possible, the system uses a second approver. If immediate action cannot wait, the action is recorded and independently reviewed promptly afterward.
+
+### Security incident response
+A security incident may involve credential compromise, unauthorised access, data disclosure, malicious alteration, data loss, service disruption, privilege escalation, insecure integration or abuse of administrative access.
+
+The response process includes:
+1. Detect and record the incident.
+2. Assess severity, affected identities, records and systems.
+3. Contain access or isolate affected services.
+4. Preserve logs and relevant evidence.
+5. Revoke or rotate compromised credentials.
+6. Assess data exposure, alteration and integrity.
+7. Notify the responsible security and governance authorities.
+8. Recover using BP-39 where required.
+9. Validate permissions and authoritative state.
+10. Review root cause and implement corrective action.
+11. Complete required notifications under the applicable law.
+12. Close only when evidence supports safe resolution.
+
+Security incident response is distinct from a fictional police incident or criminal investigation, although the events may be linked. Any internal or criminal investigation follows its own authority, evidence and confidentiality rules.
+
+### Player experience and authority
+The interface displays only actions and records permitted to the current user and character. Where access is denied, it provides a safe explanation without revealing the existence or content of protected records beyond what policy allows.
+
+The player can review their own authorised roles and current fictional character authority, request access through the proper route, report suspected security issues and use emergency access only when explicitly authorised.
+
+The player cannot:
+- Grant themselves a rank, appointment, clearance or qualification.
+- Change their case assignment to gain access.
+- Bypass database security through natural-language commands.
+- Obtain another user's credentials.
+- Expose secrets or administrative configuration.
+- Use break-glass access for convenience.
+- Treat a technical error as permission.
+- Use an administrative development capability as an in-world police power.
+
+### Connections to other divisions
+- **BP-01 to BP-41:** all domain records, actions, commands, notifications and reports subject to security controls.
+- **BP-30:** governance, risk ownership, delegation, audit and oversight.
+- **BP-31:** misconduct, corruption, unauthorised access and disciplinary referral.
+- **BP-35:** runtime identity and permission checks during command and event processing.
+- **BP-38:** record classification, schema, data ownership, provenance and access metadata.
+- **BP-39:** backup access, credential recovery, incident containment and restoration.
+- **BP-40 and BP-41:** interface restrictions, notification routing and report disclosure.
+- **BP-43:** authentication, authorisation, RLS, secret scanning and penetration/security tests.
+- **BP-44:** approved security settings, environments and controlled configuration.
+
+### Exceptions and edge cases
+The design must handle an authenticated user without a fictional character; a character with no current appointment; a role change during an active session; a transfer while a case remains assigned; an expired qualification; a revoked warrant or authority; a user with conflicting roles; a supervisor seeking access to a subordinate's confidential record; an investigator with a personal conflict; a former employee retaining a session; a compromised account; leaked service-role key; leaked repository secret; an RLS policy error; a security-definer function bypass; a public view exposing protected fields; a bulk export beyond purpose; an integration using excessive permissions; a delayed revocation; an unavailable identity provider; a failed second factor; an emergency break-glass request; a break-glass session that exceeds its duration; an administrator modifying authoritative data; an unauthorised permission grant; a denied access attempt that reveals protected record existence; a backup restore that reopens old permissions; a development environment connected to production data; and a security incident during a service outage.
+
+The system must fail securely, preserve audit evidence, revoke access promptly and require independent review where the risk or domain warrants it.
+
+### Acceptance conditions
+- Platform identity, project identity, fictional character and service identities are distinct.
+- Authentication and authorisation are separate controls.
+- Default access is denied unless an explicit policy permits it.
+- Permissions are based on role, attributes, purpose, scope and current authority as required.
+- Fictional rank or appointment alone does not grant unrestricted database access.
+- Technical access cannot substitute for legal authority or qualification.
+- Record, field, action and export permissions are enforced at the appropriate layer.
+- Database access controls protect records independently of the interface.
+- RLS and privileged functions are tested against unauthorised as well as authorised cases.
+- Service-role keys and other privileged secrets are never exposed in client code or source control.
+- Privileged actions are attributable, restricted and reviewed.
+- Permission changes and revocations take effect within defined security expectations.
+- Break-glass access is limited, logged, time-bounded and independently reviewed.
+- Integrations use scoped identities and validated data contracts.
+- Security events and sensitive access are auditable without leaking secrets.
+- Security incidents have a defined containment, recovery and review process.
+- The player cannot elevate fictional authority or bypass controls through commands.
+
+**Draft status:** BP-42 is a working design. The final identity provider, authentication methods, role and attribute catalogue, character-to-user mapping, data-classification policy, RLS policy set, privileged access model, secret manager, encryption and key-management configuration, security monitoring, break-glass conditions, access-review frequency and incident-response obligations remain open. No game authentication, authorisation policies, RLS-protected game tables or security operations process has been implemented.
