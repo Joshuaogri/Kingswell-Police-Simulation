@@ -35,7 +35,7 @@ Each division is designed with its purpose, scope, responsibilities, components,
 | BP-27 | Legal Processes | Drafted; legal framework, charging model and procedural rules remain open |
 | BP-28 | Courts and Outcomes | Drafted; court hierarchy, jurisdiction and judicial rules remain open |
 | BP-29 | Corrections | Drafted; correctional law, sentence rules and institutional model remain open |
-| BP-30 | Department Governance | Not started |
+| BP-30 | Department Governance | Drafted; statutory mandate, oversight and delegation framework remain open |
 | BP-31 | Professional Standards | Not started |
 | BP-32 | Training and Development | Not started |
 | BP-33 | Human Resources | Not started |

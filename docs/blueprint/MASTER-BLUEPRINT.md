@@ -4939,3 +4939,316 @@ The design must handle defective or ambiguous order, wrong identity, multiple ac
 
 **Draft status:** BP-29 is a working design. The correctional statute, institutional hierarchy, facility standards, remand arrangements, sentence calculation rules, prison regime, healthcare model, discipline code, use-of-force framework, parole and probation law, release/recall rules, independent inspectorate and retention periods remain open. No correctional institution, probation service or sentence-execution software has been implemented by this design document.
 
+## BP-30 — Department Governance
+
+### Purpose and scope
+Define the governance architecture through which the national police service is lawfully directed, administered, held accountable and continuously improved. This division covers institutional mandate, command authority, decision rights, policy control, strategic planning, operational governance, risk management, internal assurance, performance oversight, audit, public accountability, inter-agency coordination and controlled institutional change.
+
+BP-30 governs the police institution as a whole. It does not replace:
+- BP-05 for police institutional structure, jurisdiction and command architecture.
+- BP-06 to BP-09 for personnel, careers, units, deployment and resources.
+- BP-30's linked specialist divisions BP-31 to BP-34 for professional standards, training, human resources and finance.
+- BP-38 to BP-44 for authoritative records, persistence, interface, notifications, security, testing and configuration.
+- BP-27 and BP-28 for independent legal and judicial authority.
+
+Governance is not merely a hierarchy chart. Every material power, decision, policy, delegation, review and accountability relationship must have a defined owner, legal or organisational basis, scope, limits, record and route for challenge. Rank alone does not confer every decision right.
+
+The fictional country's constitution, police statute, public-sector framework, oversight institutions and exact legal mandates remain to be specified. This document establishes design requirements, not binding law or implemented software.
+
+### Governance principles
+The police service operates under the following governing principles:
+- Legality: every police power and institutional action has a lawful basis and remains within its scope.
+- Public service: policing is directed toward public safety, prevention, lawful enforcement and protection of rights.
+- Accountability: decisions and outcomes can be attributed, explained and reviewed.
+- Integrity: conflicts, corruption, dishonesty, abuse and improper influence are not tolerated.
+- Independence of professional judgment: operational decisions are not manipulated to achieve political, financial or personal objectives.
+- Proportionality and necessity: interventions are appropriate to the lawful purpose and circumstances.
+- Fairness and equality: policies and decisions must not discriminate unlawfully or produce unjustified unequal treatment.
+- Transparency: institutional information is published where lawful, with justified protection for confidential material.
+- Evidence-led management: policy and resource decisions use reliable information, uncertainty and limitations.
+- Subsidiarity: decisions are taken at the lowest competent level unless risk, scale or law requires escalation.
+- Separation of duties: incompatible powers and approval functions are appropriately separated.
+- Continuous improvement: findings, incidents, audits and public feedback produce accountable corrective action.
+
+### Governance instruments and hierarchy
+The service maintains a controlled hierarchy of institutional instruments, subject to the country's legal framework:
+- Constitution and applicable law.
+- Statutory instruments and binding external directions.
+- National policing strategy and approved institutional objectives.
+- Governance charters and command delegations.
+- Regulations, policies and formal standards.
+- Operational doctrine and procedures.
+- Local orders, instructions and approved plans.
+- Training guidance, forms and reference material.
+
+Each instrument has a unique identifier, title, owner, legal basis, approving authority, scope, version, effective date, review date, status, affected roles, dependencies and supersession history.
+
+A lower-level instrument cannot override a higher-level law or policy. Conflicts are flagged and referred for competent legal and governance review. Informal custom, verbal direction or historical practice cannot silently amend a controlled instrument.
+
+### Institutional mandate and strategic direction
+The police service's mandate is derived from the fictional constitution and police statute. It must define:
+- National and territorial jurisdiction.
+- Core public protection and law-enforcement functions.
+- Powers, duties and restrictions.
+- Relationship with ministers, elected authorities and civil administration.
+- Operational independence and lawful policy direction.
+- National and regional command responsibilities.
+- Cooperation with other public bodies.
+- Public reporting and accountability obligations.
+- Prohibited political, private or commercial uses of police authority.
+
+A national strategy translates the mandate into time-bound priorities, outcomes, capabilities and resource assumptions. Strategic priorities are approved by the legally competent authority and reviewed at defined intervals. A change in government or leadership does not erase institutional records or automatically invalidate lawful ongoing operations.
+
+The service must distinguish government policy direction from operational command. Political or administrative authorities cannot direct individual investigations, dictate arrests, suppress evidence or interfere with judicial decisions unless an express legal power permits a narrowly defined action.
+
+### Governance bodies and decision forums
+The institutional model may include:
+- National Police Board or equivalent governing body.
+- Police Commissioner/Chief and executive command group.
+- National operational command forum.
+- Regional and city command review forums.
+- Specialist capability and policy boards.
+- Risk and assurance committee.
+- Finance, procurement and resource governance committee.
+- Information governance and security board.
+- Professional standards and integrity oversight forum.
+- Training and workforce governance forum.
+- Change-control and architecture board.
+
+For each body, the design records its legal or administrative foundation, purpose, membership, chair, quorum, decision powers, advisory role, meeting frequency, records, conflicts process, escalation and reporting route.
+
+A committee's existence does not confer statutory authority. It may advise, coordinate or approve only matters delegated to it. Decisions reserved to a chief officer, independent oversight body, minister, prosecutor or court remain with that authority.
+
+### Command accountability and decision rights
+Every significant institutional decision is associated with:
+- Accountable decision owner.
+- Relevant delegated authority and source.
+- Scope and limits.
+- Required consultation or approval.
+- Decision deadline and urgency.
+- Evidence and information considered.
+- Risks, alternatives and proportionality.
+- Decision, rationale and conditions.
+- Implementation owner.
+- Review or appeal route.
+- Audit and retention requirements.
+
+The system distinguishes command responsibility, line management, professional advice, operational tasking, statutory authorisation, financial approval and judicial authority. One person may hold several roles, but incompatible functions require safeguards and explicit separation.
+
+Delegations identify the delegator, recipient, permitted decisions, restrictions, effective period, geographic or functional scope, sub-delegation rules, revocation and handover. A delegation cannot exceed the delegator's own authority. Absence or vacancy does not automatically transfer powers beyond a documented succession rule.
+
+### Policy lifecycle and controlled publication
+Every policy follows a managed lifecycle:
+1. Need or issue identified.
+2. Owner and sponsor assigned.
+3. Legal, operational, human-rights, equality, privacy, security and resource impact assessed as relevant.
+4. Stakeholders consulted where required.
+5. Draft developed and versioned.
+6. Competent authority approves or rejects.
+7. Effective date and transition arrangements established.
+8. Personnel and affected systems notified.
+9. Training and implementation completed where necessary.
+10. Compliance and outcome monitored.
+11. Review, amendment, suspension or withdrawal recorded.
+
+Policies must be accessible to the roles that need them, with controlled publication for restricted operational material. Drafts are not treated as effective policy. Emergency temporary instructions require a defined authority, scope, expiry, review and subsequent formalisation or cancellation.
+
+### Risk management and institutional resilience
+The service maintains an enterprise risk framework covering strategic, operational, legal, financial, workforce, safeguarding, integrity, information, technology, supplier, infrastructure and reputational risks.
+
+Each risk record includes:
+- Unique identity, category and owner.
+- Cause, event and potential consequence.
+- Affected objectives, people, locations and systems.
+- Inherent and residual assessment method.
+- Existing controls and control owner.
+- Risk tolerance or escalation threshold.
+- Treatment plan, deadline and resources.
+- Monitoring indicators and review date.
+- Acceptance authority and rationale.
+- Incident, audit or assurance links.
+
+Risk scores support prioritisation but do not replace professional judgment or statutory duties. A risk cannot be marked accepted by a person without the required authority. Critical risks and overdue controls are escalated through defined command and governance routes.
+
+Business continuity plans cover loss of facilities, communications, personnel, vehicles, utilities, data, suppliers, cyber incidents, major emergencies and other disruptions. Plans identify essential functions, minimum safe staffing, alternate arrangements, command succession, recovery priorities, external dependencies, communication and testing. Continuity arrangements cannot suspend fundamental rights or create powers absent from law.
+
+### Operational governance and command review
+Operational activity is governed through the structures and procedures in BP-08 to BP-12 and other relevant divisions. BP-30 defines the institutional oversight requirements:
+- Clear ownership and command for significant operations.
+- Approval and review thresholds based on lawful authority and risk.
+- Written objectives, scope, resources and constraints where required.
+- Recording of key decisions, briefings and changes.
+- Escalation of serious harm, critical incidents and cross-jurisdiction matters.
+- Independent review where conflicts or exceptional powers arise.
+- Post-operation debrief, learning and corrective action.
+
+Operational command does not authorise unlawful investigative methods, searches, surveillance, detention or disclosure. The operational commander must verify that specialist statutory approvals and judicial orders are separately obtained where required.
+
+### Performance management and public value
+The service maintains a balanced performance framework covering public safety, response, service quality, investigation quality, case timeliness, victim and witness experience, safeguarding, workforce wellbeing, integrity, legality, training, resource stewardship and public confidence.
+
+Indicators must have clear definitions, data sources, owners, calculation rules, limitations and review periods. Measures are interpreted in context and may be disaggregated where lawful and statistically responsible.
+
+The framework must not reward arrest or charge volume as a proxy for success, encourage unlawful enforcement, pressure investigators to secure convictions, penalise lawful acquittals or suppress complaints. Targets must not distort professional judgment, under-reporting or public service.
+
+Performance reviews distinguish activity, output, outcome, quality and long-term impact. Data quality and missingness are visible. Changes to definitions preserve historical comparability or explicitly document the break in series.
+
+### Internal control and assurance
+The service maintains a control framework for legal compliance, operational quality, financial stewardship, personnel administration, information security, evidence integrity, safeguarding, procurement and records.
+
+Assurance may include:
+- Management self-assessment.
+- Supervisory review and sampling.
+- Specialist professional inspection.
+- Internal audit.
+- Legal compliance review.
+- Data and system controls testing.
+- Independent external inspection.
+- Public or legislative scrutiny where provided by law.
+
+Each control has an owner, purpose, risk addressed, operating frequency, evidence, failure threshold, escalation and remediation route. Assurance reports identify scope, methodology, limitations, findings, severity, responsible owner and due dates.
+
+A control is not deemed effective merely because a policy exists. Evidence of operation and outcome is required. Repeated failures trigger root-cause analysis and senior review.
+
+### Audit, findings and corrective action
+Audit and inspection findings are recorded with a persistent identifier, source, scope, evidence, classification, affected process, risk, responsible owner, management response, action plan, due date and verification method.
+
+Corrective actions progress through assigned, in progress, blocked, implemented, independently verified and closed states. The owner cannot self-certify a high-risk corrective action where independent verification is required.
+
+Overdue actions are escalated. Repeated or systemic failures are linked to institutional risk, policy review, training, staffing, procurement or technical remediation. Closure requires evidence that the control is effective, not merely that an action was performed.
+
+### Public accountability and external oversight
+The police service is subject to the legally established mechanisms of democratic and public accountability. These may include:
+- Ministerial or parliamentary scrutiny within lawful limits.
+- Independent police inspectorate.
+- Police complaints and conduct authority.
+- Ombudsman or public complaints commissioner.
+- Human-rights or equality commission.
+- Data protection and information regulator.
+- Auditor-General or public accounts body.
+- Coroner or equivalent death investigation authority.
+- Courts and statutory tribunals.
+- Community consultation and published performance reporting.
+
+Each external body has a defined mandate, access powers, referral routes, independence safeguards and reporting relationship. The police service must cooperate with lawful oversight while protecting confidential, privileged and operationally sensitive information through the appropriate legal process.
+
+Public reports distinguish verified findings, allegations, ongoing matters, statistical estimates and limitations. Personal information is not published without lawful authority. Transparency obligations cannot be used to expose protected victims, witnesses, informants or ongoing investigations improperly.
+
+### Complaints, feedback and institutional learning
+Public complaints, service concerns, commendations, staff concerns, whistleblowing and community feedback are captured through the appropriate specialist processes. BP-31 remains authoritative for professional misconduct and standards investigations; BP-30 ensures institutional themes and lessons are reviewed.
+
+Feedback is categorised by issue, location, service, affected group and urgency. Serious allegations are referred immediately to the independent or specialist authority required by law. A complaint is not treated as proof of misconduct, and complaint volume alone is not treated as proof of poor performance.
+
+Learning reviews examine system conditions, decision processes, supervision, training, resources, policy clarity and organisational culture. The aim is to correct failures and prevent recurrence while preserving individual accountability where justified.
+
+### Inter-agency governance and partnerships
+The service coordinates with prosecutors, courts, correctional institutions, emergency services, health services, local authorities, regulators, customs, immigration and other lawful partners.
+
+Every partnership or information-sharing arrangement identifies:
+- Legal basis and purpose.
+- Parties and accountable senior owners.
+- Scope of functions and decision boundaries.
+- Information categories and permitted use.
+- Security, confidentiality and retention.
+- Financial and resource responsibilities.
+- Service expectations and escalation.
+- Dispute resolution and termination.
+- Review date and performance measures.
+
+Partnership agreements do not transfer statutory powers unless law expressly permits. Police remain accountable for their own decisions and records. External organisations remain accountable for decisions within their own mandates.
+
+### Conflicts of interest, gifts and improper influence
+The governance framework requires declaration and management of actual, potential and perceived conflicts affecting decisions, procurement, recruitment, investigations, promotion, discipline, external relationships and access to confidential information.
+
+Records include the person, interest, affected matter, declaration date, assessment, mitigation, recusal or reassignment, approving authority and review. Gifts, hospitality, outside employment, political activity, financial interests and post-employment restrictions follow controlled policy and applicable law.
+
+Attempts to influence an investigation, procurement, appointment, promotion, disciplinary matter or court process are recorded and referred through the appropriate integrity channel. Seniority, political office, commercial influence or personal relationships do not legitimise improper direction.
+
+### Financial and resource governance
+BP-34 is authoritative for budgets, accounting, procurement and financial controls. BP-30 sets the governance principles:
+- Approved budget and delegated spending authority.
+- Separation of request, approval, receipt and payment.
+- Transparent procurement and conflict management.
+- Asset ownership and lifecycle accountability.
+- Emergency expenditure controls and retrospective review.
+- Contract management and supplier risk.
+- Fraud reporting and investigation.
+- Audit trails and public reporting.
+
+Operational urgency may justify a lawful emergency procurement route only where defined conditions are met. It does not authorise personal benefit, undocumented spending or bypass of required safeguards.
+
+### Information, records and decision integrity
+Governance decisions and policies are preserved in authoritative, versioned records under BP-38 and BP-39. Each record identifies its owner, source, author, approving authority, effective date, access class, retention and audit history.
+
+Records include board and committee minutes, decisions, delegations, policies, risk registers, assurance reports, performance data, complaints themes, external recommendations and corrective actions.
+
+Confidentiality and security controls must not be used to hide misconduct, evade audit or obstruct lawful oversight. Corrections are attributable and preserve prior versions. A governance decision cannot be silently rewritten after implementation.
+
+### Emergency governance and exceptional authority
+The framework defines how command and decision rights operate during major incidents, disasters, infrastructure failure, communications outage, cyber incident, public disorder or other emergency.
+
+Emergency delegations must specify trigger, decision owner, permitted actions, geographic and functional scope, duration, notification, review and termination. Any exceptional legal power must be separately grounded in law and must not be created by a governance policy.
+
+Where normal approval routes are unavailable, the system records the necessity, attempted contact, decision, alternatives, immediate safeguards and subsequent independent review. Emergency status cannot become a permanent route around ordinary controls.
+
+### Governance of organisational change
+Structural, policy, technology, service, jurisdictional and resource changes follow a controlled process. A change proposal records:
+- Problem, purpose and expected benefit.
+- Sponsor and accountable owner.
+- Scope and affected divisions.
+- Legal, operational, equality, privacy, safeguarding, security and financial impact.
+- Dependencies and risks.
+- Consultation and approvals.
+- Implementation and transition plan.
+- Training and communications.
+- Testing and acceptance.
+- Rollback or contingency plan.
+- Post-implementation review and closure.
+
+Changes to command authority, statutory powers, personnel rights, record definitions or legal procedures require heightened review and approval. No change may silently alter historical records or weaken an existing legal safeguard.
+
+### Player experience and authority
+The player experiences governance through lawful command instructions, policies, approvals, supervision, performance reviews, audits, risk controls, complaints and institutional decisions relevant to their role.
+
+The player may propose improvements, report risks, declare conflicts, respond to audit findings and exercise delegated authority. The player cannot bypass policy approval, suppress oversight, change legal powers, direct independent investigations improperly or approve their own action where separation of duties is required.
+
+The interface identifies current policies and versions, decision owners, delegations, approvals, risk status, required reviews, audit findings, corrective actions and escalation routes. It distinguishes mandatory rules from guidance and current policy from superseded drafts.
+
+### Connections to other divisions
+- **BP-01 to BP-05:** governing foundations, world, population, institutions and police mandate.
+- **BP-06 to BP-09:** personnel, career, deployment, units and resources.
+- **BP-10 to BP-16:** patrol, communications, incidents, crime, cases and investigations.
+- **BP-17 to BP-24:** victims, suspects, interviews, surveillance, intelligence, scenes, evidence and forensics.
+- **BP-25 to BP-29:** arrest, custody, legal process, courts and corrections.
+- **BP-31:** professional standards, complaints, misconduct and integrity.
+- **BP-32:** training and organisational competence.
+- **BP-33:** human resources and workforce governance.
+- **BP-34:** finance, procurement and resource stewardship.
+- **BP-35 to BP-37:** simulation engine, social context, time and scheduling.
+- **BP-38 to BP-44:** records, persistence, interface, notifications, security, quality assurance and configuration.
+
+### Exceptions and edge cases
+The design must handle conflicting legal and policy instruments, expired delegations, absent commander, vacancy, command succession, dual-role conflicts, emergency approval, political interference, improper operational direction, committee without quorum, disputed decision authority, urgent policy, policy withdrawal, unrecorded verbal instruction, critical risk escalation, inaccurate performance data, perverse incentives, audit obstruction, repeated overdue actions, independent oversight request, privileged material, data breach, public disclosure dispute, whistleblower retaliation, procurement conflict, emergency expenditure, partner agency refusal, inter-jurisdiction dispute, institutional restructuring, system outage, record corruption and retrospective policy correction.
+
+### Acceptance conditions
+- Every governance body, decision right and delegation has a defined legal or organisational basis.
+- Rank, position, command responsibility, statutory authority and financial approval remain distinct.
+- Delegations are scoped, time-bound, revocable and auditable.
+- Policy instruments have owners, versions, approval, effective dates and review history.
+- Strategic direction does not permit improper interference in individual investigations or judicial decisions.
+- Enterprise risks have accountable owners, controls, treatment and escalation.
+- Performance measures do not reward unlawful enforcement or penalise lawful outcomes.
+- Assurance tests whether controls operate, not merely whether policy documents exist.
+- Audit findings and corrective actions are tracked to independent verification where required.
+- Public and independent oversight functions remain institutionally protected.
+- Complaints, feedback and whistleblowing are handled through proper specialist routes.
+- Inter-agency agreements do not silently transfer statutory powers.
+- Conflicts, gifts and improper influence are declared, assessed and managed.
+- Financial and procurement controls preserve separation of duties.
+- Governance records are authoritative, versioned, access-controlled and auditable.
+- Emergency delegations are lawful, limited, time-bound and reviewed.
+- Organisational changes receive impact assessment, approval, testing and post-implementation review.
+- The player cannot exercise powers beyond their role or bypass required approval and oversight.
+
+**Draft status:** BP-30 is a working design. The police statute, executive and board model, oversight institutions, ministerial relationship, delegation schedule, public reporting obligations, audit mandates, risk appetite, policy hierarchy and exact governance authorities remain open. No governance board, audit, policy-control or performance-management software has been implemented by this design document.
+
