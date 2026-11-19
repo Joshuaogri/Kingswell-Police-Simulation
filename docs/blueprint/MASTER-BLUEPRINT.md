@@ -4278,3 +4278,343 @@ The design must handle disputed identity, multiple jurisdictions, uncertain offe
 
 **Draft status:** BP-27 is a working design. The constitution, legal hierarchy, offence and charging standards, prosecutorial model, legal instruments, disclosure code, limitation rules, bail framework, rights, appeal routes, jurisdictional arrangements and procedural deadlines remain to be specified. No legal-process software or institution has been implemented by this design document.
 
+## BP-28 — Courts and Outcomes
+
+### Purpose and scope
+Define the fictional country's court and tribunal architecture and the complete judicial lifecycle for criminal matters reaching a competent court. This division models court institutions, jurisdiction, case receipt, listings, hearings, parties, judicial decisions, trial, verdict, sentence, appeal interfaces, court orders, records and the consequences of judicial outcomes.
+
+BP-28 is the authoritative design for judicial proceedings and outcomes. It does not replace:
+- BP-25 for police arrest, warrant applications and execution records.
+- BP-26 for custody, detention, remand reception and release/transfer administration.
+- BP-27 for legal process before and around court proceedings, charging, filing, disclosure and procedural deadlines.
+- BP-23 and BP-24 for evidence management and forensic examination.
+- BP-29 for correctional sentence administration and post-conviction execution.
+
+The court is institutionally independent of police and prosecution. Police may investigate, provide evidence, execute lawful directions and participate as witnesses or applicants where authorised. Prosecutors present or discontinue cases within their lawful authority. Judges and other competent judicial officers control judicial proceedings and make decisions assigned to them by law. No police or prosecutorial role may dictate a judicial outcome.
+
+The fictional constitution, court hierarchy, procedural code, sentencing law, appeal system, judicial appointments and exact legal standards remain to be defined. The design must not invent binding legal rules, penalty ranges, hearing deadlines or judicial powers before those governing decisions are approved.
+
+### Judicial independence and institutional architecture
+The national court system must define:
+- Constitutional and supreme-level courts.
+- Appellate courts.
+- Superior trial courts.
+- General criminal trial courts.
+- Lower or summary criminal courts, where legally established.
+- Specialist courts or divisions, if the legal system requires them.
+- Juvenile or child-justice courts and protected procedures.
+- Judicial registries and administrative services.
+- Tribunals with legally defined jurisdiction, kept distinct from criminal courts.
+- Judicial oversight and complaint mechanisms that do not compromise lawful decisional independence.
+
+For each court, the architecture records its legal foundation, territorial reach, subject-matter jurisdiction, monetary or offence limits where relevant, original and appellate powers, judicial officer roles, registry functions, filing rules, case allocation, sitting locations, authorised remote procedures and relationships with other courts.
+
+Court administration may manage listings, filings, facilities and records. Administrative personnel cannot decide contested legal questions or alter judicial orders. Judicial officers exercise only powers conferred by law and remain subject to the applicable recusal, ethics, review and appeal framework.
+
+### Judicial personnel and roles
+The system distinguishes judges, magistrates or equivalent judicial officers, registrars, clerks, court administrators, interpreters, security personnel, appointed experts and other court staff. It also distinguishes judicial office, administrative employment, delegation, jurisdiction, seniority and access permissions.
+
+Each judicial officer record contains identity, appointment and tenure information, authorised court and case types, jurisdiction, status, recusal/conflict declarations, permitted functions and relevant training or qualification requirements. Sensitive personnel information is restricted.
+
+A judicial officer's assignment to a case is recorded with the legal basis and allocation event. Reassignment, recusal, unavailability or replacement preserves the prior assignment and procedural history. The system must not imply that administrative seniority alone permits one judicial officer to direct another's decision in a case.
+
+### Court case receipt and registration
+A court case may originate from a validly filed charge or indictment, an application, a statutory referral, an appeal or another legally recognised route. Receipt is not the same as acceptance, filing validation, service, arraignment or commencement of trial.
+
+The registry workflow records:
+- Source authority and originating instrument.
+- Linked police incident, investigation and BP-27 legal process records.
+- Parties, accused persons and alleged offences.
+- Court and jurisdiction proposed.
+- Filing date/time and method.
+- Required documents, signatures and approvals.
+- Registry checks, deficiencies and correction requests.
+- Acceptance, rejection or transfer decision and authority.
+- Court case identifier and any linked or consolidated proceedings.
+- Service, notification and acknowledgement records.
+
+A rejected or incomplete filing remains auditable and does not silently become an active prosecution. The system distinguishes administrative registry checks from judicial determinations. Defects that require judicial resolution are referred to the proper judicial officer.
+
+Court identifiers are unique and persistent. Consolidation, severance, transfer, re-filing, appeal and related proceedings maintain explicit links without erasing original identifiers or creating false equivalence between separate cases.
+
+### Parties and participation
+A court record identifies the accused or defendant, prosecution or applicant, legal representatives, complainants where legally recognised, victims, witnesses, interpreters, experts and any other authorised participants. Each participant's legal role, representation, contact arrangements, participation rights, service status and access restrictions are recorded.
+
+A person is not labelled guilty merely because they are accused, charged, arraigned, remanded or tried. Where identity is disputed or uncertain, the court record preserves that uncertainty and the judicial process used to resolve it.
+
+The system supports multiple accused persons, multiple charges, jointly tried or separately tried defendants, corporate or organisational defendants where law permits, and cases involving minors or protected persons. A decision concerning one defendant or count does not automatically determine another's case.
+
+### Case allocation, listing and scheduling
+Court cases are allocated and listed under the applicable law and court rules. The system supports:
+- Jurisdiction and venue checks.
+- Judicial assignment and conflict checks.
+- Case management conferences.
+- Initial appearances and arraignment.
+- Bail or remand hearings.
+- Pre-trial applications and directions.
+- Disclosure and evidential hearings.
+- Trial dates and estimated duration.
+- Sentencing hearings.
+- Appeal and review listings.
+- Adjournments, postponements and emergency listings.
+
+Each listing records court, date/time, hearing type, assigned judicial officer, participants, attendance method, required documents, interpretation or accessibility needs, security requirements and notification status.
+
+A listing is not proof that a hearing occurred. Actual commencement, appearances, non-attendance, adjournment, interruption and conclusion are separate events. Rescheduling preserves the original date and reason, the authority for the change and any legal consequences.
+
+Calendar calculations use the applicable court calendar, holidays and procedural rules. The system flags conflicts, expired deadlines and unavailable participants, but does not silently extend legal time limits or decide contested applications.
+
+### Service, notice and attendance
+The system records formal service of charges, summonses, hearing notices, applications, orders and other court documents. A service record identifies the document version, recipient, authorised method, serving person or agency, date/time, location or delivery channel, proof and outcome.
+
+Service states distinguish prepared, issued, dispatched, delivered, personally served, acknowledged, attempted, failed, disputed, substituted by judicial order and otherwise legally completed. A notification message or system alert is not automatically valid legal service.
+
+Non-attendance is recorded factually, including whether notice was validly served, whether an explanation was offered, whether representation attended, and what the court decided. A failure to attend does not itself establish guilt or authorise arrest. Any warrant or coercive order must be issued by a competent authority under the applicable law and recorded as a separate judicial event.
+
+### Pre-trial judicial proceedings
+The court may conduct hearings and make directions before trial, as permitted by law. These may include:
+- Initial appearance and confirmation of identity.
+- Explanation of charges and plea procedure.
+- Representation and legal assistance.
+- Bail, remand and release-condition review.
+- Jurisdictional and venue challenges.
+- Disclosure disputes and protective orders.
+- Admissibility or exclusion applications.
+- Expert evidence and witness arrangements.
+- Safeguarding and special measures.
+- Joinder, severance and amendment applications.
+- Case readiness, timetabling and trial management.
+- Abuse-of-process or other procedural applications.
+- Applications to stay, dismiss, discontinue or otherwise dispose of proceedings.
+
+Each application records the applicant, relief sought, legal basis, supporting material, notice, response, hearing, judicial decision, reasons, order and review route. The system distinguishes an application filed from one granted and an interim direction from a final determination.
+
+Judicial directions are assigned to responsible parties with scope and deadlines. Compliance, variation, non-compliance and consequences are separately recorded. A police agency receives only those directions that apply to it and may not assume powers beyond their wording or legal basis.
+
+### Pleas and admissions
+The system records the legally recognised plea or response for each defendant and each charge, including guilty, not guilty, no plea, plea not taken, plea deferred or other jurisdiction-specific states.
+
+A plea is valid only when the applicable legal requirements are satisfied. The record identifies who entered it, whether the defendant was present or represented, any interpretation or capacity safeguards, the judicial officer accepting it and the legal effect.
+
+A guilty plea is not interchangeable with an informal admission, interview statement or admission to one factual element. The system records its scope and any agreed or disputed factual basis. A plea may be changed or withdrawn only through the applicable lawful process and judicial decision where required.
+
+A not-guilty plea does not imply factual innocence as a system-generated conclusion; it records the defendant's formal position and preserves the prosecution's burden and the presumption of innocence.
+
+### Trial architecture
+Where a matter proceeds to trial, the court workflow models the legally required stages, which may include:
+- Confirmation of parties, charges and preliminary matters.
+- Jury selection or appointment of a fact-finder where the legal system provides one.
+- Opening statements or equivalent introductions.
+- Prosecution presentation.
+- Defence response and presentation.
+- Witness testimony and examination.
+- Expert evidence.
+- Documentary, physical, audio/video and digital exhibits.
+- Evidentiary objections and judicial rulings.
+- Legal submissions and directions.
+- Closing submissions.
+- Deliberation where applicable.
+- Verdict or other formal determination.
+
+The system supports judge-only and jury or panel trials if authorised by the fictional legal framework. It records the fact-finder model, participants, proceedings, rulings, exhibits admitted or excluded, reasons where required, directions and the exact outcome for each count and defendant.
+
+The court evaluates evidence under the applicable legal standards. The simulation must not convert a forensic result, witness account, intelligence report, arrest, prior conviction or police opinion into an automatic judicial finding. Evidence may be challenged, limited, excluded, contradicted or given different weight.
+
+The court record preserves the distinction between evidence tendered, evidence admitted, evidence considered, judicial findings of fact and the final legal conclusion. The game must not reveal hidden world facts to the player merely because a case enters trial; only facts properly established or disclosed through the proceedings become available.
+
+### Witnesses, victims and protected participation
+The court may receive testimony from victims, eyewitnesses, expert witnesses, police officers, civilian witnesses and other competent persons. It must support lawful special measures for children, vulnerable witnesses, intimidated witnesses, protected identities, remote testimony or other needs defined by law.
+
+The record tracks summons, attendance, oath or affirmation where required, interpretation, support arrangements, questioning, objections, judicial directions, breaks, safety concerns and any authorised restrictions on public access or disclosure.
+
+A witness's non-attendance, inconsistency, memory limitation or refusal to answer is recorded without automatic credibility scoring. Judicial findings must remain attributable to the court and grounded in the proceedings.
+
+Victims' participation and notification rights are represented accurately without granting control over prosecution decisions or judicial findings unless the law expressly provides it.
+
+### Evidence, exhibits and judicial rulings
+BP-23 remains the authoritative evidence register and chain of custody. BP-28 records the court-facing exhibit process, including:
+- Exhibit identifier and originating evidence record.
+- Tendering party and purpose.
+- Authentication or foundation issues.
+- Objections and responses.
+- Admission, limitation, exclusion or withdrawal decision.
+- Judicial reasons and applicable legal rule.
+- Display, playback, inspection or handling at court.
+- Return, storage, sealing or other post-hearing disposition.
+- Links to transcript, order and verdict reasoning where appropriate.
+
+Court exhibit labels do not replace authoritative evidence identifiers. A copy, demonstrative aid or derivative is distinguished from the original and linked to its source. Any discrepancy in continuity, integrity or provenance remains visible and cannot be silently resolved by the court interface.
+
+### Public access, privacy and protected proceedings
+The default openness or publicity of proceedings must follow the fictional constitution and court law. The system supports public hearings, restricted access, private or closed sessions, sealed documents, anonymity orders, publication restrictions and other lawful protections.
+
+Every restriction records the issuing authority, legal basis, scope, affected persons or material, duration, review date and publication or access consequence. Restrictions are not inferred from a user's preference or applied globally without authority.
+
+Public court information is separated from confidential, sealed, privileged, child-protection, witness-protection and otherwise restricted material. Redacted public copies retain links to the authoritative unredacted record and a record of who approved the redaction.
+
+### Judicial decisions and orders
+A judicial decision is a formal act by a competent judicial officer or court. The record includes:
+- Court and case identifier.
+- Judicial officer or panel.
+- Parties and issues determined.
+- Applicable law and jurisdiction.
+- Procedural history and material considered.
+- Decision and reasons, to the extent required.
+- Operative orders and affected counts or persons.
+- Date/time made and effective date.
+- Publication, sealing and service status.
+- Appeal or review rights and deadlines.
+- Correction, clarification, variation, stay or enforcement history.
+
+Decisions are classified by legal effect, such as procedural direction, interim order, evidentiary ruling, bail/remand order, dismissal, stay, verdict, sentence or appeal judgment. A written judgment may be issued later than an oral ruling; both events and their legal effect are recorded accurately.
+
+Orders are not altered by administrative staff or police. Clerical correction, appeal, variation, suspension and discharge follow distinct authorised procedures. The system verifies current status before downstream agencies act.
+
+### Verdicts and findings
+The outcome is recorded separately for every defendant and every charge. Depending on law, possible outcomes may include:
+- Guilty.
+- Not guilty or acquitted.
+- Charge dismissed.
+- Proceedings stayed or discontinued.
+- No verdict or mistrial.
+- Count withdrawn or not proceeded with.
+- Finding deferred or another legally recognised result.
+
+The system distinguishes a verdict from a sentence, a dismissal from an acquittal, a stay from final disposal and a mistrial from a finding on guilt. It records whether a decision is final, subject to appeal, subject to retrial or otherwise qualified.
+
+A conviction exists only when a competent court has entered the legally effective finding. A police or prosecution record cannot independently mark a person convicted. A finding on one count does not automatically establish guilt on another count.
+
+Where the court makes factual findings, those findings are attributed to the judgment and distinguished from the simulation's hidden ground truth. A court may reach a legally valid outcome while some world facts remain uncertain or unproven.
+
+### Sentencing and penalty decisions
+Where a conviction or other lawful basis permits sentence, BP-28 models the judicial decision and formal sentence. BP-29 governs correctional administration and execution.
+
+The sentencing process may include:
+- Confirmation of the conviction and counts.
+- Applicable statutory or guideline framework.
+- Prosecution and defence submissions.
+- Victim impact or other permitted information.
+- Pre-sentence reports and assessments.
+- Mitigating and aggravating factors.
+- Relevant prior convictions where law permits.
+- Credit for time in custody where required.
+- Concurrent or consecutive sentence decisions.
+- Financial penalties, compensation, restitution or other orders.
+- Community-based sanctions, treatment or supervision.
+- Custodial sentence and release-related terms.
+- Reasons, appeal rights and effective date.
+
+The court's authority, sentencing range and permitted sanctions depend on the law in force. No penalty is generated solely from a crime category, a severity score or a game-balance formula. Sentences must be legally valid, individualised where required and traceable to the judicial reasons and applicable law.
+
+A sentence may be appealed, corrected, varied or stayed only through a lawful process. The system does not treat a sentence as executed merely because it has been entered; BP-29 records the receiving authority's acceptance and execution state.
+
+### Court outcomes and downstream effects
+Each outcome generates controlled, attributable events for relevant systems:
+- BP-27 legal process status and appeal deadlines.
+- BP-26 custody, release, remand and transfer status.
+- BP-29 correctional intake, supervision or other sentence execution.
+- BP-18 suspect/offender status, without overwriting historical status.
+- BP-15 case closure, linked-case status and remaining investigative work.
+- BP-23 evidence retention, return, legal hold and disposal review.
+- BP-17 victim and witness notification or support obligations.
+- BP-30 governance, oversight and performance records.
+- BP-38 authoritative records and audit history.
+
+Downstream updates occur only after the legally effective event is verified. An appeal or stay may alter the effect of a decision; the original judgment remains preserved and is marked with its current legal status. A case outcome does not automatically dispose of related cases, civil claims, disciplinary matters or separate charges.
+
+### Appeals, reviews and retrials
+BP-27 manages procedural filing and deadlines; BP-28 records appellate court proceedings and judgments. The system supports legally recognised appeal routes for conviction, acquittal where permitted, sentence, interlocutory decisions, procedural rulings and other reviewable matters.
+
+Each appeal record identifies:
+- Decision challenged and relevant counts/persons.
+- Appellant and legal standing.
+- Grounds and relief sought.
+- Court with appellate jurisdiction.
+- Filing date, time limit and any extension decision.
+- Record and transcript required.
+- Responses, submissions and hearings.
+- Interim stay or bail status.
+- Appellate decision and reasons.
+- Further appeal or review rights.
+- Directions for retrial, resentencing, variation or other action.
+
+Possible outcomes include affirm, reverse, vary, quash, remit, order retrial, substitute a legally permitted decision, dismiss the appeal or another defined disposition. The exact powers remain dependent on the fictional legal framework.
+
+An appeal does not automatically suspend every consequence of the original decision. The system records whether a stay or other interim order has been granted and its precise scope. A retrial is a new procedural phase linked to the prior proceedings, not a deletion or silent restart of the original case.
+
+### Court administration and operational resources
+Court operations require buildings, courtrooms, secure waiting areas, custody holding facilities, accessible rooms, recording systems, exhibit storage, secure document systems, interpretation and remote-hearing infrastructure where lawful.
+
+Each resource has availability, capacity, access restrictions, maintenance, safety and incident records. Scheduling conflicts, security risks, unavailable interpreters, equipment failure or facility closure may require an adjournment or alternative arrangement by the competent authority.
+
+Court security is institutionally separate from judicial decision-making. Security staff may enforce lawful courtroom directions but cannot interfere with evidence, deliberations, judicial independence or the rights of parties.
+
+### Court records, transcripts and access
+The court maintains authoritative records of filings, hearings, appearances, submissions, exhibits, rulings, orders, judgments, verdicts, sentences and appeals. The system distinguishes:
+- Official court record.
+- Audio/video recording.
+- Transcript or approved minutes.
+- Filed party documents.
+- Judicial working material where legally protected.
+- Public register and public judgment.
+- Sealed or restricted record.
+- Certified copies and extracts.
+
+A transcript may be provisional, corrected, approved or certified. Corrections preserve the original record and identify the authority, reason and date. Recording failures, missing segments and disputed transcripts are logged and handled under court rules.
+
+Access, copying, publication, retention and destruction follow applicable law and judicial directions. A police user does not receive unrestricted access to court records merely because a case originated from a police investigation.
+
+### Complaints, recusal and judicial accountability
+The system supports formal processes for judicial recusal, conflict declarations, complaints about court administration, misconduct referrals and independent oversight. These are distinct from appeal, which challenges a judicial decision through the legally prescribed route.
+
+A complaint does not automatically invalidate a judgment or suspend a case. A recusal request is decided by the competent judicial authority under the applicable rules. Any reassignment preserves the procedural history and records the effect on existing orders.
+
+Judicial performance information may support lawful administration and quality assurance but must not reward conviction rates, punish independent outcomes or create pressure to decide cases for institutional convenience.
+
+### Player experience and authority
+The player may appear as a police witness, provide records or exhibits through authorised channels, execute lawful court directions, respond to subpoenas or summonses, assist prosecutors where permitted and track case outcomes relevant to police duties.
+
+The player cannot direct judges, access sealed records without authority, alter court transcripts, determine verdicts, impose sentences, change judicial orders or mark a person convicted. If the player later occupies a legally authorised judicial role in a separately defined career path, that role must have independent eligibility, appointment, conflict and permission rules; it cannot be assumed from police rank.
+
+The interface shows court, case, parties, assigned judicial officer, hearing schedule, filings, service status, evidence/exhibit status, orders, outstanding directions, judgment, verdict, sentence, appeal status and downstream confirmations. It clearly distinguishes scheduled events from completed hearings and draft outcomes from signed or legally effective decisions.
+
+### Connections to other divisions
+- **BP-05 to BP-09:** institutional boundaries, personnel, deployment and court resources.
+- **BP-11 and BP-12:** incidents and originating records.
+- **BP-13 to BP-18:** offence law, crime events, case management, investigation, victims, witnesses and accused persons.
+- **BP-19 to BP-24:** interviews, surveillance, intelligence, scenes, evidence and forensic reports.
+- **BP-25 and BP-26:** warrants, arrest, custody, bail, remand and release.
+- **BP-27:** legal process, charging, disclosure, filing, service, deadlines and procedural appeals.
+- **BP-29:** correctional reception, sentence execution, supervision and release.
+- **BP-30 to BP-34:** institutional governance, standards, training, staffing and finance.
+- **BP-35 to BP-37:** simulation engine, social context, time and scheduling.
+- **BP-38 to BP-44:** records, persistence, interface, notifications, security, testing and configuration.
+
+### Exceptions and edge cases
+The design must handle wrong court or jurisdiction, defective filing, disputed identity, multiple defendants and counts, corporate defendant, child defendant, unavailable judicial officer, recusal, judicial reassignment, conflict of interest, late or failed service, disputed attendance, non-attendance, interpreter failure, accessibility need, witness intimidation, protected identity, remote hearing failure, court closure, missing exhibit, evidence continuity challenge, inadmissible material, disclosure dispute, late disclosure, plea ambiguity, plea withdrawal, mistrial, hung jury or panel, inconsistent verdicts, partial conviction, partial acquittal, sentence error, overlapping sentences, time-served calculation dispute, order not served, order expired, appeal filed late, appeal extension, stay refused or granted, conviction quashed, retrial ordered, sentence varied, death of a party, corporate dissolution, court record corruption and retrospective correction.
+
+### Acceptance conditions
+- Court hierarchy, jurisdiction and judicial authority are explicit and legally grounded.
+- Court administration is separate from judicial decision-making.
+- Case receipt, registry validation, filing, service, hearing and determination are separate events.
+- Each case and proceeding has a persistent identifier and auditable links to originating records.
+- Parties, representation, participation rights and access restrictions are recorded.
+- Listings distinguish scheduled, commenced, adjourned, interrupted and completed hearings.
+- Service and attendance records preserve proof and legal status.
+- Pre-trial applications, directions and judicial orders preserve scope, authority and reasons.
+- Pleas are recorded per defendant and charge and are not conflated with informal admissions.
+- Trial stages, participants, evidence and rulings are traceable.
+- Court exhibits link to BP-23 evidence identifiers and preserve continuity.
+- Public, private, sealed and protected proceedings follow recorded legal authority.
+- Judicial decisions preserve reasons, effective time, operative terms and appeal routes.
+- Verdicts are recorded separately for each person and count.
+- Acquittal, dismissal, stay, discontinuance, mistrial and conviction are not conflated.
+- Sentencing decisions cite the applicable law and do not use arbitrary game-balancing formulas.
+- Downstream legal, custody and correctional updates occur only after verification of the legally effective order.
+- Appeals preserve the original decision and record interim stays and appellate outcomes.
+- Court records, transcripts and corrections are versioned, access-controlled and auditable.
+- The player cannot direct judicial outcomes or alter court records without a specifically authorised role.
+- No court outcome is treated as an omniscient statement of all hidden world facts.
+
+**Draft status:** BP-28 is a working design. The constitutional court structure, judicial appointment model, court jurisdictions, trial modes, jury or panel arrangements, criminal procedure, evidentiary rules, sentencing framework, appeal rights, publication rules, court administration and exact legal deadlines remain open. No court, registry, case-management or judicial-outcome software has been implemented by this design document.
+
