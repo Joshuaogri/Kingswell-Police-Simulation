@@ -7,36 +7,172 @@
 
 ## BP-01 — Game Identity, Foundations and Governing Rules
 
-### Purpose
-Define the game, its boundaries and the rules that keep the simulation coherent.
+### 1. Purpose and authority
+BP-01 is the foundational charter for Kingswell. It defines what the game is, what experience it must deliver, the boundaries of the simulation and the principles that every later division and implementation must respect.
 
-### Core identity
-Kingswell is a comprehensive, persistent, text-first fictional police simulation. The player experiences policing through an individual character while the game also models the department, its operations and the surrounding world sufficiently to create believable police work.
+BP-01 governs the overall experience. It does not replace the detailed rules owned by later divisions. Where a later division defines a specific subsystem, that division supplies the operational detail while remaining consistent with BP-01. A genuine conflict must be recorded and resolved through a controlled blueprint revision; it must not be silently interpreted differently by separate systems.
 
-### Four experience layers
-1. **Personal:** the player's character, career, qualifications, duties, relationships and day-to-day experience.
-2. **Operational:** patrol, calls, incidents, response, investigations and field decisions.
-3. **Institutional:** department structure, supervision, command, administration, resources and accountability.
-4. **World:** people, organisations, places, routines and events that create the circumstances police encounter.
+### 2. Game identity
+Kingswell is a comprehensive, persistent, text-first fictional police simulation set in an entirely fictional sovereign country whose capital city is Kingswell.
 
-### Governing principles
-- The setting, people, laws, agencies, events and procedures are fictional.
-- The simulation is persistent: records and consequences carry forward.
-- Text is the primary interface; graphical features may be added later but are not required for play.
-- Police work is the primary deep simulation. Other institutions are modelled to the depth needed to support the game.
-- The design is modular, but additions must remain coherent and must not create uncontrolled scope.
-- The game distinguishes what a character may do, what requires supervisory direction, what requires an in-game legal authority, and what falls outside their role.
-- Important events, decisions, changes and outcomes receive traceable records.
-- Time advances through deliberate game actions and defined simulation rules; the game does not silently progress while the player is away.
+The player inhabits one individual police character and experiences the world primarily through that character's work, knowledge, authority, decisions and career. The simulation also models the police service, its institutions and the surrounding population and world deeply enough to produce coherent, varied and consequential policing.
 
-### Time and player agency
-The game needs a consistent date/time, shift schedules, appointments, incident and case timelines, and controlled advancement. Exact advancement rules are to be specified in the dedicated time division. Player choices drive the character; the simulation controls the world and other characters within the agreed rules.
+The game is fictional. Its people, places, organisations, laws, offences, procedures, records and events are game-world content. Real-world organisations, people or events are not implicitly part of the setting.
 
-### Scope control
-A proposed addition is recorded with its purpose, boundaries, dependencies and effects on existing systems. It is incorporated into the blueprint in a controlled revision rather than silently expanding the project.
+### 3. Primary experience and four layers
+The police experience is the central purpose of the game. The four layers below are connected views of one persistent simulation, not separate games.
 
-### Acceptance conditions
-The game can explain its identity and boundaries; preserve continuity; distinguish player authority from organisational authority; maintain consistent time; and record consequential actions.
+1. **Personal layer:** the player's identity, employment, rank, appointment, position, qualifications, authority, duties, working relationships, career history and day-to-day experience.
+2. **Operational layer:** calls, dispatch, patrol, deployments, incidents, scene activity, decisions, reports, investigations and operational outcomes.
+3. **Institutional layer:** police command, supervision, units, staffing, training, resources, administration, performance, accountability and organisational change.
+4. **World layer:** people, households, businesses, properties, organisations, places, routines, events and relationships that create the circumstances in which policing occurs.
+
+An event in one layer may affect the others. For example, an operational decision may change an incident record, affect a person's life, create an investigative lead, require supervisory review and influence the player's career.
+
+### 4. Core governing principles
+The following principles are mandatory across the design:
+
+- **Fictional canon:** the game world is internally defined. Its facts and rules come from the Kingswell blueprint and persistent game records.
+- **Single coherent world:** all divisions operate on the same world state. A person, place, organisation, incident or item must not acquire conflicting identities merely because it appears in multiple systems.
+- **Persistent continuity:** consequential actions and world changes carry forward. Records must preserve enough history to explain how the current state arose.
+- **Individual identity:** people and other persistent entities have stable identities. Changes to names, roles, relationships, locations or status do not silently create a new identity or erase relevant history.
+- **Player agency:** the player chooses what their character attempts within the character's knowledge, capability, role and authority. The simulation determines the outcome from the established world state and rules; it must not silently choose the player's decisions.
+- **Consequential simulation:** actions may succeed, fail, be delayed, produce incomplete results or create unintended consequences. Outcomes must follow the situation and applicable game rules rather than being guaranteed by the player's request.
+- **Consistent authority:** rank, appointment, position, authority, qualification, clearance and assignment are distinct concepts. A character may only exercise powers and access granted by the relevant game-world rules and current role.
+- **Traceability:** important actions, decisions, state changes and outcomes must be attributable to an actor or system process and associated with an appropriate time and record.
+- **Controlled time:** simulation time advances only through defined game actions or explicitly defined simulation processes. It does not silently advance merely because the player is away or has stopped interacting.
+- **Text-first operation:** text and conversational commands are sufficient for the complete core game. Graphics, maps, diagrams and other visual features may supplement play but must never be required to understand or operate essential gameplay.
+- **Bounded depth:** police work receives the deepest simulation. Other institutions, businesses and world systems are developed to the depth needed to support credible policing and persistent consequences, not as an unrelated full simulation of every aspect of society.
+- **Modular coherence:** divisions may own distinct systems, but their identities, records, rules and state transitions must integrate into one game.
+- **No silent canon changes:** a change to an established rule, setting fact or accepted design decision must be recorded and reflected in the relevant blueprint material.
+
+### 5. Player role and point of view
+The player controls one police character at a time. The character has an individual identity and a current employment and assignment state.
+
+The player may issue commands, ask questions, make decisions, request information and attempt actions. The game must distinguish:
+- what the character knows;
+- what the character can reasonably discover;
+- what the character is authorised to do;
+- what the character is capable of doing;
+- what the character has actually attempted;
+- what the simulation has confirmed as completed.
+
+The interface must not treat a question as an action, an intention as a completed action, or a requested outcome as proof that the outcome occurred.
+
+The player receives information through the character's available channels and permissions. The game may maintain additional world or case facts that the character does not know. The interface must preserve that distinction and must not disclose hidden information merely because it exists in the underlying simulation.
+
+### 6. Core gameplay cycle
+The exact command syntax and subsystem workflows are defined in BP-40 and the relevant operational divisions. At the foundational level, the game must support this recurring cycle:
+
+1. **Establish state:** identify the character's current date and time, duty status, assignment, location, available resources and relevant known information.
+2. **Receive or select work:** present duties, calls, incidents, tasks, instructions or other opportunities that are available to the character.
+3. **Understand the situation:** provide information the character is entitled and reasonably able to access.
+4. **Choose an action:** allow the player to issue a clear instruction or attempt an available action.
+5. **Resolve the action:** validate the character's role, authority, capability, resources, location and the current world state; then determine the outcome.
+6. **Record consequences:** update the relevant operational and world records, preserve history and create any resulting tasks, notifications or reviews.
+7. **Continue play:** present the resulting state and allow the player to decide what to do next.
+
+This is a conceptual gameplay cycle, not a requirement that every command must pass through seven visible screens or steps.
+
+### 7. Time and continuity
+The simulation maintains one authoritative in-game date and time. The clock is used consistently by personnel schedules, duty rosters, appointments, travel, incidents, dispatch, investigations, evidence timelines and other time-dependent systems.
+
+Time advancement is controlled by the rules in BP-37. BP-01 establishes these governing constraints:
+- The game must make the current in-game date and time available to the player.
+- Time-dependent events must use the same authoritative clock.
+- A completed action may consume time where its defined rules require it.
+- The simulation must not advance time simply because the player closes the conversation, leaves the game or is inactive.
+- Any deliberate time-advance command or action must have a defined and understandable effect.
+- Historical events must retain their original timestamps when later records are corrected or supplemented; corrections must not rewrite history invisibly.
+
+### 8. Persistence and records
+The game must preserve the state needed to continue from the point at which play was last saved. Persistence is not limited to the player's character: it includes relevant world, organisational, operational and historical state.
+
+The game must be able to distinguish:
+- current state from historical state;
+- confirmed facts from allegations, estimates, hypotheses and unknowns;
+- attempted actions from completed actions;
+- an original record from a later correction, supplement or review;
+- player-visible information from information not available to the character.
+
+BP-38 defines record structures and ownership. BP-39 defines saving, persistence, backup and recovery. BP-01 requires these systems to preserve continuity and prevent silent loss or unexplained alteration of consequential state.
+
+### 9. World and non-player characters
+The world must feel active and coherent rather than existing only when the player directly asks about it. People, organisations and locations have identities, relationships, schedules, activities and changing circumstances as defined by their owning divisions.
+
+The simulation may vary the amount of processing devoted to different people and world elements. Such variation is an implementation strategy; it must not create duplicate identities, contradictory facts or arbitrary changes to established history.
+
+The world must not be simulated at the expense of player agency. Non-player characters and background processes may act within their defined rules, but their actions and effects must remain consistent with the shared world state and controlled simulation time.
+
+### 10. Consequences, uncertainty and fairness
+The game must preserve meaningful uncertainty. The player is not automatically told every fact, hidden motive, cause or outcome. Information may be incomplete, mistaken, delayed, disputed or unavailable.
+
+The simulation must not confuse an allegation with a finding, a suspicion with proof, a lead with a conclusion, or a possibility with an established fact. Later divisions define the detailed treatment of evidence, investigations and outcomes.
+
+Consequences must be coherent and proportionate to the established events and rules. The game must not arbitrarily punish the player, guarantee success, or change facts merely to force a preferred narrative.
+
+### 11. Institutional and world boundaries
+The National Police Service is the principal deeply simulated institution. Other public bodies, private organisations, businesses and community structures exist to make the world credible and to support police activity.
+
+Those external institutions must have enough defined identity, function, personnel, locations and records to support interactions with the police. They do not automatically receive the same operational depth as the police service.
+
+The wider country exists as part of the setting and may support national institutions, jurisdiction and events. BP-02 defines the geographical scope and the level of detail required outside Kingswell.
+
+### 12. Scope and change control
+A proposed feature or system addition must identify:
+- the gameplay purpose it serves;
+- the division responsible for its rules and records;
+- the boundaries of what it will and will not simulate;
+- its dependencies and affected divisions;
+- any new entities, state changes, commands or records it requires;
+- how it will be tested against existing rules.
+
+A proposal is not an implemented feature merely because it appears in the blueprint. A drafted design is not approved until its status is explicitly changed through the project's decision process. A software feature is not complete merely because its design has been written.
+
+### 13. Division ownership and cross-system consistency
+The following divisions own the detailed rules for their respective areas:
+- BP-02: country, city and geographical architecture.
+- BP-03: population and individual simulation architecture.
+- BP-04: buildings, properties, businesses and organisations.
+- BP-05 to BP-34: police organisation, operations, crime, investigations, justice and institutional functions.
+- BP-35: simulation engine and runtime coordination.
+- BP-36: relationships and social context.
+- BP-37: time and scheduling.
+- BP-38: records and databases.
+- BP-39: persistence and recovery.
+- BP-40: interface and command interaction.
+- BP-41: notifications and reporting.
+- BP-42: security and permissions.
+- BP-43: testing and quality assurance.
+- BP-44: configuration and controlled expansion.
+
+BP-35 coordinates runtime behaviour but does not take ownership of the substantive rules belonging to domain divisions. Technical implementation must preserve the division of responsibility established by the blueprint.
+
+### 14. Acceptance conditions
+BP-01 is ready for approval when all of the following can be demonstrated at the design level:
+
+1. The game's fictional identity, setting premise, primary player experience and boundaries are unambiguous.
+2. The four experience layers are defined and their relationship is understood.
+3. The player controls one individual character and retains meaningful agency over that character's decisions.
+4. The game distinguishes character knowledge from hidden or otherwise unavailable world information.
+5. Questions, intentions, attempted actions and completed actions are not conflated.
+6. Rank, appointment, position, authority, qualification, clearance and assignment remain distinct.
+7. One coherent world state and stable identities are shared across divisions.
+8. Consequential actions and changes are historically traceable.
+9. Time-dependent systems use one authoritative clock and time does not advance merely because the player is absent.
+10. Text alone supports the complete core gameplay experience.
+11. Police systems receive the intended depth while other world systems remain bounded by their supporting purpose.
+12. Uncertainty, incomplete information and consequential outcomes are handled consistently.
+13. Domain ownership and cross-system dependencies are clear.
+14. Design approval, software implementation and tested completion remain distinct statuses.
+15. New scope and changes are recorded rather than silently introduced.
+
+### 15. Status and unresolved detail
+This revision strengthens the foundational rules and makes their implications testable. It does not by itself approve BP-01, settle every detailed subsystem rule or declare any software feature implemented.
+
+Detailed command syntax, calendar mechanics, simulation processing, record schemas, persistence controls, permissions and test procedures remain owned by their respective divisions and must be completed there.
+
+**Draft status:** BP-01 remains a working draft pending review and explicit approval.
 
 ## BP-02 — Country, City and Geographical Architecture
 
