@@ -2821,3 +2821,299 @@ The system must handle anonymous and malicious reports, deliberate misinformatio
 - The player receives useful intelligence without hidden-solution disclosure or automatic investigative conclusions.
 
 **Draft status:** BP-21 is a working design. Exact intelligence powers, source-handling rules, classification standards, retention periods, sharing authorities, oversight and legal disclosure requirements remain to be defined by the fictional legal and governance frameworks. No intelligence software or operational capability is claimed to have been implemented.
+
+## BP-22 — Crime Scenes
+
+### Purpose
+Define how the police service identifies, assesses, protects, manages, examines, documents and releases locations or environments that may contain material relevant to an incident or investigation. The division provides a controlled framework for preserving scene integrity, protecting people, coordinating specialist attendance and ensuring that material is recorded and transferred into the evidence system.
+
+A crime scene is not limited to a building or a place where an offence is believed to have occurred. It may include a vehicle, outdoor area, digital or administrative environment, temporary location, multiple connected locations, or a place where evidence is found or transferred. Scene status is an investigative classification, not proof that a crime occurred or that any person is responsible.
+
+### Scope
+This division governs:
+- Scene identification, classification and creation.
+- Initial response, safety assessment and preservation.
+- Scene boundaries, access control and entry records.
+- Scene command, responsibilities and coordination.
+- Scene documentation and condition records.
+- Search planning and examination coordination at a governance level.
+- Specialist attendance and scene services.
+- Material recognition, recording, collection referral and transfer.
+- Contamination prevention and incident recording.
+- Multiple, linked, transient and changing scenes.
+- Scene review, release, reopening and closure.
+- Public, property-owner and occupant considerations.
+- Audit, legal review and quality assurance.
+
+Physical evidence registration, continuity, storage and disclosure are governed by BP-23. Forensic methods and examinations are governed by BP-24. Investigative objectives and case strategy are governed by BP-15 and BP-16. Emergency response and incident command interfaces are governed by BP-10 to BP-12.
+
+This is a fictional policing-system design. It describes governance, accountability and simulation behaviour rather than providing detailed forensic or tactical instructions that could compromise real crime-scene security or investigations.
+
+### Fundamental principles
+Every scene response must:
+- Prioritise life safety, medical care and prevention of further harm.
+- Establish a lawful basis for police presence, access, search and continued control.
+- Preserve the scene as found as far as reasonably practicable.
+- Recognise that necessary rescue, medical treatment, fire suppression and hazard control may alter a scene.
+- Record unavoidable disturbance and the reasons for it.
+- Use proportionate boundaries and access restrictions.
+- Limit access to authorised personnel with a recorded operational purpose.
+- Maintain a contemporaneous record of significant decisions, entries, exits and changes.
+- Protect the rights, property, dignity and privacy of victims, occupants, witnesses and other affected people.
+- Distinguish observed conditions from interpretation and hypothesis.
+- Ensure that scene findings do not automatically establish offence, identity, intent or guilt.
+- Preserve material and records in a manner that supports later review and disclosure.
+
+### What constitutes a scene
+A scene may be designated where there is a reasonable operational basis to believe that a location or environment:
+- Is where an incident or suspected offence occurred.
+- Contains, may contain or previously contained relevant material.
+- Is connected to the movement, storage or transfer of relevant material.
+- Is a secondary, linked or related location.
+- Requires controlled examination to resolve an investigative question.
+- Must be preserved to protect life, prevent loss or comply with lawful authority.
+
+Scene designation records the reason and responsible decision-maker. A scene may be designated as confirmed, suspected, potential, secondary, linked, transient, virtual/digital, or subsequently excluded. These labels describe operational status and confidence; they do not decide the legal character of an event.
+
+### Scene identification and creation
+A scene record is created from an incident, investigative decision or authorised referral. It receives a unique scene identifier and links to the originating incident and any related cases.
+
+The record includes:
+- Scene identifier and scene type.
+- Address or geographic description and precise sub-location where appropriate.
+- Date and time discovered, reported and attended.
+- Reporting person and source of the information.
+- Incident and case references.
+- Reason for designation and current confidence.
+- Initial attending personnel and responsible supervisor.
+- Initial safety and preservation decisions.
+- Known occupants, victims, witnesses and other affected persons, subject to access controls.
+- Legal basis and scope of police control or examination.
+- Scene status and review information.
+
+If one incident involves several locations, each scene has its own record and identifier, linked through a common incident or case. One scene record must not be used to obscure distinct locations, access histories or evidential provenance.
+
+### Initial response and life safety
+The first responding personnel assess immediate threats to life and safety, arrange emergency assistance and take reasonable steps to prevent further harm. Medical treatment, rescue, fire and other emergency services take priority where necessary.
+
+The first responder records, as far as practicable:
+- Arrival and departure times.
+- Conditions observed on arrival.
+- People present and their roles.
+- Emergency actions and services requested.
+- Persons entering or leaving before formal scene control.
+- Changes caused by rescue, treatment, hazard management or other necessity.
+- Initial preservation actions and any limitations.
+
+The system must never penalise or treat as misconduct a necessary and reasonable life-saving action solely because it altered potential evidence. The resulting disturbance should be documented for later assessment.
+
+### Scene safety and hazard management
+The scene risk assessment considers hazards to the public, occupants, police, emergency personnel and specialists. Relevant categories may include structural instability, fire, electrical or chemical hazards, biological exposure, traffic, environmental conditions, animals, weapons, unsafe equipment and other location-specific risks.
+
+The scene record identifies:
+- Hazard description and source.
+- Persons potentially exposed.
+- Immediate controls and responsible service.
+- Access restrictions and required competence.
+- Residual risk and review trigger.
+- Any incident, exposure or injury.
+
+Police personnel must not be assigned work beyond their training, equipment or legal authority. Specialist agencies may be required before examination can safely proceed.
+
+### Scene boundaries and access control
+The scene manager defines boundaries proportionate to the known facts, likely material, safety risks and lawful powers. Boundaries may be revised as information develops. The system records the basis, time, author and effect of each significant change.
+
+Access controls identify:
+- Controlled area or zone.
+- Entry and exit point references.
+- Authorised categories of personnel.
+- Access conditions and restrictions.
+- Scene manager or delegated controller.
+- Start and end time of restrictions.
+- Public access, occupant access and property arrangements.
+
+A boundary is an operational control, not a declaration of ownership or a substitute for lawful authority. Control of a location must not exceed the powers and duration permitted by the fictional legal framework.
+
+### Scene command and responsibilities
+Each managed scene has an identified scene manager or responsible officer appropriate to its scale and complexity. Larger or multi-agency scenes may have a documented command structure and designated specialist leads.
+
+Responsibilities may include:
+- Scene preservation and access control.
+- Safety coordination.
+- Scene documentation.
+- Examination coordination.
+- Liaison with investigators and specialists.
+- Victim, witness and occupant considerations.
+- Resource and attendance coordination.
+- Decision logging and escalation.
+- Review and release recommendations.
+
+The scene manager coordinates activity but does not automatically become the lead investigator, forensic examiner, legal authoriser or owner of every item of evidence. Roles, competence, delegation and supervision are separately recorded.
+
+### Scene status and lifecycle
+A scene follows a controlled lifecycle. Suggested statuses include:
+- Reported or potential.
+- Identified.
+- Assessed.
+- Designated.
+- Secured or controlled.
+- Awaiting specialist assessment.
+- Under examination.
+- Partially released.
+- Released.
+- Reopened.
+- Closed or archived.
+
+Status changes record actor, time, reason, authority and supporting record. A scene may be partially released where distinct areas can safely and lawfully be returned without compromising remaining work. Scene closure does not automatically close the incident or investigation.
+
+### Scene condition and documentation
+The system maintains a scene condition record, including relevant observations before, during and after examination. Documentation may include written notes, sketches, plans, photographs, video, measurements, environmental conditions and specialist records, where lawfully obtained.
+
+Each record identifies:
+- Creator and role.
+- Date and time created.
+- Location or subject represented.
+- Method and source device where relevant.
+- Whether it is contemporaneous, copied, enhanced, annotated or reconstructed.
+- Original file or record reference.
+- Any limitation, obstruction, uncertainty or alteration.
+- Storage and access history.
+
+Original records are preserved. Annotated, enhanced, cropped, converted or otherwise derived versions are separately identified and linked to the original. The system must not present a reconstruction as an original contemporaneous record.
+
+### Scene entry and activity log
+Every controlled entry and exit is recorded, including personnel identity, organisation, role, time, purpose, authorising or approving person where required, and relevant area accessed. Emergency access and unavoidable unrecorded entry are documented as soon as practicable with an explanation.
+
+The scene activity log records significant actions, decisions, changes in conditions, handovers, interruptions, equipment issues, incidents and departures from the plan. Entries preserve the actual sequence and distinguish contemporaneous records from later additions.
+
+Corrections are appended or versioned; original entries are not silently overwritten. The system records who made each correction, when and why.
+
+### Examination planning and coordination
+Examination begins with a defined purpose, lawful basis, appropriate competence and a documented plan proportionate to the scene. The plan identifies:
+- Investigative questions and examination objectives.
+- Areas or items requiring attention.
+- Relevant specialist disciplines.
+- Priority and dependencies.
+- Access and safety requirements.
+- Responsibilities and expected records.
+- Known limitations and potential conflicts.
+- Review and completion criteria.
+
+The system coordinates work and records decisions but does not automatically select a forensic conclusion. Examiners retain responsibility for their professional methods and findings under BP-24.
+
+### Search and examination governance
+The scene record tracks approved examination areas, responsible personnel, start and completion times, scope, status and reports. Any expansion beyond the original scope must be justified and authorised under the applicable law and procedure.
+
+The system records whether an area was examined, not examined, inaccessible, unsafe, disturbed, unavailable or outside scope. It must not imply that an unexamined area was clear or that the absence of a recorded finding proves absence of material.
+
+Detailed search methodology is maintained by approved professional procedures and BP-24, not improvised by the simulation.
+
+### Material recognition and evidence handover
+Potentially relevant material is recorded at the scene with a provisional reference and linked to its precise recovery context. The scene system coordinates the handover to BP-23, where formal evidence identifiers, packaging, continuity, storage and disclosure are managed.
+
+The handover record includes:
+- Scene and case references.
+- Provisional material reference.
+- Description and condition as observed.
+- Exact recovery location and context.
+- Discovering and collecting personnel.
+- Date and time.
+- Relevant authorisation and examination reference.
+- Any disturbance, limitation or special handling requirement.
+- Transfer recipient, time and acknowledgement.
+
+The system must prevent a provisional scene reference from being mistaken for a final evidence identifier. Uncollected, abandoned, consumed, damaged or unavailable material is documented with the reason and decision.
+
+### Contamination and integrity management
+The scene manager records known or suspected contamination risks and any event that may affect interpretation or evidential value. This includes unauthorised access, uncontrolled movement, overlapping personnel, environmental exposure, packaging or handling issues, scene disturbance, cross-contamination concerns and documentation gaps.
+
+The system records the event, persons and material potentially affected, time discovered, immediate response, notifications, assessment owner and resulting limitations. It must not automatically declare evidence invalid; that is a matter for competent forensic and legal assessment.
+
+### Victims, witnesses, occupants and property
+Scene management must account for the needs and rights of people affected by police activity. Records may include:
+- Safe access to medical care and support.
+- Identification and safeguarding needs.
+- Property access and essential belongings.
+- Occupant and owner contact details under access controls.
+- Explanation of restrictions and expected review.
+- Arrangements for alternative accommodation or practical support where applicable.
+- Return of property and keys.
+- Complaints or concerns about scene control.
+
+The simulation distinguishes a property owner, occupier, tenant, employee, visitor and person with another lawful interest. None is automatically a suspect because of their relationship to the scene.
+
+### Multi-agency and specialist coordination
+The scene may require coordination with emergency medical services, fire and rescue, public authorities, forensic specialists, technical experts, property managers or other agencies. Each agency's attendance, role, authority, activity and handover are recorded.
+
+Information sharing is purpose-limited and subject to the relevant legal and security controls. Police scene management does not confer police powers on partner agencies, nor does another agency's attendance expand police authority.
+
+### Multiple, linked and changing scenes
+The system supports multiple scenes arising from one event, scenes connected across cases, scenes discovered later, and scenes that change due to weather, public access, emergency works or other external factors.
+
+Each scene retains its own chronology, access log, condition record, authority and evidence references. A common case link must not collapse the separate provenance of material recovered at different locations.
+
+Transient scenes and rapidly changing environments require a recorded decision about what can reasonably be preserved and what limitations remain. A scene may be lost or altered; the system records this honestly rather than generating a fictional complete record.
+
+### Digital and non-physical scene interfaces
+Where an incident involves a digital environment, account, network, device or virtual location, BP-22 may hold a scene-like coordination record for authority, preservation status, responsible personnel and handover. The technical acquisition, forensic handling and analysis of digital material remain governed by BP-23 and BP-24 and the fictional legal framework.
+
+The record must distinguish a physical location, a device, an account, a service and a data source. Access to one does not automatically authorise access to the others.
+
+### Scene release and reopening
+Release requires a documented review of:
+- Whether the scene objectives have been completed or can be completed elsewhere.
+- Whether remaining areas or material need continued control.
+- Whether all necessary records and transfers are complete.
+- Whether safety hazards remain.
+- Whether lawful authority continues to support restrictions.
+- Whether victims, occupants and property interests have been considered.
+- Who is responsible for the release decision.
+
+The release record includes date and time, areas released, areas retained, decision-maker, reasons, outstanding actions, property arrangements and notification to relevant people.
+
+A scene may be reopened where new information, a legal decision or a justified examination need requires it. Reopening requires a new recorded basis, authority check, risk review and updated access controls.
+
+### Review, quality assurance and complaints
+Supervisors review compliance with preservation, access, documentation, authority, safety and handover requirements. Significant incidents, unexplained access, missing logs, material disturbance, complaints or potential breaches are escalated under BP-30 and BP-31.
+
+Quality review identifies missing records, inconsistent timelines, unsupported statements, gaps in handover and unresolved contamination concerns. It must not alter original records to make a scene appear more complete or compliant than it was.
+
+### Player experience
+The player may attend a scene, assess immediate needs, request support, establish proportionate control, record initial conditions, coordinate authorised personnel, maintain access and activity logs, request specialist examination, document findings, transfer potential material, review outstanding work and recommend release.
+
+The player must make decisions within role, competence and lawful authority. The simulation presents the scene as it is known at the time, including uncertainty, gaps and possible disturbance. It must not reveal a hidden offender, supply automatic solution hints or guarantee that every scene contains recoverable evidence.
+
+### Connections to other divisions
+- **BP-02 to BP-04:** geography, people, properties and organisations.
+- **BP-05 to BP-09:** police architecture, personnel, units, deployment and resources.
+- **BP-10 to BP-12:** patrol, emergency communications and incident management.
+- **BP-13 to BP-16:** offence classification, crime generation, case management and investigation.
+- **BP-17 to BP-19:** victims, witnesses, suspects and interviews.
+- **BP-20 and BP-21:** surveillance records and intelligence context.
+- **BP-23 and BP-24:** evidence management and forensic examination.
+- **BP-25 to BP-29:** warrants, custody, legal processes, courts and corrections.
+- **BP-30 to BP-34:** governance, standards, training, HR and procurement.
+- **BP-35 to BP-37:** simulation engine, social context and time.
+- **BP-38 to BP-44:** records, persistence, interface, notifications, security, testing and configuration.
+
+### Exceptions and edge cases
+The system must handle life-saving disturbance, emergency-service access before police arrival, multiple responding agencies, uncertain scene boundaries, an occupied property, public or shared spaces, weather damage, scene contamination, unauthorised entry, missing or inaccurate access logs, a specialist unavailable, unsafe or inaccessible areas, multiple linked scenes, changing legal authority, partial release, disputed ownership or occupation, digital evidence interfaces, lost or damaged material, delayed scene discovery, a scene reopened after release and a complaint or legal challenge to police control.
+
+### Acceptance conditions
+- Every scene has a unique identity, location, originating incident or case and accountable owner.
+- Scene designation and status do not imply that an offence or guilt has been established.
+- Life safety and emergency response take priority, with resulting disturbance recorded.
+- Scene control has a documented lawful basis, scope, boundaries and review.
+- Entry, exit, attendance, activity and significant decisions are auditable.
+- Original scene records are preserved and derived records are separately identified.
+- Examination plans identify purpose, authority, competence, scope and limitations.
+- Unexamined or inaccessible areas are not represented as clear.
+- Potential material is handed over with location, context, provenance and acknowledgement.
+- Contamination and disturbance are recorded for competent assessment.
+- Victim, occupant, owner and other property interests are considered.
+- Multiple scenes retain separate records and evidential provenance.
+- Partial release, full release and reopening are controlled and auditable.
+- Complaints, errors and breaches are escalated without rewriting history.
+- The player operates within role, competence and authority and receives no hidden-solution disclosure.
+
+**Draft status:** BP-22 is a working design. Exact scene-entry powers, search authority, retention, property access, disclosure and review requirements remain subject to the fictional legal framework and professional standards. This document does not claim that crime-scene systems or operational capabilities have been implemented.
