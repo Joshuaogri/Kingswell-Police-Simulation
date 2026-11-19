@@ -2,8 +2,8 @@
 
 **Status:** Initial technical architecture outline; implementation plan to be expanded from the approved blueprint  
 **Version:** 0.1  
-**Foundation:** Implemented and verified (40-table private schema and two migrations)  
-**Simulation runtime:** Not started
+**Foundation:** Implemented and verified (42-table private schema and three migrations)  
+**Simulation runtime:** Initial database-backed command and clock foundation implemented; domain runtime in progress
 
 ## 1. Purpose
 
@@ -35,7 +35,7 @@ Do not put passwords, secret keys, service-role keys or other credentials in Git
 
 The live database uses a dedicated private PostgreSQL schema named `game`. Records use stable UUID identities, readable unique references where needed, explicit foreign-key relationships, timestamps for historical changes, check constraints and JSONB for flexible supporting detail.
 
-The initial schema covers geography, properties, organisations, people, police structure and personnel, duty deployment, simulation time, incidents, dispatch, cases, evidence and game-event history. All tables have row-level security enabled. The schema is not exposed through the public Data API; server-side access uses the Supabase service role. No service-role key may be placed in GitHub or client-side code.
+The private schema covers geography, properties, organisations, people, police structure and personnel, duty deployment, simulation time, incidents, dispatch, cases, evidence and game-event history. It now also includes command intake and clock-history records. All 42 tables have row-level security enabled. The schema is not exposed through the public Data API. No service-role key may be placed in GitHub or client-side code.
 
 ## 5. Build approach
 
@@ -53,7 +53,7 @@ The initial schema covers geography, properties, organisations, people, police s
 - `docs/blueprint/` — master game design.
 - `docs/governance/` — implementation status and project controls.
 - `docs/architecture/` — software and data architecture.
-- `database/migrations/` — versioned database change scripts.
+- `database/migrations/` — versioned database change scripts.\n- `database/tests/` — repeatable SQL regression scripts.\n- `docs/architecture/RUNTIME-FOUNDATION.md` — command and clock runtime design.
 - `src/` — future application and simulation code.
 - `tests/` — future automated and manual verification.
 - `config/` — future non-secret configuration examples.
@@ -66,4 +66,4 @@ The project uses **main only**. All work and commits go directly to `main`. Do n
 
 ## 8. Current implementation state
 
-The Supabase project is connected and healthy. The private `game` schema is implemented with 40 tables, 78 foreign keys and 141 indexes. Both migrations are recorded in Supabase and committed under `database/migrations/` on GitHub `main`. All tables have RLS enabled and currently contain zero rows; the schema is not exposed through the public schema. No game routines or Edge Functions are deployed. The prior relationship smoke test passed and rolled back cleanly. The simulation runtime, command processor, seed data, runtime access layer, backup/recovery workflow and automated gameplay tests remain to be built.
+The Supabase project is connected and healthy. The private `game` schema has 42 tables, 80 foreign keys and 147 indexes, with three migrations recorded in Supabase and committed under `database/migrations/` on GitHub `main`. RLS is enabled on all 42 tables and the schema is not exposed through the public Data API. One invoker-rights command function is installed. The singleton clock row is paused and intentionally has no fictional start time yet. The command ledger and clock history are empty. The SQL regression test passed in a transaction that rolled back its test records. No Edge Function is deployed: authentication and player/session mapping must be implemented before exposing a privileged endpoint. Natural-language parsing, fictional police identity/authority, domain handlers, world seed data, event scheduling, NPC processing, backup/recovery and CI remain outstanding. See `docs/architecture/RUNTIME-FOUNDATION.md`.
