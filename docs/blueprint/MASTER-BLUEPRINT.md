@@ -2088,3 +2088,240 @@ The system must handle unknown offenders, unidentified or partially identified s
 - The player retains control of suspect assessment and receives no automatic culprit disclosure.
 
 **Draft status:** BP-18 is a working design. Detailed arrest thresholds, interview rights, charging standards, court outcomes, youth procedures and records restrictions will be refined in the dedicated divisions and fictional legal framework. It is not a claim that suspect or offender management software has been implemented.
+
+## BP-19 — Interviews and Interrogations
+
+### Purpose
+Define the lawful, fair and auditable process by which police obtain accounts and ask questions of victims, witnesses, suspects and other relevant people. The division governs preparation, authority, safeguards, questioning, recording, review and the evidential handling of interviews. It ensures that accounts are not manufactured, distorted, coerced or detached from the circumstances in which they were obtained.
+
+### Scope and terminology
+An **interview** is a structured interaction in which personnel seek information relevant to an incident, investigation or other lawful police purpose. **Questioning** is the act of asking questions during an interview or other contact. **Interrogation** is a term used for a formal or intensive suspect-questioning process where the fictional law or procedure expressly uses it; it does not authorise coercion or remove procedural rights.
+
+The division covers:
+- Witness and victim interviews.
+- Voluntary suspect interviews.
+- Interviews under arrest or other lawful detention.
+- Interviews involving juveniles or people requiring additional safeguards.
+- Specialist and remotely conducted interviews.
+- Interview planning, disclosure, recording and review.
+- Admissions, denials, explanations and significant statements.
+- Breaks, interruptions, termination and re-interview.
+- Interview integrity, disclosure and audit.
+
+Arrest, detention, access to legal representation and custody safeguards are governed by BP-25 to BP-27 and the fictional legal framework. Victim and witness welfare and case roles are governed by BP-17. Interview outputs become case material under BP-15, investigation under BP-16 and evidence/disclosure governance under BP-23 and BP-27.
+
+### Fundamental safeguards
+Every interview must be conducted within the interviewer's authority and competence. Personnel must:
+- Treat the interviewee with dignity and respect.
+- Explain the purpose and relevant process in language the person can understand.
+- Give all cautions, rights and procedural explanations required by fictional law.
+- Avoid threats, violence, intimidation, oppression, inducements or improper promises.
+- Avoid leading or suggestive questioning where it may contaminate recollection.
+- Never fabricate evidence, misrepresent a person's account or claim that unverified material is established fact.
+- Record questions and answers accurately, including relevant context and interruptions.
+- Preserve significant statements and material that may support or undermine a case.
+- Allow required legal advice, support, interpretation and appropriate breaks.
+- Stop or suspend an interview when a legal or welfare safeguard requires it.
+- Distinguish an interviewee's words from an investigator's interpretation.
+- Record irregularities rather than conceal or retrospectively repair them.
+
+No confession, admission or denial is automatically true or reliable because it was made during a formal interview.
+
+### Interview categories and legal status
+The system distinguishes the purpose and legal status of each interview:
+- **Witness interview:** seeks information from a person not being questioned as a suspect in that interview.
+- **Victim interview:** obtains an account from a person affected by the event, with appropriate trauma-informed safeguards.
+- **Voluntary suspect interview:** questions a suspect who is not detained, under the safeguards and conditions required by fictional law.
+- **Detained suspect interview:** questions a person in lawful custody, subject to applicable rights and time limits.
+- **Specialist interview:** uses additional procedures for a child, vulnerable person, protected witness or other defined circumstance.
+- **Follow-up interview:** clarifies or supplements an earlier account.
+- **Clarification contact:** limited contact to confirm a specific point; it must not be used to disguise a substantive interview.
+
+The interview record identifies the category, legal basis, status of the interviewee, applicable safeguards and any change in status. If a witness becomes a suspect during contact, questioning must pause while the appropriate legal status, caution, rights and safeguards are addressed. A change in status must not be backdated.
+
+### Authority and eligibility
+Before beginning, the interviewer confirms:
+- Their identity, role, authority and competence.
+- The interviewee's identity or provisional identity.
+- The interview's purpose and connection to the case.
+- The legal basis and whether participation is voluntary or compulsory.
+- Required caution, rights and procedural notices.
+- Access to legal advice or representation where required.
+- Appropriate adult, guardian, intermediary, interpreter or other support where required.
+- Recording equipment, location, safety and privacy arrangements.
+- Any restrictions on questioning, disclosure or use of material.
+
+If a required safeguard or authority is unavailable, the interview must be postponed, limited or stopped as the law and circumstances require. The system records the reason and any action taken to remedy the issue.
+
+### Interview planning
+An interview plan defines the objectives and topics without scripting a desired answer. It may include:
+- Questions the investigation needs to resolve.
+- Relevant chronology and known points of uncertainty.
+- The interviewee's role and relevant background.
+- Material already available and what may properly be disclosed.
+- Topics requiring clarification or corroboration.
+- Possible alternative explanations.
+- Communication, accessibility, language and welfare needs.
+- Legal safeguards and any restrictions.
+- Interviewer, second interviewer, note-taker and support roles.
+- Recording method, location, expected duration and break arrangements.
+- Risks, contingency arrangements and supervisory approval where required.
+
+Plans are proportionate and may be revised as the interview develops. The original plan and material changes remain auditable.
+
+### Preparation and disclosure to interviewee
+The interviewer reviews relevant case material and identifies what information can lawfully and fairly be put to the interviewee. Disclosure before or during an interview follows fictional law and applicable policy.
+
+The record distinguishes material disclosed, material withheld, the basis for withholding, the person authorising the decision and the time of disclosure. Investigators must not imply that undisclosed or unverified information is proven. Disclosure must not unnecessarily reveal protected witness identities, sensitive operational methods or another person's confidential data.
+
+### Interview environment and participants
+Interviews should take place in an appropriate environment that protects safety, privacy, accessibility and recording integrity. The record identifies everyone present or participating remotely, their role, arrival and departure times, and any period when the interviewee was left with others.
+
+Participants may include the interviewer, second interviewer, note-taker, legal representative, appropriate adult, interpreter, intermediary, support person or specialist adviser. Their roles and any interventions are recorded. A support person must not answer for or coach the interviewee.
+
+Remote interviews record the platform or method, identity checks, connection participants, recording arrangements, interruptions and any limitations on privacy or communication. Remote participation must not be used where safeguards cannot be met.
+
+### Cautions, rights and procedural explanations
+The exact caution, rights, notices, access-to-advice rules, silence provisions and consequences of answers are determined by the fictional legal framework. This blueprint does not invent final statutory wording.
+
+The interview record must capture the wording or approved version used, the time given, the interviewee's response, any request for clarification and how understanding was assessed. Where an interpreter is used, the language, interpreter identity and any relevant qualification or authorisation are recorded.
+
+If the interviewee does not understand, declines to acknowledge or disputes the explanation, the interviewer records the circumstances and follows the applicable procedure. A checkbox alone is not sufficient proof that a person understood.
+
+### Questioning method
+Questioning should be clear, fair, relevant and adapted to the interviewee's needs. Interviewers should ordinarily begin with open invitations that allow an account in the person's own words, then use focused questions to clarify relevant detail.
+
+The system supports recording:
+- Open questions and uninterrupted free accounts.
+- Clarifying questions about time, place, sequence and identity.
+- Questions testing inconsistencies or alternative explanations.
+- Questions about the source of a person's knowledge.
+- Questions distinguishing direct observation from assumption or later information.
+- Questions about uncertainty, memory and confidence.
+- Questions putting relevant material fairly for response.
+- Requests for correction or clarification.
+
+Interviewers must avoid repeated pressure, compound or confusing questions, threats, improper inducements, unsupported assertions and suggestive techniques that risk contaminating an account. Silence, distress, hesitation, anger, calmness or confusion must not be treated as proof of guilt or dishonesty.
+
+### Witness and victim interviews
+Witness and victim interviews should be planned with consideration of welfare, trauma, communication needs, memory, safety and the risk of repeated retelling. The interviewee should be given a reasonable opportunity to describe events in their own words.
+
+Where appropriate, the interviewer records:
+- What the person directly perceived.
+- The circumstances of perception.
+- What they remember clearly and what they do not.
+- Any prior discussion or exposure to other accounts.
+- Any uncertainty or later recollection.
+- Relevant relationship or interest in the matter.
+- Whether the account is spontaneous, prompted or reconstructed.
+
+A victim's emotional response or decision not to continue does not determine whether the allegation is true. Interviewers must not pressure victims or witnesses to adopt a particular account.
+
+### Suspect interviews
+Suspect interviews require particular attention to legal status, caution, legal advice, custody safeguards and the fair presentation of relevant material. The interview plan should address the suspected offence and its elements, the information linking the suspect to the matter, relevant inconsistencies and reasonable alternative explanations.
+
+The suspect must have a fair opportunity to respond to significant matters put to them. The interviewer records admissions, denials, explanations, qualifications, refusals to answer and requests for clarification accurately. An admission must not be isolated from the question, context or qualification that accompanied it.
+
+No adverse conclusion is automatically drawn from silence or a refusal to answer; any permitted inference and its conditions are determined by fictional law and must be recorded accurately.
+
+### Children and people requiring additional safeguards
+Where an interviewee is a child or requires additional safeguards because of age, disability, health, trauma, communication or other circumstances, specialist procedures apply. These may require an appropriate adult, guardian, advocate, intermediary, specialist interviewer, adapted language, shorter sessions, additional breaks or a recorded capacity/needs assessment.
+
+The precise eligibility thresholds and procedural requirements are reserved for the fictional legal framework and specialist policy. An interviewer must not proceed merely because a support person is physically present; the person's suitability, role and any conflict must be assessed and recorded.
+
+### Interpreters and communication assistance
+An interpreter or communication assistant must be identified and their role recorded. The interview record includes language or communication method, any relevant credentials or authorisation, conflict checks, interpretation method and any difficulty or interruption.
+
+Questions and answers should be interpreted faithfully without summarising, coaching or adding content. If interpretation accuracy is challenged or communication breaks down, the issue is recorded and the interview paused or repeated where appropriate. The original language record, where available and lawfully retained, is linked to the translated record.
+
+### Recording and record integrity
+Interviews are recorded by an approved method consistent with fictional law and policy. The record identifies:
+- Recording reference and format.
+- Start, pause, restart and end times.
+- Date, location and equipment or platform.
+- Participants and role changes.
+- Caution and rights explanations.
+- Questions and answers or the approved recording reference.
+- Breaks, interruptions and off-record periods.
+- Technical failures, missing sections or loss of connection.
+- Exhibits or documents shown and when.
+- Any interviewee review, corrections or confirmation.
+- Storage location, access history and continuity reference.
+
+Where audio or video recording is unavailable or not required, the reason and approved alternative method are recorded. Notes must distinguish contemporaneous notes from later summaries. A recording is not edited to remove an awkward or unfavourable portion; any authorised working copy preserves an unchanged master and an audit trail.
+
+### Exhibits and material put during interview
+Each document, image, recording, object or other item shown or referred to is identified by its evidence or material reference, version, source and time of use. The record notes what was actually shown, whether the interviewee could inspect it, any explanation given and their response.
+
+The interviewer must not imply that an exhibit proves more than it does. If material is later found to be inaccurate, incomplete or misidentified, the case and interview records are updated through an auditable supplement.
+
+### Breaks, interruption and termination
+The interview record captures breaks, requests for breaks, reasons, duration, participants present and any relevant conversation or event during the interruption. The interviewee's welfare and legal rights take priority over completion.
+
+An interview may be paused or terminated because of fatigue, distress, illness, legal advice, need for an interpreter, loss of recording, safeguarding concerns, changed legal status, expiry of authority or other relevant reason. The decision-maker and rationale are recorded. Resumption requires confirmation that the necessary conditions and safeguards remain satisfied.
+
+### Admissions, denials and significant statements
+An admission, denial, explanation or significant unsolicited statement is recorded with its exact words where possible, surrounding question or circumstances, time, participants and recording reference. The record must include qualifications, retractions, corrections and context.
+
+The system distinguishes an interviewee's statement from an investigator's interpretation. A statement made outside a formal interview is not retrospectively represented as an interview answer. Any legal issue about admissibility or evidential use is referred to the appropriate process.
+
+### Re-interviews and changing accounts
+A follow-up interview identifies its purpose and relationship to earlier interviews. The interviewer records what new information, inconsistency, clarification or procedural need justifies the further contact.
+
+Earlier recordings and statements remain preserved. Differences between accounts are documented without automatically labelling the interviewee dishonest. The interviewee should be given a fair opportunity to explain relevant changes where appropriate.
+
+### Review, supervision and quality assurance
+A supervisor or authorised reviewer may assess whether:
+- The interview was lawful and within authority.
+- Required rights, cautions and safeguards were applied.
+- The interviewer was competent for the interview type.
+- The recording is complete and properly stored.
+- The questions were fair, relevant and understandable.
+- Significant statements and exhibits are accurately indexed.
+- Any irregularity or complaint was addressed.
+- The resulting account is correctly represented in the case.
+
+Review findings, required actions, approval and any referral are recorded. Supervisory approval does not convert an unreliable account into reliable evidence.
+
+### Irregularities, complaints and disclosure
+Any allegation of coercion, mistreatment, improper questioning, recording manipulation, interpreter misconduct, rights violation or other irregularity is recorded and referred under BP-30 and BP-31. Original recordings and related material are preserved.
+
+Interview records, recordings, notes, plans and associated material are indexed for disclosure and legal review under BP-23 and BP-27. Material that may undermine the prosecution case or assist another party must not be concealed or discarded. Access and disclosure decisions are auditable.
+
+### Player experience
+The player can plan and conduct authorised interviews, select suitable participants and support, record cautions and rights, ask questions, put material fairly, preserve answers and exhibits, pause or end interviews, and submit records for review.
+
+The simulation must not auto-generate a confession, force an interviewee to answer, or reveal hidden facts through an interview prompt. Interviewees respond according to their knowledge, memory, motives, circumstances and the information legitimately available to them. They may be mistaken, evasive, truthful, deceptive, uncertain, silent or unwilling, without the system exposing which is the case unless evidence establishes it.
+
+### Connections to other divisions
+- **BP-06 to BP-08:** interviewer competence, assignment and supervision.
+- **BP-11 and BP-12:** incident and initial contact records.
+- **BP-15 and BP-16:** case plans, investigative objectives and leads.
+- **BP-17:** victim and witness roles, welfare and safeguarding.
+- **BP-18:** suspect status and legal-status distinction.
+- **BP-20 and BP-21:** surveillance and intelligence material.
+- **BP-22 to BP-24:** scene material, exhibits, continuity and forensic findings.
+- **BP-25 and BP-26:** arrest, detention and custody safeguards.
+- **BP-27 and BP-28:** legal review, disclosure, court proceedings and evidential use.
+- **BP-30 and BP-31:** governance, complaints and professional standards.
+- **BP-37 to BP-43:** time, records, persistence, interface, notifications, security and testing.
+
+### Exceptions and edge cases
+The system must handle a person who changes from witness to suspect, a suspect who becomes a witness in another matter, an interviewee who withdraws consent to a voluntary interview, a request for legal advice, refusal to answer, an interpreter error, an unsuitable support person, distress or illness, an interrupted recording, missing or corrupted media, disputed caution, a statement made off-record, a retracted admission, multiple interviewers, remote disconnection, mistaken identity, an interview conducted in another jurisdiction, and later discovery that material put to the interviewee was inaccurate.
+
+### Acceptance conditions
+- Every interview has a defined purpose, category, legal basis and responsible personnel.
+- Interviewee status and any change of status are time-stamped and auditable.
+- Required cautions, rights, legal advice and support safeguards are recorded.
+- Interview plans identify relevant objectives without scripting desired answers.
+- Questions, answers, exhibits, breaks and interruptions are accurately represented.
+- Original recordings and notes are preserved with integrity and access history.
+- Admissions and denials retain their context and qualifications.
+- Interpreters and support participants have recorded identities and roles.
+- Re-interviews preserve earlier accounts and explain the reason for further contact.
+- Irregularities and complaints are escalated and original material preserved.
+- Interview material is indexed for disclosure and legal review.
+- Interviewees are not coerced and no response is treated as automatic proof.
+- The player controls questioning and the simulation does not reveal hidden case solutions.
+
+**Draft status:** BP-19 is a working design. Exact cautions, legal rights, detention interview limits, admissibility rules, youth procedures and specialist interview standards must be defined by the fictional legal framework and subsequent detailed policies. It is not a claim that interview software has been implemented.
