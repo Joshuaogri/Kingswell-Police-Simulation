@@ -1263,3 +1263,197 @@ The system must handle attempted but unsuccessful offences, interrupted events, 
 - Event frequency and distribution can be tuned without breaking continuity or plausibility.
 
 **Draft status:** BP-14 is a working design. The numerical behaviour model, event-frequency settings and detailed event catalogue will be tuned through later simulation testing. It is not a claim that crime-generation software has been implemented.
+
+## BP-15 — Case Management
+
+### Purpose
+Provide the formal system for creating, assigning, supervising, progressing and concluding police investigations. Case management ensures that investigative work has a clear purpose, accountable owner, recorded plan, traceable actions, controlled information, linked evidence and a defensible outcome.
+
+### Scope
+This division governs the lifecycle and administration of an investigative case. It covers case creation, classification, ownership, assignment, plans, tasks, reviews, links, status, handover, closure and reopening.
+
+The investigative methods used to carry out enquiries belong to BP-16. Victim and witness handling, suspect management, interviews, surveillance, intelligence, scenes, evidence and forensic examination are covered by BP-17 to BP-24.
+
+### What is a case
+A case is a managed body of police investigative work created to examine an allegation, suspected offence, series of events or other matter requiring structured enquiries. A case may originate from one incident, several linked incidents, a referral, intelligence or a newly discovered matter.
+
+A case is distinct from:
+- The underlying event in the living simulation.
+- A public contact or call record.
+- A formal incident record.
+- An offence definition in the crime catalogue.
+- A person or suspect record.
+- A charge, court proceeding or final legal finding.
+
+These records can be linked but must retain their separate identities and purposes.
+
+### Case identity and record
+Every case receives a permanent unique case reference. Its core record includes:
+- Case reference and title or short description.
+- Date opened and source of referral or creation.
+- Lead command, owning unit and responsible investigator.
+- Supervising officer and any specialist lead.
+- Case type, priority and current status.
+- Linked incidents, offence classifications and related cases.
+- Known victims, witnesses, persons of interest and suspects, with their recorded roles and certainty.
+- Investigative objectives and current working hypotheses.
+- Tasks, actions, decisions, reviews and deadlines.
+- Linked documents, statements, exhibits, forensic results and intelligence records.
+- Risk, safeguarding and disclosure considerations.
+- Outcome, closure decision and reopening history.
+
+The case identity remains stable through transfers, reclassification, changes of investigator and later reopening.
+
+### Case creation
+A case may be created when an incident requires formal investigation, when several incidents appear connected, when a specialist referral is received, when intelligence identifies a matter requiring enquiries, or when a new offence is discovered.
+
+The creation record identifies the source, reason, initial scope, suspected offence or issue, known facts, uncertainties and initial owner. A case should not be created merely to duplicate an incident record or to make an untested allegation appear established.
+
+A single incident can generate more than one case where there are genuinely separate investigative objectives. Several incidents can be investigated under one case where a common investigative purpose exists. The relationship and rationale are recorded.
+
+### Case classification and priority
+Case classification describes the investigative subject and may include crime type, specialist area, complexity, geographic scope and risk. Priority reflects the need to allocate investigative attention and resources.
+
+Priority is assessed separately from the seriousness of an offence, immediate incident response priority and public attention. Relevant factors may include risk to people, likelihood of further offending, vulnerability, loss or degradation of evidence, time-sensitive opportunities, complexity, public impact and available resources.
+
+Classification and priority can change as facts develop. Each material change records the reason, author and time.
+
+### Ownership and command
+Every active case has one lead owner: a named investigator or responsible investigative team, under a defined supervisor and owning unit. Specialist teams may support the case without creating uncertainty about overall accountability.
+
+Case ownership can transfer between investigators, units, commands or regions. A transfer records:
+- Outgoing and incoming owner.
+- Effective date and time.
+- Reason for transfer.
+- Current status and key developments.
+- Outstanding tasks, deadlines and risks.
+- Evidence and information requiring handover.
+- Acceptance by the incoming owner.
+
+The system must prevent a case from becoming ownerless during transfer. The outgoing owner remains responsible until the transfer is accepted or a supervisor formally assigns a new owner.
+
+### Investigative objectives and plan
+A case plan describes what the investigation is trying to establish and the work required to do so. It may include:
+- The allegation or issue being examined.
+- Relevant offence elements and alternative classifications.
+- Established facts, reported information and unresolved questions.
+- Working hypotheses and reasonable alternative explanations.
+- Lines of enquiry and their purpose.
+- Tasks, responsible people and target dates.
+- Evidence and information sought.
+- Risks, safeguarding needs and disclosure considerations.
+- Specialist support required.
+- Review points and decision milestones.
+
+A plan is a working document, not a guarantee that a hypothesis is correct. It changes as evidence develops. Earlier versions and material changes remain available.
+
+### Tasks and work allocation
+Investigative work is divided into identifiable tasks. Each task has a purpose, owner, status, priority, due date where appropriate, dependencies and completion record. Tasks may cover interviews, records enquiries, scene work, forensic submissions, CCTV, digital material, surveillance, intelligence development, suspect enquiries, legal applications or other investigative actions.
+
+Tasks can be assigned to a person, team or specialist unit. Delegation does not remove the lead investigator's responsibility to monitor the case. Completed tasks record what was done, the result, supporting records and any further work identified.
+
+Overdue, blocked, rejected or incomplete tasks remain visible. A task cannot be marked complete merely because an attempt was made; the result and any outstanding limitations are recorded.
+
+### Case reviews and supervision
+A supervisor reviews the case at suitable points, taking account of seriousness, risk, complexity, elapsed time, major decisions and organisational standards. A review may assess:
+- Whether the investigative objectives remain appropriate.
+- Whether reasonable lines of enquiry are being pursued.
+- Whether alternative explanations are considered.
+- Whether victims and witnesses are being updated and supported.
+- Whether suspect actions and legal decisions are properly recorded.
+- Whether evidence is being managed and examined appropriately.
+- Whether deadlines, disclosure and safeguarding needs are addressed.
+- Whether resources and specialist support are adequate.
+- Whether the case should continue, change scope, transfer or close.
+
+Reviews record the reviewer, date, findings, directions and any follow-up tasks. The simulation should include routine reviews and event-triggered reviews.
+
+### Related cases and series
+Cases can be linked as related, potentially connected, part of a series, a joint investigation or a shared intelligence picture. Each link records its basis and confidence. A link does not prove common responsibility.
+
+A lead case may coordinate several sub-cases or workstreams. The system preserves each case's own reference, owner, tasks, evidence and outcome while supporting shared oversight. If cases are merged administratively, the original identities and histories remain traceable.
+
+### Information and document management
+Case material may include reports, statements, interview records, plans, photographs, recordings, correspondence, exhibits, forensic submissions, intelligence reports, legal documents and review notes.
+
+Each item links to its source, author or origin, creation time, version and relevant case role. The case record points to authoritative evidence and document records rather than making uncontrolled duplicate copies. Corrections, supplements and later versions preserve the history of what was originally recorded.
+
+### Risk and safeguarding
+The case can record risks relating to victims, witnesses, suspects, officers, the public, evidence, repeat offending and investigative activity. Each risk has a description, assessment, owner, mitigation and review date where appropriate.
+
+Safeguarding concerns and restricted personal information are visible only to authorised roles. The existence of a safeguarding concern is not itself proof of an offence.
+
+### Disclosure and case integrity
+The case tracks material that may need to be considered for disclosure under the fictional legal system, including material that supports or undermines a prosecution theory. The system records where material came from, who reviewed it, decisions made and any unresolved disclosure issue.
+
+The case plan and review process should encourage investigators to consider reasonable alternative explanations and relevant material that does not support the current hypothesis. Case management must not reward a predetermined outcome.
+
+### Case status and lifecycle
+A case may move through statuses such as:
+- Proposed or awaiting assessment.
+- Open and allocated.
+- Active investigation.
+- Awaiting a third-party response or specialist result.
+- Under supervisory review.
+- Submitted for legal or charging review.
+- Suspended or dormant with a recorded reason.
+- Concluded or closed.
+- Reopened.
+
+The exact status labels can be refined, but status must describe the actual position of the work. A case awaiting a forensic result is not treated as fully completed. A dormant case retains its outstanding opportunities and review date.
+
+### Closure
+A case can be closed when the investigative work has reached a recorded conclusion or when no further proportionate action is currently available. Closure records:
+- Summary of the matter and investigative scope.
+- Enquiries completed and their results.
+- Enquiries not completed and why.
+- Evidence obtained and material limitations.
+- Suspect and victim positions as established.
+- Legal referral or charging outcome, if applicable.
+- Outstanding risks, safeguarding and disclosure matters.
+- Property and exhibit status.
+- Reason for closure and approving supervisor.
+- Conditions or triggers for reopening.
+
+Closure is an administrative case decision, not proof of guilt or innocence. A case can close without a charge, and a court outcome may occur later.
+
+### Reopening and continuation
+A closed or dormant case can be reopened when new evidence, a new witness, a linked event, a forensic result, a review finding or another material development justifies further work. Reopening creates a new period of activity while preserving the earlier closure decision and complete history.
+
+### Player experience
+The player can view cases assigned to them, understand their role and objectives, record investigative actions, create and complete tasks, link relevant records, submit material for review and see outstanding work. The player receives information according to their role and access, not the complete hidden simulation record.
+
+The game should allow the player to pursue their own investigative reasoning. It must not automatically reveal the solution or tell the player which line of enquiry will identify the offender.
+
+### Case workload and performance
+Commanders can monitor active cases, age, risk, priority, ownership, overdue tasks, review status, resource demand, outcomes and unresolved work. Performance measures should consider quality, fairness, complexity and available resources rather than rewarding raw closure numbers or charges alone.
+
+### Connections to other divisions
+- **BP-02 to BP-04:** geography, people, properties, businesses and organisations.
+- **BP-06 to BP-09:** personnel, careers, units, deployment and resources.
+- **BP-11 and BP-12:** reports, incidents, referrals and incident history.
+- **BP-13 and BP-14:** offence definitions and generated events.
+- **BP-16:** investigative methods and operational enquiries.
+- **BP-17 to BP-24:** victims, witnesses, suspects, interviews, surveillance, intelligence, scenes, evidence and forensics.
+- **BP-25 to BP-29:** arrests, custody, legal review, court outcomes and corrections.
+- **BP-30 to BP-34:** governance, standards, training, workforce and finance.
+- **BP-37 to BP-43:** time, records, persistence, interface, notifications, permissions and testing.
+
+### Exceptions and edge cases
+The system must handle cases with unknown offenders, multiple suspects, multiple victims, no direct victim, several offences, several incidents, cross-region activity, joint investigations, specialist support, a lead investigator leaving, a case transfer rejected or delayed, a case with no immediate tasks, long-running forensic work, conflicting evidence, mistaken initial classification, related cases later found unrelated, legal referral without charge, and new evidence after closure.
+
+### Acceptance conditions
+- Every case has a stable unique reference and a clear investigative purpose.
+- Incident, case, event, offence, person and court records remain distinct but linkable.
+- Every active case has one accountable owner and supervisor.
+- Case creation, classification, priority, ownership and status changes retain their history.
+- Plans identify objectives, hypotheses, alternatives, tasks, risks and review points.
+- Tasks have owners, results and visible outstanding work.
+- Supervisory reviews record findings and directions.
+- Related cases can be connected without assuming common responsibility.
+- Case material retains provenance, version and access controls.
+- Closure records the actual investigative position and unresolved limitations.
+- Reopening preserves the original history and closure decision.
+- The player can investigate without automatic solution hints or hidden culprit disclosure.
+
+**Draft status:** BP-15 is a working design. Detailed case categories, review intervals, formal submission standards and the connection to legal review will be refined with BP-16 and the justice divisions. It is not a claim that case-management software has been implemented.
