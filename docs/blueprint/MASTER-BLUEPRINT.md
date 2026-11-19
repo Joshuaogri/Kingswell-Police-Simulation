@@ -4016,3 +4016,265 @@ The design must handle unknown or disputed identity, duplicate custody records, 
 
 **Draft status:** BP-26 is a working design. Exact detention powers and time limits, custody facility standards, legal rights, review roles, healthcare arrangements, search powers, visit restrictions, release conditions, inspection rules and independent oversight routes remain to be specified in the fictional legal framework. This division does not claim that custody facilities or custody software have been implemented.
 
+## BP-27 — Legal Processes
+
+### Purpose and scope
+Define the lawful procedural framework connecting police activity, investigation, custody, prosecutorial or other competent legal review, formal allegations, court applications and case progression. This division models the legal gateways, decisions, documents, deadlines, responsibilities, rights, review routes and procedural consequences that apply before, during and around court proceedings.
+
+BP-27 is the procedural and legal-authority layer. It does not replace:
+- BP-25 for arrest and warrant decisions and execution.
+- BP-26 for custody, detention authority, welfare and release/transfer.
+- BP-19 for interview conduct and safeguards.
+- BP-23 for evidence continuity and material management.
+- BP-28 for court hearings, judicial findings, trial, verdict and sentence.
+- BP-29 for correctional execution and post-conviction administration.
+
+A procedural action is valid only where the actor has the relevant legal power, the required facts and material are available, mandatory safeguards have been met, and the decision is properly recorded. A police record, suspicion, arrest, charge or referral does not establish guilt.
+
+The fictional country's constitution, criminal procedure code, evidence law, prosecution statute, rights instruments, court rules and subordinate regulations are not yet fully specified. Exact powers, thresholds, forms, deadlines, limitation periods, review bodies and legal terminology remain open decisions and must not be invented by the simulation.
+
+### Legal system and authority model
+The legal architecture must define:
+- Sources and hierarchy of law, including constitutional provisions, statutes, regulations, binding judicial decisions and procedural rules.
+- Territorial and subject-matter jurisdiction of national, regional and local authorities.
+- Police powers and their limits.
+- Independent prosecutorial or other charging authority, where applicable.
+- Judicial and tribunal powers, including warrants, orders, bail, remand and review.
+- Defence rights, legal representation and access to relevant material.
+- Specialist authorities for children, vulnerable persons, national security, corruption, financial crime and other legally distinct matters.
+- Administrative, disciplinary, civil and criminal processes, which must remain distinct.
+- Applicable law version and effective dates for each procedural event.
+
+Each legal authority has a persistent identity, legal source, jurisdiction, permitted decision types, scope, conditions, effective period, delegation rules, review route and responsible institution. Authority cannot be inferred merely from rank, job title, seniority, possession of a document or access to a system.
+
+### Jurisdiction and venue
+Every matter is assessed for territorial, personal, subject-matter and temporal jurisdiction. The system records the locations and conduct relevant to jurisdiction, the applicable legal provisions, any cross-border or inter-regional element, and the authority responsible for deciding jurisdictional questions.
+
+Where multiple agencies or jurisdictions may have authority, the record supports referral, consultation, transfer, joint handling or formal determination. It must preserve the original reporting and investigative history and identify who owns each outstanding action.
+
+A jurisdictional dispute does not silently extinguish a case, suspend a legal deadline or authorise an otherwise unlawful action. Any pause, transfer or extension must have a defined legal basis and accountable decision-maker.
+
+### Procedural status and legal event model
+The system maintains distinct, time-stamped statuses rather than a single ambiguous case label. Depending on the law, a matter may be:
+- Reported or detected.
+- Under preliminary assessment.
+- Under police investigation.
+- Referred for legal or prosecutorial advice.
+- Referred for a charging or prosecution decision.
+- Returned for further enquiries.
+- Approved, declined or deferred for formal proceedings.
+- Subject to a filed allegation, charge, information or equivalent instrument.
+- Subject to a summons, notice, warrant, bail or remand process.
+- Before a court or competent tribunal.
+- Stayed, discontinued, withdrawn, dismissed, acquitted, convicted or otherwise determined.
+- Under appeal, review or other post-decision procedure.
+- Closed for a defined legal or administrative reason.
+
+These are not interchangeable. A referral is not a charge; a charge is not a conviction; discontinuance is not acquittal; dismissal on a procedural ground is not necessarily a finding on the underlying facts. The system preserves the exact legal event, its effective time, source, authority, affected parties and consequence.
+
+### Legal advice and procedural consultation
+Police investigators and supervisors may seek legal advice where permitted. Requests identify the issue, facts supplied, relevant documents, urgency, decision deadline, requesting officer and authorised recipient.
+
+Advice records distinguish:
+- The question asked and information supplied.
+- Advice received, author and date.
+- Assumptions, qualifications and missing information.
+- Whether advice is binding, advisory or subject to formal approval under law.
+- Decision actually taken and the person responsible.
+- Any later change in facts or law requiring reconsideration.
+
+Legal advice does not transfer the decision-maker's statutory responsibility unless the law expressly provides otherwise. Privileged or confidential legal communications receive restricted access and appropriate retention. The system does not assume every communication with a lawyer is privileged or disclose privileged material automatically.
+
+### Investigation and legal sufficiency review
+Before a matter proceeds through a formal legal gateway, the relevant decision-maker can review the available material and procedural history. The review may consider:
+- Whether the alleged conduct is capable of constituting an offence under the applicable law.
+- Whether the relevant legal elements are identified.
+- Whether the available evidence is lawfully obtained and adequately documented.
+- Whether material is reliable, relevant, sufficiently complete and capable of fair presentation.
+- Exculpatory, contradictory, inconsistent or credibility-affecting material.
+- Identification uncertainty and alternative explanations.
+- Witness availability, safety and support needs.
+- Forensic and expert limitations.
+- Disclosure obligations and unused material.
+- Jurisdiction, limitation, procedural bars and other legal impediments.
+- Public-interest or other statutory criteria where the law requires them.
+- Whether further proportionate enquiries are necessary and lawful.
+
+The review must not treat an allegation, intelligence assessment, arrest, confession, forensic association or prior record as conclusive proof. It must distinguish established facts, disputed accounts, inferences, untested assertions and unknowns.
+
+A request for further enquiries specifies the legal or factual issue to be addressed, the responsible owner, scope, deadline and authority. It must not become an indefinite or unauthorised investigation. Investigative decisions remain recorded under BP-15 and BP-16.
+
+### Charging and prosecution decision architecture
+The fictional legal system must define which authority may decide whether a formal criminal allegation is brought. Depending on that model, the decision may rest with an independent prosecutor, a legally authorised police charging officer, a court or another designated authority. The simulation must not assume that every police officer can charge a person.
+
+A charging decision record contains:
+- Person and alleged offence(s).
+- Applicable law and offence version.
+- Jurisdiction and competent decision-maker.
+- Evidential and legal assessment required by the applicable standard.
+- Relevant inculpatory and exculpatory material.
+- Disclosure and procedural-readiness assessment.
+- Any required consultation or approval.
+- Decision, reasons, date/time and authorisation.
+- Conditions, outstanding tasks and review or reconsideration route.
+
+Possible decisions include approval, refusal, deferral pending specified enquiries, referral to another competent authority, or a legally defined alternative resolution. A decision may be reconsidered only through a lawful process with new material, changed circumstances, identified error or another recognised ground.
+
+The system records each alleged offence separately. Multiple counts or alternative legal characterisations must not obscure the factual basis or permit duplicate punishment contrary to law. Decisions about one person or offence do not automatically determine the status of another person or offence.
+
+### Formal charge or allegation instruments
+Where formal proceedings require a charge sheet, information, complaint, indictment or equivalent instrument, the system records the legally prescribed document and its authoritative version. Required fields may include:
+- Issuing authority and legal power.
+- Accused person's verified identity and any uncertainty.
+- Each offence, applicable provision and legal version.
+- Factual particulars required by law.
+- Relevant date range and jurisdiction.
+- Court or venue where assigned.
+- Filing, service and response deadlines.
+- Required signatures, approvals and validation.
+- Amendments, replacement instruments and service history.
+
+A draft instrument is clearly distinguished from an approved, filed or served instrument. The system validates mandatory fields and warns about inconsistencies but does not invent missing facts or silently repair material allegations.
+
+Amendments preserve prior versions, the reason, author, approval, date and legal effect. Material changes that require renewed approval, notice, adjournment or other safeguard must trigger the appropriate workflow.
+
+### Alternative and diversionary processes
+If the law provides warnings, cautions, diversion, restorative processes, administrative settlements or other alternatives to prosecution, each has a separate legal basis, eligibility criteria, decision authority, consent requirements, safeguards and record.
+
+The system must distinguish a voluntary process from a compulsory one and record whether participation is informed and genuinely voluntary where required. A diversion outcome is not represented as a conviction unless the law explicitly gives it that effect. Breach, completion, withdrawal and re-entry into ordinary proceedings follow the defined legal rules.
+
+No alternative process may be used to evade required judicial oversight, coerce an admission or bypass protections for children or vulnerable persons.
+
+### Bail, attendance and pre-trial liberty interfaces
+BP-27 records the legal process for attendance and pre-trial liberty, while BP-26 remains authoritative for the custody state and BP-28 for judicial proceedings. Depending on law, instruments may include summonses, attendance notices, police bail, court bail, recognisance, conditions, sureties or other arrangements.
+
+Each instrument records:
+- Legal basis and competent decision-maker.
+- Person, matter and relevant court or authority.
+- Conditions, duration and variation rules.
+- Required appearance date, location and method.
+- Service or notification and proof thereof.
+- Review, surrender, breach or cancellation events.
+- Consequences and available remedies.
+
+A bail or attendance condition must be lawful, clear, proportionate and linked to an authorised purpose. The system must not treat a breach allegation as established fact without the required process. A missed appearance triggers the prescribed review and does not automatically authorise arrest unless a valid legal power or warrant exists.
+
+### Applications, orders and legal instruments
+The system manages applications to competent authorities for orders and directions required by law. Each application records:
+- Applicant, target person or property, case and jurisdiction.
+- Specific power sought and legal provision.
+- Factual grounds and supporting material.
+- Scope, limits, duration and conditions requested.
+- Required notice, hearing or affected-party participation.
+- Decision, reasons, issuing authority and effective time.
+- Service, execution, return, expiry, variation or discharge.
+- Challenge, appeal or review route.
+
+Orders are verified against their authoritative source and current status before reliance. The system distinguishes draft, submitted, granted, refused, varied, suspended, expired, discharged and executed states. An order is not broadened by operational convenience, and one type of order cannot be substituted for another.
+
+### Disclosure and fair-trial obligations
+Disclosure is a continuing legal process, not a one-time document export. The system supports identification, preservation, review, scheduling, lawful redaction, service and tracking of material required to be disclosed to the defence, prosecutor, court or another authorised recipient.
+
+Material categories include relied-upon evidence, unused material, exculpatory information, material affecting witness reliability, expert limitations, recordings, custody and interview records, continuity issues, relevant complaints and other material prescribed by law.
+
+Each disclosure item records:
+- Source and authoritative record.
+- Relevance assessment and reviewer.
+- Disclosure category and legal basis.
+- Sensitivity, privilege or restriction concerns.
+- Redaction decision and authority.
+- Recipient, date, method and version disclosed.
+- Any withheld or deferred decision, reasons and review.
+- Subsequent discovery, correction or supplemental disclosure.
+
+Disclosure decisions must be reviewable. The system prevents silent deletion, alteration or concealment of potentially relevant material. Access restrictions do not extinguish disclosure duties; conflicts are referred through the legally prescribed process.
+
+### Limitation periods and procedural deadlines
+The system tracks legally relevant time limits, including limitation periods, filing deadlines, service periods, response windows, application expiry, appeal periods, attendance dates and procedural review dates.
+
+Every deadline has a legal source, triggering event, calculation rule, applicable calendar, responsible owner, warning schedule and consequence of expiry. The system preserves source dates and calculation history. Suspensions, extensions, tolling or exclusions apply only where the law authorises them and are individually documented.
+
+An alert is not an extension or judicial order. A system-generated date is provisional until checked against the applicable law and triggering facts. Uncertain dates are flagged for authorised legal review rather than silently treated as compliant.
+
+### Legal representation, participation and procedural safeguards
+The system records access to representation, legal assistance, interpretation, disability accommodations, child-specific protections, appropriate adult or support-person arrangements where required, notice, participation and any lawful waiver or restriction.
+
+A waiver is valid only where the applicable law's requirements are met and recorded. Silence, lack of objection, inability to understand, failure to attend or absence of a representative is not automatically a waiver.
+
+Where a person's capacity, age, communication needs or vulnerability affects participation, the relevant safeguards are assessed and recorded before a procedural step proceeds. The system supports adjournment, alternative communication and other lawful accommodation.
+
+### Victim and witness procedural interfaces
+Victims and witnesses may have statutory rights to information, protection, participation, interpretation, support, notification or review. BP-17 remains authoritative for their person records and safeguarding; BP-27 manages the procedural events and legal entitlements.
+
+The system records notices, requests, referrals, participation decisions, protection measures, reasons for restrictions, hearing notifications and relevant outcomes. It does not promise an outcome or give a witness control over an independent charging or judicial decision unless law expressly provides such a role.
+
+### Review, challenge and appeal interfaces
+Legal decisions may be subject to internal reconsideration, prosecutorial review, judicial review, appeal, complaint or another statutory remedy. Each route has its own standing, grounds, authority, deadline, filing requirements and effect.
+
+The record links the challenged decision, applicant, grounds, supporting material, reviewer or tribunal, interim directions, outcome, reasons and implementation. A challenge does not automatically suspend the underlying decision unless the law or a competent authority so provides.
+
+Where a decision is overturned or varied, dependent records and workflows are updated through attributed events. Historical decisions remain preserved, and downstream consequences are corrected where required.
+
+### Legal holds, stays and discontinuance
+The system supports legally authorised stays, suspensions, discontinuance, withdrawal, dismissal and other termination or pause mechanisms. Each action records the authority, legal basis, scope, effective date, reasons, affected counts and persons, outstanding obligations, review route and consequences.
+
+A stay is not the same as a final termination. Discontinuance is not automatically an acquittal. A dismissed count does not necessarily terminate other counts or related proceedings. The system must preserve these distinctions and apply any statutory re-filing or limitation rules.
+
+Legal holds protect relevant records and material from routine destruction. A hold identifies scope, authority, custodian, start date, review date and release conditions. Release of a hold requires an attributable decision.
+
+### Inter-agency and cross-jurisdiction procedure
+Where a case requires cooperation between police, prosecutors, courts, regulators or other competent bodies, the system records the requesting and receiving authorities, legal basis, purpose, scope, information shared, restrictions, acknowledgement and responsibility for follow-up.
+
+Transfers preserve provenance, document versions, deadlines, custody status and accountability. The sending body remains responsible for actions not formally accepted by the receiving body. Information sharing is limited to lawful purpose and need.
+
+Cross-jurisdiction requests must account for applicable territorial powers, mutual assistance requirements, data protection and any required central authority. No foreign or external authority is assumed to possess domestic powers merely because it requests assistance.
+
+### Records, access and integrity
+Legal process records are authoritative, versioned and auditable. Material decisions preserve the information available at the time, the applicable law, decision-maker, reasoning, consultation, approval and effective time.
+
+Role-based access distinguishes police investigators, supervisors, legal advisers, prosecutors, courts, defence representatives, registry staff, victims or witnesses with relevant entitlements, oversight bodies and system administrators. Privileged, sealed, protected and sensitive material receives appropriate controls.
+
+Corrections are made through traceable amendments. The system preserves original instruments, filing receipts, service records, acknowledgements, decisions and disclosure versions. No user may backdate, fabricate, silently replace or erase a legal event.
+
+### Player experience and authority
+The player can prepare and submit materials within their role, request legal advice, refer a file, respond to further-enquiry requests, track formal decisions, prepare authorised applications, record service and comply with court or prosecutor directions.
+
+The player cannot make a charging decision, issue a judicial order, waive another person's rights, extend a legal deadline, determine guilt or alter a court outcome unless their expressly defined role and the fictional law authorise that action. System permissions must reflect actual authority and competence.
+
+The interface displays procedural status, responsible authority, required documents, pending decisions, legal deadlines, service status, disclosure obligations and review routes. It distinguishes reminders from formal decisions and draft documents from legally effective instruments.
+
+### Connections to other divisions
+- **BP-05 to BP-09:** institutional authority, personnel competence, deployment and resources.
+- **BP-11 and BP-12:** incident intake and formal incident records.
+- **BP-13 to BP-18:** offences, generated events, cases, investigations, victims, witnesses and suspects.
+- **BP-19 to BP-24:** interviews, surveillance, intelligence, scenes, evidence and forensic material.
+- **BP-25 and BP-26:** arrest, warrants, detention, custody, bail and release interfaces.
+- **BP-28:** hearings, judicial determinations, trial, verdict, sentence and court orders.
+- **BP-29:** enforcement of post-conviction and correctional orders.
+- **BP-30 to BP-34:** governance, standards, training, staffing and institutional resources.
+- **BP-35 to BP-37:** simulation events, social context, legal time and deadlines.
+- **BP-38 to BP-44:** records, persistence, interface, notifications, security, testing and configuration.
+
+### Exceptions and edge cases
+The design must handle disputed identity, multiple jurisdictions, uncertain offence dates, changing law, conflicting legal advice, missing evidence, exculpatory material discovered late, multiple offences or accused persons, duplicate counts, defective charge instruments, unapproved drafts, filing rejection, failed service, missed attendance, bail-condition dispute, application refused, order varied or expired, urgent application, legal deadline uncertainty, limitation expiry, disclosure dispute, privilege claim, protected witness, child or vulnerable accused, lack of representation, interpreter failure, procedural incapacity, conflict of interest, prosecutor withdrawal, judicial stay, discontinuance, appeal, overturned decision, cross-agency transfer, system outage, corrupted document and retrospective correction.
+
+### Acceptance conditions
+- Legal authority, jurisdiction and applicable law version are recorded for every material procedural decision.
+- Police, prosecutorial, judicial and defence roles are distinct and permission-controlled.
+- Investigation, referral, charging, filing, service, court determination and appeal remain separate procedural states.
+- A charging decision records its legal basis, decision-maker, reasons and relevant inculpatory and exculpatory material.
+- Draft, approved, filed, served, varied, withdrawn and superseded instruments are distinguishable.
+- Applications and orders preserve scope, conditions, expiry, service and execution history.
+- Bail and attendance conditions are traceable and do not create automatic arrest powers.
+- Disclosure covers relevant relied-upon and unused material, including exculpatory information, with reviewable decisions.
+- Deadlines are tied to legal sources and triggering events; alerts cannot extend legal authority.
+- Rights, representation, interpretation and vulnerability safeguards are recorded before affected procedural steps.
+- Legal stays, discontinuance, dismissal, acquittal, conviction and appeal are not conflated.
+- Inter-agency transfers preserve provenance and accountability.
+- Privileged and protected information is access-controlled without suppressing legal obligations.
+- Legal decisions and documents cannot be silently overwritten or backdated.
+- Player actions are limited to the legal authority and competence of the player's role.
+- No procedural status or police action is represented as proof of guilt.
+
+**Draft status:** BP-27 is a working design. The constitution, legal hierarchy, offence and charging standards, prosecutorial model, legal instruments, disclosure code, limitation rules, bail framework, rights, appeal routes, jurisdictional arrangements and procedural deadlines remain to be specified. No legal-process software or institution has been implemented by this design document.
+

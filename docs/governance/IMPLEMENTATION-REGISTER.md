@@ -51,7 +51,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-24 | Forensics | Drafted — design only; no forensic software or service implemented |
 | BP-25 | Arrests and Warrants | Drafted — design only; no arrest or warrant software implemented |
 | BP-26 | Custody Management | Drafted — design only; no custody software or facilities implemented |
-| BP-27 | Legal Processes | Not started |
+| BP-27 | Legal Processes | Drafted — design only; no legal-process software implemented |
 | BP-28 | Courts and Outcomes | Not started |
 | BP-29 | Corrections | Not started |
 | BP-30 | Department Governance | Not started |
