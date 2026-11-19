@@ -9186,3 +9186,312 @@ The interface must communicate the actual state, preserve context where safe and
 - Development administration is distinguishable from in-world gameplay.
 
 **Draft status:** BP-40 is a working design. The final command catalogue, response templates, dashboard layouts, navigation model, accessibility standards, record-view specifications, interaction confirmation thresholds, visual feature scope and host-platform integration details remain open. The intended ChatGPT conversational interface is available as the project interaction concept, but no dedicated game interface, command application, dashboard or player portal has been implemented.
+
+
+---
+
+## BP-41 — Notifications and Reporting
+
+### Purpose and scope
+Define how the simulation communicates alerts, reminders, status changes, operational updates, reports, summaries and formal information products to the player and authorised institutional users. BP-41 ensures that important information reaches the right recipient at the right time, with an accurate priority, source, status and level of detail.
+
+BP-41 covers:
+- Notification architecture and delivery channels.
+- Event-triggered alerts and status updates.
+- Operational, investigative, legal and administrative notifications.
+- Reminders, deadlines and appointment alerts.
+- Escalation and acknowledgement rules.
+- Notification preferences and delivery controls.
+- Report definitions, generation and publication.
+- Operational summaries, dashboards and management reporting.
+- Scheduled and event-driven reports.
+- Delivery history, retries, failure handling and audit.
+- Information classification, redaction and recipient validation.
+- Reporting accuracy, provenance and data-quality indicators.
+
+BP-41 does not replace:
+- BP-11 for emergency communications, call-taking, radio, dispatch and operational communications.
+- BP-30 for governance reporting, oversight and public accountability.
+- BP-35 for event generation and processing.
+- BP-37 for authoritative timing, schedules and deadlines.
+- BP-38 for authoritative records, report data sources and query contracts.
+- BP-40 for the player interface and presentation.
+- BP-42 for identity, permissions and security.
+
+A notification is not an operational command, legal order, approval or proof that the recipient has read or acted on the information. A report is a representation of source records, not an independent authority to change those records.
+
+### Notification principles
+Notifications are:
+- Relevant: sent only to recipients with a legitimate role or purpose.
+- Accurate: based on authoritative or clearly labelled provisional information.
+- Timely: delivered according to urgency and the event's actual timing.
+- Proportionate: frequency and detail reflect risk and operational need.
+- Actionable: where a response is required, the action and deadline are clear.
+- Traceable: generation, routing, delivery, acknowledgement and failure are recorded.
+- Secure: sensitive content is protected and recipients are validated.
+- Non-duplicative: retries and repeated events do not create uncontrolled duplicate alerts.
+- Honest: delivery is distinguished from reading, acknowledgement and completion.
+- Configurable: preferences may control non-critical notices but cannot suppress mandatory safety or legal alerts.
+
+The notification system must avoid alert fatigue. Routine status changes should not be presented with the same urgency as an immediate threat to life, a custody deadline or a critical operational instruction.
+
+### Notification categories and priority
+Notification categories may include:
+- Critical safety or emergency alert.
+- Immediate operational task or dispatch-related update.
+- Time-sensitive legal or custody deadline.
+- Security, safeguarding or integrity alert.
+- Investigation or case update.
+- Approval request or decision outcome.
+- Duty, roster and availability change.
+- Training, qualification or competency notice.
+- HR, leave and employment update.
+- Finance, procurement and contract notice.
+- Appointment and calendar reminder.
+- Record correction or data-quality notice.
+- System availability, persistence or recovery notice.
+- Routine informational update.
+- Scheduled report or management summary.
+
+Each category has a defined owner, eligible recipients, priority, delivery expectation, acknowledgement requirement, escalation route, confidentiality level and retention policy.
+
+Priority levels and service expectations are configurable. A low-priority notification may be grouped into a digest; a critical alert may require immediate delivery and acknowledgement. A user's preference cannot disable a mandatory alert where the domain rules require delivery.
+
+### Notification lifecycle
+A notification follows a controlled lifecycle:
+1. A domain event or scheduled rule triggers a notification request.
+2. The source and event are validated.
+3. The notification category and priority are resolved.
+4. Recipient eligibility and permissions are checked.
+5. Sensitive content is minimised and redacted as required.
+6. The message is generated from an approved template or defined content rule.
+7. The notification is queued and assigned a unique identifier.
+8. Delivery is attempted through an available authorised channel.
+9. Delivery result is recorded.
+10. Acknowledgement is recorded where required.
+11. Escalation or retry occurs under the defined policy.
+12. The notification is closed, expired, cancelled or superseded as appropriate.
+
+The lifecycle distinguishes created, queued, attempted, delivered, failed, retried, acknowledged, declined where supported, expired, cancelled and superseded. A notification can be delivered without being read. An acknowledgement can confirm receipt without confirming agreement or completion of the requested action.
+
+### Recipient selection and routing
+Recipient selection is based on current role, assignment, responsibility, jurisdiction, case involvement, authority and the source domain's routing rules.
+
+Recipients may include:
+- The player character.
+- Assigned officers and supervisors.
+- Dispatch and incident command roles.
+- Investigators and case owners.
+- Authorised specialist units.
+- Custody and legal-process staff.
+- Court or correctional interfaces where authorised.
+- HR, training, finance or procurement personnel.
+- Governance, audit or oversight roles.
+- Other approved institutional contacts.
+
+A recipient list is resolved at the time of the event according to the applicable rule. Historical delivery records preserve who was eligible and who actually received the notification at that time.
+
+A notification must not be routed merely because a person is senior, works in the same organisation or is linked socially to the subject. Need-to-know and purpose limitation apply. A transfer, shift change or role change may require rerouting or escalation, but must not expose the content to an unauthorised former recipient.
+
+### Content, source and certainty
+Each notification records:
+- Notification identifier.
+- Triggering event and source record.
+- Category and priority.
+- Recipient or recipient group.
+- Generated and delivery timestamps.
+- Message template and version.
+- Content classification.
+- Required action and due time, if any.
+- Delivery channel and result.
+- Acknowledgement status.
+- Retry, escalation and closure history.
+
+The content distinguishes verified facts, reports, allegations, estimates, warnings, pending decisions and system-generated predictions. It identifies uncertainty where material and does not overstate the source.
+
+A notification may contain a concise summary and a link or reference to the authoritative record. The recipient's permission is checked again when the record is opened; receiving a notification does not automatically grant access to the linked record.
+
+### Acknowledgement and escalation
+Some notifications require acknowledgement. The acknowledgement rule identifies:
+- Who must acknowledge.
+- What constitutes acknowledgement.
+- The allowed time.
+- Whether acknowledgement is individual or by an assigned role.
+- What happens if no acknowledgement is received.
+- Who receives escalation.
+- Whether a secondary channel is required.
+
+Acknowledgement confirms receipt or awareness only. It does not prove that an instruction was followed, a task was completed or the recipient agreed with the content.
+
+If a critical notification is not acknowledged within its required period, the system escalates according to the domain rule. Escalation does not silently transfer legal authority or operational command. The responsible domain defines whether another person must take over.
+
+A notification may be cancelled or superseded when the underlying event changes. The recipient should be informed when an earlier message is materially corrected, withdrawn or replaced.
+
+### Delivery channels and preferences
+The primary player-facing delivery channel is the conversational interface. Other channels may be added where technically supported and approved, such as in-application alerts, email, SMS or external institutional integrations.
+
+Each channel has documented capabilities, security limitations, delivery confirmation semantics, retry behaviour and cost implications. The system does not claim that an external message was delivered or read without a valid provider response.
+
+User preferences may control non-critical digests, grouping, quiet periods and display choices where permitted. Preferences cannot suppress mandatory safety, legal, security or operational alerts. Quiet periods do not change the underlying deadline or event time.
+
+Sensitive notifications use minimal content and direct the recipient to an authorised record view. Protected case, personnel, health, witness or financial information must not be placed in an insecure channel merely for convenience.
+
+### Notification preferences and alert fatigue
+Preferences may include:
+- Category subscriptions.
+- Digest frequency.
+- Display grouping.
+- Reminder lead time.
+- Non-critical quiet periods.
+- Preferred supported channel.
+- Accessibility and presentation settings.
+
+Preferences are versioned and linked to the user or role. Mandatory routing rules take precedence. A role change may reset or adjust preferences where the new responsibilities require it.
+
+The system monitors duplicate, repeated, stale and low-value alerts. Notification volume may be reduced through grouping or digesting only when this does not delay a critical action or hide a material update.
+
+### Reporting architecture
+Reports are defined products generated from authorised source records. Each report specification includes:
+- Report identifier and title.
+- Purpose and intended audience.
+- Data owner and accountable approver.
+- Source domains and query definition.
+- Filters, period and scope.
+- Definitions of measures and status categories.
+- Calculation and aggregation rules.
+- Refresh frequency or trigger.
+- Data-quality limitations.
+- Access and classification.
+- Redaction and disclosure rules.
+- Version and effective date.
+- Retention and publication status.
+
+Reports may be:
+- Operational: current activity, incidents, deployment and workload.
+- Investigative: case status, actions, evidence and timelines.
+- Legal: custody, warrant, hearing and deadline status.
+- Personnel: staffing, attendance, training and workforce information.
+- Financial: budget, expenditure, procurement and contract position.
+- Governance: risk, audit, performance and corrective action.
+- Public accountability: approved aggregate statistics and published information.
+- Personal: information the player may access about their own character or requests.
+
+A report must state its reporting period, generation time, source and definitions. A snapshot report preserves the values and source version used at generation; a live report indicates that values may change as records are updated.
+
+### Reporting accuracy and interpretation
+Reports distinguish:
+- Counts of records from counts of unique people or entities.
+- Allegations from verified incidents and adjudicated outcomes.
+- Open cases from proven offences.
+- Planned duty from actual attendance.
+- Headcount from available staff and funded posts.
+- Budget allocation from commitments, expenditure and forecast.
+- Notifications sent from acknowledged actions.
+- Events occurring in a period from events recorded during that period.
+- Current status from historical status at the reporting date.
+
+Every measure has a documented definition. The same term must not be calculated differently across reports without an explicit distinction.
+
+Reports identify missing data, incomplete periods, delayed updates, excluded records, sampling limitations and known quality issues. A report cannot imply certainty beyond its source data.
+
+### Operational summaries and dashboards
+Operational summaries provide a concise view of current activity for an authorised role. They may include:
+- Active calls and incidents.
+- Pending dispatch or acknowledgement.
+- Unit and officer availability.
+- Response and task status.
+- Critical deadlines.
+- Outstanding approvals.
+- Case and evidence workflow status.
+- Resource shortages.
+- Safety and safeguarding alerts.
+
+Management summaries may include workload, staffing, service performance, risk, training, finance and resource trends. They must not expose individual sensitive information to users who only need aggregate reporting.
+
+A dashboard is a view, not an independent record. It displays the data freshness and identifies any unavailable source. Cached values are marked as such where their age could affect a decision.
+
+### Scheduled reports and publication
+Scheduled reports use BP-37 for timing and BP-38 for source data. A report schedule defines frequency, period, recipients, approval, generation time and failure handling.
+
+Public or external reports require approval under BP-30 and the relevant legal disclosure rules. The reporting system does not automatically publish a report merely because a schedule has run.
+
+Publication records include the approved version, approver, date, audience, redactions, publication channel and correction history. If a published report contains an error, the correction is traceable and the previous version is preserved where required.
+
+### Delivery failure, retries and reconciliation
+The system handles:
+- Recipient unavailable or no longer eligible.
+- Invalid or outdated contact route.
+- Channel outage.
+- Provider rejection or rate limit.
+- Duplicate trigger.
+- Notification generated from stale source data.
+- Delivery confirmed but acknowledgement absent.
+- Acknowledgement recorded against the wrong notification.
+- A notification superseded during delivery.
+- Partial delivery to a recipient group.
+- Report generation failure.
+- Incomplete source data.
+- Report output that exceeds a safe limit.
+- External integration unavailable.
+
+Retries are bounded and idempotent. The system records each attempt and avoids duplicate notifications where possible. A failed notification does not change the underlying task, deadline or legal obligation. Critical failures are escalated through an alternative approved route.
+
+### Privacy, security and audit
+Notifications and reports are subject to BP-38 classification and BP-42 access controls. The system applies least privilege, recipient validation, data minimisation, retention and audit.
+
+Audit records include generation, routing, access, delivery, acknowledgement, escalation, report generation, approval, export and publication where required. Audit logging must not expose protected message content to users who are not authorised to view it.
+
+Bulk reports and exports require appropriate purpose and authority. Small-group or rare-event statistics are reviewed for re-identification risk before wider publication. Confidentiality is not used to conceal misconduct or obstruct lawful oversight.
+
+### Player experience and authority
+The player can review current notifications, acknowledge those requiring it, open permitted linked records, inspect relevant deadlines, view reports within their role and manage non-critical preferences.
+
+The interface distinguishes:
+- New from previously viewed notifications.
+- Delivered from acknowledged.
+- Acknowledged from action completed.
+- Mandatory from informational.
+- Current from superseded.
+- Verified from reported or provisional.
+- Live data from a generated snapshot.
+- Internal report from approved public publication.
+
+The player cannot suppress mandatory alerts, falsify acknowledgement, change source records through a notification or publish a report without the required authority.
+
+### Connections to other divisions
+- **BP-01 to BP-40:** all domains that generate, consume or display alerts and reports.
+- **BP-11:** operational communications, dispatch and radio messages.
+- **BP-30:** governance, oversight, performance and public reporting approval.
+- **BP-35:** event triggers, queue processing, retries and notification generation.
+- **BP-37:** reminders, deadlines, schedules and report timing.
+- **BP-38:** source records, data definitions, provenance, classification and query interfaces.
+- **BP-39:** delivery and report history persistence, recovery and reconciliation.
+- **BP-40:** notification display, user navigation and report presentation.
+- **BP-42:** recipient permissions, channel security and access audit.
+- **BP-43:** delivery, routing, accuracy, privacy and report-calculation tests.
+- **BP-44:** configurable categories, priorities, templates, preferences and channel settings.
+
+### Exceptions and edge cases
+The design must handle a critical alert with no acknowledgement; a recipient changing roles during delivery; a notification sent to a former assignee; a confidential message delivered to an unauthorised channel; a notification generated from a record that changes immediately afterward; a duplicated event; a delayed or out-of-order notification; a failed external provider; an incorrect recipient; a user with several active roles; an expired deadline; a notification cancelled after delivery; a superseded warning; a delivery receipt without proof of reading; a false acknowledgement; a report generated from stale data; a report whose source records change during generation; a reporting-period boundary; a retrospective correction; a missing data source; an inconsistent metric definition; a small-group privacy risk; an unapproved public release; a report correction after publication; a bulk export request; an unavailable reporting service; a notification queue backlog; a system outage during an emergency; and a restored system replaying notifications already sent.
+
+The system must preserve delivery history, prevent uncontrolled duplicates, distinguish actual delivery from user action and route critical failures through approved alternatives.
+
+### Acceptance conditions
+- Notifications originate from validated events or approved schedules.
+- Each notification has a unique identifier, source, priority, recipient rule and lifecycle.
+- Recipient eligibility and permissions are checked before delivery.
+- Delivery, reading, acknowledgement and task completion remain distinct.
+- Mandatory alerts cannot be suppressed by ordinary user preferences.
+- Critical unacknowledged alerts follow defined escalation rules.
+- Sensitive content is minimised and protected across channels.
+- Retries do not create uncontrolled duplicate notifications.
+- Corrections and superseded messages are clearly identified.
+- Reports have approved definitions, sources, periods and owners.
+- Reports distinguish records, people, allegations, verified outcomes and other material categories.
+- Data freshness and known limitations are visible.
+- Public reporting requires the appropriate approval and disclosure review.
+- Report and notification access, delivery, acknowledgement and publication are auditable.
+- The player can review and act on permitted notifications without changing source records through the alert itself.
+- Delivery and report failures are visible and recoverable.
+
+**Draft status:** BP-41 is a working design. The final notification catalogue, priority levels, acknowledgement times, escalation matrix, channel providers, delivery service targets, reminder defaults, report catalogue, metric definitions, publication rules, retention periods and external communication integrations remain open. No dedicated notification service, reporting engine, external message integration or automated report publication system has been implemented.
