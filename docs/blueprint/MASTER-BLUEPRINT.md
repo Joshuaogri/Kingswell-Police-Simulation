@@ -10222,3 +10222,324 @@ The project must record the limitation, risk, owner, decision and next verificat
 - Implementation and verification status are kept separate in the project registers.
 
 **Draft status:** BP-43 is a working design. The detailed requirement-to-test matrix, test catalogue, automated test framework, CI pipeline, test environments, synthetic data library, performance targets, security testing scope, accessibility standards, defect severity policy, release gates, evidence-retention rules and independent review arrangements remain open. No automated test suite, quality-assurance pipeline or verified gameplay test environment has been implemented.
+
+
+---
+
+## BP-44 — Configuration and Expansion
+
+### Purpose and scope
+Define how the simulation is configured, customised, versioned and extended without corrupting established canon, weakening controls, creating uncontrolled scope or breaking existing records and systems. BP-44 provides the controlled mechanism for changing approved settings, adding capabilities, introducing new content and managing future expansion.
+
+BP-44 covers:
+- Configuration architecture and ownership.
+- Separation of code, environment settings, game rules and world canon.
+- Defaults, permitted values and configuration validation.
+- Scenario and game-start configuration.
+- Feature flags and controlled feature activation.
+- Versioning, approval, effective dates and change history.
+- Configuration deployment and rollback.
+- Extension and integration approval.
+- New domain, entity and content proposals.
+- Compatibility and migration requirements.
+- Scope control and dependency impact assessment.
+- Controlled reset, restart and test scenarios.
+- Configuration audit and governance.
+
+BP-44 does not replace:
+- BP-01 for the game's identity, scope and governing rules.
+- BP-30 for institutional governance, approval authority and change control.
+- BP-35 for runtime execution of approved configuration.
+- BP-37 for calendar and time configuration semantics.
+- BP-38 for schema and data-domain governance.
+- BP-39 for persistence, backup, recovery and controlled reset.
+- BP-42 for security and secrets.
+- BP-43 for testing and release verification.
+
+Configuration changes how an approved system operates within its defined rules. It does not silently amend the fundamental identity, legal framework, authority model, data ownership or scope of the game. A configuration value cannot create a statutory power, remove a legal safeguard, turn a draft design into an implemented feature or override an approved blueprint requirement.
+
+### Configuration principles
+Configuration is:
+- Explicit: every setting has a defined name, purpose, type and permitted value.
+- Owned: each setting has an accountable domain or technical owner.
+- Versioned: changes preserve prior values and effective periods.
+- Validated: invalid or contradictory settings are rejected.
+- Controlled: material changes require approval and testing.
+- Traceable: changes record actor, reason, source and result.
+- Environment-aware: development, test and live settings remain distinct.
+- Secure: secrets and privileged values are not stored in ordinary configuration files.
+- Reproducible: a scenario or release can identify the configuration used.
+- Compatible: changes do not silently invalidate existing records or interfaces.
+- Reversible where possible: rollback or forward-repair is planned before deployment.
+- Scope-limited: additions require a documented purpose and impact assessment.
+
+A default value is not automatically an approved law or permanent canon. Unresolved settings remain explicitly provisional or unset until approved.
+
+### Configuration categories
+The configuration catalogue distinguishes:
+- **Project configuration:** repository, environments, build settings and approved development conventions.
+- **Technical configuration:** database connections, service endpoints, logging levels and runtime limits.
+- **Security configuration:** authentication, permissions, secrets references, access policies and encryption settings.
+- **Simulation configuration:** processing intervals, event priorities, NPC intensity and runtime limits.
+- **Time configuration:** calendar, time zone, advancement and scheduling parameters owned by BP-37.
+- **World configuration:** approved country, city, population, geography, institution and scenario settings.
+- **Domain configuration:** controlled offence categories, rank structures, legal rules, qualifications, financial thresholds and other domain-owned values.
+- **Interface configuration:** command aliases, display preferences, output density and accessibility options.
+- **Notification configuration:** categories, priorities, templates and routing rules.
+- **Test configuration:** isolated test fixtures, deterministic seeds, test limits and synthetic data.
+- **Scenario configuration:** approved starting conditions, player entry point and scenario-specific settings.
+
+Each category has a defined owner and approval route. Technical settings do not override domain policy. Domain settings do not expose secrets. Scenario settings do not silently change persistent canon.
+
+### Configuration catalogue and schema
+Every setting has:
+- Stable configuration identifier.
+- Name and description.
+- Category and domain owner.
+- Data type and permitted format.
+- Default value where approved.
+- Allowed range, options or validation rule.
+- Whether the value is required, optional or unset.
+- Current value and version.
+- Effective start and end.
+- Source and approval authority.
+- Dependencies and conflicting settings.
+- Environment or scenario scope.
+- Security classification.
+- Change history and rollback information.
+
+Configuration is stored in a controlled schema or configuration service appropriate to its sensitivity and use. Critical settings are not scattered across source files, database rows and undocumented prompt instructions with no single authoritative owner.
+
+The system distinguishes configuration values from operational data. A patrol officer's current assignment is a game record, not a global configuration setting. A statutory deadline is a domain rule or approved legal configuration, not a user preference. A user's display density is an interface preference, not a change to simulation truth.
+
+### Defaults, validation and precedence
+Configuration precedence is explicitly defined. A lower-level override cannot silently supersede a higher-authority rule.
+
+The configuration hierarchy may include:
+1. Fundamental blueprint and governing constraints.
+2. Approved legal and institutional domain rules.
+3. Approved project-wide configuration.
+4. Environment-specific technical configuration.
+5. Scenario-specific settings.
+6. Permitted user interface preferences.
+
+The exact hierarchy and permitted override relationships are documented for each category. A setting cannot override a higher-level rule unless the governing requirement expressly permits that kind of variation.
+
+Validation checks type, range, permitted values, required dependencies, conflicts, effective dates, security and compatibility. A configuration set that fails validation is not activated.
+
+Where a setting is unresolved, the system does not invent a value merely to continue. It either uses an explicitly approved safe default or marks the dependent feature as unavailable pending a decision.
+
+### Environment separation
+Development, test, staging and live environments have separate configuration and access controls where those environments are used.
+
+The environment catalogue identifies:
+- Environment purpose and owner.
+- Connected repository branch or release.
+- Database project and schema.
+- Authentication and permission configuration.
+- External integrations.
+- Test or live data classification.
+- Secrets references.
+- Backup and recovery settings.
+- Deployment and access permissions.
+- Current application and schema versions.
+
+Development and test environments must not write to the live game database accidentally. Test fixtures and reset operations are restricted to isolated environments. A production release cannot inherit permissive test credentials or disabled security controls.
+
+The current project uses the documented main-only GitHub branch convention. Environment or release procedures must respect the approved repository workflow and must not create additional branches without an explicit change to that governing rule.
+
+### Scenario and game-start configuration
+A scenario configuration defines the initial conditions under which a game begins or a controlled test is run. It may identify:
+- Scenario identifier and version.
+- Starting simulation date and time.
+- Starting location and jurisdiction.
+- Player entry route and initial character options.
+- Initial organisational and operational state.
+- Enabled and disabled optional features.
+- Relevant world and domain configuration versions.
+- Scenario-specific events or constraints.
+- Required test or acceptance conditions.
+- Whether the scenario is a live persistent game, isolated test or demonstration.
+
+A scenario does not automatically create a second authoritative world or permit arbitrary changes to existing canon. The rules for multiple characters, separate campaigns, test worlds or scenario resets must be explicitly approved.
+
+The system distinguishes a new game, a new character within an existing game, a scenario reload, a test reset and restoration from backup. These operations have different effects on persistent records and must not be presented as interchangeable.
+
+### Feature flags and staged activation
+Feature flags may control whether an implemented capability is available in a particular environment, scenario or user context.
+
+A feature flag records:
+- Feature identifier and owner.
+- Purpose and affected components.
+- Current state.
+- Allowed scope and eligible users.
+- Dependencies and prerequisites.
+- Start, review and expiry dates.
+- Test and acceptance evidence.
+- Approval and rollback route.
+
+A feature flag does not prove that a feature is implemented or verified. An unavailable or disabled feature must not be represented as operational merely because its flag exists.
+
+High-impact features, such as legal powers, financial transactions, sensitive data access, evidence handling and simulation-time progression, require appropriate domain and security approval before activation.
+
+### World canon and domain configuration
+The simulation distinguishes:
+- Established world facts and canon.
+- Approved domain rules.
+- Provisional design assumptions.
+- Scenario-specific starting conditions.
+- Dynamic game state.
+- User preferences.
+- Technical environment settings.
+
+A change to a permanent world fact or domain rule requires a documented change proposal and impact assessment. The proposal identifies the existing rule, requested change, reason, affected records, dependencies, historical implications, migration needs, player impact and approval authority.
+
+A configuration change must not silently rewrite the past. If a new rule affects historical interpretation, the change records whether it applies prospectively, retrospectively or only to a new scenario and why that treatment is authorised.
+
+A proposed setting is not treated as confirmed canon until the required approval is recorded. The interface and project registers identify provisional values so that they are not mistaken for settled decisions.
+
+### Controlled expansion and scope management
+An expansion proposal may introduce a new feature, domain, entity type, institution, workflow, interface capability or external integration. It must identify:
+- Problem or player need being addressed.
+- Intended outcome and user.
+- Scope and explicit exclusions.
+- Existing blueprint divisions affected.
+- New data and identifiers required.
+- Legal, operational and security implications.
+- Dependencies and external services.
+- Resource, performance and cost implications.
+- Maintenance and support burden.
+- Test and acceptance requirements.
+- Migration and recovery implications.
+- Risks of duplication or scope overlap.
+- Whether the change requires a blueprint revision.
+
+Expansion is accepted only when it strengthens the agreed game rather than creating uncontrolled parallel systems. Existing domain ownership is respected. A new capability should extend or refine an existing division where appropriate instead of duplicating its responsibilities.
+
+A proposal that changes a governing rule, creates a new major domain or alters a permanent boundary requires an explicit blueprint revision. The change is not implemented merely because it is technically possible.
+
+### Change control and approval
+A configuration or expansion change follows a controlled lifecycle:
+1. Submit a proposal with purpose, scope and owner.
+2. Identify the affected settings, requirements and divisions.
+3. Assess legal, operational, data, security, privacy, financial and performance impact.
+4. Identify dependencies, conflicts and migration needs.
+5. Define acceptance tests and rollback or forward-repair.
+6. Obtain approval from the competent owner or governance authority.
+7. Implement the change in the appropriate environment.
+8. Run required tests and review evidence.
+9. Deploy or activate the approved version.
+10. Monitor the outcome and record any issue.
+11. Close, revise or roll back through an auditable decision.
+
+Emergency configuration changes may use an expedited route only where the applicable governance policy permits it. They remain time-bounded, recorded, reviewed and subject to subsequent approval or reversal as required.
+
+### Configuration versioning and compatibility
+Configuration versions are immutable once released. A new value creates a new version or dated change record. The system can identify which configuration applied to a particular event, record, scenario or release.
+
+Compatibility rules identify:
+- Minimum and maximum supported application version.
+- Database schema compatibility.
+- Required domain rule versions.
+- Deprecated settings and replacement values.
+- Migration or conversion requirements.
+- Incompatible combinations.
+- Rollback constraints.
+
+A setting that is no longer supported is deprecated through a documented process. It is not removed while active records still depend on its meaning. Historical records remain interpretable under the configuration version that governed them.
+
+### Configuration deployment and rollback
+Deployment identifies the source version, target environment, approver, operator, validation result and effective time. Sensitive configuration is injected through approved secret-management or environment mechanisms rather than committed as plaintext.
+
+Before activation, the deployment checks:
+- Configuration schema validity.
+- Required dependencies.
+- Security policy and permission compatibility.
+- Database and application version compatibility.
+- Scenario and domain constraints.
+- Required test evidence.
+- Backup or recovery readiness where material.
+
+Rollback restores a prior approved configuration where safe. If a change has already created consequential data or external side effects, a simple configuration rollback may be insufficient. The recovery plan defines whether data migration, compensating actions or a forward correction is required.
+
+### Controlled reset and restart
+A reset or restart is a high-impact operation. It must identify:
+- Target environment and scenario.
+- Records and state affected.
+- Whether the operation is a technical restart, scenario reset or full game reset.
+- Authority and approval.
+- Backup or preservation requirements.
+- Expected data loss or state change.
+- Effect on player characters, cases, evidence, legal records and simulation time.
+- Recovery and verification method.
+
+A technical restart does not erase game state. A scenario reset does not automatically delete shared canonical records. A full reset cannot be used to remove evidence, evade consequences or bypass record-retention obligations.
+
+The default is preservation of authoritative history. Any deletion or reset must have a lawful, documented basis and appropriate recovery or archival treatment.
+
+### Configuration audit and governance
+The configuration register records all material settings, owners, versions, approvals, changes, deployment results, exceptions and review dates.
+
+Audits may examine:
+- Settings changed without approval.
+- Expired or unused feature flags.
+- Conflicting values.
+- Environment drift.
+- Secrets stored in the wrong location.
+- Test settings active in a live environment.
+- Deprecated configuration still in use.
+- Features enabled without implementation or verification.
+- Scenario changes that contradict canon.
+- Repeated emergency overrides.
+- Unreviewed expansion proposals.
+
+The audit record identifies findings, risk, owner, action, due date and verification. Configuration governance is linked to BP-30 risk and change control.
+
+### Player experience and authority
+The player may use approved preferences and scenario options that are exposed to their role. The player cannot change fundamental canon, legal rules, simulation authority, security policy or persistent game history through ordinary gameplay settings.
+
+The interface identifies which options are:
+- Personal display preferences.
+- Scenario choices.
+- Approved game rules.
+- Provisional settings.
+- Technical or administrative controls unavailable to ordinary players.
+
+A setting change explains its scope and whether it affects only presentation, a new scenario or the persistent game world. The player is not led to believe that a visual preference changes authoritative simulation state.
+
+### Connections to other divisions
+- **BP-01 to BP-43:** all divisions whose rules, data, runtime, interfaces, security and tests may be configured or extended.
+- **BP-30:** institutional governance, change approval, risk and scope control.
+- **BP-35:** runtime configuration loading, feature activation and execution.
+- **BP-37:** calendar, time-zone, scheduling and time-advancement configuration.
+- **BP-38:** configuration schemas, identifiers, records and version history.
+- **BP-39:** backup, restore, reset and recovery planning.
+- **BP-40 and BP-41:** interface preferences, notification settings and report configuration.
+- **BP-42:** security settings, identity, permissions, secrets and environment boundaries.
+- **BP-43:** configuration validation, compatibility, regression and release testing.
+
+### Exceptions and edge cases
+The design must handle an invalid setting; missing required value; conflicting overrides; expired configuration; feature flag enabled before implementation; feature flag enabled without verification; configuration changed during an active operation; a new rule incompatible with historical records; an environment accidentally connected to live data; a secret committed to GitHub; an emergency override without a clear expiry; a reset requested while a case is active; a scenario reset that would erase shared identities; a failed configuration deployment; a rollback after external side effects; a migration requiring a new schema; a deprecated value still used by old records; an expansion proposal duplicating an existing domain; a change with no accountable owner; an unapproved canon change; a test-only setting active in live play; a configuration backup that cannot be restored; and a release whose configuration differs from the tested version.
+
+The system must reject invalid activation, preserve prior versions, identify the scope of impact and route exceptions to the correct approval authority.
+
+### Acceptance conditions
+- Every configuration value has a type, owner, permitted range, version and approval basis.
+- Configuration categories and precedence are explicit.
+- Environment, scenario, domain, technical and user-preference settings remain distinct.
+- Invalid or conflicting configuration cannot be activated.
+- Unresolved settings remain explicitly provisional or unset.
+- Feature flags do not imply implementation or verification.
+- World canon and domain-rule changes follow controlled blueprint revision.
+- Expansion proposals include scope, dependencies, risk, cost, security and test impact.
+- Configuration changes are versioned, approved, auditable and reproducible.
+- Releases identify the configuration used during testing and deployment.
+- Rollback and forward-repair are planned for material changes.
+- Resets distinguish technical restart, scenario reset and full game reset.
+- Authoritative history is not deleted by ordinary reset or configuration change.
+- Secrets remain outside ordinary source-controlled configuration.
+- Security and environment boundaries are preserved during deployment.
+- The player can distinguish preferences, scenario choices and authoritative game rules.
+- Configuration and expansion changes can be traced to requirements and test evidence.
+
+**Draft status:** BP-44 is a working design. The final configuration schema, environment model, scenario catalogue, feature-flag system, change-approval matrix, versioning strategy, deployment process, rollback rules, reset authority, extension policy and configuration audit schedule remain open. No configuration service, feature-flag platform, scenario manager or controlled expansion framework has been implemented.
