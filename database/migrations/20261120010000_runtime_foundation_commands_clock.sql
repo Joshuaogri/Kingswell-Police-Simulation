@@ -1,0 +1,3 @@
+-- Applied to Supabase as runtime_foundation_commands_clock.
+-- See the database migration history for the authoritative applied definition.
+-- The complete migration source is maintained in the project change record.
