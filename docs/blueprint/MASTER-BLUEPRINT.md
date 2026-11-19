@@ -2325,3 +2325,218 @@ The system must handle a person who changes from witness to suspect, a suspect w
 - The player controls questioning and the simulation does not reveal hidden case solutions.
 
 **Draft status:** BP-19 is a working design. Exact cautions, legal rights, detention interview limits, admissibility rules, youth procedures and specialist interview standards must be defined by the fictional legal framework and subsequent detailed policies. It is not a claim that interview software has been implemented.
+
+## BP-20 — Surveillance
+
+### Purpose
+Define how the police service plans, authorises, conducts, records, supervises and reviews surveillance operations for legitimate policing purposes. Surveillance may help establish movements, associations, patterns, locations, activities or events that are relevant to an investigation. It must be necessary, proportionate, time-limited, properly authorised and subject to safeguards for privacy, safety, operational integrity and evidential reliability.
+
+### Scope
+This division governs the surveillance operation lifecycle, including:
+- Surveillance objectives, proposals and operational plans.
+- Legal authority, authorisation and renewal.
+- Operational risk and proportionality assessment.
+- Personnel, specialist teams, equipment and deployment.
+- Static, mobile, physical and technical observation categories.
+- Recording, logs, exhibits and continuity.
+- Communications, supervision and operational control.
+- Safety, contingency, abort and emergency procedures.
+- Review, closure, retention, disclosure and audit.
+
+Detailed intelligence assessment and source handling are governed by BP-21. Investigative purpose and case coordination are governed by BP-15 and BP-16. Evidence continuity and forensic treatment are governed by BP-23 and BP-24. Arrest, entry, search and other coercive powers are governed by BP-25 and BP-27 and the fictional legal framework.
+
+This division is a governance and simulation specification, not a real-world operational manual for covert techniques. It does not supply tactical instructions for evading detection, defeating security systems or conducting unlawful surveillance.
+
+### Fundamental principles
+Every surveillance operation must:
+- Have a defined and legitimate policing purpose.
+- Be connected to a specific incident, case, threat or authorised intelligence objective.
+- Be necessary and proportionate to that purpose.
+- Use the least intrusive lawful method reasonably available.
+- Have the correct authority before activity begins, except for a narrowly defined lawful emergency exception.
+- Operate within the scope, conditions, duration and geographic limits of the authority.
+- Protect people not relevant to the operation and minimise unnecessary collection.
+- Be conducted by personnel with appropriate training, competence and supervision.
+- Preserve accurate records of observations, decisions, recordings and interruptions.
+- Be stopped, narrowed or reviewed when its justification no longer exists.
+- Be subject to independent or external oversight where fictional law requires it.
+
+The existence of an operation does not imply that a target is guilty or that surveillance will produce useful evidence.
+
+### Surveillance categories
+The system can classify operations by broad lawful activity type:
+- **Overt observation:** visible police observation or monitoring where the nature of the activity is apparent.
+- **Directed observation:** planned observation of a defined person, place or activity under the relevant authority.
+- **Covert surveillance:** surveillance carried out in circumstances where the subject is unaware, subject to the specific fictional legal definition and authorisation regime.
+- **Static observation:** observation associated with a fixed location or defined area.
+- **Mobile observation:** observation involving movement between locations.
+- **Technical surveillance:** use of authorised equipment or systems to observe, capture or record information.
+- **Communications-related surveillance:** separately regulated activity involving communications data or content, where fictional law permits it.
+- **Urgent protective observation:** time-critical observation to address a specific serious risk, subject to strict emergency rules and prompt review.
+
+These are administrative categories. The exact statutory definitions, thresholds and permitted methods must be established by the fictional legal framework. A category does not itself grant authority.
+
+### Operation identity and records
+Every operation receives a unique surveillance operation identifier. The record links to the relevant case, incident, intelligence requirement or other authorised purpose.
+
+The core record includes:
+- Operation identifier and title.
+- Purpose, objectives and scope.
+- Requesting unit and responsible command.
+- Lead officer and supervising officer.
+- Persons, places, vehicles or activity of interest, where identified.
+- Legal category and authorisation reference.
+- Start date, expiry and review dates.
+- Geographic and temporal scope.
+- Risk, proportionality and collateral-intrusion assessment.
+- Personnel and specialist support.
+- Equipment and resource references.
+- Operational status and significant decisions.
+- Observation logs and recording references.
+- Results, limitations and outcome.
+- Closure, retention and review decision.
+
+Restricted operational details are protected through BP-42. The system must support compartmented access without preventing authorised oversight or lawful disclosure.
+
+### Application and justification
+A proposal must explain the policing purpose and why surveillance is being considered. It identifies the question the operation is intended to answer, the expected value, the proposed category, duration, scope, affected people and places, foreseeable intrusion, alternatives considered and reasons those alternatives are insufficient or unsuitable.
+
+The proposal must distinguish confirmed facts from intelligence, assumptions and unknowns. A vague request to monitor a person without a defined purpose is insufficient.
+
+The application includes a necessity and proportionality assessment, including likely impact on family members, neighbours, employees, visitors, bystanders and other people who may be incidentally observed. It identifies measures to minimise collection unrelated to the objective.
+
+### Authorisation and legal control
+The fictional legal framework determines which authority is required, who may grant it, the applicable threshold, duration, renewal process, emergency provisions and oversight route.
+
+The system records:
+- Application and supporting rationale.
+- Applicant identity and authority.
+- Authorising officer or external authority.
+- Decision and reasons.
+- Conditions, limits and safeguards.
+- Effective date, expiry and review dates.
+- Any refusal, amendment or additional condition.
+- Renewal applications and decisions.
+- Revocation, suspension or early termination.
+
+An application is not an authorisation. An expired, refused or revoked authority cannot be treated as active. A change in purpose, target, method, scope or intrusion level triggers a review and, where required, fresh authorisation.
+
+### Emergency and urgent activity
+If fictional law provides an emergency route, it must be narrowly defined by the seriousness and immediacy of the risk, the persons authorised to invoke it, the permitted scope and the required post-event review.
+
+The system records the reason ordinary prior authorisation could not be obtained, the exact time activity began, the person authorising the emergency action, its limits, notification requirements and the decision of the competent authority on continuation. Emergency status is not a general exemption from safeguards.
+
+If approval is refused or not obtained within the required period, the activity must stop as required by law, and material already obtained must be handled under the applicable legal and disclosure rules.
+
+### Operational planning and deployment
+An approved operational plan translates the authority into a controlled deployment. It identifies the objective, command structure, authorised personnel, broad activity boundaries, communications arrangements, resource requirements, safety considerations, contingencies, reporting intervals and stop conditions.
+
+The plan must be consistent with the authority. Personnel must be briefed on scope, limitations, roles, safeguarding, recording requirements and how to report unexpected events. A plan cannot enlarge legal powers or permit activity excluded by the authorisation.
+
+Personnel deployment and specialist capability are governed by BP-06 to BP-08 and BP-32. Resource allocation and equipment management are governed by BP-09.
+
+### Operational risk and safeguards
+Risk assessment considers risks to the public, subjects, officers, staff, vulnerable people, confidential sources, property, traffic, public services and the integrity of the operation. It also considers the risk of mistaken identity, unintended observation, disclosure, equipment failure and unexpected encounters.
+
+The record identifies risk, likelihood, severity, mitigation, responsible person, residual risk and review triggers. Any serious incident, unexpected intrusion, threat to safety or material departure from the plan must be reported promptly and may require suspension.
+
+### Conduct and operational control
+The operation has a named operational lead and supervisory command. Personnel act only within their assigned role and approved scope. Significant changes, unexpected events, safety concerns, possible offences, contact with subjects or third parties, and potential legal breaches are reported through the designated command arrangements.
+
+The simulation tracks operation status such as proposed, submitted, authorised, scheduled, active, suspended, under review, expired, revoked, completed or closed. Status changes include actor, time, reason and authority.
+
+No operation should continue merely because resources have been deployed or time has been invested. The operational lead must stop or seek review when the objective is met, the authority expires, the purpose ceases, the risk becomes unacceptable or the activity moves outside authorised scope.
+
+### Observation logs
+An observation log records relevant events and the circumstances in which they were observed. Each entry identifies:
+- Operation and log entry identifiers.
+- Observer or recording source.
+- Date and time, including any clock uncertainty.
+- Location or area, with precision appropriate to the source.
+- What was directly observed.
+- What was heard or otherwise recorded, if authorised.
+- Whether the entry is contemporaneous or reconstructed.
+- Conditions affecting observation.
+- Any uncertainty, interruption or limitation.
+- Related recording or exhibit reference.
+
+Logs distinguish direct observation from inference, interpretation and information received from another person. Entries must not state that an individual performed an act when the observer only saw an ambiguous movement or association.
+
+### Recordings and technical material
+Any recording or technical material is created, accessed and retained only within the operation's authority and applicable law. The system records the source device or system, operator, configuration reference, start and end times, clock settings, collection method, file identity, integrity verification, storage location, access history and any transformation or export.
+
+Original material is preserved. Working copies and redacted copies are separately identified and linked to the unchanged source. Missing, corrupted, interrupted or inaccessible recordings are documented; the system must not invent missing content or imply continuous coverage where none exists.
+
+### Incidental and collateral information
+Surveillance may capture information about people, places or activities outside the main objective. The operation records the nature of incidental collection, why it occurred, whether it is relevant, and how it was minimised, restricted, segregated, retained or deleted under fictional law.
+
+Material involving privileged, confidential, sensitive or protected relationships is escalated for specialist legal review. The system must not treat incidental collection as automatically authorised for every later purpose.
+
+### Communications and command reporting
+The operation uses approved communications and reporting channels. Significant instructions, changes, safety incidents, contact, deviations and decisions are logged with sender, recipient, time and acknowledgement where relevant.
+
+Operational reporting should be concise, factual and distinguish observation from assessment. The command record supports later reconstruction of who knew what, when, and what decision followed.
+
+### Results and investigative value
+The operation's result is assessed against its original objectives. Outcomes may include:
+- Objective achieved in whole or in part.
+- No relevant activity observed.
+- Observation inconclusive or incomplete.
+- A new investigative lead identified.
+- Information contradicting the current hypothesis.
+- A safety or safeguarding concern identified.
+- Operation suspended, refused, curtailed or terminated.
+- No further action justified.
+
+A lack of observed activity does not prove that activity did not occur. An apparent association does not establish criminal involvement. Results are passed to the lead investigator or intelligence owner with source, limitations and restrictions preserved.
+
+### Review, renewal and closure
+Operations are reviewed at defined intervals and when significant circumstances change. Review considers continuing necessity, proportionality, progress, collateral intrusion, risk, compliance, resource use, alternative methods and whether the objective remains achievable.
+
+Renewal requires a current justification, not merely repetition of the original application. Closure records the reason, end time, final status, outstanding actions, material collected, retention and disclosure requirements, equipment return, personnel debrief and lessons identified.
+
+### Complaints, errors and breaches
+Complaints, unauthorised access, mistaken targeting, activity outside authority, excessive collection, lost material, disclosure failures, equipment misuse and other irregularities are recorded and escalated under BP-30 and BP-31.
+
+The operation's original records and material are preserved. The system supports immediate suspension, notification to the competent authority, independent review, remedial action and disciplinary or legal referral where appropriate. A breach must not be concealed by editing the operational log.
+
+### Evidence, disclosure and legal review
+Surveillance material that may be evidential is transferred into the evidence management process under BP-23 with full continuity. The record includes the relationship between operational logs, original recordings, working copies, analyst products and exhibits.
+
+Material that may undermine a case or assist another party is preserved and made available for disclosure review under BP-27. Restrictions on sensitive techniques or sources are handled through lawful review rather than omission or destruction. The fact that material is sensitive does not itself remove disclosure obligations.
+
+### Player experience
+The player may propose a surveillance requirement, prepare the justification, submit it to the appropriate authority, plan an authorised operation, take an assigned role, record observations, report unexpected events, request variation or renewal, and complete the operation with a result and debrief.
+
+The player cannot bypass authorisation by simply issuing an operational command. The simulation must enforce role, competence, legal scope and expiry. It must not disclose hidden offender identities through operational prompts or guarantee that surveillance will observe a relevant event.
+
+### Connections to other divisions
+- **BP-02 to BP-04:** geography, people, properties and organisations.
+- **BP-06 to BP-09:** personnel competence, units, deployment and resources.
+- **BP-13 to BP-16:** offence context, event records, case management and investigative objectives.
+- **BP-17 and BP-18:** victim, witness and suspect roles and safeguards.
+- **BP-19:** interviews and interview-derived information.
+- **BP-21:** intelligence requirements, source handling and assessment.
+- **BP-22 to BP-24:** scenes, evidence continuity and forensic examination.
+- **BP-25 to BP-29:** legal powers, court processes and outcomes.
+- **BP-30 and BP-31:** governance, oversight and professional standards.
+- **BP-37 to BP-43:** time, records, persistence, interface, notifications, security and testing.
+
+### Exceptions and edge cases
+The system must handle refused or expired authority, emergency activity, mistaken identity, multiple subjects, incidental observation of unrelated people, unexpected entry into a protected or sensitive location, a subject moving outside the authorised area, equipment failure, clock drift, recording gaps, lost communications, an officer becoming unavailable, a new serious risk, an operation producing no useful result, a source or method requiring restricted access, cross-jurisdiction activity, a complaint, a legal challenge and material later found to have been obtained outside authority.
+
+### Acceptance conditions
+- Every operation has a defined purpose, owner, authority and unique identifier.
+- Application, authorisation, refusal, renewal, variation and revocation are distinct auditable events.
+- Operations cannot exceed authorised scope or continue beyond expiry without valid authority.
+- Necessity, proportionality, alternatives, collateral intrusion and risk are documented.
+- Personnel and equipment are assigned with competence and accountability.
+- Observation logs distinguish direct observation, inference and uncertainty.
+- Recordings preserve originals, integrity, continuity and access history.
+- Incidental information is handled under defined minimisation and retention rules.
+- Unexpected events, breaches and complaints are escalated and preserved.
+- Results are assessed against objectives without overstating what was observed.
+- Material is transferred to evidence and disclosure processes with provenance.
+- The player cannot bypass authority and receives no automatic solution disclosure.
+
+**Draft status:** BP-20 is a working design. Exact surveillance definitions, authorising roles, thresholds, emergency powers, duration limits, oversight and disclosure protections must be established by the fictional legal framework. It is not a claim that surveillance capability has been implemented.

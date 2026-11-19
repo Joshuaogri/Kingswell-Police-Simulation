@@ -25,7 +25,7 @@ Each division is designed with its purpose, scope, responsibilities, components,
 | BP-17 | Victims and Witnesses | Drafted; specialist safeguarding and legal procedures to refine |
 | BP-18 | Suspects and Offenders | Drafted; legal-status interfaces and specialist procedures to refine |
 | BP-19 | Interviews and Interrogations | Drafted; legal safeguards and specialist procedures to refine |
-| BP-20 | Surveillance | Not started |
+| BP-20 | Surveillance | Drafted; statutory definitions, authorisations and oversight to refine |
 | BP-21 | Intelligence | Not started |
 | BP-22 | Crime Scenes | Not started |
 | BP-23 | Evidence Management | Not started |
