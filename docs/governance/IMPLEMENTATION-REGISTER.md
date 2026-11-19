@@ -53,7 +53,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-26 | Custody Management | Drafted — design only; no custody software or facilities implemented |
 | BP-27 | Legal Processes | Drafted — design only; no legal-process software implemented |
 | BP-28 | Courts and Outcomes | Drafted — design only; no court software implemented |
-| BP-29 | Corrections | Not started |
+| BP-29 | Corrections | Drafted — design only; no correctional software implemented |
 | BP-30 | Department Governance | Not started |
 | BP-31 | Professional Standards | Not started |
 | BP-32 | Training and Development | Not started |

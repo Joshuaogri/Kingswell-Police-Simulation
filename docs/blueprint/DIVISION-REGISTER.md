@@ -34,7 +34,7 @@ Each division is designed with its purpose, scope, responsibilities, components,
 | BP-26 | Custody Management | Drafted; detention law, facility standards and safeguards remain open |
 | BP-27 | Legal Processes | Drafted; legal framework, charging model and procedural rules remain open |
 | BP-28 | Courts and Outcomes | Drafted; court hierarchy, jurisdiction and judicial rules remain open |
-| BP-29 | Corrections | Not started |
+| BP-29 | Corrections | Drafted; correctional law, sentence rules and institutional model remain open |
 | BP-30 | Department Governance | Not started |
 | BP-31 | Professional Standards | Not started |
 | BP-32 | Training and Development | Not started |

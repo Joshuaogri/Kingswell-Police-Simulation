@@ -4618,3 +4618,324 @@ The design must handle wrong court or jurisdiction, defective filing, disputed i
 
 **Draft status:** BP-28 is a working design. The constitutional court structure, judicial appointment model, court jurisdictions, trial modes, jury or panel arrangements, criminal procedure, evidentiary rules, sentencing framework, appeal rights, publication rules, court administration and exact legal deadlines remain open. No court, registry, case-management or judicial-outcome software has been implemented by this design document.
 
+## BP-29 — Corrections
+
+### Purpose and scope
+Define the institutional and operational architecture for the lawful, safe, humane and accountable administration of sentences and other court-authorised correctional measures after a legally effective judicial or statutory decision. This division covers correctional institutions, community-based sanctions, reception, sentence calculation, custody within correctional facilities, rehabilitation, healthcare interfaces, family contact, security, release preparation, supervision, recall, post-release support and correctional records.
+
+BP-29 is the authoritative design for correctional administration and execution. It does not replace:
+- BP-25 for police arrest and warrant execution.
+- BP-26 for police custody, pre-trial detention and remand administration before transfer to a correctional authority.
+- BP-27 for legal process, charging, procedural deadlines and formal legal instruments.
+- BP-28 for judicial proceedings, verdicts, sentence decisions, appeals and court orders.
+- BP-23 for evidential material and its chain of custody.
+- BP-30 and BP-31 for institutional governance, professional standards and independent oversight.
+
+A correctional authority may execute only a valid order or other legal authority within its scope. Police, prosecutors, correctional personnel and courts have distinct responsibilities. A sentence is not proof of additional uncharged conduct, and correctional staff cannot alter a judicial sentence except through a legally authorised process.
+
+The fictional country's corrections statute, prison regulations, probation legislation, parole framework, sentence calculation rules, inspection regime and exact rights standards remain to be defined. The design must not invent binding sentence lengths, release dates, eligibility thresholds or coercive powers before the relevant law is established.
+
+### Correctional system and institutional architecture
+The national correctional system may include:
+- National corrections headquarters and regional commands.
+- Adult custodial institutions.
+- Remand facilities, where legally assigned to the correctional service.
+- Youth or juvenile institutions with distinct safeguards.
+- Women's facilities and appropriate gender-specific arrangements.
+- Open, minimum, medium and high-security facilities where legally and operationally justified.
+- Specialist healthcare, treatment or secure therapeutic facilities.
+- Probation and community supervision offices.
+- Community service and other non-custodial programme providers.
+- Reintegration, resettlement and post-release support services.
+- Transport, escort and court attendance functions.
+- Inspection, complaints and independent monitoring bodies.
+
+Each institution has a persistent identity, legal designation, location, jurisdiction, capacity, security classification, approved population, staffing, healthcare provision, accessibility, operating status and inspection history.
+
+The system distinguishes a correctional institution from a police custody suite, court holding area, hospital, immigration detention facility or private accommodation. Transfer between them requires the appropriate legal authority, acceptance and documented handover. A person is not considered received into a facility merely because a transport task has been dispatched.
+
+### Governance, independence and accountability
+Correctional administration operates under law, public accountability and defined institutional command. The design records:
+- Statutory mandate and limits of correctional powers.
+- National policy and operational command.
+- Facility governors or equivalent accountable heads.
+- Regional and specialist management.
+- Professional, healthcare and safeguarding responsibilities.
+- Independent inspection and monitoring.
+- Complaints, investigations and external review.
+- Judicial oversight and court-directed remedies.
+- Emergency command and continuity arrangements.
+
+Correctional management may allocate staff and resources and enforce lawful facility rules. It cannot amend a sentence, determine guilt, obstruct legal access or retaliate against a person for exercising a right or making a complaint.
+
+Independent inspectors and oversight bodies have defined access, reporting, referral and confidentiality powers. Their findings and recommendations are recorded separately from internal management responses. The institution cannot suppress or rewrite independent findings.
+
+### Correctional population and legal status
+Each person in the correctional system has a persistent correctional record linked to the authoritative person identity and relevant BP-28 judicial order or BP-27 legal process. The record distinguishes:
+- Sentenced prisoner.
+- Remand detainee.
+- Person held under another lawful detention authority.
+- Person serving a non-custodial order.
+- Person under probation or community supervision.
+- Person temporarily transferred or held elsewhere.
+- Person released, discharged, deceased or otherwise no longer under correctional jurisdiction.
+
+Legal statuses are not inferred from location, uniform, institutional label or a prior record. A person may have multiple matters with different legal statuses and overlapping orders. The system records which authority supports each period of detention or supervision.
+
+Remand and sentenced populations must remain distinguishable. A remand detainee is not treated as convicted or assigned a sentence merely because they are housed in a correctional institution. Where a conviction is appealed, stayed, quashed or varied, the current legal effect is verified and reflected without deleting historical events.
+
+### Reception, identity and admission
+Correctional admission follows verification of a valid legal authority and formal acceptance by the receiving institution. The workflow records:
+- Person identity and any uncertainty or alias.
+- Sending authority and responsible officers.
+- Court, case and order identifiers.
+- Legal status, offence/count references and sentence or detention terms.
+- Date/time of order and legal commencement.
+- Date/time of dispatch, arrival, presentation and formal acceptance.
+- Required documents and verification checks.
+- Property and medication handover.
+- Initial health, safety and vulnerability screening.
+- Immediate risks, safeguarding concerns and separation requirements.
+- Admission decision, responsible receiving officer and any refusal or escalation.
+
+A defective, expired, ambiguous or mismatched order is escalated to the competent authority. Staff do not create a substitute legal basis or extend detention to resolve an administrative problem. Refusal, delay or inability to accept a person is documented with the legal and operational reasons and a safe, lawful interim plan.
+
+Identity uncertainty is preserved. Biometrics or other identification procedures may be used only under lawful authority and appropriate safeguards. A correction to identity must update linked records through an auditable process rather than silently merging different people.
+
+### Sentence calculation and legal time
+The system calculates correctional dates only from verified legal instruments and approved rules. It distinguishes:
+- Sentence imposed date.
+- Sentence effective or commencement date.
+- Time spent in police custody or remand.
+- Credited time, where legally authorised.
+- Concurrent and consecutive sentences.
+- Multiple convictions and aggregate terms.
+- Suspended or deferred sentences.
+- Statutory remission or earned credits, if authorised.
+- Eligibility dates for temporary release, parole or other review.
+- Conditional and unconditional release dates.
+- Licence or supervision end dates.
+- Sentence expiry and legal discharge.
+
+Every calculation records its rule version, source order, inputs, exclusions, credits, author or system process, verification and correction history. Concurrent and consecutive terms must not be confused. A later sentence or appeal may require recalculation while preserving the original calculation and the reason for change.
+
+A calculated eligibility date is not an automatic release authorisation. Release requires confirmation of all active orders, detainers, warrants and lawful holds. Conversely, an administrative error or missing notification cannot justify detention beyond lawful authority.
+
+### Classification, placement and accommodation
+Placement decisions consider lawful status, security requirements, individual risk, vulnerability, age, gender-related needs, health, disability, family ties, proximity to court, rehabilitation needs and available capacity, subject to applicable law and safeguards.
+
+The system distinguishes:
+- Security classification.
+- Individual risk assessment.
+- Safeguarding or vulnerability assessment.
+- Healthcare needs.
+- Behavioural or support needs.
+- Accommodation compatibility.
+- Temporary separation or protective placement.
+- Facility and unit capacity.
+
+No single score automatically determines placement, privileges, discipline or release. Assessments identify their author, method, evidence, uncertainty, review date and any contested information. A person may challenge a decision through the defined process.
+
+Placement changes record the decision-maker, reasons, legal basis, receiving location, transfer arrangements, notification and review. Segregation or restrictive accommodation is exceptional, legally governed, time-limited and subject to frequent independent review and healthcare monitoring where required.
+
+### Daily custody, dignity and basic conditions
+Correctional institutions provide safe and humane accommodation, food, drinking water, sanitation, clothing, bedding, exercise, religious or cultural accommodation where legally protected, access to communication, education and other basic services.
+
+The simulation models:
+- Cell and unit occupancy.
+- Daily routines and movement.
+- Meals and dietary needs.
+- Hygiene, laundry and sanitation.
+- Exercise and outdoor access.
+- Education, work and purposeful activity.
+- Visits and communications.
+- Access to legal representatives and courts.
+- Accessibility and reasonable adjustments.
+- Environmental conditions and facility maintenance.
+- Staff and resident interactions.
+- Safety incidents and service interruptions.
+
+Capacity is based on approved safe occupancy rather than a simple game statistic. Overcrowding generates operational and safeguarding consequences and must not be resolved by silently exceeding legal or safety limits. Essential services cannot be withdrawn as informal punishment.
+
+### Health, welfare and safeguarding
+Correctional healthcare must be clinically independent in decisions about diagnosis and treatment, while coordinating safely with institutional operations. The system supports initial screening, routine care, urgent response, mental health, disability support, medication, specialist referral, hospital transfer, continuity of treatment and discharge planning.
+
+Healthcare records are held with strict confidentiality and role-based access. Correctional staff receive only the information necessary for lawful safety and care functions. Medical diagnoses or disclosures must not be used as punishment, informal intelligence or a substitute for a proper risk assessment.
+
+Safeguarding includes self-harm risk, suicide prevention, violence, exploitation, bullying, abuse, trafficking, coercion, vulnerability, age-related protection and risks arising from separation or placement. Staff record concerns, referrals, observations, interventions and reviews. A risk flag is not a finding of misconduct or guilt.
+
+Serious injury, death, suspected abuse or other critical events trigger immediate safety measures, emergency healthcare and independent notification or investigation as required. Records preserve contemporaneous observations and must not be altered to protect institutional reputation.
+
+### Use of force, restraints and restrictive measures
+Any force or restraint is governed by the fictional law, necessity, proportionality, last-resort principles, competence, reporting and independent review. The system records the legal basis, circumstances, alternatives considered, authorising or supervising staff, type and duration, injuries, healthcare assessment, witnesses, recordings, notification and review.
+
+Restraints, separation, restricted movement, searches and other intrusive measures have distinct legal bases and approval requirements. A measure cannot be justified solely by convenience, staff shortage, punishment or a person's complaint.
+
+Every restrictive measure has a start time, responsible authority, reason, review schedule and termination event. Extensions require fresh lawful justification. The system must not automate force decisions or provide coercive action as a game shortcut.
+
+### Security, searches and contraband
+Facility security includes perimeter controls, controlled movement, access management, visitor procedures, prohibited-item controls, fire safety, emergency planning and incident response. Searches of persons, cells, property or visitors require the appropriate legal authority, policy, proportionality and safeguards.
+
+Search records identify the subject or area, authorising role, grounds, scope, method, participants, date/time, results, items seized, property handling, complaints and review. Searches must respect privacy, dignity, protected characteristics and legal professional privilege as required by law.
+
+Contraband is recorded with a unique property/evidence identifier and clear status. Items suspected to be evidence of a crime are transferred to the relevant investigative authority under BP-23 chain-of-custody rules. Correctional discovery does not automatically prove ownership, possession or guilt.
+
+Security incidents include escape or attempted escape, violence, threats, prohibited items, property damage, fire, disorder, external attack, corruption, staff misconduct and system disruption. Each incident has its own record, command response, safeguarding measures, investigation and oversight route.
+
+### Staff, professional competence and conduct
+Correctional personnel include custodial officers, supervisors, managers, healthcare professionals, psychologists, educators, probation staff, social workers, chaplains or equivalent support roles, administrators, escorts and specialist response staff.
+
+Personnel records distinguish rank, position, authority, qualification, clearance, training, assignment and supervision. Mandatory competence requirements apply to searches, restraint, emergency response, safeguarding, healthcare-related procedures, sentence calculation, case records and other regulated activities.
+
+Staff conduct, conflicts of interest, corruption, inappropriate relationships, abuse, discrimination, retaliation, negligence and use of force are subject to reporting and independent investigation. Staff shortages affect safe capacity and operations but do not authorise unlawful shortcuts.
+
+### Visits, communication and legal access
+The system supports family and social visits, legal visits, professional visits, official visits, approved calls, correspondence and other communication permitted by law. Each category has distinct access rules, privacy protections, restrictions and recording requirements.
+
+Legal communications receive special confidentiality protections. Monitoring, interception, restriction or suspension requires a specific legal basis and authorised decision; ordinary facility convenience is not sufficient. Restrictions are recorded with scope, reasons, duration, notice and review route.
+
+Visit scheduling records visitor identity and authorisation, relationship or professional role where relevant, accessibility needs, location, duration, attendance and any incident. A visit restriction must not be imposed as an unrecorded or indefinite punishment.
+
+### Family, dependants and external relationships
+Where lawful and appropriate, correctional services support maintenance of family and community relationships, including child contact, parental responsibilities, dependent-care planning and notification of significant changes.
+
+Information about family members and third parties is collected only for a defined lawful purpose and protected by access controls. Family relationships do not automatically establish risk, complicity or privileged status. Safeguarding concerns are referred through appropriate procedures without assuming guilt by association.
+
+### Education, work and rehabilitation
+Correctional plans may include literacy, education, vocational training, employment, behavioural programmes, substance-use treatment, mental-health support, restorative programmes and other evidence-informed services permitted by law.
+
+Each programme records eligibility criteria, referral, consent where required, assessment, provider, attendance, progress, outcome and review. Participation is not represented as proof of remorse, guilt or rehabilitation, and refusal cannot trigger arbitrary punishment or automatic release consequences.
+
+Work assignments must be safe, lawful and non-exploitative. Remuneration, deductions, training and workplace protections follow the applicable law. Educational and programme records are shared only where authorised and necessary.
+
+### Individual sentence and resettlement planning
+Each sentenced person may have a structured correctional plan linked to the judicial sentence and assessed needs. It identifies lawful objectives, responsible staff, programmes, health and support requirements, review dates and progress.
+
+Plans must be individualised and distinguish court-imposed requirements from discretionary services. Staff cannot add punitive conditions or change sentence terms through a correctional plan.
+
+Resettlement planning begins sufficiently before anticipated release, subject to legal and operational rules. It may address accommodation, identity documents, employment, education, healthcare continuity, family contact, benefits or lawful public support, supervision requirements and risk management.
+
+### Discipline and internal adjudication
+Alleged breaches of lawful institutional rules are handled through a fair, proportionate and reviewable disciplinary process. The system records the rule, alleged conduct, evidence, notice, opportunity to respond, representation or support where required, decision-maker, findings, reasons, sanction and appeal.
+
+Disciplinary allegations are distinct from criminal offences and judicial convictions. A disciplinary finding does not automatically prove a criminal offence. Serious suspected criminal conduct is referred to the competent investigative authority while preserving independent evidence and the person's rights.
+
+Sanctions must be lawful, defined, proportionate and time-limited. Collective punishment, retaliation, degrading treatment, arbitrary deprivation of essentials and unrecorded sanctions are prohibited by the design. Decision-makers must be impartial and conflicts declared.
+
+### Temporary release, parole and conditional liberty
+Where the legal framework permits temporary release, home leave, parole, conditional release or other early-release mechanisms, BP-29 manages eligibility checks and operational administration while preserving the independence of the competent decision-maker.
+
+The workflow records:
+- Legal basis and eligibility rule version.
+- Sentence and time calculation.
+- Risk, safeguarding and relevant reports.
+- Victim or other statutory notification where required.
+- Application and supporting material.
+- Decision authority and reasons.
+- Conditions, monitoring and responsible supervisor.
+- Effective date, review and expiry.
+- Variation, suspension, breach or revocation.
+
+Eligibility does not create an entitlement unless the law provides it. A risk assessment is not a substitute for a lawful decision. Release conditions cannot exceed the authority granted by law or court order.
+
+### Probation and community corrections
+Community corrections may administer probation, community service, supervision, treatment requirements, electronic monitoring or other legally recognised non-custodial measures.
+
+Each order records the issuing authority, legal basis, person, duration, requirements, reporting frequency, geographic or contact restrictions, responsible officer, provider and review route. The system distinguishes a court-imposed condition from a supervisory recommendation or voluntary support plan.
+
+Supervision records include appointments, compliance, support, barriers, alleged breaches, verification, referrals and review. Non-compliance is assessed fairly and contextually; missed contact or technical failure is not automatically a deliberate breach. Any enforcement or return to court follows the legally prescribed process.
+
+### Transfer, escort and external attendance
+Transfers between facilities, hospitals, courts or other lawful destinations require a verified authority, sending and receiving institutions, risk assessment, transport plan, property and medication handover, escort assignment, departure/arrival times and acceptance.
+
+The system records temporary transfer separately from change of legal custody or institutional responsibility. A receiving institution must acknowledge acceptance. Failed, diverted or interrupted transfers trigger a safe contingency and legal-status review.
+
+Court attendance and hospital treatment must not cause the person to disappear from the authoritative correctional population or sentence calculation. The location, responsible authority and current legal status remain traceable.
+
+### Release, discharge and recall
+Release is authorised only after verifying the legal basis and all relevant active orders, warrants, detainers, sentences and restrictions. The release workflow records:
+- Person and identity verification.
+- Authorising instrument and competent decision-maker.
+- Sentence calculation and release basis.
+- Other active legal holds and their independent authority.
+- Release date/time and responsible staff.
+- Conditions, licence or supervision terms.
+- Property, medication and documentation returned.
+- Destination and safe transport where arranged.
+- Notifications to authorised agencies and the person.
+- Acknowledgement and post-release referrals.
+
+A person must not be held beyond lawful authority because of administrative delay. Equally, a person must not be released in error where a separate valid legal authority applies. Conflicts are escalated immediately to the competent authority; the correctional service cannot invent or extend a hold.
+
+Recall or return to custody requires a defined statutory or judicial basis, proper decision authority, notice and review. Alleged breach, new arrest or risk information does not automatically authorise recall. The record links the recall to the relevant order and preserves the previous release history.
+
+### Death, serious harm and critical incidents
+Deaths, life-threatening injuries, serious assaults, fires, escapes, major disorder, allegations of torture or abuse, and other critical events trigger emergency response and independent review as required.
+
+The system records immediate notifications, scene preservation, healthcare response, witnesses, recordings, responsible staff, external agencies, family notification under lawful rules, coroner or equivalent referral, investigation and findings. The institution cannot control or rewrite an independent investigation.
+
+A deceased person's correctional record is closed for operational purposes but retained under lawful records policy. Sentence status, legal proceedings and property disposition are updated by competent authorities.
+
+### Complaints, rights and independent inspection
+People in correctional care must have accessible routes to complain about treatment, safety, healthcare, discrimination, staff conduct, discipline, conditions and access to legal rights. Complaints may be internal or external, confidential where required, and protected from retaliation.
+
+Each complaint has a reference, issue, date, recipient, confidentiality status, safeguarding assessment, investigator, response deadline, findings, remedy, appeal or referral and closure. Urgent risk is addressed immediately rather than waiting for the ordinary complaint process.
+
+Independent inspections assess legality, safety, dignity, healthcare, conditions, use of force, segregation, access, records and outcomes. Reports, recommendations, management responses and implementation evidence remain separately attributable.
+
+### Data, privacy and information sharing
+Correctional records include legal status, sentence calculations, accommodation, health and welfare, visits, communications, programmes, incidents, discipline, supervision, release and complaints. Each data category has a lawful purpose, owner, access class, retention period and disclosure rule.
+
+Health, legal communications, child-related information, victim data, protected witnesses and intelligence receive enhanced restrictions. Information sharing with police, prosecutors, courts, healthcare providers, probation and other agencies requires a lawful purpose and minimum necessary scope.
+
+A correctional record is not an unrestricted intelligence source. Requests for information are logged, reviewed and disclosed through the authorised process. Corrections preserve provenance and prior versions. Records are retained or disposed of under approved schedules and legal holds.
+
+### Player experience and authority
+The player may interact with correctional systems only through their current role and legal authority. As a police officer, the player may verify custody transfer, provide lawful information, attend an authorised interview or court process, execute a valid warrant or coordinate a case-related request. The player does not control prison placement, internal discipline, sentence calculation, parole or release decisions.
+
+If a separately defined career path later allows the player to serve in corrections, it requires its own recruitment, training, command, conflict, permissions and progression rules. Police rank does not confer correctional authority.
+
+The interface displays legal status, authoritative orders, institution, admission and transfer events, sentence calculation status, welfare alerts subject to access rights, approved programmes, hearings, review dates, release eligibility, outstanding legal holds and handover confirmations. It distinguishes a projected date from an authorised release decision.
+
+### Connections to other divisions
+- **BP-05 to BP-09:** institutional structure, personnel, career, deployment and resources.
+- **BP-11 and BP-12:** emergency communications and incident records.
+- **BP-13 to BP-18:** offence, crime events, case, investigation, victims, witnesses and accused persons.
+- **BP-19 to BP-24:** interviews, surveillance, intelligence, scenes, evidence and forensics.
+- **BP-25:** arrest and warrants.
+- **BP-26:** police custody, detention, welfare and pre-trial remand interfaces.
+- **BP-27:** legal process, charging, disclosure, orders and procedural deadlines.
+- **BP-28:** court decisions, verdicts, sentences, appeals and release-related orders.
+- **BP-30 and BP-31:** governance, professional standards, complaints and independent oversight.
+- **BP-32 to BP-34:** training, human resources, finance and procurement.
+- **BP-35 to BP-37:** simulation processing, social relationships, time and scheduling.
+- **BP-38 to BP-44:** authoritative records, persistence, interface, notifications, security, testing and configuration.
+
+### Exceptions and edge cases
+The design must handle defective or ambiguous order, wrong identity, multiple active orders, overlapping sentences, concurrent/consecutive calculation, appeal or stay, sentence quashed or varied, time-credit dispute, remand-to-sentence transition, transfer refusal, facility overcrowding, medical emergency, pregnancy or disability accommodation, child safeguarding, incompatible placement, protective separation, segregation review, missing medication, healthcare confidentiality, use-of-force complaint, death in custody, escape, attempted escape, contraband discovery, suspected crime by staff or resident, visitor restriction, legal visit confidentiality, interpreter failure, programme unavailability, disciplinary conflict, false allegation, missed probation appointment, technical monitoring failure, temporary release breach allegation, recall challenge, release calculation error, separate active warrant, missing property, cross-border transfer, data breach, records corruption and institutional emergency.
+
+### Acceptance conditions
+- Every admission and period of correctional control is supported by a verified legal authority.
+- Remand, sentenced custody, other detention and community supervision remain distinct statuses.
+- Sending and receiving authorities record formal handover and acceptance.
+- Sentence calculations preserve source orders, rule versions, inputs, credits and correction history.
+- Eligibility dates are not treated as automatic release authorisations.
+- Placement and risk decisions are reasoned, reviewable and not determined by a single score.
+- Basic conditions, healthcare, safeguarding, legal access and complaint routes are modelled.
+- Health and privileged communications receive appropriate confidentiality.
+- Searches, restraints, force, segregation and restrictive measures have distinct legal bases and audit trails.
+- Staff competence, conduct and conflicts are recorded.
+- Visits and communication restrictions are authorised, scoped and reviewable.
+- Education, work and rehabilitation plans do not silently change judicial sentences.
+- Discipline is fair, separate from criminal guilt and subject to review.
+- Parole, temporary release and probation follow defined legal authority and decision roles.
+- Transfers preserve location, legal status, property, medication and responsibility.
+- Release verifies all active legal authorities and records formal discharge.
+- Recall requires lawful authority and a reviewable decision.
+- Deaths, serious harm, complaints and critical incidents trigger appropriate independent oversight.
+- Data access, sharing, correction, retention and disposal are controlled and auditable.
+- Police users cannot direct correctional decisions without specific lawful authority.
+- No administrative error can lawfully extend detention or silently create a new legal basis.
+
+**Draft status:** BP-29 is a working design. The correctional statute, institutional hierarchy, facility standards, remand arrangements, sentence calculation rules, prison regime, healthcare model, discipline code, use-of-force framework, parole and probation law, release/recall rules, independent inspectorate and retention periods remain open. No correctional institution, probation service or sentence-execution software has been implemented by this design document.
+
