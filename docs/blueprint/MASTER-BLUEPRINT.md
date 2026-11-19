@@ -5741,3 +5741,434 @@ The design must handle anonymous or maliciously fabricated reports, mistaken ide
 
 **Draft status:** BP-31 is a working design. The police code of ethics, conduct standards, misconduct definitions, complaints authority, independent investigation mandate, disciplinary standard of proof, hearing and appeal structure, employment-law interface, whistleblower protections, disclosure rules, retention periods and statutory deadlines remain open. No complaints authority, professional standards unit, disciplinary hearing system or conduct-investigation software has been implemented by this design document.
 
+## BP-32 — Training and Development
+
+### Purpose and scope
+Define the national police service's learning, training, assessment, professional development, accreditation, competence assurance and training-governance architecture. The division ensures that every person is prepared and authorised for the duties they perform, maintains competence as law, policy, equipment and operational risks change, and provides fair, traceable routes for learning, reassessment and career development.
+
+BP-32 covers:
+- Training governance, strategy, standards and quality assurance.
+- Recruit, probationary and initial professional training.
+- Role-specific, unit-specific and specialist training.
+- Mandatory, refresher and continuing professional development.
+- Legal, ethical, human-rights and safeguarding education.
+- Operational skills and safety-critical competence.
+- Assessment, examination, practical evaluation and accreditation.
+- Instructor, assessor and training-provider standards.
+- Learning records, qualifications and competence status.
+- Remedial learning, reassessment and return-to-duty requirements.
+- Career development, mentoring and leadership preparation.
+- Training needs analysis, evaluation and organisational learning.
+- Training resources, facilities, equipment and scheduling.
+
+BP-32 defines learning and competence controls; it does not itself appoint people, promote them, confer police powers or replace operational command. BP-06 and BP-07 retain personnel and career authority; BP-08 controls unit assignment and deployment; BP-30 controls institutional governance; BP-31 governs conduct and professional standards; BP-33 governs employment administration.
+
+### Governing principles
+The training system must be:
+- Competency-based: successful attendance alone does not establish competence.
+- Role-relevant: learning objectives match actual duties, authority and risk.
+- Legally grounded: training reflects applicable law, policy and human-rights obligations.
+- Evidence-led: methods and content are reviewed against operational experience and reliable evidence.
+- Fair and accessible: reasonable adjustments and equitable access are provided.
+- Proportionate: training burden reflects risk, complexity and role requirements.
+- Traceable: completion, assessment, expiry and authorisation are recorded.
+- Continuous: competence is maintained, refreshed and reassessed when required.
+- Safe: practical exercises use controlled risk, qualified supervision and appropriate equipment.
+- Independent where necessary: assessment decisions must not be improperly influenced by command, personal relationships or operational pressure.
+- Adaptable: changes to law, policy, technology, tactics and identified risks trigger review.
+- Honest: qualifications and competence status must never be fabricated, backdated or misrepresented.
+
+No person is considered competent merely because they hold a rank, have served for a long period, attended a course or previously performed a task. Competence is specific to the defined skill, authority, environment and current validity period.
+
+### Training governance and accountability
+The service establishes a training governance structure with:
+- A national training strategy and policy owner.
+- A designated training authority responsible for standards and oversight.
+- Training institutions, academies or approved providers.
+- Specialist training schools or accredited partner providers where needed.
+- Divisional and unit training coordinators.
+- Qualified instructors, coaches, mentors and assessors.
+- Independent quality assurance and moderation.
+- A process for approving, reviewing, suspending and withdrawing courses or qualifications.
+
+Each course or programme has a controlled specification: identifier, title, owner, purpose, target roles, prerequisites, learning outcomes, curriculum, duration, delivery mode, legal/policy references, instructor requirements, assessment method, pass criteria, reassessment rules, accessibility arrangements, safety plan, version, approval authority and review date.
+
+A commander may identify a training need and release staff for learning, but cannot waive a statutory qualification or declare a person competent outside their authority. Training providers cannot grant operational powers unless the governing law and formal authorisation process permit it.
+
+### Training lifecycle
+The training lifecycle is:
+1. Identify role, legal authority and required competency profile.
+2. Assess existing qualifications, experience and current competence.
+3. Identify gaps and prerequisites.
+4. Assign an approved learning pathway.
+5. Schedule and resource the learning.
+6. Deliver instruction and supervised practice.
+7. Assess knowledge, practical performance and judgement.
+8. Record results and any limitations.
+9. Authorise or withhold role-specific activity through the competent authority.
+10. Monitor performance and maintain competence.
+11. Refresh, reassess or suspend competence when required.
+12. Review programme effectiveness and update content.
+
+A course may be completed while a required assessment remains outstanding. A person who fails an assessment may have attended and completed instruction but must not be recorded as competent. Where only part of a course is passed, the record identifies each completed and outstanding module.
+
+### Competency framework
+The service maintains a competency framework linking roles and duties to:
+- Knowledge: law, policy, procedures, systems and subject matter.
+- Practical skills: safe and correct execution of tasks.
+- Decision-making: judgement, proportionality, prioritisation and escalation.
+- Communication: public interaction, teamwork, reporting and documentation.
+- Professional behaviour: ethics, impartiality, respect and accountability.
+- Risk awareness: safety, safeguarding, operational hazards and uncertainty.
+- Supervision: oversight, coaching, review and intervention where relevant.
+
+Competency statements use observable outcomes and defined performance standards. They specify whether a competency is introductory, supervised, independent, advanced, instructional or assessor-level. These levels describe competence, not police rank or statutory authority.
+
+Competencies are mapped to positions, units, operational tasks, specialist appointments and system permissions. The map identifies mandatory requirements, desirable development, prerequisites, renewal periods and any restrictions when a competency is absent or expired.
+
+### Recruit and initial training
+Recruit training provides the foundation for lawful and professional police service. The programme includes, as applicable:
+- Police mandate, institutional structure and accountability.
+- Law, powers, limits, procedure and legal duties.
+- Ethics, integrity, equality and human rights.
+- Public service, communication and conflict management.
+- Community engagement and cultural awareness.
+- Safeguarding children and vulnerable people.
+- Victim, witness and suspect rights.
+- Crime reporting, incident recording and case fundamentals.
+- Evidence preservation, continuity and disclosure.
+- Interview principles and procedural safeguards.
+- Patrol, observation, situational awareness and officer safety.
+- Emergency response and communications.
+- First aid and emergency care within approved scope.
+- Arrest, search, detention and custody safeguards.
+- Use-of-force law, de-escalation and practical safety.
+- Information security, records and digital systems.
+- Report writing, statement taking and court responsibilities.
+- Professional standards, complaints and whistleblowing.
+- Fitness and wellbeing requirements appropriate to the role.
+
+The recruit pathway defines classroom learning, practical exercises, supervised field exposure, assessment gates, remedial options and final authorisation. Recruits do not exercise powers beyond those lawfully granted to their status. A recruit's access to operational systems and deployment is limited by training, supervision and permissions.
+
+### Probation and field training
+After initial academy learning, recruits may undertake a supervised field-training programme. It specifies:
+- Approved field-training officers and supervisors.
+- Minimum and maximum supervised exposure as defined by policy.
+- Required operational experiences and learning objectives.
+- Structured observation and coaching.
+- Daily or periodic performance records.
+- Safety and escalation rules.
+- Assessment checkpoints and final recommendation.
+- Remediation, extension or termination routes.
+- Independence and moderation of final decisions.
+
+A field-training officer records observed conduct and performance, not unsupported impressions. The recruit has an opportunity to comment on assessments and raise concerns about training quality or unfair treatment. A favourable field assessment does not override an unmet statutory or specialist requirement.
+
+### Core and mandatory continuing training
+The service defines mandatory training by role and risk. Possible subjects include:
+- Legal and policy updates.
+- Ethics and professional standards.
+- Human rights and equality obligations.
+- Safeguarding and victim care.
+- Use of force, de-escalation and restraint.
+- Firearms or other specialist equipment where authorised.
+- First aid and emergency response.
+- Arrest, search, custody and detainee welfare.
+- Evidence, disclosure and case-file quality.
+- Information governance and cybersecurity.
+- Health, safety and operational risk.
+- Emergency planning and incident command.
+- Supervisor responsibilities and staff welfare.
+- Anti-corruption and reporting obligations.
+
+Each requirement defines its target population, trigger, delivery format, completion deadline, pass criteria, renewal or expiry rule, exemptions if legally permitted and consequences of non-completion. Mandatory training must be scheduled realistically and supported by staffing plans; operational demand cannot silently erase required training.
+
+### Specialist and role-based pathways
+Specialist pathways are designed around the actual functions and risks of the role. Examples may include:
+- Criminal investigation and major crime.
+- Forensic scene management and evidence handling.
+- Intelligence analysis and source management.
+- Surveillance and covert operations.
+- Interviewing and specialist interviewing.
+- Child protection and vulnerable-person investigations.
+- Public order and crowd safety.
+- Firearms and other high-risk operational roles.
+- Roads policing and collision investigation.
+- Marine, port, airport or border-related policing.
+- Cybercrime and digital evidence.
+- Financial investigation and asset recovery.
+- Negotiation, crisis response and incident command.
+- Custody, detention and detainee safeguarding.
+- Professional standards investigation.
+- Training instruction and assessment.
+- Leadership, strategic command and organisational governance.
+
+Specialist training has explicit prerequisites, legal authority, selection criteria, practical assessment, supervision, periodic revalidation and withdrawal conditions. Course completion does not itself appoint a person to a specialist unit or confer powers. Appointment, equipment issue and operational deployment remain separate decisions under the relevant divisions.
+
+### Legal, ethical and procedural learning
+All training pathways incorporate the law and safeguards relevant to their duties. The curriculum must address:
+- Lawful authority and limits of police powers.
+- Necessity, proportionality and reasonableness.
+- Human dignity, equality and non-discrimination.
+- Procedural fairness and rights of affected persons.
+- Safeguarding and duty of care.
+- Evidence integrity, disclosure and accurate records.
+- Privacy, confidentiality and lawful information access.
+- Conflicts of interest, gifts and improper influence.
+- Duty to report misconduct and protect whistleblowers.
+- Judicial independence and prosecution independence.
+- Accountability, review and complaint mechanisms.
+
+Legal content must identify its jurisdiction, source, effective date and approved interpretation. Where law changes, the training authority assesses which roles and existing qualifications are affected and issues an update or transitional requirement. Outdated materials must be withdrawn or clearly marked as superseded.
+
+### Operational practical training and safety
+Practical training is designed and delivered by competent instructors using approved lesson plans, risk assessments, safe facilities and appropriate equipment. It may include scenario-based exercises, role play, simulations, controlled tactical practice and supervised field demonstrations.
+
+Safety controls include:
+- Pre-exercise risk assessment and briefing.
+- Participant suitability and reasonable adjustments.
+- Qualified instructor-to-participant ratios.
+- Equipment inspection and safe configuration.
+- Medical and emergency arrangements.
+- Clear stop-work and incident reporting procedures.
+- Controlled scenario boundaries and safe training environments.
+- Debriefing and support after distressing exercises.
+- Recording of injuries, near misses and safety concerns.
+
+Training scenarios must not normalise unlawful conduct, discriminatory assumptions, unnecessary force or disregard for rights. High-risk exercises require enhanced controls and authorisation. Training equipment and simulated weapons must be clearly distinguished from operational equipment and controlled to prevent unauthorised use.
+
+### Assessment and qualification
+Assessment methods are selected to match the competency. They may include:
+- Written or online knowledge tests.
+- Oral examination.
+- Practical demonstration.
+- Scenario-based decision exercises.
+- Observed workplace performance.
+- Case-file or report review.
+- Portfolio or reflective evidence.
+- Structured professional discussion.
+- Simulation-based evaluation.
+
+Each assessment defines learning outcomes, marking criteria, pass thresholds, critical errors, permitted assistance, assessor qualifications, moderation and record requirements. Safety-critical, rights-critical or legally mandated tasks may include non-compensable critical criteria: a candidate cannot offset a serious failure in a critical safeguard by scoring highly elsewhere.
+
+Assessment outcomes distinguish:
+- Not yet assessed.
+- In progress.
+- Passed.
+- Passed with defined limitations, where policy permits.
+- Failed.
+- Deferred for an authorised reason.
+- Withdrawn.
+- Expired or lapsed.
+- Suspended pending review.
+- Revoked following a competent decision.
+
+A qualification records its scope and limitations. It must not be represented as broader than the assessment supports. Assessment evidence and decision reasons are retained for audit and appeal.
+
+### Failure, remediation and reassessment
+A failed assessment triggers a documented process that identifies:
+- Competency or module not achieved.
+- Evidence and assessment criteria.
+- Critical safety or legal concerns.
+- Feedback provided.
+- Candidate response or appeal.
+- Remedial learning plan.
+- Supervision or duty restrictions pending reassessment.
+- Reassessment timing, method and assessor.
+- Final outcome and any further route.
+
+Remediation is designed to address the identified gap. Repeated failure may lead to further training, reassignment, delayed appointment, removal from a specialist function or employment review under the relevant authority. These consequences are not automatic and must follow fair procedures.
+
+A failed assessment is not automatically misconduct. Deliberate dishonesty, refusal to comply with a lawful training requirement or falsification of results may be referred under BP-31, but poor performance alone must not be relabelled as misconduct to bypass capability processes.
+
+### Competence currency and authorisation
+The service distinguishes:
+- Course attendance.
+- Course completion.
+- Qualification awarded.
+- Competency currently valid.
+- Role appointment.
+- Operational authorisation.
+- Permission to use a system, power or item of equipment.
+
+A person may hold a qualification that has expired, be competent but not appointed, be appointed but temporarily restricted, or be authorised only under supervision. These states must be separately represented.
+
+Competence currency rules specify renewal period, refresher requirements, evidence of practice, reassessment triggers and any grace period permitted by law. Where a required qualification expires or is suspended, the relevant operational activity is restricted until the competent authority confirms restoration. An emergency exception is permitted only if explicitly grounded in law and policy, with recorded justification and review; it must not become routine.
+
+### Career development and leadership
+Training supports career development without guaranteeing promotion or appointment. Development pathways may include:
+- Individual development plans.
+- Mentoring and coaching.
+- Acting-role preparation.
+- Supervisory and management programmes.
+- Strategic leadership and command education.
+- Specialist technical development.
+- Cross-unit exposure and attachments.
+- Accredited external study.
+- Research, professional qualifications and secondments.
+
+Development plans record aspirations, identified competencies, opportunities, agreed actions, support, progress and review dates. Access to development should be fair and transparent, subject to operational requirements and selection criteria. Completion of leadership training does not create a right to promotion or command authority.
+
+### Instructor, assessor and provider quality
+Instructors and assessors must hold appropriate subject competence, instructional preparation and any required accreditation. The framework defines:
+- Selection and appointment criteria.
+- Scope of instructional authority.
+- Continuing instructor development.
+- Assessment and moderation standards.
+- Conflicts of interest and recusal.
+- Performance review and learner feedback.
+- Observation and quality assurance.
+- Complaints and appeal handling.
+- Suspension or withdrawal of instructor status.
+
+A person should not assess their own work or make a final high-stakes decision where a conflict undermines impartiality. External providers must be approved, monitored and subject to contractual, security, data-protection and quality requirements. Outsourcing delivery does not transfer the police service's accountability for standards.
+
+### Training needs analysis and organisational learning
+Training needs are identified through:
+- Role and competency changes.
+- New legislation, policy or court decisions.
+- Operational incidents and debriefs.
+- Case-file quality and disclosure failures.
+- Complaints and professional standards findings.
+- Audit, inspection and external recommendations.
+- Safety incidents and near misses.
+- Technology, equipment and system changes.
+- Workforce planning and succession needs.
+- Community feedback and emerging crime patterns.
+
+The training authority distinguishes an individual skill gap from a systemic failure caused by policy, resources, supervision, staffing, equipment or unclear authority. Training is not used as the default remedy for every organisational problem.
+
+Each identified need records evidence, affected roles, risk, priority, proposed intervention, accountable owner, funding, delivery deadline and evaluation method. High-risk gaps may require immediate operational restrictions or temporary safeguards while learning is arranged.
+
+### Evaluation and effectiveness
+Training evaluation examines more than attendance and pass rates. It may assess:
+- Knowledge retention.
+- Practical competence and safe performance.
+- Decision quality under realistic conditions.
+- Consistency across instructors and cohorts.
+- Transfer of learning to the workplace.
+- Operational outcomes and avoidable errors.
+- Public-facing service quality.
+- Complaints, safety events and procedural failures.
+- Cost, accessibility and delivery efficiency.
+
+Evaluation must avoid simplistic causal claims. Changes in complaints or crime outcomes may have multiple causes. Findings are used to improve course design, delivery, assessment, supervision, policy or resources. Programmes with unsafe or ineffective outcomes may be paused, revised or withdrawn.
+
+### Learning records and qualifications register
+The authoritative training record links to the person's personnel record and contains:
+- Person and employee identifier.
+- Course, module and competency identifiers.
+- Provider and delivery location or mode.
+- Enrolment and attendance dates.
+- Instructor and assessor identities.
+- Assessment attempts and results.
+- Evidence references and feedback.
+- Qualification scope, conditions and expiry.
+- Remedial actions and reassessment.
+- Recognition of prior learning decisions.
+- Exemptions and their legal or policy basis.
+- Suspensions, restrictions and revocations.
+- Appeals, corrections and audit history.
+
+The record distinguishes a course certificate from the underlying evidence and current competence status. Corrections preserve provenance and prior versions. Access to sensitive assessment or welfare information is restricted by role and purpose.
+
+### Recognition of prior learning and external qualifications
+Prior service, civilian qualifications, military or emergency-service experience, professional credentials and external courses may be considered through a controlled recognition process.
+
+Recognition requires:
+- Identity and authenticity verification.
+- Relevance to the required competency.
+- Currency and evidence of recent practice.
+- Comparison with the service's standards.
+- Assessment of any gaps.
+- Decision by an authorised reviewer.
+- Recorded scope, limitations and expiry.
+
+Recognition is not automatic based on title, rank, reputation or length of service. A foreign or external qualification may require local legal and policy modules, practical assessment or supervised practice. Statutory requirements cannot be waived by an informal equivalence decision.
+
+### Scheduling, attendance and operational continuity
+Training schedules must coordinate employee availability, shifts, leave, operational coverage, facilities, instructors, equipment and mandatory deadlines. The system supports cohorts, individual bookings, waitlists, cancellations, rescheduling and make-up sessions.
+
+Attendance records distinguish present, late, partial attendance, excused absence, unexcused absence, withdrawal and provider cancellation. Attendance does not imply passing. A cancelled session does not count as a failure by the learner.
+
+Operational commanders may request deferral only under an authorised process. Deferrals record reason, risk assessment, approving authority, revised deadline and any interim restrictions. Critical training cannot be indefinitely deferred through repeated operational exceptions.
+
+### Accessibility, fairness and learner welfare
+Training access and assessment consider disability, language, literacy, neurodiversity, religious or other lawful accommodation needs, pregnancy, caring responsibilities and other relevant circumstances. Reasonable adjustments preserve essential competency and safety requirements while changing the method or conditions where possible.
+
+Learners must have access to clear materials, timely feedback, appropriate support and a safe route to raise concerns about discrimination, harassment, instructor conduct, unsafe exercises or unfair assessment. Confidential welfare information is not shared beyond a legitimate need.
+
+The service monitors access, completion and outcomes for unjustified disparities, using lawful and appropriately protected data. Equality monitoring must not become profiling or a substitute for individual assessment.
+
+### Training conduct and integrity
+Training environments are governed by professional standards. Prohibited conduct includes:
+- Cheating, plagiarism or impersonation.
+- Fabricating attendance, assessment evidence or qualifications.
+- Improper assistance or leaking examination materials.
+- Bullying, harassment, discrimination or retaliation.
+- Unsafe instruction or deliberate exposure to prohibited risk.
+- Falsifying learner or instructor records.
+- Undisclosed conflicts of interest.
+- Misuse of training equipment or facilities.
+- Pressuring assessors to pass an unqualified candidate.
+
+Concerns are routed under BP-31 where appropriate. Learners and instructors receive fair treatment and an opportunity to respond. A disputed result remains clearly marked as under review and is not silently altered.
+
+### Training resources and facilities
+Training planning accounts for:
+- Academy and classroom capacity.
+- Practical training grounds and specialist facilities.
+- Secure training systems and realistic simulation environments.
+- Approved equipment, vehicles and protective equipment.
+- Instructor and assessor capacity.
+- Learning materials and accessibility formats.
+- External provider contracts.
+- Maintenance, safety inspections and emergency provision.
+- Budget, procurement and asset controls.
+
+Training resources are not assumed available merely because a course exists in the catalogue. The schedule must reflect actual capacity. Training facilities and equipment are governed under BP-09 and BP-34, with safety and access controls.
+
+### Player experience and authority
+The player can view assigned training, prerequisites, deadlines, results, current qualifications and development plans according to role. Depending on appointment, the player may enrol, attend, complete modules, take assessments, request feedback, submit evidence of prior learning, request review or provide training as an authorised instructor.
+
+The player cannot self-certify competence, edit official results, bypass prerequisites, grant their own operational authorisation or use a specialist power solely because they completed a course. The interface must clearly show the difference between training progress, competence status, appointment and operational permission.
+
+Training requirements should have meaningful gameplay consequences: unavailable specialist duties, supervised deployment, renewal deadlines, temporary restrictions, career opportunities and improved capability. These consequences must be transparent, consistent and tied to documented requirements rather than arbitrary hidden penalties.
+
+### Connections to other divisions
+- **BP-01 to BP-05:** governing rules, geography, population, organisations and police architecture.
+- **BP-06 and BP-07:** personnel, service history, career pathways and promotion.
+- **BP-08 and BP-09:** appointments, unit requirements, equipment and training resources.
+- **BP-10 to BP-12:** patrol, dispatch, incident response and operational learning.
+- **BP-13 to BP-24:** crime, investigation, victim care, interviewing, surveillance, intelligence, scenes, evidence and forensics.
+- **BP-25 to BP-29:** powers, custody, legal process, courts and corrections.
+- **BP-30 and BP-31:** governance, conduct standards, complaints and integrity findings.
+- **BP-33:** employee administration, capability and welfare processes.
+- **BP-34:** budgets, procurement and provider contracts.
+- **BP-35 to BP-37:** simulation processing, social context and scheduling.
+- **BP-38 to BP-44:** training records, persistence, interface, notifications, permissions, testing and configuration.
+
+### Exceptions and edge cases
+The design must handle recruit failure, partial course completion, assessment appeal, disputed assessor impartiality, instructor misconduct, expired qualification during an active shift, emergency operational demand, long-term absence, disability accommodation, language support, injury during practical training, course cancellation, provider failure, lost records, duplicate identities, external qualification fraud, unverifiable prior learning, law changing mid-course, urgent policy change, specialist skill decay, extended absence from specialist duties, temporary restriction, reassessment failure, staff transfer between units, promotion without required course, acting appointment, secondment, leave, retirement, resignation, death, training system outage, assessment misconduct, confidentiality breach, unfair access to development, and systemic training failure.
+
+### Acceptance conditions
+- Every role and operational task has an explicit competency and training profile.
+- Every course has an approved specification, owner, version, outcomes and assessment rules.
+- Recruit, probationary, core, specialist and leadership pathways are defined.
+- Attendance, completion, assessment and competence are distinct states.
+- Critical legal and safety requirements cannot be offset by unrelated assessment scores.
+- Failed assessments trigger documented feedback, remediation and fair reassessment.
+- Competence expiry or suspension can restrict relevant operational activity.
+- Training completion does not itself confer rank, appointment, police powers or system permissions.
+- Instructors, assessors and external providers are qualified, monitored and auditable.
+- Prior learning and external qualifications require verification and authorised equivalence decisions.
+- Mandatory training is scheduled and deferrals are controlled and reviewed.
+- Training needs are linked to evidence and systemic causes are not mislabelled as individual failures.
+- Training effectiveness is evaluated beyond attendance and pass rates.
+- Learners receive reasonable adjustments, fair assessment and safe complaint channels.
+- Training records are authoritative, access-controlled, versioned and auditable.
+- Training misconduct and falsification are referred through fair professional standards procedures.
+- Player access and actions respect role, competence, appointment and permission boundaries.
+
+**Draft status:** BP-32 is a working design. The fictional police academy structure, statutory training requirements, competency catalogue, recruit duration, probation standards, assessment thresholds, specialist qualification rules, renewal periods, instructor accreditation, external provider standards, fitness requirements, reasonable-adjustment rules, training budget and formal authorisation matrix remain open. No academy, course catalogue, learning management system, assessment engine or operational competence registry has been implemented by this design document.
+

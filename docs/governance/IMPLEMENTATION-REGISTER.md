@@ -56,7 +56,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-29 | Corrections | Drafted — design only; no correctional software implemented |
 | BP-30 | Department Governance | Drafted — design only; no governance software implemented |
 | BP-31 | Professional Standards | Drafted — design only; no professional standards software implemented |
-| BP-32 | Training and Development | Not started |
+| BP-32 | Training and Development | Drafted — design only; no training or competence software implemented |
 | BP-33 | Human Resources | Not started |
 | BP-34 | Finance and Procurement | Not started |
 | BP-35 | Simulation Engine | Not started |
