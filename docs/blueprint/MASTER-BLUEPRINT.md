@@ -1457,3 +1457,220 @@ The system must handle cases with unknown offenders, multiple suspects, multiple
 - The player can investigate without automatic solution hints or hidden culprit disclosure.
 
 **Draft status:** BP-15 is a working design. Detailed case categories, review intervals, formal submission standards and the connection to legal review will be refined with BP-16 and the justice divisions. It is not a claim that case-management software has been implemented.
+
+## BP-16 — Investigation
+
+### Purpose
+Define how police investigators turn reports, observations and available information into a disciplined, evidence-led understanding of an event. Investigation is the practical process of establishing what happened, identifying and testing possible explanations, locating relevant people and material, assessing reliability, and presenting findings for lawful decisions.
+
+### Scope
+This division governs the general investigative method and the coordination of enquiries from initial assessment through investigative conclusion. It covers investigative reasoning, lines of enquiry, lead management, information gathering, records enquiries, suspect and victim enquiries, corroboration, alternative hypotheses, investigative decisions and the assembly of findings.
+
+Specialist procedures are designed in their dedicated divisions:
+- Victim and witness support and management: BP-17.
+- Suspect and offender records and management: BP-18.
+- Interviews and interrogations: BP-19.
+- Surveillance: BP-20.
+- Intelligence: BP-21.
+- Crime scenes: BP-22.
+- Evidence continuity and exhibits: BP-23.
+- Forensic examination: BP-24.
+
+Case ownership, task allocation, review and closure remain governed by BP-15. This division describes the investigative work performed within that case framework.
+
+### Investigative principles
+Investigations must be purposeful, impartial, proportionate and traceable. They should:
+- Start from what is actually reported or observed, not an assumed conclusion.
+- Distinguish established facts, source accounts, inference, opinion and unknown matters.
+- Identify what needs to be established and why each enquiry may help.
+- Consider reasonable alternative explanations, including explanations that do not involve an offence.
+- Pursue relevant lines of enquiry that support or undermine a working theory.
+- Assess reliability, accuracy, completeness and possible bias in information.
+- Preserve material that may be relevant, including material that does not support the current theory.
+- Record decisions, actions, results, limitations and reasons for not pursuing an enquiry.
+- Respect legal authority, role limits, privacy and procedural safeguards defined by Kingswell's fictional law.
+- Avoid treating suspicion, association, presence or an unverified allegation as proof.
+
+### Initial investigative assessment
+At the start of an investigation, the investigator reviews the originating incident, available reports, immediate risks, known people and locations, potential offences and any material already secured.
+
+The initial assessment identifies:
+- What is alleged or known to have occurred.
+- When and where it may have occurred, including uncertainty.
+- Who may have been affected and who may have relevant information.
+- Whether an immediate threat or continuing harm exists.
+- What material may be lost, altered or become unavailable.
+- Whether a scene, property, device or other item requires preservation.
+- Whether urgent specialist support or legal authority may be required.
+- What is known, what is disputed and what remains unknown.
+
+This assessment is provisional. It is updated as new information is obtained and must not turn an early account into an unquestioned version of events.
+
+### Investigative objectives and questions
+The investigator translates the matter into clear questions. These may concern the event itself, the identity and actions of participants, intent, opportunity, chronology, location, method, harm, ownership, movement of property, relationships, communications or other relevant circumstances.
+
+Each objective should be linked to:
+- The fact or issue to be established.
+- Why it matters to the suspected offence or the wider investigation.
+- The information or material that may answer it.
+- The enquiry or method proposed.
+- The person responsible for carrying it out.
+- Any authority, risk, dependency or deadline.
+- The result and its effect on the investigation.
+
+An enquiry should have a defined purpose. The system should discourage indiscriminate information gathering that has no reasonable connection to the matter.
+
+### Lines of enquiry and lead management
+A line of enquiry is a route by which an investigator seeks to establish or test a relevant fact. A lead is a specific piece of information or opportunity that may produce an enquiry.
+
+Examples include:
+- Establishing a reliable chronology.
+- Identifying people present or in the vicinity.
+- Checking access, attendance or occupancy records.
+- Locating and reviewing relevant CCTV or other recordings.
+- Establishing ownership, control or use of property and vehicles.
+- Checking relevant business, employment or transaction records.
+- Tracing the movement or disposal of property.
+- Identifying witnesses and obtaining their accounts.
+- Checking relevant communications or digital material where lawfully available.
+- Examining physical, biological, trace or digital material.
+- Comparing similar events for genuine links.
+- Testing an alibi, explanation or other account.
+- Establishing whether an apparent connection is coincidental.
+
+Each lead has a source, date received, relevance, reliability assessment where possible, assigned owner, status, actions taken, result and any further leads created. Leads can be new, assessed, allocated, in progress, completed, blocked, disproved, duplicated or retained for later review. A completed lead records its outcome, not merely that an attempt was made.
+
+### Investigative hypotheses and alternative explanations
+Investigators may maintain one or more working hypotheses to organise their thinking. A hypothesis is a testable explanation, not a fact. The record identifies the information supporting it, the information that challenges it, the assumptions it depends on and what could disprove it.
+
+The investigation should consider reasonable alternatives. For example, a person's presence may have an innocent explanation; an apparent sequence may have another interpretation; an item may have changed hands lawfully; or an event may not have been criminal. The system should make it possible to record and compare competing explanations without prematurely selecting one.
+
+The investigator must not be rewarded simply for confirming an initial suspicion. Supervisory review should examine whether relevant contrary information and reasonable alternative explanations have been considered.
+
+### Information gathering and records enquiries
+Investigators may seek information from police records, public institutions, businesses, employers, property managers, service providers, witnesses and other lawful sources within the fictional setting.
+
+A records enquiry identifies:
+- The organisation or person holding the information.
+- The specific information sought and its relevance.
+- The period or scope of the request.
+- The lawful basis or authority required under fictional law.
+- The request, response and dates.
+- The person who obtained and reviewed the material.
+- Any gaps, limitations, refusal or retention issue.
+- The original source and integrity of any returned material.
+
+The system distinguishes information volunteered, publicly available, supplied under an applicable process, and obtained under a formal legal authority. A request does not itself establish that the information exists or will be supplied.
+
+### Chronology and reconstruction
+Investigators can construct a timeline from reports, observations, recordings, access records, communications, travel information and other material. Each timeline entry records its source, time precision, whether it is an event time or a record-entry time, and any uncertainty.
+
+Conflicting timestamps are not silently reconciled. Clock differences, estimated times, delayed entries, missing intervals and contradictory accounts are recorded. A reconstructed chronology identifies which points are established, approximate, disputed or inferred.
+
+The system can associate people, vehicles and objects with places and time intervals, while avoiding false precision. A person's presence at a location does not by itself establish what they did there.
+
+### Person-focused enquiries
+Investigators may establish identity, contact details, relevant background, relationships, employment, movements, access, opportunity, knowledge and accounts of people connected to the matter. The enquiry must be relevant and proportionate.
+
+The same person may be a victim in one matter, a witness in another and a suspect in a third. Roles are case-specific and can change as information develops. A role change does not rewrite earlier records or imply guilt.
+
+Information about a person is attributed to its source and assessed for reliability. Unverified claims, hearsay, mistaken identity and conflicting records remain visibly uncertain until properly resolved.
+
+### Property, vehicle and organisation enquiries
+Investigations may establish ownership, occupancy, control, access, use, movement, maintenance, transactions, employment relationships and organisational responsibilities. Records distinguish legal ownership from possession, custody, tenancy, operational control and practical access.
+
+A business or property may have several relevant people and organisations connected to it. Investigators must establish the nature and time period of each relationship rather than assuming that an owner, director, tenant, employee or registered keeper personally carried out an act.
+
+### Linking events and investigations
+Investigators may compare incidents and cases by method, location, timing, victim, property, vehicle, communication, material traces or other relevant circumstances. A proposed link records its factual basis and confidence.
+
+The system distinguishes confirmed links, probable links, possible links and rejected links. Similarity alone is not proof of common authorship. A link can be downgraded or removed from the active theory while preserving the history of why it was considered.
+
+Where several teams contribute, the lead investigator coordinates the overall enquiry, while each team records its own actions, source material and findings.
+
+### Assessing information and evidential value
+Information is assessed according to its source, how it was obtained, whether it is first-hand, its accuracy, consistency, completeness, possible motive or bias, corroboration and any known limitation.
+
+The system distinguishes:
+- Information that suggests a possible line of enquiry.
+- An account given by a person.
+- An observation recorded by an officer.
+- Material recovered or obtained from a source.
+- An expert or specialist opinion.
+- An inference drawn from several facts.
+- A fact independently established to the applicable standard.
+
+No single label automatically determines admissibility, reliability or weight. Those questions are considered under the fictional legal and evidential framework.
+
+### Negative and inconclusive results
+An enquiry that produces no useful result is still recorded. The result may narrow a time window, exclude a location, show that a record does not exist, reveal a retention gap or establish that a proposed lead cannot currently be tested.
+
+The system distinguishes a negative result from proof that an event did not happen. It also distinguishes an inconclusive result from a disproved hypothesis. Investigators can record whether a lead should be revisited if new information becomes available.
+
+### Specialist support and investigative coordination
+The lead investigator can request support from specialist units and services. A request states the purpose, urgency, information supplied, expected output and any authority or handling requirements.
+
+Specialists return findings with their methods, limitations, source material and responsible personnel recorded. The lead investigator integrates those findings into the case without altering the specialist's original record.
+
+Where multiple jurisdictions or commands are involved, the investigation identifies the lead command, supporting teams, information-sharing arrangements and responsibility for decisions and handovers.
+
+### Legal authority and procedural safeguards
+Some enquiries require consent, a warrant, an order, authorisation or another legal basis under Kingswell's fictional law. The system records the authority relied upon, its scope, issuing or approving role, validity period, conditions, execution and return where applicable.
+
+An enquiry must not exceed its authority. If the required authority is absent, expired, refused or narrower than the proposed action, the system records the limitation and does not represent the action as lawfully completed. Emergency exceptions, if the fictional law provides them, are separately defined and recorded.
+
+### Investigative decisions and audit
+Material decisions record who made them, their role, date and time, information considered, options considered, reason, outcome and any review requirement. This includes decisions to pursue, defer, narrow, discontinue or reopen a line of enquiry; seek legal authority; request specialist assistance; change a working hypothesis; or recommend a case outcome.
+
+Corrections and supplements preserve the original record. The investigation should be reconstructable from the records without relying on an investigator's memory alone.
+
+### Findings and investigative conclusion
+At the conclusion of a phase or the whole investigation, the investigator prepares a structured account of:
+- The original allegation and scope.
+- The work undertaken and significant results.
+- Facts established and their supporting sources.
+- Accounts and material that remain disputed.
+- Reasonable alternative explanations considered.
+- Evidence that supports or undermines each relevant hypothesis.
+- Unresolved questions, limitations and outstanding opportunities.
+- Relevant offence elements and how the available material relates to them.
+- Any safeguarding, disclosure, property or continuing-risk matters.
+- The recommended next step and its rationale.
+
+Possible outcomes include further investigation, specialist referral, legal review, charge consideration, transfer, suspension, closure or reopening. An investigator's conclusion is not a court finding and must not be presented as one.
+
+### Player experience
+The player can review the information available to their role, identify and record leads, create investigative tasks through the case system, conduct authorised enquiries, compare accounts and timelines, link relevant records, record findings and submit work for supervision.
+
+The player controls investigative choices. The simulation may make relevant people, records, places and material available through appropriate actions, but it must not reveal the hidden solution or automatically tell the player which lead identifies the offender.
+
+### Connections to other divisions
+- **BP-02 to BP-04:** geography, people, properties, businesses and organisations.
+- **BP-06 to BP-09:** investigator roles, competence, units, deployment and resources.
+- **BP-11 and BP-12:** reports, incidents, dispatch information and event records.
+- **BP-13 and BP-14:** offence definitions and underlying generated events.
+- **BP-15:** case identity, plans, tasks, supervision, handover and closure.
+- **BP-17 to BP-24:** victim and witness handling, suspect records, interviews, surveillance, intelligence, scenes, evidence and forensics.
+- **BP-25 to BP-29:** arrest, custody, legal process, courts and outcomes.
+- **BP-30 to BP-34:** governance, professional standards, training, workforce and finance.
+- **BP-37 to BP-43:** time, records, persistence, interface, notifications, permissions and testing.
+
+### Exceptions and edge cases
+The system must handle an investigation with no known suspect, several competing suspects, an initially misidentified person, conflicting or recanted accounts, unreliable records, missing or destroyed material, delayed reporting, events discovered long after occurrence, several investigators working separately, a lead investigator leaving, cross-command enquiries, a suspect also being a victim or witness, an innocent explanation emerging late, an offence classification changing, and a case where evidence supports no charge.
+
+### Acceptance conditions
+- Investigative objectives and leads have clear relevance, ownership and recorded outcomes.
+- Established facts, allegations, accounts, inference and unknowns remain distinct.
+- Investigators can record and test multiple hypotheses and reasonable alternatives.
+- Enquiries are proportionate, traceable and linked to the information sought.
+- Records enquiries preserve source, request scope, authority and response.
+- Chronologies retain source, precision, uncertainty and conflicting times.
+- Person, property, vehicle and organisation relationships are time-specific and not assumed.
+- Event links retain their basis and confidence and can be revised.
+- Negative and inconclusive results are preserved without being misrepresented.
+- Specialist findings retain their original source, method and limitations.
+- Legal authority and procedural restrictions are recorded and respected.
+- Material decisions and investigative conclusions are auditable.
+- The player retains control of investigative choices and receives no automatic solution disclosure.
+
+**Draft status:** BP-16 is a working design. Detailed investigative procedures, formal legal powers, specialist workflows and evidential thresholds will be completed with the dedicated divisions and the fictional legal framework. It is not a claim that investigation software has been implemented.

@@ -40,7 +40,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-13 | Crime Architecture | Drafted; detailed fictional offence catalogue to populate |
 | BP-14 | Crime Generation | Drafted; frequency and behaviour tuning to follow |
 | BP-15 | Case Management | Drafted; investigative methods and legal review to refine |
-| BP-16 | Investigation | Not started |
+| BP-16 | Investigation | Drafted; specialist procedures and legal powers to refine |
 | BP-17 | Victims and Witnesses | Not started |
 | BP-18 | Suspects and Offenders | Not started |
 | BP-19 | Interviews and Interrogations | Not started |
