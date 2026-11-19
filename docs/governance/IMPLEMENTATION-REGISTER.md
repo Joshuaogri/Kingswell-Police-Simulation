@@ -14,7 +14,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Working branch | Complete | `main` only |
 | Supabase project | Complete | `Kingswell-Police-Simulation`, project ref `gdbzkgejyfwfackyuorl` |
 | Supabase connection | Verified | Project healthy; live SQL query succeeded |
-| Master blueprint | In progress | BP-01 to BP-40 drafted; BP-41 to BP-44 not started |
+| Master blueprint | In progress | BP-01 to BP-41 drafted; BP-42 to BP-44 not started |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
 | Database schema | Not started | No game tables or migrations |
@@ -65,7 +65,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-38 | Records and Databases | Drafted — design only; no game schema or migrations implemented |
 | BP-39 | Persistence and Recovery | Drafted — design only; no backup or restore process implemented |
 | BP-40 | Interface | Drafted — design only; no dedicated game interface implemented |
-| BP-41 | Notifications and Reporting | Not started |
+| BP-41 | Notifications and Reporting | Drafted — design only; no notification or reporting service implemented |
 | BP-42 | Security and Permissions | Not started |
 | BP-43 | Testing and Quality Assurance | Not started |
 | BP-44 | Configuration and Expansion | Not started |
