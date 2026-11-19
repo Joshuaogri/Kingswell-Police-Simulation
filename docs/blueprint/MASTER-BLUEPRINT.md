@@ -3117,3 +3117,297 @@ The system must handle life-saving disturbance, emergency-service access before 
 - The player operates within role, competence and authority and receives no hidden-solution disclosure.
 
 **Draft status:** BP-22 is a working design. Exact scene-entry powers, search authority, retention, property access, disclosure and review requirements remain subject to the fictional legal framework and professional standards. This document does not claim that crime-scene systems or operational capabilities have been implemented.
+
+## BP-23 — Evidence Management
+
+### Purpose
+Define the authoritative lifecycle for identifying, recording, collecting, receiving, preserving, packaging, transferring, storing, examining, disclosing, presenting, retaining and disposing of material that may be relevant to a police matter or legal proceeding.
+
+The evidence system must preserve what an item or information source is, where it came from, who handled it, what was done to it, where it has been, what condition it was in and what limitations apply. It must support reliable reconstruction and fair legal proceedings without overstating evidential value.
+
+Evidence management is an auditable custody and information-control function. It does not decide guilt, prove an allegation merely because an item exists, or replace the professional assessment of investigators, forensic examiners, prosecutors or courts.
+
+### Scope
+This division governs:
+- Evidence and material classification.
+- Unique identifiers and item registration.
+- Recovery, seizure, receipt and acquisition records.
+- Packaging, labelling and preservation requirements.
+- Chain of custody and transfer control.
+- Storage, location and environmental monitoring.
+- Access, handling, movement and audit.
+- Examination requests and specialist handovers.
+- Digital and documentary material management.
+- Continuity exceptions, loss, damage and contamination.
+- Disclosure, retention, legal holds and disposal.
+- Property return and lawful release.
+- Evidence reporting, court production and post-case outcomes.
+- Quality assurance, security and system governance.
+
+Scene management and initial scene context are governed by BP-22. Forensic examination and technical interpretation are governed by BP-24. Case and investigative strategy are governed by BP-15 and BP-16. Legal powers, disclosure obligations and court proceedings are governed by BP-25 to BP-28. This division owns the authoritative evidence register and custody history.
+
+This is a fictional evidence-governance and simulation specification. It does not provide practical instructions for defeating forensic examination, concealing evidence, contaminating material or obstructing investigations.
+
+### Fundamental principles
+Evidence management must:
+- Assign a unique, persistent identity to every registered item or material unit.
+- Preserve the original source and context.
+- Maintain an auditable chain of custody from acquisition to final disposition.
+- Record every transfer, access, examination, alteration, opening, resealing and movement.
+- Distinguish original material from copies, extracts, derivatives and analytical products.
+- Record condition, limitations, damage, contamination and uncertainty honestly.
+- Preserve potentially relevant material, including material that may undermine an allegation or assist a person under investigation.
+- Prevent unauthorised access, substitution, destruction or undocumented handling.
+- Use appropriate packaging, storage and specialist controls as determined by approved professional standards.
+- Separate custody facts from opinions about evidential significance.
+- Retain records and material for the legally required period.
+- Support lawful disclosure, challenge, independent review and court scrutiny.
+- Never infer authenticity, admissibility, reliability or guilt from registration alone.
+
+### Evidence and material categories
+The system supports a broad and configurable catalogue, including:
+- Physical objects and trace material.
+- Biological material and samples.
+- Documents, records and printed material.
+- Photographs, audio and video.
+- Digital devices and digital data.
+- Communications and account-related records lawfully obtained.
+- Financial, business and administrative records.
+- Scene samples and environmental material.
+- Reference, comparison and control material.
+- Demonstrative exhibits and presentation copies.
+- Intelligence-derived leads later acquired as evidence.
+- Material received from another agency or external provider.
+
+Categories support workflow and specialist handling. They do not predetermine evidential weight or legal admissibility. A single exhibit may contain multiple components; separately packaged or separately examined components must have traceable subordinate identifiers.
+
+### Evidence identity and registration
+Every item formally accepted into evidence management receives a unique evidence identifier that is never reused. Identifiers remain stable across cases, transfers, examinations and court proceedings.
+
+The core record includes:
+- Evidence identifier and item version where applicable.
+- Item description, category and quantity or extent.
+- Condition at the point of receipt or recovery.
+- Originating case, incident and scene references.
+- Recovery, seizure, receipt or acquisition basis.
+- Exact source location or source system, where known.
+- Date and time of acquisition and registration.
+- Collecting or submitting person and organisation.
+- Receiving custodian and receiving time.
+- Packaging, seal and label references.
+- Photographic or documentary record references.
+- Initial storage location and handling requirements.
+- Legal authority and restrictions.
+- Current status, custodian and location.
+- Review, retention and disclosure classifications.
+
+The record distinguishes the date material was created, the date it was obtained, the date it was submitted and the date it was registered. Late registration and reconstructed details are explicitly marked.
+
+### Acquisition and acceptance
+Material may enter the system through a scene recovery, lawful seizure, voluntary submission, digital acquisition, external agency transfer, medical or specialist service, court direction or another lawful route.
+
+The acquisition record identifies the authority or basis, scope, person responsible, circumstances, source, date and time, and any restrictions or conditions. The system records whether the material was collected by police, received from another person, copied from a source, exported from a system or generated through an examination.
+
+On receipt, a custodian checks the submission against the accompanying record, identifies apparent discrepancies and records the condition of the item and its packaging. Acceptance, conditional acceptance, quarantine or refusal are separate outcomes with reasons. A registration entry does not retrospectively legalise an unlawful acquisition.
+
+### Provisional references and formal evidence IDs
+Scene or operational systems may assign provisional references before formal evidence submission. The evidence register records the relationship between each provisional reference and its formal evidence identifier.
+
+The mapping is explicit and auditable. A provisional identifier cannot be mistaken for a formal evidence record, and a formal evidence identifier cannot silently replace the source reference in scene logs, photographs or witness accounts.
+
+If one provisional reference is found to represent multiple distinct items, the system creates separately identifiable records while preserving the original mapping and correction history.
+
+### Chain of custody
+Chain of custody is a chronological record of control and handling. Every custody event records:
+- Evidence identifier.
+- Event type and purpose.
+- Releasing person or custodian.
+- Receiving person or custodian.
+- Date and time, including time-zone or clock uncertainty where relevant.
+- Origin and destination.
+- Authority or approval where required.
+- Condition and packaging status.
+- Seal identifiers and recorded seal condition.
+- Reason for movement or access.
+- Acknowledgement by the receiving custodian.
+- Any discrepancy, interruption or exception.
+
+The chain includes acquisition, initial receipt, storage, retrieval, transport, examination, return, court production, transfer to another agency and final disposition. System-generated events and human attestations are distinguishable.
+
+A transfer is not complete merely because a dispatch or handover was initiated. The receiving custodian must acknowledge receipt or the record must show the unresolved status and escalation.
+
+### Packaging, labels and seals
+The system records packaging type, packaging reference, label version, seal identifiers, sealing and resealing events, and the person responsible. Requirements for packaging and preservation are determined by the relevant professional discipline and approved standards.
+
+Where packaging is opened for an authorised purpose, the record captures the authority, reason, person, date and time, condition on opening, examination or handling performed, new packaging and seal details, and return to custody.
+
+The system must not assume that a seal is intact merely because no breach was recorded. Seal condition is an observation recorded at each relevant custody event. Damaged, missing, mismatched or unexplained seals trigger a discrepancy and review.
+
+### Storage and location control
+Evidence storage supports approved locations, secure cabinets, controlled rooms, specialist facilities, digital repositories and authorised external storage. Each location has a unique reference, custodian, access policy, capacity and relevant environmental or security controls.
+
+The evidence record tracks:
+- Current and historical location.
+- Storage condition requirements.
+- Access permissions.
+- Environmental monitoring where applicable.
+- Retrieval and return events.
+- Temporary storage and transport status.
+- Quarantine or restricted status.
+- Inventory checks and discrepancies.
+
+Storage requirements are material-specific and defined by approved standards. The system alerts responsible personnel to review dates, environmental exceptions, overdue returns and unresolved location discrepancies.
+
+### Access, handling and audit
+Every access to registered material is recorded, including viewing, opening, handling, copying, sampling, testing, transfer, export and return. The record identifies the user, role, purpose, time, authority and resulting action.
+
+Access is role-based and limited to a legitimate purpose. A user may be permitted to view a record without being permitted to retrieve or handle the physical item. Sensitive, privileged, protected or highly restricted material has additional controls.
+
+Audit history is append-only for ordinary users. Corrections and annotations are separately recorded with author, time and reason. Unauthorised access, unexplained movement, attempted alteration and missing acknowledgements are escalated.
+
+### Examination requests and specialist handovers
+An examination request links the evidence item to an authorised investigative question and the relevant specialist discipline. It identifies:
+- Requesting investigator and case.
+- Evidence identifiers and requested scope.
+- Purpose and specific questions.
+- Legal authority and any restrictions.
+- Relevant background information, with provenance.
+- Priority and requested completion date.
+- Known risks, handling constraints and disclosure considerations.
+- Approving or reviewing person where required.
+
+The receiving examiner acknowledges the items and condition, records any discrepancy, performs work within competence and authorised scope, and returns the material or transfers it under a new recorded custody event.
+
+The request must not dictate a desired result. Examiners record findings, limitations and uncertainty independently. Detailed methods, validation and interpretation are governed by BP-24.
+
+### Sampling, consumption and alteration
+Where an authorised examination consumes, depletes, alters, separates or otherwise changes material, the system records the authority, purpose, amount or extent where measurable, pre- and post-examination condition, examiner, method reference, resulting sub-items, retained portions and any limitation on future testing.
+
+Destructive or limited-sample work requires the approvals and safeguards set by law and professional standards. Where feasible and lawful, the system records whether another party may need an opportunity for independent examination. The system must not imply that consumed material remains available for retesting.
+
+### Digital and electronic evidence
+Digital material includes devices, storage media, extracted data, files, logs, images, audio, video, account records and data obtained from external services. The evidence record distinguishes:
+- Original physical device or medium.
+- Forensic or working copy.
+- Logical or selective export.
+- Individual file or data object.
+- Report, transcript or analytical derivative.
+- Cloud or third-party source record.
+
+The system stores acquisition authority, source, acquisition date and time, responsible person, tool or process reference, integrity-verification information, scope, completeness, known gaps, transformations, storage and access history.
+
+Original data and forensic masters are protected from ordinary modification. Working copies and derived outputs have separate identifiers and links to their source. The system records any conversion, extraction, redaction, enhancement, transcription or other processing. It must not claim that a copy is bit-for-bit identical unless a documented verification supports that claim.
+
+Access to a device does not automatically authorise access to every account, service or remote data source associated with it. Legal authority and scope are recorded separately.
+
+### Documentary, audio and video material
+Documents and recordings retain their source, original format where available, acquisition method, creator or originating system if known, date and time context, completeness, metadata status and any conversion or transcription.
+
+A transcript is a derivative, not the original recording. A translation, summary, enhancement or edited extract is separately identified and linked to the unaltered source. Any uncertainty, missing segment, inaudible content, time offset or editing limitation is recorded.
+
+### External and third-party material
+Material received from another police service, public authority, business, service provider, laboratory, medical organisation or private individual records the provider, acquisition route, legal basis, terms of receipt, source system, transfer method, completeness and any restrictions.
+
+The system distinguishes the provider's assertions from independently verified facts. Where the original source remains with another organisation, that limitation and the route for obtaining or challenging the original are recorded.
+
+### Continuity exceptions and discrepancies
+The system supports a formal discrepancy record for:
+- Missing or delayed custody events.
+- Unacknowledged transfers.
+- Damaged, missing or mismatched seals.
+- Unexplained access or movement.
+- Incorrect or incomplete labels.
+- Storage-location mismatch.
+- Damaged, degraded or lost material.
+- Possible contamination or substitution.
+- Inconsistent timestamps or identity references.
+- Incomplete digital acquisition or integrity verification.
+- Unauthorised handling or access.
+
+Each discrepancy records when and how it was identified, the reporter, affected material, known facts, immediate preservation action, persons notified, review owner, investigation, impact assessment and resolution. The original chain remains visible. No user may silently repair a gap by inserting an event as if it had been contemporaneously recorded.
+
+A continuity issue does not automatically make material inadmissible or worthless. Its significance is assessed by competent investigators, specialists, prosecutors and courts.
+
+### Evidence status and evidential neutrality
+The system separates custody status from legal and investigative assessment. Suggested custody statuses include submitted, received, quarantined, accepted, stored, in transit, under examination, returned, transferred, court-produced, retained, released, disposed or missing under investigation.
+
+Separate assessment fields may record relevance, authenticity concerns, reliability limitations, disclosure category and legal status. These are attributed opinions or decisions, not intrinsic properties automatically inferred from the item's presence.
+
+Material may support, contradict or be neutral to an allegation. The system must retain exculpatory and alternative material and prevent the evidence register from displaying only prosecution-supporting items.
+
+### Disclosure and unused material
+The evidence system supports disclosure review by linking material to the relevant case, issues, statements, forensic reports, unused material schedules and legal decisions. It records:
+- Whether material has been reviewed for disclosure.
+- Reviewing person and date.
+- Relevance and disclosure assessment with reasons.
+- Potential to undermine the prosecution case or assist another party.
+- Sensitivity, privilege or lawful restriction requiring review.
+- Redaction or sanitisation history.
+- Disclosure decision and recipient.
+- Version supplied and date.
+- Any subsequent reassessment.
+
+The system must not automatically withhold material because it is sensitive, inconvenient or adverse to the prosecution. Disclosure rules and judicial directions are governed by BP-27 and BP-28. A disclosure decision must be attributable and reviewable.
+
+### Court production and legal proceedings
+When material is prepared for court, the record identifies the case, court, hearing or proceeding, requested exhibits, responsible custodian, transfer or production details, condition, receipt and return or onward disposition.
+
+Copies, demonstratives and presentation versions are distinguished from original exhibits. The system records any court order, restriction, challenge, agreed fact, ruling or direction affecting the material. Court production does not end custody responsibility unless a formal transfer or lawful disposition is recorded.
+
+### Retention, legal holds and disposal
+Retention is based on legal requirements, case status, appeal periods, potential further proceedings, safeguarding, disclosure duties, material type and authorised policy. Each item has a retention category, responsible owner and review date.
+
+Legal holds prevent routine disposal where proceedings, appeal, complaint, inquiry, review or other lawful requirement remains active. Holds identify the authority, scope, owner, start date and release decision.
+
+Disposal requires documented authority, confirmation that no retention or disclosure obligation remains, method, date, responsible person and witness or verification where required. The system records destruction or deletion certificates and retains the audit metadata required by law. No material is disposed of merely because a case is closed.
+
+### Return and release of property
+Property that is not required to be retained may be returned to its lawful owner or released under an authorised process. The record identifies the person claiming the property, proof or basis of entitlement, decision-maker, legal restrictions, condition, date, recipient acknowledgement and any unresolved dispute.
+
+Where ownership is uncertain, property is jointly claimed, subject to court order or potentially relevant to another case, the system records the restriction and review route. Return of property does not delete its historical evidence record.
+
+### Quality assurance, complaints and misconduct
+Supervisors and authorised auditors review inventory accuracy, custody completeness, access, storage, examination handovers, disclosure status and retention. Complaints, suspected misconduct, tampering, loss, unexplained access or deliberate record alteration are referred under BP-30 and BP-31.
+
+The system preserves relevant records and audit logs during an investigation. It supports independent review and corrective action without changing the historical record. Evidence-system administrators cannot use technical privileges to conceal custody events.
+
+### Player experience
+The player may register material, review its provenance, submit it to custody, arrange lawful transfer, request an examination, track storage and status, document discrepancies, review results, prepare disclosure material, arrange court production and recommend lawful return or disposal.
+
+The interface makes clear which actions require a custodian, supervisor, specialist or legal authority. The player cannot silently alter chain-of-custody history, erase inconvenient material, bypass retention holds or turn an intelligence lead into evidence without a documented acquisition process. The system does not reveal hidden offender identities or supply automatic investigative solutions.
+
+### Connections to other divisions
+- **BP-02 to BP-04:** locations, people, properties and organisations.
+- **BP-05 to BP-09:** police structure, personnel, units, resources and storage facilities.
+- **BP-10 to BP-12:** patrol, communications and incident records.
+- **BP-13 to BP-16:** offence, crime event, case and investigation records.
+- **BP-17 to BP-19:** victim, witness, suspect and interview material.
+- **BP-20 and BP-21:** surveillance outputs and intelligence provenance.
+- **BP-22:** scene recovery, location context and provisional material references.
+- **BP-24:** forensic examination, findings and specialist reports.
+- **BP-25 to BP-29:** lawful seizure, custody, legal process, courts and corrections.
+- **BP-30 to BP-34:** governance, standards, training, HR and procurement.
+- **BP-35 to BP-37:** simulation, social context and time.
+- **BP-38 to BP-44:** records, persistence, interface, reporting, security, testing and configuration.
+
+### Exceptions and edge cases
+The system must handle unknown ownership, unidentified material, multiple components, duplicate submissions, incorrect provisional mapping, delayed registration, emergency acquisition, disputed authority, third-party restrictions, incomplete source records, damaged packaging, seal discrepancy, custody gap, unacknowledged transfer, temporary storage, environmental failure, contamination concern, destructive examination, split samples, digital acquisition gaps, corrupted files, changing metadata, external laboratory transfer, disclosure dispute, court retention order, appeal, legal hold, property claim, return refusal, disposal error and recovery after database or storage failure.
+
+### Acceptance conditions
+- Every evidence item has a unique persistent identity and complete source context.
+- Acquisition basis, authority, provenance, condition and receiving record are explicit.
+- Every custody transfer and material access is attributable and timestamped.
+- Chain-of-custody history is append-only for ordinary users and corrections remain visible.
+- Packaging, seals, storage, movement and examination events are recorded.
+- Original material is distinguishable from copies, derivatives and presentation exhibits.
+- Sampling, consumption, alteration and sub-item creation are documented.
+- Digital evidence records source, acquisition scope, integrity checks and transformations.
+- Discrepancies trigger preservation, escalation and review without rewriting history.
+- Exculpatory, contradictory and unused material can be retained and disclosed.
+- Disclosure decisions, versions and recipients are auditable.
+- Retention holds prevent unauthorised disposal and releases are authorised.
+- Property return and final disposal are recorded and verifiable.
+- Evidence status does not automatically establish truth, admissibility or guilt.
+- The player cannot bypass lawful authority or erase evidential history.
+
+**Draft status:** BP-23 is a working design. Exact seizure powers, evidential rules, retention periods, disclosure thresholds, storage standards, forensic handling requirements and court procedures remain subject to the fictional legal framework and professional standards. This document does not claim that evidence-management software or operational capability has been implemented.

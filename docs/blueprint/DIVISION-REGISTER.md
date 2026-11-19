@@ -28,7 +28,7 @@ Each division is designed with its purpose, scope, responsibilities, components,
 | BP-20 | Surveillance | Drafted; statutory definitions, authorisations and oversight to refine |
 | BP-21 | Intelligence | Drafted; statutory powers, source handling and governance to refine |
 | BP-22 | Crime Scenes | Drafted; legal powers and specialist standards to refine |
-| BP-23 | Evidence Management | Not started |
+| BP-23 | Evidence Management | Drafted; evidential rules, retention and professional standards to refine |
 | BP-24 | Forensics | Not started |
 | BP-25 | Arrests and Warrants | Not started |
 | BP-26 | Custody Management | Not started |
