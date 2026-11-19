@@ -38,7 +38,7 @@ Each division is designed with its purpose, scope, responsibilities, components,
 | BP-30 | Department Governance | Drafted; statutory mandate, oversight and delegation framework remain open |
 | BP-31 | Professional Standards | Drafted; conduct code, complaints jurisdiction and disciplinary framework remain open |
 | BP-32 | Training and Development | Drafted; competency catalogue, statutory requirements and qualification rules remain open |
-| BP-33 | Human Resources | Not started |
+| BP-33 | Human Resources | Drafted; employment law, terms, entitlements and workforce rules remain open |
 | BP-34 | Finance and Procurement | Not started |
 | BP-35 | Simulation Engine | Not started |
 | BP-36 | Relationships and Social Context | Not started |

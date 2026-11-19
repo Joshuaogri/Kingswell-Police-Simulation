@@ -6172,3 +6172,468 @@ The design must handle recruit failure, partial course completion, assessment ap
 
 **Draft status:** BP-32 is a working design. The fictional police academy structure, statutory training requirements, competency catalogue, recruit duration, probation standards, assessment thresholds, specialist qualification rules, renewal periods, instructor accreditation, external provider standards, fitness requirements, reasonable-adjustment rules, training budget and formal authorisation matrix remain open. No academy, course catalogue, learning management system, assessment engine or operational competence registry has been implemented by this design document.
 
+## BP-33 — Human Resources
+
+### Purpose and scope
+Define the police service's workforce administration and employee lifecycle framework. BP-33 governs how the organisation plans its workforce, recruits and appoints personnel, administers employment relationships, manages attendance and leave, supports employee welfare, handles capability and workplace matters, maintains employment records, and administers separation from service.
+
+The division ensures that the service has the right people, lawful employment arrangements, clear responsibilities, consistent employee administration and reliable workforce information. It supports operational readiness without allowing staffing pressure to override employment rights, safety, due process or statutory requirements.
+
+BP-33 covers:
+- Workforce establishment, headcount and workforce planning.
+- Recruitment administration and pre-employment checks.
+- Appointment, onboarding and employment documentation.
+- Employment status, terms, conditions and service history.
+- Attendance, working time, shifts, overtime and rest.
+- Leave, absence, sickness and return-to-work administration.
+- Pay, allowances, benefits and employee entitlements interfaces.
+- Employee relations, grievances and workplace dispute processes.
+- Capability, performance support and improvement processes.
+- Employee welfare, occupational health and workplace adjustments.
+- Transfers, secondments, temporary assignments and acting arrangements.
+- Promotion and appointment administration interfaces.
+- Resignation, retirement, dismissal, death and other separation.
+- Workforce records, reporting, confidentiality and audit.
+
+BP-33 does not replace:
+- BP-05 for institutional structure, command and organisational authority.
+- BP-06 for authoritative personnel identity and personnel-record architecture.
+- BP-07 for rank, grade, position, appointment and career progression rules.
+- BP-08 for operational unit assignment and deployment authority.
+- BP-30 for institutional governance and delegations.
+- BP-31 for misconduct, professional standards and disciplinary findings.
+- BP-32 for training, assessment and competence.
+- BP-34 for budgets, payroll funding, procurement and financial controls.
+- BP-38 and BP-39 for records governance, databases, persistence and recovery.
+
+Employment administration, professional discipline, operational command and training competence are separate concepts. A personnel administrator cannot grant police powers, a commander cannot change an employee's contractual terms outside delegated authority, and an HR decision cannot rewrite an independent disciplinary or judicial finding.
+
+### Foundational principles
+The workforce framework is governed by:
+- Lawful employment and respect for applicable labour and police-service law.
+- Fairness, consistency, transparency and non-discrimination.
+- Clear separation of employment status, rank, grade, position, appointment, authority and competence.
+- Accurate and timely employee records.
+- Proportionate use of personal information and restricted access.
+- Documented decisions, delegated authority and auditability.
+- Employee voice, representation and fair process.
+- Health, safety, welfare and reasonable workplace adjustments.
+- Operational resilience balanced with employee rights and wellbeing.
+- Protection against retaliation, harassment and arbitrary treatment.
+- Separation of allegations, capability concerns, disciplinary findings and criminal convictions.
+- Continuity of employment administration when personnel transfer between units or locations.
+
+No employee is treated as an interchangeable resource. Workforce planning must account for skills, experience, availability, welfare, lawful working-time limits, training commitments and operational risk.
+
+### Workforce establishment and planning
+The service maintains an approved establishment describing authorised organisational capacity. It identifies:
+- Organisational unit and reporting structure.
+- Approved positions and role profiles.
+- Required rank, grade or employment classification.
+- Required qualifications and competencies.
+- Authorised headcount or funded full-time-equivalent capacity.
+- Location and jurisdiction.
+- Funding source and cost centre.
+- Vacancy, occupied, temporarily filled or frozen status.
+- Approval authority and review date.
+
+Workforce planning considers service demand, population and geographic coverage, incident patterns, leave, sickness, training, retirements, turnover, specialist capability, succession, diversity, recruitment lead times and budget.
+
+The system distinguishes authorised establishment, actual headcount, active employees, temporary staff, vacancies, funded posts and people currently available for deployment. A person on leave, training, suspension or secondment remains part of the relevant workforce count but may not be operationally available.
+
+Changes to establishment require approval under BP-30 and funding validation under BP-34. An operational commander may identify a staffing need but cannot unilaterally create a permanent post or bypass establishment controls.
+
+### Recruitment administration and selection
+Recruitment is conducted against an approved vacancy and role profile. The process may include:
+- Vacancy justification and authorisation.
+- Public or internal advertisement.
+- Candidate application and identity verification.
+- Eligibility and qualification checks.
+- Structured interviews and job-related assessment.
+- Physical, medical or psychological suitability assessment where lawful and relevant.
+- Integrity and background vetting under applicable law.
+- Reference and employment-history checks.
+- Conflict-of-interest declarations.
+- Accessibility and reasonable adjustments.
+- Selection decision, reasons and candidate notification.
+- Offer, acceptance and pre-employment conditions.
+
+Selection criteria must be relevant, documented and consistently applied. Protected characteristics must not be used unlawfully in selection. Equality monitoring is kept distinct from selection decisions and subject to privacy safeguards.
+
+Vetting is a risk and suitability process, not a finding of criminal guilt. An adverse or incomplete check requires appropriate review, verification and an opportunity to address material discrepancies where law provides. A candidate must not be rejected solely on an unverified allegation or mistaken identity.
+
+Recruitment records identify panel members, conflicts, assessment evidence, scores or reasons, approvals, exceptions and review routes. A hiring manager cannot bypass a mandatory check or appoint beyond delegated authority.
+
+### Appointment, onboarding and employment terms
+Appointment begins only when required approvals and conditions are satisfied. The employee record links:
+- Verified identity and employee identifier.
+- Appointment and employment status.
+- Employer entity and service jurisdiction.
+- Position, rank or grade where applicable.
+- Reporting manager and organisational unit.
+- Work location and expected duties.
+- Start date and any probation period.
+- Employment type and contract terms.
+- Pay scale, allowances and benefits references.
+- Required qualifications and training.
+- Vetting and authorisation status.
+- Policy acknowledgements and declarations.
+- Review dates and outstanding conditions.
+
+Onboarding includes explanation of role, command and reporting arrangements, policies, conduct standards, information security, health and safety, payroll administration, employee support and required training.
+
+The employee receives the applicable written terms and a record of amendments. Oral assurances do not silently alter the official contract. Changes to terms require lawful authority, consultation or agreement where required, notice and a versioned record.
+
+### Employment categories and status
+The system supports distinct employment relationships, such as:
+- Permanent or continuing employee.
+- Fixed-term employee.
+- Probationary employee.
+- Recruit or trainee.
+- Part-time employee.
+- Temporary or casual employee.
+- Seconded employee.
+- Contracted service provider.
+- Volunteer or auxiliary role where legally recognised.
+- Suspended employee.
+- Employee on authorised leave.
+- Employee serving notice.
+- Former employee.
+
+These are not interchangeable labels. A contractor is not automatically an employee or sworn officer. A recruit may have limited powers and a special training status. A seconded employee may remain employed by a home organisation while serving under a host arrangement.
+
+Status changes record effective dates, authority, reason, contractual basis and impacts on access, pay, benefits, training, supervision and deployment. Historical status is retained so that past decisions can be evaluated under the rules then in force.
+
+### Employment conditions and policy administration
+The service maintains controlled references for:
+- Working hours and shift arrangements.
+- Rest periods and maximum working time.
+- Overtime, call-out and on-call arrangements.
+- Pay grades, increments and allowances.
+- Leave and public holidays.
+- Sickness and absence.
+- Pension and retirement arrangements.
+- Insurance and other benefits.
+- Uniform, equipment and expense entitlements.
+- Relocation, travel and duty-related expenses.
+- Flexible working and workplace adjustments.
+- Grievance, representation and consultation rights.
+
+Exact rates, thresholds, eligibility rules, statutory minima, collective agreements and pension provisions remain to be defined by the fictional country's law and approved employment instruments. BP-33 records authoritative references and employee-specific applicability; it does not invent contractual entitlements.
+
+### Attendance, working time and availability
+Attendance administration records scheduled and actual duty, approved changes, overtime, rest, absence and relevant exceptions. It integrates with BP-08 deployment and BP-37 scheduling without confusing an employee's contractual hours with current operational availability.
+
+Records may include:
+- Published roster and assigned shift.
+- Clock-in or attendance confirmation where used.
+- Late arrival, early departure and authorised absence.
+- Overtime and call-out.
+- Rest periods and compensatory time.
+- Training and other approved duty.
+- Remote or alternative work arrangements where permitted.
+- Manager approval and reason for adjustment.
+
+The system detects potential working-time and fatigue risks, including repeated overtime, missed rest, excessive consecutive duty and conflicts with mandatory training. Alerts prompt review; they do not automatically establish misconduct.
+
+A commander may request additional duty only within legal and delegated limits. Emergency exceptions must have a legal basis, documented necessity, duration, review and compensatory arrangements where required. Staffing shortages do not justify silently erasing recorded hours or denying statutory rest.
+
+### Leave administration
+Leave types may include annual leave, public holidays, sickness absence, parental leave, maternity or paternity leave, adoption leave, bereavement leave, compassionate leave, carers' leave, study leave, special leave, unpaid leave and other statutory or approved categories.
+
+Each leave category defines:
+- Eligibility and accrual.
+- Entitlement and calculation method.
+- Application and approval authority.
+- Notice and evidence requirements.
+- Carry-over or forfeiture rules.
+- Interaction with shift rosters and operational continuity.
+- Pay and benefit treatment.
+- Confidentiality and record access.
+- Return-to-work requirements where applicable.
+
+Leave decisions must be consistent, timely and reasoned. Operational requirements may affect scheduling only within applicable law and policy. Leave is not denied arbitrarily or used as punishment. Sensitive reasons are restricted; supervisors see only the information necessary to plan duty and manage safety.
+
+### Sickness absence and return to work
+Sickness absence is handled as an employment and welfare matter, with appropriate medical confidentiality. Records distinguish employee self-report, medical certification, occupational-health advice, fitness restrictions and management decisions.
+
+The process may include:
+- Notification and recording of absence.
+- Applicable certification and review points.
+- Welfare contact proportionate to circumstances.
+- Occupational-health referral where appropriate.
+- Fitness-for-duty assessment where lawfully required.
+- Workplace adjustments or phased return.
+- Return-to-work discussion.
+- Review of recurring or prolonged absence.
+- Capability referral only where appropriate and fair.
+
+Managers do not diagnose employees or access full medical records without lawful basis. Health information is held separately with tightly controlled access. A medical condition is not evidence of poor character or misconduct.
+
+Return to work may be full, phased, restricted or deferred based on competent advice and role risk. Any restriction records scope, review date, responsible authority and route to reassessment.
+
+### Pay, allowances and benefits interface
+BP-33 maintains the employment facts required for accurate remuneration, while BP-34 governs financial authorisation, funding and payment controls.
+
+Relevant data may include:
+- Contractual salary or pay scale.
+- Grade or increment eligibility.
+- Approved allowances and premiums.
+- Overtime and call-out records.
+- Leave and absence adjustments.
+- Deductions and benefit references.
+- Effective dates and authorising officer.
+- Payroll queries, corrections and audit trail.
+
+No user or manager may directly edit a paid amount without an authorised and traceable change. Payroll corrections preserve original entries, reason, approval and payment impact. Disputes are acknowledged and investigated promptly. Exact pay rates and tax or pension rules remain external legal and financial configuration, not invented simulation constants.
+
+### Employee relations and representation
+The framework provides lawful routes for consultation, representation and collective employee relations. It may support:
+- Employee representatives and recognised associations.
+- Staff consultation and negotiation.
+- Workplace policy consultation.
+- Employee feedback and engagement.
+- Formal grievances.
+- Workplace mediation where voluntary and appropriate.
+- Dispute escalation and independent review.
+- Representation during relevant employment processes.
+
+Employees may raise concerns without retaliation. Representation rights and collective arrangements are determined by the fictional legal framework. Managers must not interfere with lawful association or pressure employees to waive rights.
+
+### Grievances and workplace disputes
+A grievance may concern management decisions, workplace treatment, conditions, discrimination, harassment, working arrangements, pay administration, safety, unfair treatment or other employment matters.
+
+The grievance process records:
+- Employee and grievance reference.
+- Issue and requested resolution.
+- Date and receiving channel.
+- Immediate safety or retaliation concerns.
+- Informal resolution attempts where appropriate.
+- Assigned impartial handler.
+- Evidence and response.
+- Meetings and representation.
+- Findings, reasons and proposed remedy.
+- Review or appeal route.
+- Completion and follow-up.
+
+A grievance is not automatically a misconduct complaint, though allegations of misconduct must be referred to BP-31 where required. The employee must not be forced into informal resolution for serious harassment, violence, discrimination or safeguarding matters. The person complained about should not control the grievance investigation or decision.
+
+### Capability and performance management
+Capability processes address an employee's ability to meet defined role requirements, including performance, knowledge, skill, health-related capability and sustained work standards. They are distinct from disciplinary processes.
+
+The framework may include:
+- Clear role expectations and measurable standards.
+- Regular supervision and feedback.
+- Documented performance reviews.
+- Early support and coaching.
+- Identification of resources or training needs.
+- Improvement plans with reasonable objectives and timescales.
+- Adjustments and occupational-health input where appropriate.
+- Progress reviews and employee response.
+- Alternative duties or role adjustment where available.
+- Formal capability decision and appeal where applicable.
+
+Capability concerns must be based on evidence and account for workload, supervision, training, equipment, policy clarity, reasonable adjustments and operational context. A person should not be blamed for systemic failures beyond their control.
+
+Deliberate dishonesty, wilful refusal or other alleged misconduct is referred to BP-31 rather than disguised as a capability issue. A single event may involve both performance and conduct questions, but each route must have a clear basis and fair process. Capability action is not a criminal finding and must not be recorded as one.
+
+### Workplace conduct and employee relations interfaces
+BP-33 administers employment processes where workplace behaviour affects working relationships, but BP-31 retains professional standards investigation and disciplinary jurisdiction for police conduct matters.
+
+The system identifies the correct route for:
+- Interpersonal disagreement.
+- Bullying or harassment allegations.
+- Discrimination and victimisation.
+- Workplace violence or threats.
+- Insubordination or alleged refusal of lawful instruction.
+- Attendance or punctuality concerns.
+- Confidentiality and data misuse.
+- Conflicts of interest.
+- Criminal allegations.
+- Fitness-for-duty concerns.
+
+Triage considers whether the matter is a grievance, capability issue, professional standards allegation, criminal matter, safety concern or a combination. No administrator may downgrade a serious conduct allegation solely to avoid formal process. Parallel processes are coordinated without sharing confidential material unnecessarily.
+
+### Employee welfare and occupational health
+The service supports physical and psychological welfare, safe working conditions and access to appropriate assistance. Measures may include:
+- Occupational-health services.
+- Confidential counselling and employee assistance.
+- Critical-incident support.
+- Fatigue and workload management.
+- Injury reporting and rehabilitation.
+- Peer support with appropriate boundaries.
+- Workplace risk assessment.
+- Reasonable adjustments.
+- Return-to-work planning.
+- Referral to external healthcare where appropriate.
+
+Support is not conditional on an employee admitting fault or waiving rights. Welfare information is not used as informal intelligence or disclosed to commanders beyond what is necessary for safety, accommodation and lawful employment decisions.
+
+The framework recognises exposure to traumatic events, shift work, public scrutiny and operational stress without assuming that every employee experiences or responds to them in the same way. The service must not stigmatise help-seeking.
+
+### Equality, dignity and workplace adjustments
+Employment decisions must comply with applicable equality and anti-discrimination law. The service provides accessible recruitment, training, facilities, communications and workplace arrangements where required.
+
+Reasonable adjustment requests are considered individually and documented with:
+- Requested adjustment and employee needs as lawfully disclosed.
+- Relevant functional requirements of the role.
+- Evidence or specialist advice where appropriate.
+- Alternatives considered.
+- Decision and reasons.
+- Review date and appeal route.
+
+Medical or disability information is limited to those with a legitimate role. Adjustments do not automatically remove essential role requirements, but the service must assess whether the requirement can be met through a reasonable change in method, equipment, schedule or allocation.
+
+### Transfers, secondments and temporary assignments
+A transfer or temporary assignment records:
+- Sending and receiving units or organisations.
+- Employee's substantive post and temporary role.
+- Effective start and end dates.
+- Reporting and supervision arrangements.
+- Duties, authority and geographic jurisdiction.
+- Required qualifications and training.
+- Pay, expenses and accommodation implications.
+- Access and security changes.
+- Return or extension arrangements.
+- Approval and review authority.
+
+A temporary assignment does not automatically change substantive rank, grade, employment contract or statutory authority. A secondment agreement identifies the home employer, host responsibilities, liability, information-sharing rules and return arrangements.
+
+Operational redeployment under BP-08 is distinguished from a formal HR transfer. The former changes current assignment; the latter changes the employee's administrative employment placement or terms.
+
+### Promotion, acting appointments and career administration
+BP-33 supports the administrative consequences of decisions made under BP-07. It records approved changes to grade, pay, position, reporting line, terms and effective date, but does not determine promotion criteria or confer rank.
+
+Acting appointments and temporary higher duties require:
+- Defined authority and duration.
+- Eligibility and competency checks.
+- Approval under the delegation schedule.
+- Pay and allowance treatment.
+- Reporting and accountability arrangements.
+- End date, review or extension.
+- Clear distinction from substantive appointment.
+
+A successful course, performance review or acting appointment does not automatically guarantee promotion. Decisions must follow the approved career framework and applicable fairness rules.
+
+### Employee concerns, whistleblowing and retaliation
+Employees may raise concerns about safety, corruption, illegality, discrimination, misconduct, policy failure or workplace treatment through the appropriate protected route.
+
+BP-33 provides employment support and records relevant workplace actions, while BP-31 controls protected disclosure and professional standards processes. No employee may be penalised for a protected report, lawful participation in an investigation, representation, grievance or exercise of employment rights.
+
+Any alleged retaliation is assessed independently and promptly. Confidentiality is preserved to the extent lawful. An employee who makes a report in good faith is not treated as dishonest merely because the concern cannot be substantiated.
+
+### Separation from service
+Separation may occur through:
+- Resignation.
+- Retirement.
+- Expiry of fixed-term employment.
+- Completion of secondment or temporary appointment.
+- Dismissal following lawful process.
+- Redundancy or organisational restructuring where permitted.
+- Medical or capability-related separation under applicable law.
+- Death in service.
+- Other legally recognised termination.
+
+The process records reason, authority, notice, effective date, outstanding pay and benefits, leave balances, pension interface, property return, access revocation, record preservation, exit interview where appropriate and post-employment obligations.
+
+A resignation does not automatically terminate an investigation or erase a complaint. Where jurisdiction permits, matters may continue after separation. The record distinguishes resignation, retirement, dismissal, contract expiry and death; these outcomes must never be collapsed into a generic inactive status.
+
+Dismissal for misconduct requires the applicable BP-31 process. Criminal conviction, disciplinary finding and employment termination remain separate statuses. A person leaving service is not presumed guilty because an investigation remains open.
+
+### Retirement, service limits and pension interface
+Retirement administration follows the governing law, service regulations and approved career framework. It records eligibility, notice, service calculation, approval, effective date, pension or benefit referrals and any permitted extension.
+
+BP-33 administers the employment event; BP-07 defines career and service rules. Pension calculations and financial obligations are handled through the authorised financial and pension framework. The system must not invent retirement age, service duration or benefit formulas before those rules are approved.
+
+### Workforce reporting and analytics
+Authorised workforce reports may cover:
+- Establishment and vacancy rates.
+- Headcount and employment categories.
+- Recruitment pipeline and time to fill.
+- Turnover, retirement and retention.
+- Attendance, overtime and absence.
+- Leave and training release.
+- Skills and workforce capability.
+- Employee welfare and workplace safety trends.
+- Grievances and capability processes in appropriately aggregated form.
+- Equality and access monitoring where lawful.
+- Succession and workforce risk.
+
+Reports distinguish actual people from posts and full-time equivalents. They use clear definitions, reporting periods and data-quality checks. Sensitive health, grievance, disciplinary and whistleblowing information is not exposed through ordinary management dashboards.
+
+Analytics must not be used to infer individual misconduct or make high-impact employment decisions without lawful, explainable and reviewable human assessment. Small-group reporting must account for re-identification risk.
+
+### Employment records and confidentiality
+BP-33 maintains or references authoritative records for:
+- Recruitment and selection.
+- Appointment and contract terms.
+- Employment status and service history.
+- Attendance, shifts and leave.
+- Pay and benefits interfaces.
+- Grievances and employee relations.
+- Capability and performance.
+- Welfare and occupational-health restrictions.
+- Transfers and secondments.
+- Promotion and acting appointments.
+- Separation and post-employment obligations.
+
+Access is role-based and purpose-limited. Medical, grievance, whistleblowing, vetting and disciplinary records receive additional restrictions. Supervisors see only the information required for legitimate management and deployment. Employees may access and correct their own records through defined procedures, subject to lawful limits.
+
+Every material change records actor, timestamp, reason, authority, source and previous value. Records follow approved retention schedules, legal holds and disclosure rules. The system preserves historical accuracy and does not silently overwrite employment decisions.
+
+### Player experience and authority
+The player may interact with HR according to their status and permissions. An ordinary officer can review relevant employment information, submit leave requests, report absence, raise a grievance, request an adjustment, review training requirements, submit a transfer preference or receive formal employment notices.
+
+A supervisor may approve routine matters only within delegated authority. HR personnel may administer employment records and processes but cannot alter operational command, grant statutory powers, decide professional standards findings or make judicial determinations.
+
+The player must be able to distinguish:
+- Substantive post from current deployment.
+- Rank from grade and salary scale.
+- Employment status from duty status.
+- Leave approval from operational availability.
+- Capability action from misconduct discipline.
+- Interim restriction from final sanction.
+- Resignation from dismissal.
+- Employment termination from criminal conviction.
+
+The interface shows pending requests, decision authority, reasons, deadlines, appeal routes and status changes without exposing confidential records to unauthorised users.
+
+### Connections to other divisions
+- **BP-01 to BP-05:** foundational governance, world, population, institutions and police architecture.
+- **BP-06 and BP-07:** authoritative personnel records, rank, grade, position, appointment and career rules.
+- **BP-08 and BP-09:** deployment, staffing, equipment and operational resources.
+- **BP-10 to BP-12:** patrol, communications, incident response, attendance and rostering.
+- **BP-13 to BP-29:** specialist roles, operational demands and legal consequences that affect workforce requirements.
+- **BP-30:** governance, delegations, establishment approval and organisational accountability.
+- **BP-31:** conduct investigations, disciplinary findings, protected disclosures and integrity.
+- **BP-32:** training, competence, qualification and development.
+- **BP-34:** payroll funding, budgets, benefits, procurement and financial control.
+- **BP-35 to BP-37:** simulation processing, relationships, time and scheduling.
+- **BP-38 to BP-44:** records, persistence, interface, notifications, permissions, testing and configuration.
+
+### Exceptions and edge cases
+The design must handle duplicate identity, incomplete application, false credentials, adverse vetting, disputed qualification, recruitment appeal, candidate withdrawal, delayed start date, probation extension, contract amendment, retroactive pay correction, missed attendance record, shift change, excessive overtime, fatigue risk, overlapping leave, emergency recall, sickness during leave, long-term absence, occupational-health restriction, disability adjustment, pregnancy-related adjustment, workplace injury, grievance against a senior manager, grievance involving HR staff, harassment report, protected disclosure, retaliation, employee suspension, criminal investigation, disciplinary process, capability process, disputed performance evidence, temporary reassignment, secondment extension, acting appointment, promotion reversal where lawful, transfer between jurisdictions, loss of payroll data, employee death, resignation during investigation, retirement while a matter is pending, dismissal appeal, post-employment disclosure, legal hold, privacy request, record correction, system outage and organisational restructuring.
+
+### Acceptance conditions
+- Every post is linked to an approved establishment and funding authority.
+- Recruitment and appointment decisions are traceable, fair and based on approved role criteria.
+- Employment status, rank, grade, position, appointment and operational authority remain distinct.
+- Contract terms and changes have authorised, versioned records.
+- Attendance, shifts, overtime, rest and leave are accurately administered.
+- Working-time and fatigue risks can be identified and reviewed.
+- Sickness and medical information receive appropriate confidentiality.
+- Pay and benefits changes require authorised, auditable controls.
+- Employees have accessible grievance, representation and workplace concern routes.
+- Capability is distinct from professional misconduct and criminal proceedings.
+- Welfare, occupational health and reasonable adjustments are handled fairly.
+- Transfers, secondments and acting appointments have clear authority, scope and duration.
+- Promotion administration does not replace BP-07 selection and appointment decisions.
+- Separation reasons and effective dates are accurately distinguished.
+- Open investigations and legal holds are not erased by resignation or retirement.
+- Workforce analytics use defined measures and protect sensitive information.
+- Employee records are access-controlled, historically accurate and auditable.
+- HR users cannot grant police powers, decide disciplinary cases outside authority or override operational command.
+- The player can see and act only on employment matters permitted by their role.
+
+**Draft status:** BP-33 is a working design. The fictional labour statute, police employment regulations, collective bargaining arrangements, employment categories, recruitment and vetting standards, contract forms, working-time limits, pay scales, leave entitlements, sickness rules, pension and retirement law, grievance and capability procedures, medical confidentiality rules, redundancy framework and retention schedules remain open. No HR information system, payroll engine, recruitment platform, workforce establishment database or employee self-service portal has been implemented by this design document.
+
