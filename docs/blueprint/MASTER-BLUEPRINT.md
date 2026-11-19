@@ -915,3 +915,181 @@ The system must handle one event reported many times, several unrelated events a
 - The player only sees information available to their role.
 
 **Draft status:** BP-12 is a working design. The final incident categories, priority framework, response standards and closure rules will be refined alongside crime classification and case management. It is not a claim that incident-management software has been implemented.
+
+## BP-13 — Crime Architecture
+
+### Purpose
+Define the complete fictional crime and offence system used by Kingswell's police service and justice institutions. This division establishes what offences exist in the fictional country's laws, how they are organised, what distinguishes one offence from another, and how reported conduct is classified consistently throughout the game.
+
+Crime architecture is the common reference point for incident assessment, crime recording, investigation, intelligence, arrests, prosecution, court outcomes, statistics and the behaviour of the simulated world.
+
+### Scope
+This division defines the structure and reference information for criminal offences. It covers offence families, individual offence definitions, elements, seriousness, attempt and participation, relationships between offences, recording rules and links to legal outcomes.
+
+It does not itself generate crimes or decide that a particular person committed an offence. Crime generation is BP-14. Incident records are BP-12. Investigation and case management are BP-15 and BP-16. Arrest, legal process and court decisions are handled by BP-25 to BP-29.
+
+All laws, offence names, penalties and legal institutions belong to Kingswell's fictional sovereign country. They must not be copied mechanically from a real country's legal code.
+
+### Core design principles
+- Every offence has a stable identity and a clear fictional legal definition.
+- Similar offences are distinguished by their required facts and elements, not just by their names.
+- The system separates an allegation, an incident classification, an investigative hypothesis, a charge and a court finding.
+- An offence definition can change over time without rewriting historical cases.
+- The same offence reference is used consistently across police and justice records.
+- The offence catalogue is broad enough to support varied ordinary, serious, organised and specialist crime.
+- New offences are added in a controlled way, with links and consequences considered before they enter the active catalogue.
+
+### Offence hierarchy
+The crime catalogue is organised in levels:
+
+1. **Crime domain:** a broad area such as offences against persons, property, public order, public safety, public administration or economic activity.
+2. **Offence family:** a group of related offences sharing a broad subject or legal purpose.
+3. **Offence type:** a distinct offence with its own legal definition.
+4. **Variant or grade:** a legally meaningful variation, such as aggravated, attempted, completed or a different seriousness grade, where the fictional law provides for it.
+
+This hierarchy supports navigation and reporting. It must not make two legally different offences interchangeable merely because they share a family.
+
+### Crime domains and coverage
+The catalogue is expected to cover, at minimum, the following broad domains. These are coverage areas, not a claim that every possible offence has already been fully specified.
+
+- **Offences against persons:** homicide, assault, threats, unlawful restraint, abduction, harassment, stalking, exploitation and other unlawful harm.
+- **Sexual offences:** non-consensual sexual conduct, exploitation, abuse, prohibited conduct involving protected persons and related offences, defined sensitively and according to fictional law.
+- **Property offences:** theft, robbery, burglary, unlawful entry, criminal damage, arson, handling stolen property and related conduct.
+- **Fraud and deception:** fraud, forgery, identity misuse, deception, financial abuse, false accounting and related offences.
+- **Economic and commercial offences:** bribery, corruption, market abuse, unlawful trading, competition offences, tax or revenue offences and commercial misconduct where criminalised by fictional law.
+- **Cyber and digital offences:** unauthorised access, interference, digital fraud, data theft, malicious disruption and misuse of communications or digital systems.
+- **Public order offences:** disorder, unlawful threats to public peace, prohibited weapons conduct under fictional law, obstruction and offences affecting public gatherings.
+- **Public administration and justice offences:** corruption in public office, obstruction of justice, perverting proceedings, perjury, evidence interference, escape and unlawful interference with public functions.
+- **Organised and group criminality:** participation in criminal organisations, conspiracy, coordinated offending, trafficking networks and related offences as defined by fictional law.
+- **Drug and controlled-substance offences:** unlawful production, supply, possession, trafficking and related conduct involving substances controlled by fictional law.
+- **Weapons and dangerous materials:** unlawful possession, use, manufacture, supply or movement of items controlled by fictional law.
+- **Transport and road offences:** dangerous or unlawful driving, vehicle-related offences, transport safety offences and offences affecting public transport, aviation, maritime or freight activity.
+- **Environmental and public health offences:** unlawful pollution, dangerous waste, protected-resource offences, contamination and conduct threatening public health.
+- **Immigration, border and customs offences:** unlawful entry or facilitation, document fraud, smuggling, prohibited imports and other offences established by the fictional country.
+- **National security offences:** espionage, sabotage, serious threats to national institutions and other offences defined by the fictional legal system.
+- **Regulatory and licensing offences:** serious breaches that fictional law makes criminal, distinguished from civil or administrative violations.
+- **Other statutory offences:** additional offences created by the fictional legislature and assigned to the correct domain and family.
+
+The catalogue should include common, uncommon and rare offences. Rarity affects how often offences occur in the living simulation, not whether the police system can record or investigate them.
+
+### Individual offence definition
+Each offence type has a structured definition containing, where applicable:
+- Stable offence ID and official fictional title.
+- Short plain-language description.
+- Crime domain and offence family.
+- Legal source, provision and effective date.
+- Required elements that must be established.
+- Conduct, circumstances or result required by the offence.
+- Mental or fault requirement where the fictional law specifies one.
+- Relevant exclusions, defences or lawful justifications as defined by the fictional law.
+- Attempt, participation, assistance or group-liability rules where applicable.
+- Available variants or grades.
+- Seriousness classification and any statutory maximum or range.
+- Whether the offence is ordinarily reportable, chargeable or subject to special procedure.
+- Relevant specialist handling or investigative considerations.
+- Related and commonly confused offences.
+- Version, commencement, amendment and repeal history.
+
+Definitions must be understandable to the player. Legal precision belongs in the structured definition, supported by a plain-language explanation.
+
+### Offence elements
+An offence may require several elements to be established. The system records these separately so that investigators and prosecutors can distinguish what is alleged, what is supported by evidence, what remains uncertain and what is disproved.
+
+Elements can relate to:
+- A person's conduct or omission.
+- A particular result or harm.
+- The circumstances in which the conduct occurred.
+- A required mental state or knowledge.
+- A relationship, status or duty.
+- A location, object, value or protected category.
+- A required connection between the conduct and an outcome.
+
+Not every offence uses every element type. The offence definition states which elements apply. Evidence can support more than one element, and an element may require several independent pieces of evidence.
+
+### Distinguishing related offences
+The catalogue identifies offences that are similar in ordinary language but legally distinct. It records the key differences and the elements that separate them. This helps prevent an incident label or an investigator's initial theory from being treated as a final legal classification.
+
+Where one set of conduct could potentially fit more than one offence, the system can preserve alternative classifications for assessment. It must not automatically select the most serious offence without considering its required elements.
+
+### Attempts, assistance and group offending
+The fictional law may recognise completed offences, attempts, aiding or assisting, incitement, conspiracy, joint participation, corporate liability or other forms of responsibility. Each form is defined by the fictional legal system and linked to the relevant principal offence.
+
+The system distinguishes:
+- The underlying offence.
+- The person's alleged role.
+- The legal basis for that role.
+- The evidence supporting the alleged participation.
+- Whether the conduct was completed, attempted or preparatory.
+- Whether the legal requirements for group or organisational responsibility are met.
+
+Association, friendship, presence, employment or communication with an offender does not by itself establish criminal participation.
+
+### People and organisational responsibility
+Offence definitions can specify whether responsibility may apply to an individual, an organisation, or both. Corporate or organisational liability is included only where fictional law establishes it. Records distinguish the organisation, its relevant officers or employees, and each person's alleged conduct.
+
+The crime catalogue can also identify protected persons, vulnerable victims, public officials, regulated professionals or other legally relevant roles. These are legal circumstances, not assumptions that a person in a role has committed an offence.
+
+### Seriousness and classification
+Offences can be grouped by fictional legal seriousness and procedural consequences. The catalogue may define categories such as lower-level, standard, serious and exceptionally serious offences, but the final labels and thresholds must be consistent with the fictional country's legal system.
+
+Seriousness is distinct from:
+- Immediate incident priority.
+- Risk to a victim or the public.
+- Investigative complexity.
+- Media or public attention.
+- The eventual sentence or court outcome.
+
+An offence's statutory seriousness does not decide the urgency of every incident involving it.
+
+### Recording and classification stages
+The system preserves the difference between:
+1. Conduct reported by a caller or discovered by police.
+2. Initial incident type used for response.
+3. Provisional suspected offence.
+4. Offence classification supported by developing evidence.
+5. Offence or offences referred for legal review.
+6. Formal charge or equivalent legal allegation.
+7. Court finding, acquittal, dismissal or other final legal outcome.
+
+These stages may differ. A report can be genuine even when no offence is established. A case can be investigated under one suspected offence and later reclassified. A charge is an allegation, not a conviction.
+
+### Multiple offences and one course of conduct
+One incident or course of conduct may involve several possible offences. The system allows multiple offence links and records whether they relate to separate acts, alternative legal interpretations, a continuing course of conduct or different participants.
+
+It also handles multiple incidents that together form evidence of a repeated pattern or continuing offence. The system must not duplicate the same offence merely because several people report it.
+
+### Legal change and historical validity
+Offence definitions have effective dates. When fictional law changes, the new version applies according to its commencement and transitional rules. Historical incidents, decisions and court outcomes retain the offence definition and legal version relevant to their date.
+
+A repealed offence remains visible in historical records but is not offered as a current offence for new events after repeal, unless the fictional law expressly provides otherwise.
+
+### Crime statistics and analysis
+The catalogue supports consistent reporting by domain, family, offence type, seriousness, location, time, victim relationship, method and outcome. Statistical reporting must distinguish allegations, recorded offences, cases, charges and court findings. A change in classification rules must be visible in the data and must not silently distort historical comparisons.
+
+### Connections to other divisions
+- **BP-02 to BP-04:** geographic, population, property and organisational context.
+- **BP-10 to BP-12:** patrol discoveries, public reports, dispatch and incident classification.
+- **BP-14:** crime occurrence and generation using the offence catalogue.
+- **BP-15 and BP-16:** case creation, investigative hypotheses and offence-element assessment.
+- **BP-17 to BP-24:** victims, witnesses, suspects, interviews, intelligence, scenes and evidence.
+- **BP-25 to BP-29:** arrest, custody, legal review, charges, courts and outcomes.
+- **BP-30 to BP-34:** policy, training, staffing and institutional responsibilities.
+- **BP-35 to BP-44:** simulation behaviour, records, time, persistence, interface, permissions and testing.
+
+### Exceptions and edge cases
+The design must handle uncertain or changing offence classifications, multiple possible offences, several offences arising from one event, a single offence spanning multiple events, attempts, group participation, organisational responsibility, offences with unknown victims, offences discovered long after they occurred, cross-jurisdiction conduct, changes in fictional law, repealed offences, mistaken allegations, insufficient evidence and conduct that is harmful or suspicious but not criminal under the fictional law.
+
+### Acceptance conditions
+- Every current offence has a stable unique identifier and a complete definition.
+- Offences are organised into domains, families, types and legally meaningful variants.
+- Required elements and distinctions between related offences are explicit.
+- Allegations, incident classifications, investigative theories, charges and court findings remain distinct.
+- Multiple and alternative offence classifications can be recorded without duplication.
+- Attempt and participation rules link clearly to the underlying offence and fictional law.
+- Offence seriousness is not confused with incident urgency or investigative priority.
+- Legal changes preserve historical versions and effective dates.
+- Crime statistics distinguish reports, recorded offences, charges and court outcomes.
+- The catalogue supports all major crime areas needed by the living simulation.
+- No real-world country's legal code is silently treated as Kingswell law.
+
+**Draft status:** BP-13 is a working design. The detailed fictional offence catalogue, legal provisions, seriousness bands and procedural consequences will be populated and reconciled with later crime, investigation and justice divisions. It is not a claim that crime-classification software has been implemented.

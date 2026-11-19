@@ -37,7 +37,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-10 | Patrol Operations | Drafted; links to dispatch and incident design to refine |
 | BP-11 | Emergency Communications | Drafted; incident lifecycle and service standards to refine |
 | BP-12 | Incident Management | Drafted; offence and case connections to refine |
-| BP-13 | Crime Architecture | Not started |
+| BP-13 | Crime Architecture | Drafted; detailed fictional offence catalogue to populate |
 | BP-14 | Crime Generation | Not started |
 | BP-15 | Case Management | Not started |
 | BP-16 | Investigation | Not started |
