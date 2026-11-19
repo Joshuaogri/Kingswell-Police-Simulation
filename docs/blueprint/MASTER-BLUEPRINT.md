@@ -3411,3 +3411,185 @@ The system must handle unknown ownership, unidentified material, multiple compon
 - The player cannot bypass lawful authority or erase evidential history.
 
 **Draft status:** BP-23 is a working design. Exact seizure powers, evidential rules, retention periods, disclosure thresholds, storage standards, forensic handling requirements and court procedures remain subject to the fictional legal framework and professional standards. This document does not claim that evidence-management software or operational capability has been implemented.
+
+## BP-24 — Forensics
+
+### Purpose and scope
+Define the forensic-science service that supports investigations through the scientifically disciplined examination, interpretation and reporting of material. The division covers forensic capability, requests, triage, allocation, examination governance, findings, expert reporting, quality assurance and the interface between scientific work and police decision-making.
+
+Forensics is a specialist service, not an investigative shortcut. It does not determine guilt, replace lawful investigation or decide legal admissibility. Its work must be impartial, reproducible to the extent appropriate to the method, transparent about uncertainty and capable of independent scrutiny.
+
+### Forensic service architecture
+The service may include internal laboratories, scene-based specialists, digital-forensic capability and accredited external providers. The final organisational structure, disciplines, locations and staffing model remain to be designed against workload and competence requirements.
+
+Each service capability has a persistent record describing:
+- Discipline and examination types within its authorised scope.
+- Responsible unit, service lead and accountable manager.
+- Available facilities, validated equipment and approved methods.
+- Staff identities, qualifications, training, competence and authorisation.
+- Capacity, operating hours, workload and service constraints.
+- Quality-management arrangements, proficiency testing and audit history.
+- External accreditation or certification status, scope and validity where applicable.
+- Referral routes, limitations and dependencies on other specialist services.
+
+A laboratory or examiner may only undertake work within their current competence, authorisation, facility capability and approved method scope. A title or general forensic qualification does not imply competence in every discipline.
+
+### Forensic disciplines
+The design must support distinct disciplines without assuming that every discipline is available in-house. The catalogue may include:
+- Biology and DNA-related examinations.
+- Fingerprint and other friction-ridge examinations.
+- Trace materials, fibres, glass, paint and particulate comparisons.
+- Firearms, toolmarks and related comparison disciplines.
+- Toxicology, drugs and chemical analysis.
+- Pathology and medical forensic interfaces.
+- Questioned documents, handwriting and printing examinations.
+- Digital devices, data and multimedia examination.
+- Audio, video and image analysis.
+- Collision, engineering and other specialist reconstruction.
+- Anthropology, odontology and other identification support where justified.
+
+Each discipline has its own method-specific requirements, limits, competence criteria, validation status, reporting conventions and quality controls. The list is a capability framework, not a claim that all services are staffed or operational.
+
+### Request, triage and allocation
+A forensic request is a formal, traceable record linked to a case, investigation and one or more evidence identifiers from BP-23. It records:
+- Request identity, requesting officer and responsible investigator.
+- Case and incident references and the question to be addressed.
+- Relevant material identifiers, packaging and custody status.
+- Legal authority, consent or other applicable basis and any scope restriction.
+- Known case context necessary for the examination, with controls against unnecessary contextual bias.
+- Requested discipline, urgency, deadlines and reason for priority.
+- Potentially relevant alternative propositions or comparison material.
+- Risks, safeguarding, contamination concerns and handling constraints.
+- Triage decision, allocation, reviewer and decision rationale.
+
+Triage considers evidential value, urgency, risk of degradation, safeguarding, legal deadlines, investigative importance, laboratory capacity and fairness to all parties. Priority must not be determined solely by seniority, publicity or whether a result is expected to support a preferred theory.
+
+Requests may be clarified, declined, redirected, deferred or partially accepted. Every decision and any change in scope is recorded. The requester must be told about material limitations, unmet requests and expected delays. A request must not silently expand beyond its authorised question or the legal scope governing the material.
+
+### Independence, competence and conflicts
+Examiners are responsible for objective scientific work. They must report findings that support, contradict or do not resolve a proposition. They must not be instructed to obtain a desired result, suppress an inconvenient finding or overstate the strength of an association.
+
+The system records examiner identity, competence for the method, authorisation, relevant training, supervision and any conflict or independence concern. Where a conflict exists, reassignment or independent review is considered and documented.
+
+Investigative context is disclosed to an examiner only to the extent necessary for the scientific question and safe handling. The design supports sequential disclosure or other bias-reduction controls where appropriate to the discipline. It records what information was available to the examiner and when, so later reviewers can understand the context in which an interpretation was made.
+
+### Examination workflow
+A forensic examination has a controlled lifecycle:
+1. Request received and checked for completeness, authority and scope.
+2. Material identity and custody reconciled with BP-23.
+3. Triage and acceptance decision recorded.
+4. Examiner and any reviewer assigned according to competence and independence.
+5. Examination plan, method and relevant propositions documented.
+6. Material received, condition and seals checked, and discrepancies escalated.
+7. Examination activity, observations, measurements and method deviations recorded.
+8. Results reviewed, interpreted and assessed against limitations.
+9. Technical or peer review completed where required.
+10. Report authorised, issued and linked to the case and evidence record.
+11. Material returned, transferred, retained or otherwise disposed of under BP-23 authority.
+12. Any later correction, supplementary examination or challenge linked to the original record.
+
+The record captures dates, participants, equipment and method versions, environmental or operating conditions where relevant, controls, reference materials, observations, calculations, software versions where applicable, deviations, failed or inconclusive stages and reasons for stopping. The level of detail is appropriate to the discipline and sufficient for competent review.
+
+### Material handling and scientific continuity
+BP-23 remains the authoritative evidence-custody system. BP-24 does not create a competing chain of custody. Forensic receipt, internal movement, access, sampling, consumption, alteration, sub-item creation, return and external transfer are recorded through linked custody events.
+
+Before examination, the examiner verifies material identity, packaging, seals, condition and accompanying documentation. Any discrepancy is preserved and referred for assessment; the examiner does not repair or conceal a custody gap. Sampling and destructive or partially destructive work require recorded justification, authority, scope, quantity or portion affected, method, remaining material and any limitation on future testing.
+
+Where a sample is divided, extracted, consumed or transformed, each derivative receives a traceable identity linked to its source. A derivative is not represented as the original item. Remaining material and retained extracts are accounted for.
+
+### Findings, interpretation and propositions
+The forensic record distinguishes three levels:
+- **Observation or measurement:** what was directly seen, measured, detected or recorded under the method.
+- **Interpretation:** the scientific meaning of those observations, including the propositions considered, assumptions, limitations and degree of support where the discipline permits.
+- **Legal or investigative conclusion:** decisions about what happened, who is responsible, guilt, admissibility or case outcome. These are not decisions for the forensic examiner merely by virtue of their scientific role.
+
+Where appropriate, reports consider competing propositions rather than presenting a conclusion in isolation. The examiner identifies the source of propositions, relevant assumptions, the level at which an interpretation is made and whether the available data can discriminate between alternatives.
+
+The system must not generate automatic identity matches, source conclusions or numerical strength statements without a valid method, suitable data and authorised competent interpretation. It must not convert a database candidate, investigative lead or algorithmic similarity into a confirmed identification. Any search or candidate-generation system is recorded as such, with its limitations and the independent verification required.
+
+### Uncertainty, limitations and inconclusive outcomes
+Reports must state relevant uncertainty and limitations in language appropriate to the discipline. These may include sample quality or quantity, degradation, contamination risk, environmental effects, incomplete reference material, method sensitivity or specificity, measurement uncertainty, population or database limitations, assumptions, competing explanations, validation boundaries and the effect of missing information.
+
+An inconclusive result is a valid outcome and must not be treated as proof for either side. Absence of a detected feature is not automatically proof that the feature was never present. A failure to obtain a result is recorded with the method, stage, known reason if any and any implications for further work.
+
+The system must prevent unsupported certainty, misleading categorical language and the conflation of a source-level proposition with an activity-level or offence-level proposition. Where the discipline cannot support a reliable conclusion, that limitation is stated plainly.
+
+### Reports and expert evidence
+A report is a versioned, attributable scientific document. It identifies:
+- Case, request, evidence and report identifiers.
+- Examiner and relevant reviewer identities and competence.
+- Instructions, scope and questions addressed.
+- Material examined and its condition on receipt.
+- Methods, validated status and material deviations.
+- Relevant observations, results and interpretation.
+- Propositions considered and assumptions relied upon.
+- Uncertainty, limitations and inconclusive aspects.
+- Conclusions expressed only to the level supported by the method and data.
+- References, appendices, images, charts, calculations or supporting records.
+- Authorisation, issue date, recipients and version history.
+
+Reports distinguish factual observations from expert opinion. They identify work performed by others and any reliance on external reports or data. The examiner's duty is to assist the decision-maker impartially, including by identifying findings adverse to the prosecution theory and explaining limitations that may assist another party.
+
+The service supports expert conferences, clarification questions, supplementary reports, court attendance, challenges to methods or conclusions and disclosure of relevant underlying material. Court processes and admissibility decisions remain within BP-27 and BP-28.
+
+### Review, quality and accreditation
+Quality controls may include method validation and verification, equipment calibration and maintenance, reagent and control checks, environmental monitoring, staff competency assessment, proficiency testing, technical review, peer review, audit, corrective and preventive action, non-conformance reporting and external assessment.
+
+The record distinguishes:
+- A method being scientifically published from being validated for the laboratory's intended use.
+- A laboratory holding accreditation from a particular method or activity being within its accredited scope.
+- An examiner being employed by a laboratory from being currently competent and authorised for a particular task.
+- A technical review from an independent scientific review or a legal assessment.
+
+Quality incidents, contamination events, equipment failures, proficiency-test concerns, data-integrity problems and systemic errors are recorded, assessed for affected cases and escalated. The service supports retrospective notification and review where a quality issue may affect previously issued results. Corrective action does not erase the original result or its history.
+
+### Disclosure, retention and challenges
+Forensic records are linked to BP-23 evidence and BP-27 disclosure processes. The record preserves relevant notes, bench records, raw data, images, calculations, instrument outputs, method versions, validation references, quality records, communications, draft and final reports where required, review comments, deviations and supplementary work.
+
+Relevant material is not withheld merely because it is preliminary, inconclusive, adverse, sensitive or embarrassing. Disclosure decisions are made under the applicable fictional legal framework and are attributable, reviewable and versioned. Sensitive information is handled through lawful restrictions and appropriate review, not silent deletion.
+
+A challenge, complaint, request for independent examination, second opinion or re-analysis is separately recorded and linked to the original work. The original result remains available. Differences between examiners are documented and assessed rather than resolved by overwriting one opinion with another.
+
+Retention of samples, extracts, digital working copies, raw data and records follows BP-23 retention rules and any applicable legal hold. Disposal or return requires documented authority and confirmation that no outstanding testing, disclosure, appeal or other lawful obligation remains.
+
+### Player experience and authority
+The player may identify a forensic question, submit a properly authorised request, review its status, provide relevant context, receive reports, ask clarification questions, arrange lawful further examination and disclose material through the proper process.
+
+The player cannot select an examiner to secure a preferred conclusion, dictate scientific findings, bypass triage, alter raw results, suppress an adverse report, claim a candidate match is confirmed, or treat a forensic result as proof of guilt. Requests, approvals, access, decisions and communications are auditable. The interface makes clear which actions require a qualified examiner, laboratory manager, independent reviewer, evidence custodian, supervisor or legal authority.
+
+No forensic workflow automatically reveals a hidden offender, resolves the case or supplies the player with investigative solution hints. The player must interpret the available material and make their own investigative decisions.
+
+### Connections to other divisions
+- **BP-05 to BP-09:** service structure, personnel, qualifications, units and specialist resources.
+- **BP-13 to BP-16:** offence context, crime events, case questions and investigative direction.
+- **BP-17 to BP-19:** victim, witness and suspect material, statements and interview-related comparisons.
+- **BP-20 and BP-21:** surveillance material and intelligence leads, with provenance and evidential conversion kept explicit.
+- **BP-22:** scene examination, recovery context and specialist attendance.
+- **BP-23:** authoritative evidence identity, custody, sampling, transfers, retention and disclosure links.
+- **BP-25 to BP-29:** arrest decisions, legal process, court presentation, outcomes and corrections interfaces.
+- **BP-30 to BP-34:** governance, professional standards, training, staffing, procurement and quality resources.
+- **BP-35 to BP-37:** simulation processing, social context and consistent timelines.
+- **BP-38 to BP-44:** authoritative records, persistence, interface, reporting, security, testing and controlled expansion.
+
+### Exceptions and edge cases
+The design must handle insufficient material, mixed or degraded samples, contamination concern, uncertain provenance, seal discrepancy, custody gap, wrong or incomplete request, disputed authority, scope overreach, duplicate requests, conflicting priorities, unavailable discipline, external-provider delay, examiner conflict, expired competence, unvalidated method, equipment failure, failed controls, inconclusive result, competing interpretations, unexpected or exculpatory finding, candidate-generation false positive, database limitation, destructive testing, insufficient remaining sample, derivative identity error, data corruption, software or method-version change, retrospective quality alert, report correction, reviewer disagreement, disclosure challenge, independent re-examination, court challenge, retention hold, appeal, and laboratory or records-system outage.
+
+### Acceptance conditions
+- Every forensic request is uniquely identified, scoped, authorised and linked to the relevant case and evidence.
+- Every discipline, method, facility and examiner has a defined and current competence/authorisation scope.
+- Triage, allocation, priority changes, refusals and delays are reasoned and auditable.
+- Examiner independence and conflicts are addressed and recorded.
+- The material's authoritative identity and custody remain governed by BP-23.
+- Examination activity, methods, observations, deviations and derivatives are traceable.
+- Observations, scientific interpretations and legal conclusions are clearly separated.
+- Competing propositions, uncertainty, limitations and inconclusive results can be reported.
+- No unsupported automatic match, categorical identification or certainty claim is generated.
+- Reports are attributable, versioned, reviewed where required and linked to their supporting records.
+- Quality incidents trigger impact assessment and preservation of the original record.
+- Exculpatory, contradictory and unused forensic material remains available for proper review and disclosure.
+- Independent review, challenge, supplementary work and court scrutiny are supported.
+- Retention, transfer, return and disposal follow BP-23 authority and legal holds.
+- The player cannot manipulate scientific conclusions or receive automatic hidden-solution disclosure.
+
+**Draft status:** BP-24 is a working design. The fictional legal framework, forensic service structure, discipline availability, method catalogue, accreditation scope, staffing, service standards, reporting conventions and retention requirements remain to be specified. This division does not claim that forensic laboratories, forensic software or operational forensic capability have been implemented.
+

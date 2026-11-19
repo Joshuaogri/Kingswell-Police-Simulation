@@ -48,7 +48,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-21 | Intelligence | Drafted; statutory powers, source handling and governance to refine |
 | BP-22 | Crime Scenes | Drafted; legal powers and specialist standards to refine |
 | BP-23 | Evidence Management | Drafted; evidential rules, retention and professional standards to refine |
-| BP-24 | Forensics | Not started |
+| BP-24 | Forensics | Drafted — design only; no forensic software or service implemented |
 | BP-25 | Arrests and Warrants | Not started |
 | BP-26 | Custody Management | Not started |
 | BP-27 | Legal Processes | Not started |
