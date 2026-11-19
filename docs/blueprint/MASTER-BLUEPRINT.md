@@ -8077,3 +8077,419 @@ The system must preserve the authoritative clock, record every valid advancement
 - The player can identify whether a time is actual, planned, estimated or provisional.
 
 **Draft status:** BP-37 is a working design. The fictional calendar, starting date, time zone, daylight-saving policy, simulation time scale, advancement increments, interruption priorities, public holidays, legal deadline rules, working-time law, shift standards, recurrence syntax, reminder defaults, financial period conventions and exact scheduling conflict rules remain open. No authoritative game clock, calendar service, schedule engine, roster scheduler, deadline calculator or time-advancement software has been implemented by this design document.
+
+
+---
+
+## BP-38 — Records and Databases
+
+### Purpose and scope
+Define the authoritative information architecture, record standards, identifiers, database design, relationships, data validation, provenance, audit history, query interfaces and data-governance controls for the simulation. BP-38 ensures that every important person, place, organisation, event, case, item of evidence, decision, resource and institutional process can be represented consistently, linked correctly, retrieved when authorised and preserved as reliable historical information.
+
+BP-38 covers:
+- Record architecture and authoritative-source designation.
+- Entity identity, unique identifiers and reference conventions.
+- Data domains, schemas, relationships and constraints.
+- Database organisation and logical data modelling.
+- Record lifecycle, versioning and historical state.
+- Provenance, source attribution and confidence.
+- Data validation, integrity and quality controls.
+- Duplicate detection, identity resolution and merge safeguards.
+- Query, search, reporting and controlled data access interfaces.
+- Audit records and change history.
+- Data classification, retention metadata and legal holds.
+- Database migrations, schema versioning and compatibility.
+- Data import, export, correction and reconciliation.
+- Data ownership, stewardship and quality accountability.
+- Data dictionaries, schema documentation and interface contracts.
+
+BP-38 is the authoritative design for record structure and database architecture. It does not replace:
+- BP-03 and BP-04 for population, person, property, business and organisation domain meaning.
+- BP-05 to BP-37 for the substantive records and rules owned by each domain.
+- BP-39 for persistence, backups, recovery and continuity operations.
+- BP-42 for authentication, authorisation, secrets and security enforcement.
+- BP-43 for test strategy, data-quality testing and verification.
+- BP-44 for approved configuration and controlled schema or feature expansion.
+
+A database row is not automatically a verified fact. The record must preserve its source, status, effective period, uncertainty and authority. A user interface, cache, report, search index or model-generated summary is not an independent source of truth. The authoritative record and its history remain identifiable.
+
+The implementation must be designed from approved requirements and controlled domain models. It must not create speculative game tables or expose incomplete schemas merely because the Supabase project is available.
+
+### Data-governance principles
+The record architecture follows:
+- One authoritative identity per real simulated entity within its defined identity domain.
+- Clear ownership of each data domain and field.
+- Explicit relationships rather than duplicated or denormalised assertions without control.
+- Stable identifiers that do not depend on mutable names, addresses or status.
+- Preservation of historical facts and prior versions.
+- Provenance and source attribution for material assertions.
+- Separation of fact, report, allegation, inference, estimate and decision.
+- Data minimisation and purpose-limited access.
+- Validation at defined system boundaries.
+- Referential integrity and controlled lifecycle transitions.
+- Traceable corrections rather than silent overwrites.
+- Documented schemas and interface contracts.
+- Controlled migrations and backward compatibility.
+- Recoverability and testability.
+- No secret credentials or unrestricted sensitive data in source-controlled files.
+
+The same person, property, business, organisation, case, incident, item or asset must not acquire a second identity merely because a different division or interface creates a new record. Domain-specific records may reference the canonical identity while retaining their own identifiers and lifecycle.
+
+### Data domains and authoritative ownership
+The simulation is divided into governed data domains. Each domain has an accountable owner, authoritative record types, permitted consumers, validation rules and change process.
+
+Examples include:
+- Population and person identity.
+- Geography, addresses, properties and buildings.
+- Businesses, organisations and institutional bodies.
+- Police personnel, roles, careers and deployment.
+- Police resources and operational assets.
+- Calls, incidents and dispatch activity.
+- Crime events, cases and investigations.
+- Victims, witnesses, suspects and offender statuses.
+- Interviews, surveillance and intelligence.
+- Scenes, evidence and forensic examinations.
+- Arrests, warrants, custody and legal proceedings.
+- Courts, judgments, sentences and corrections.
+- Governance, professional standards and audit.
+- Training, qualifications and competence.
+- Human resources and employment.
+- Finance, procurement, suppliers and contracts.
+- Relationships, households and social context.
+- Time, schedules and simulation events.
+- Runtime commands, event processing and notifications.
+
+A domain owner defines the meaning and lifecycle of its records. BP-38 defines common structural standards and cross-domain linking rules. Where a record has several consumers, only one domain is authoritative for the underlying fact; other domains hold references or clearly labelled derived information.
+
+The domain register identifies:
+- Domain identifier and name.
+- Accountable design owner.
+- Authoritative entities and record types.
+- Canonical identifiers.
+- Source-of-truth designation.
+- Upstream dependencies and downstream consumers.
+- Sensitive-data classification.
+- Validation and retention rules.
+- Schema version and status.
+- Approval and review history.
+
+A change to a domain's meaning or authoritative ownership requires impact assessment and approval. Two divisions cannot silently claim conflicting ownership of the same field or status.
+
+### Entity identity and unique identifiers
+Every persistent entity has a stable identifier within its identity domain. Identifiers are immutable, unique, non-semantic where practicable and never reassigned to another entity.
+
+The design distinguishes:
+- Canonical person identity.
+- Police employee or service identity.
+- Property, building, unit and location identity.
+- Business and organisation identity.
+- Incident and call identity.
+- Case identity.
+- Evidence item and exhibit identity.
+- Asset and resource identity.
+- Contract, supplier and procurement identity.
+- Court matter, order and sentence identity.
+- Event and command identity.
+- Relationship and household identity.
+- Financial transaction and accounting identity.
+
+A person may hold multiple roles or domain records while retaining one canonical person identity. For example, a person may be a police employee, a witness in one case, a victim in another and a household member without becoming four different people.
+
+Domain identifiers may be human-readable for operational use, but the database primary key remains stable and is not derived solely from a name, address, date of birth or mutable classification. Identifier formats, prefixes, check digits and allocation rules are centrally documented and validated.
+
+Identifiers are never reused after deletion, closure, death, retirement, dissolution or archival. A merged duplicate identity retains an auditable redirect or alias history so that old references can be resolved without changing historical records.
+
+### Record structure and common metadata
+Where appropriate, records share a controlled set of metadata:
+- Stable record identifier.
+- Domain and record type.
+- Schema version.
+- Current status.
+- Creation timestamp and creating actor or process.
+- Last update timestamp and updating actor or process.
+- Effective start and end times.
+- Source and provenance references.
+- Data classification and access policy.
+- Record owner or responsible unit.
+- Verification or review status.
+- Related entity and event references.
+- Retention category and legal-hold status.
+- Supersession, correction or merge references.
+
+Not every field is appropriate for every record. Common metadata is applied consistently without forcing irrelevant columns into every table. Domain-specific records retain the fields required by their own purpose.
+
+The system distinguishes a record's current value from its historical versions and from the event that caused the change. A record may have one current state but many historical states and related events.
+
+### Relational data model and integrity
+The database uses explicit primary keys, foreign keys, unique constraints, check constraints and appropriate transactional controls to preserve integrity.
+
+Relationships are modelled according to their actual cardinality:
+- One-to-one.
+- One-to-many.
+- Many-to-many through an explicit linking record.
+- Time-bounded or effective-dated relationships.
+- Optional or uncertain relationships where the domain permits them.
+
+A relationship is not represented by copying a person's name, address or status into multiple unrelated tables as the only link. Where a snapshot is required for historical or legal reasons, the snapshot is clearly identified, dated and linked to the authoritative source.
+
+Referential integrity rules define whether a linked record must exist, whether a link may be absent, how closure or deletion is handled and what happens when a referenced entity is merged or corrected. Cascading deletion is prohibited for consequential police, legal, evidential, financial and personnel records unless a specifically approved lawful rule permits a narrowly scoped operation.
+
+The database must prevent impossible combinations such as:
+- An evidence item linked to a nonexistent case or scene where the domain requires that link.
+- An employee assigned to a nonexistent unit.
+- A payment linked to no identifiable transaction or liability.
+- A relationship linking a person to themselves where the category prohibits it.
+- An end date earlier than a required start date.
+- Two current authoritative identities for the same unique service identifier.
+- An invalid status transition or duplicate active exclusive assignment.
+- A record whose source or authority is mandatory but missing.
+
+Where integrity depends on complex domain logic, the relevant service validates it within a transaction and records the outcome. Database constraints remain the final protection against invalid writes where the rule can be expressed safely at the database layer.
+
+### Fact, report, allegation, inference and decision
+The data model must preserve epistemic distinctions. A material assertion includes an appropriate status such as:
+- Reported.
+- Observed.
+- Recorded.
+- Unverified.
+- Corroborated.
+- Verified.
+- Disputed.
+- Inferred.
+- Assessed.
+- Authorised.
+- Rejected.
+- Superseded.
+- Corrected.
+
+The exact vocabulary is domain-specific and controlled. These labels are not a universal linear progression; for example, an inference may remain an inference even when supported by several sources.
+
+A report is linked to its reporter or source where known. An observation identifies the observer, method, time and conditions. A forensic result identifies the method, examiner, quality controls and limitations. A decision identifies the competent decision-maker, authority, reasons and review route.
+
+The system must not allow a model-generated narrative, automatic classification or user-entered allegation to become a verified fact without the domain process required to establish it.
+
+### Provenance and source attribution
+Every consequential assertion must be traceable to its source. Provenance may include:
+- Direct observation.
+- First-party report.
+- Third-party report.
+- Official document.
+- System-generated event.
+- Physical or digital evidence.
+- Interview or statement.
+- External institutional response.
+- Authorised import.
+- Inference or analytical assessment.
+- Correction or retrospective entry.
+
+The provenance record identifies source type, source identity where lawful, acquisition method, date and time, collector or importing process, reliability limitations, linked original artefact and any transformation or redaction.
+
+Imported information preserves the original source reference and import event. A transformed or summarised record links to its source rather than replacing it. Where source material is unavailable, that limitation is recorded.
+
+A source's reliability and the credibility of a particular assertion are separate assessments. A generally reliable source may be mistaken on a specific point; an unverified source may provide information later corroborated. The system does not turn a source rating into automatic truth.
+
+### Temporal and historical records
+The record architecture supports effective-dated and event-based history. It distinguishes:
+- When a fact was true in the simulated world.
+- When the system learned or recorded it.
+- When a decision was made.
+- When a change became effective.
+- When a correction was applied.
+- Which schema or rule version governed the record.
+
+Historical queries must be able to reconstruct the relevant state at a specified simulation time and, where required, what the institution knew at that time.
+
+Corrections preserve the previous value, reason, actor, source and effective date. A record is not silently rewritten to make the current version appear as though it had always existed.
+
+For high-consequence domains, event history and record versioning must be sufficient to reconstruct the sequence of decisions and changes. The exact approach may use temporal tables, append-only events, version rows or another documented design, but it must satisfy the acceptance conditions.
+
+### Data quality and validation
+Data validation occurs at input, domain-service and database boundaries as appropriate. Validation rules include:
+- Required fields and permitted omissions.
+- Data type, format, length and range.
+- Identifier format and uniqueness.
+- Referential integrity.
+- Valid enumerated values.
+- Date and time consistency.
+- Status-transition legality.
+- Cross-field and cross-record rules.
+- Source and authority requirements.
+- Duplicate detection.
+- Schema version compatibility.
+- Business-rule and legal-rule validation.
+
+Validation errors are specific and actionable. The system distinguishes invalid data, incomplete data, uncertain data and temporarily unavailable data. An incomplete record may be permitted where the domain allows it, but missing mandatory information cannot be hidden by a default or fabricated value.
+
+Data-quality monitoring may identify duplicates, orphan references, invalid dates, missing provenance, stale records, inconsistent statuses and failed synchronisation. Findings have severity, owner, remediation status and evidence of correction.
+
+Quality scores or completeness measures must not be treated as proof that a record is true. A record can be complete and wrong, or incomplete but accurate within its stated limitations.
+
+### Duplicate detection and identity resolution
+The system may identify possible duplicate people, properties, businesses, cases, incidents, suppliers or other entities using approved matching rules. A possible match is not automatically a confirmed duplicate.
+
+Identity resolution records:
+- Candidate records and matching basis.
+- Matching method and confidence or reason.
+- Conflicting attributes.
+- Reviewer or authorised decision-maker.
+- Decision and supporting evidence.
+- Canonical surviving identity where a merge is approved.
+- Alias and redirect history.
+- Records, references and links migrated or retained.
+- Date and audit trail.
+
+Automatic merging of consequential identities is prohibited unless a narrowly defined, tested and approved rule makes it safe. Police personnel, victims, witnesses, suspects, offenders, evidence, cases, suppliers and financial identities require appropriate human review when a mistaken merge could cause harm or corrupt legal history.
+
+A merge must preserve the source records and historical references. A mistaken merge must have a controlled reversal or remediation process.
+
+### Search, retrieval and query interfaces
+Search and query services provide authorised access to records without bypassing domain permissions. They support:
+- Exact identifier lookup.
+- Name and alias search where authorised.
+- Address, property and organisation search.
+- Time-bounded and location-bounded queries.
+- Relationship and cross-reference search.
+- Case, incident and evidence retrieval.
+- Status and workflow search.
+- Historical and as-of-time queries.
+- Audit and provenance retrieval.
+- Structured reporting and export.
+
+Search results must distinguish exact matches, possible matches and no match. A search result does not establish identity or legal status. Sensitive fields may be masked or omitted according to the user's permissions.
+
+Query interfaces use documented request and response schemas, pagination, filtering, sorting and bounded result sizes. Expensive queries are controlled and monitored. Search indexes and caches are derived services; they must be refreshed or reconciled against authoritative data and must not become the only copy of a record.
+
+The system records material access and exports where required by the domain's audit policy. Bulk retrieval of sensitive records requires explicit permission and purpose.
+
+### Data classification and access metadata
+BP-38 defines the information classification metadata required by records; BP-42 enforces the security policy.
+
+Classification may distinguish public, internal, confidential, highly restricted, legally privileged, evidentially sensitive, personnel-sensitive, safeguarding-sensitive, commercially sensitive and other approved categories. The final classification scheme is configured under the applicable fictional legal framework.
+
+Classification is assigned according to content, context, source and risk, not merely the table in which the record is stored. A record may contain fields with different sensitivity. Where field-level protection is necessary, the data model supports it without exposing protected values through ordinary queries, logs or exports.
+
+A user's permission to access one record does not automatically grant access to every linked record. Relationship traversal and search results apply the access rules of each referenced domain.
+
+### Database architecture and schema design
+The initial implementation is expected to use the connected Supabase PostgreSQL project as the authoritative database, subject to approved technical design and security review.
+
+Schema design considers:
+- Clear separation of domain schemas or namespaces where useful.
+- Stable primary keys and documented identifier allocation.
+- Foreign keys and appropriate referential actions.
+- Normalisation for authoritative transactional data.
+- Explicit join tables for many-to-many relationships.
+- Effective-dated records for changing facts.
+- Append-only or versioned audit history for consequential changes.
+- Appropriate indexes for expected queries.
+- Constraints and transactional functions for critical invariants.
+- Row-level security and role design under BP-42.
+- Restricted views or controlled functions for safe application access.
+- Separation of development, test and production data where supported and approved.
+- Migration scripts and schema documentation in GitHub.
+
+JSON or semi-structured fields may be used for genuinely variable or source-preserving data, but must not become an uncontrolled substitute for relational constraints, queryable domain fields or documented schemas. Core identities, statuses, legal references, financial amounts and critical relationships require structured representation.
+
+The project must not expose unrestricted database credentials to the player interface or place service-role keys in public code. Direct database access is limited to trusted server-side processes and approved administrative roles.
+
+### Schema versioning and migrations
+Every database change is delivered through a version-controlled migration or another explicitly approved deployment mechanism. A migration records:
+- Unique version or sequence.
+- Purpose and affected domains.
+- Schema objects created, changed or retired.
+- Dependencies and ordering.
+- Data transformation or backfill.
+- Preconditions and postconditions.
+- Compatibility and deployment strategy.
+- Rollback or forward-repair plan.
+- Test evidence and approval.
+- Release and deployment result.
+
+Migrations are applied in a controlled order and are not silently edited after release. A correction to an applied migration is delivered as a new migration or controlled repair. The database's migration history is reconciled with the GitHub migration directory.
+
+Destructive changes require explicit impact assessment, backup and recovery validation, data-retention review and approval. A column or table is not dropped merely because a newer interface no longer displays it.
+
+Application and database versions must be compatible. During a staged release, the schema must not break the active application or corrupt records. Where a change requires a coordinated transition, the migration plan defines the order, compatibility window and recovery route.
+
+### Data import, export and interoperability
+Imports use a defined mapping, source validation, duplicate strategy, error report and approval. The system preserves the original source file or artefact where lawful and records its provenance, import time, operator and transformation.
+
+Imports are staged and validated before authoritative records are changed. Failed rows are reported without silently discarding them. Partial import is allowed only where the process explicitly defines how successful and failed records are separated and reconciled.
+
+Exports are purpose-limited, access-controlled and recorded where required. They identify export time, requester, scope, format, filters, redactions and any transformations. Sensitive data is not exported merely because a user can view a summary.
+
+Interoperability interfaces use versioned contracts and defined authentication, authorisation, data minimisation, error handling, retry and audit rules. External systems do not become trusted sources solely because an integration is connected.
+
+### Record correction, retention and legal holds
+A correction identifies the original record, incorrect assertion, corrected value, source, reason, requesting party, reviewer, authority, effective date and processing date. The system preserves the original value and correction history.
+
+Retention categories define the approved period, trigger, responsible owner, review date, disposition method and exceptions. BP-39 coordinates backup and recovery; BP-42 enforces access; BP-38 ensures the record carries the necessary retention and legal-hold metadata.
+
+A legal hold suspends routine disposition for the affected records and linked material within its defined scope. The hold records authority, matter, owner, start date, review date, affected records and release decision. Releasing a hold does not itself authorise deletion; the retention rule is then reassessed.
+
+The system distinguishes archive, restricted retention, anonymisation, deletion, correction and supersession. A record must not be deleted merely because its subject is deceased, retired, acquitted, released, dismissed, dissolved or no longer active. The applicable legal and retention rules determine disposition.
+
+### Data ownership and stewardship
+Every authoritative data domain has an accountable owner and designated stewards. Responsibilities include:
+- Approving definitions and permitted values.
+- Maintaining the data dictionary.
+- Reviewing data quality.
+- Resolving cross-domain ownership disputes.
+- Approving schema changes within delegated authority.
+- Ensuring provenance and retention requirements are met.
+- Coordinating corrections and identity resolution.
+- Reviewing access and disclosure requirements.
+- Monitoring integration and migration quality.
+
+System administrators maintain technical infrastructure but do not automatically own the meaning or accuracy of police, legal, personnel, evidential or financial records. A technical ability to edit data is not a domain decision authority.
+
+### Player experience and authority
+The player searches, views and submits records through authorised interfaces. The player may request a correction, report an apparent duplicate, add a permitted record, attach source material or review a record's history where their role allows it.
+
+The interface identifies:
+- Record identity and domain.
+- Current status and effective date.
+- Source and verification state.
+- Last update and responsible owner where disclosable.
+- Related records and accessible history.
+- Known uncertainty, dispute or correction.
+- Access restrictions and reasons for unavailable information.
+- Whether a value is authoritative, derived, cached or provisional.
+
+The player cannot directly alter protected database records, change an identifier, erase history, bypass domain approval or use a search result as proof of identity. A correction request is not treated as an approved correction until the responsible authority completes the process.
+
+### Connections to other divisions
+- **BP-01 to BP-37:** all domain divisions that create, consume or change persistent game records.
+- **BP-39:** durable persistence, backups, recovery, continuity and disaster-recovery procedures.
+- **BP-40 and BP-41:** user-facing record views, search, reports, notifications and exports.
+- **BP-42:** authentication, authorisation, row-level security, secrets and access audit.
+- **BP-43:** schema, migration, data integrity, performance, security and recovery testing.
+- **BP-44:** controlled domain configuration, schema extension, feature settings and compatibility.
+
+### Exceptions and edge cases
+The design must handle duplicate identities; mistaken identity; merged records; merge reversal; missing mandatory data; conflicting source records; uncertain or disputed facts; late-arriving evidence; retrospective correction; an entity whose legal status changes; a record linked to a closed or deleted entity; orphan references; a failed transaction; partial import; duplicate import; malformed source data; schema-version mismatch; migration failure; interrupted migration; incompatible application release; a destructive migration proposed without backup; stale cache; search index divergence; inaccessible linked record; an overbroad export; accidental disclosure; missing provenance; incorrect retention category; legal hold applied after deletion was scheduled; legal hold release; corrupted audit history; database outage; recovery from backup; duplicate replay after recovery; an administrator changing domain data without authority; conflicting domain ownership; a privacy or correction request; an external integration sending invalid data; and a record that must be preserved after the associated person or organisation becomes inactive.
+
+The system must preserve source material, identify affected records, prevent silent data loss, route decisions to the accountable domain owner and record all remediation.
+
+### Acceptance conditions
+- Every persistent entity has a stable, unique and non-reusable identifier.
+- Domain ownership and authoritative source are documented.
+- Cross-domain records reference canonical identities rather than creating duplicates.
+- Record schemas, relationships and constraints are versioned and documented.
+- Referential integrity prevents orphaned or invalid relationships.
+- Historical and effective-dated facts can be reconstructed.
+- Material assertions preserve source, provenance, uncertainty and verification status.
+- Reports, inferences and allegations cannot silently become verified facts.
+- Data corrections preserve prior values and identify the responsible authority.
+- Duplicate detection does not automatically merge high-consequence identities without approved safeguards.
+- Search and query services enforce permissions on both records and linked data.
+- Sensitive data is classified and protected at the appropriate level.
+- Database migrations are version-controlled, ordered, tested and recoverable.
+- Destructive changes require approval and validated recovery arrangements.
+- Imports and exports preserve provenance, mapping, scope and audit history.
+- Retention and legal-hold metadata is available to the relevant governance controls.
+- Domain stewards and technical administrators have distinct responsibilities.
+- The Supabase database can be built incrementally from approved requirements without exposing unrestricted credentials.
+- The player can distinguish authoritative records from derived, cached, provisional or inaccessible information.
+
+**Draft status:** BP-38 is a working design. The final domain register, entity catalogue, identifier formats, schema boundaries, PostgreSQL schemas and table definitions, row-level security policies, data classification scheme, audit implementation, retention schedule, legal-hold rules, migration framework, query contracts, integration standards and deployment environments remain open. The connected Supabase project currently has no Kingswell game tables or migrations. No authoritative game database schema or data-access application has been implemented by this design document.
