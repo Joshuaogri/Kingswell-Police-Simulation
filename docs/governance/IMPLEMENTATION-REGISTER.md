@@ -1,7 +1,7 @@
 # Kingswell Implementation Register
 
 **Status date:** 2026-11-19  
-**Overall stage:** Stage 0 — Master blueprint  
+**Overall stage:** Stage 1 — Foundation implementation  
 **Register status:** Initial baseline
 
 This register tracks actual progress. A design being written does not mean it has been implemented in software.
@@ -17,9 +17,9 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | In progress | BP-01 to BP-44 drafted |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Not started | No game tables or migrations |
-| Application/gameplay code | Not started | No playable software yet |
-| Automated tests | Not started | No test suite yet |
+| Database schema | Implemented | Private `game` schema; 40 tables, 78 foreign keys, supporting indexes; migrations committed to GitHub |
+| Application/gameplay code | Not started | No simulation runtime or playable software yet |
+| Automated tests | Not started | Database structure verified; automated application/gameplay test suite not yet built |
 
 ## Master blueprint divisions
 
@@ -92,5 +92,21 @@ This register tracks actual progress. A design being written does not mean it ha
 - **Implemented:** built in the project.
 - **Verified:** tested and confirmed to work.
 - **Blocked:** a specific obstacle prevents progress.
+
+## Database foundation delivered — 2026-11-19
+
+The first live Supabase database foundation is implemented in the private `game` schema.
+
+- 40 tables covering world geography, organisations, properties/buildings, people and relationships, police commands/stations/ranks/units/positions/personnel, personnel history and qualifications, duty rosters/assignments/resources, simulation clock state, incident types, incidents, dispatch calls/events/deployments, cases, case people/assignments, evidence items/transfers and game event history.
+- 78 foreign-key relationships connect the records.
+- Supporting indexes are present, including indexes for foreign-key lookups.
+- Row-level security is enabled on all 40 tables. The schema is not exposed to the public API; access is reserved for the server-side service role while the game access layer is built.
+- No fictional game content has been seeded yet. The database foundation is structure only.
+
+Migration files in `database/migrations/`:
+- `20261119220423_kingswell_core_game_database.sql`
+- `20261119220538_index_game_foreign_keys.sql`
+
+Live Supabase migration history contains both migrations. Structural verification returned 40 tables, 78 foreign keys, 141 indexes and zero tables without RLS.
 
 Update this register when work actually changes. Do not mark design as implemented or implemented as verified without evidence.
