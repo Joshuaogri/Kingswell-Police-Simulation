@@ -7429,3 +7429,275 @@ Each exception has a defined owner, safe response, retry or review route, state-
 - The engine can be tested reproducibly against defined scenarios and acceptance criteria.
 
 **Draft status:** BP-35 is a working design. The exact runtime architecture, command grammar, event catalogue, state-transition contracts, simulation-intensity thresholds, NPC decision model, randomisation and reproducibility policy, processing-cycle size, priority model, concurrency strategy, queue technology, error taxonomy, performance targets and implementation language remain open. No simulation engine, command processor, event queue, NPC runtime, scheduler, game API or playable application has been implemented by this design document.
+
+
+---
+
+## BP-36 — Relationships and Social Context
+
+### Purpose and scope
+Define the persistent relationship, household, family, social-network and community-context models that make people and organisations part of a believable living world. BP-36 records how people are connected, how those connections change, what each person knows about them and how social context may affect activity, welfare, opportunity, vulnerability and police-relevant events.
+
+BP-36 covers:
+- Personal, family, household and domestic relationships.
+- Friendship, acquaintance, neighbour, colleague and professional relationships.
+- Relationship formation, change, separation, dispute and termination.
+- Household membership, shared residence and domestic arrangements.
+- Social groups, clubs, associations, communities and informal networks.
+- Organisational and community affiliations where relevant.
+- Contact history and interaction context where lawfully and appropriately recorded.
+- Relationship knowledge, uncertainty, disagreement and source provenance.
+- Social context relevant to routines, support, safeguarding and police activity.
+- Relationship privacy, access restrictions and sensitive-information safeguards.
+- Relationship history, event linkage and continuity.
+
+BP-36 does not replace:
+- BP-03 for person identity, population status and individual life records.
+- BP-04 for property occupancy, business ownership, employment and organisational identity.
+- BP-06 and BP-33 for authoritative police personnel and employment records.
+- BP-17 and BP-18 for victim, witness, suspect and offender legal or case status.
+- BP-21 for intelligence records, source handling and intelligence assessment.
+- BP-31 for police employee conduct, conflicts, inappropriate relationships and professional standards.
+- BP-35 for runtime execution and NPC decision processing.
+- BP-37 for time, schedules and event timing.
+- BP-38 and BP-39 for authoritative records, persistence, access and recovery.
+- BP-42 for permissions and security.
+
+A relationship is not proof of knowledge, agreement, assistance, responsibility, criminal involvement or shared belief. Association with a suspect, victim, witness, employee, business or organisation must never by itself establish suspicion or justify adverse treatment. Social context may inform a lawful and proportionate enquiry but cannot replace evidence or the applicable legal threshold.
+
+The exact fictional family law, marriage and civil-status rules, data-protection framework, safeguarding law, social-service arrangements and disclosure rules remain to be defined. BP-36 establishes the data and simulation requirements without inventing legal status or rights.
+
+### Relationship model and identity
+Every relationship links existing persistent person or organisation identities. It does not create duplicate people or use names alone as identity keys. The relationship record has its own stable identifier and identifies:
+- The linked person or organisation identities.
+- Relationship category and any defined subtype.
+- Directionality or reciprocity.
+- Current status and historical status.
+- Start date, end date and date first known where available.
+- Source, basis and verification status.
+- Confidence or uncertainty representation where appropriate.
+- Whether each involved person knows or acknowledges the relationship.
+- Relevant scope, context and limitations.
+- Privacy and access classification.
+- Related events, cases or supporting records where authorised.
+- Creation, review and change history.
+
+Relationships may be reciprocal, one-way, asymmetric, disputed, unknown to one party or different in meaning to each participant. A person may regard another as a friend while the other regards them only as an acquaintance. The system must not force false reciprocity.
+
+The relationship model distinguishes the real-world relationship from the record about it. A relationship may exist without being known to police; a record may be incomplete or mistaken; a person may dispute the description; and the relationship may have ended before the record was created. These conditions are represented explicitly.
+
+### Relationship categories
+The configurable relationship catalogue may include:
+- Parent, child, guardian and dependent.
+- Spouse, civil partner or other legally recognised partner.
+- Former spouse or former partner.
+- Sibling, grandparent, grandchild, aunt, uncle, cousin and other family relationship.
+- Foster, adoptive, step-family and other care relationships.
+- Household member, co-resident, lodger and former co-resident.
+- Friend, close friend, acquaintance and social contact.
+- Neighbour and local community contact.
+- Colleague, supervisor, subordinate and professional contact.
+- Employer, employee, contractor and business associate.
+- Client, customer, supplier and service-provider relationship.
+- Club, association, faith or community group affiliation where lawfully represented.
+- Advocate, carer, support worker, mentor and other support relationship.
+- Creditor, debtor, landlord, tenant and other civil or commercial relationship.
+- Witness-to-event, reporting-person-to-incident and other event-specific connections.
+
+The catalogue is extensible under BP-44 but changes must preserve historic meanings. Legal relationships and informal social descriptions remain distinct. For example, a biological parent, legal guardian, adoptive parent and person acting as a carer are not automatically interchangeable.
+
+Relationship categories must be neutral and precise. The system does not use vague labels such as "known criminal", "bad associate" or "person of interest" as social relationships. Case roles and intelligence assessments remain in their designated domains.
+
+### Household and domestic context
+A household is a time-bounded domestic arrangement, not simply a list of people with the same postal address. The model may represent:
+- People who usually live together.
+- Temporary or seasonal residents.
+- Children and dependants.
+- Shared-care arrangements.
+- Lodgers and subtenants.
+- People who share facilities but maintain separate households.
+- People who are away temporarily but retain a household connection.
+- People who have moved out but remain connected through family or care responsibilities.
+- Multiple households within one property or unit.
+- A person with more than one relevant residence or household connection.
+
+Household membership has effective dates, role or relationship description, source and confidence. The system distinguishes registered address, usual residence, temporary address, mailing address, place of stay and household membership. A shared address does not prove a relationship, and a relationship does not prove that people live together.
+
+Household composition can change through birth, death, separation, marriage, care arrangements, relocation, temporary absence, eviction, institutional residence or other events. Historical household membership remains available where relevant; current membership is not retroactively imposed on earlier dates.
+
+### Family, care and dependency relationships
+Family and care records distinguish legal responsibility, biological or adoptive relationship, social relationship and actual care activity. The system may record:
+- Parentage and legal guardianship where lawfully established.
+- Parental responsibility or equivalent legal status.
+- Shared or supervised care arrangements.
+- Foster, adoption and kinship-care arrangements.
+- Adult or child dependants.
+- Informal carers and support networks.
+- Emergency contacts and nominated support persons.
+- Relevant care restrictions or safeguarding arrangements.
+
+A family relationship does not automatically confer legal authority to make decisions, access records, receive confidential information or act for another person. The relevant legal status and scope must be separately verified. A nominated emergency contact is not automatically a guardian or decision-maker.
+
+Children and vulnerable persons receive additional safeguards. Information is limited to the purpose and role that justify access. A family member may be a source of support, a witness, a person of concern or a subject of an allegation; the system must not presume that family status guarantees safety or trustworthiness.
+
+### Social groups and community affiliations
+The model may represent formal and informal groups such as sports clubs, neighbourhood associations, charities, educational groups, professional bodies, cultural organisations, community networks and other relevant associations.
+
+A group record identifies its stable identity, type, purpose, operating area, status, relevant contact points and history. Membership or affiliation records link people to the group with dates, role, source, status and applicable privacy classification.
+
+Membership alone is not evidence of misconduct, shared intent, knowledge of another member's actions or responsibility for an event. The system must not infer a person's beliefs, conduct or risk solely from group membership. Lawful association and ordinary community activity must not be treated as suspicious.
+
+Political, religious, trade-union, health-related or other particularly sensitive affiliations must not be collected or exposed merely because the system can model relationships. Any exceptional recording requires a defined lawful in-game purpose, necessity, proportionality, access restriction and review under the applicable rules.
+
+### Relationship lifecycle and historical change
+A relationship may be proposed, recorded, verified, disputed, corrected, suspended for a defined purpose, ended or superseded. The lifecycle records:
+- Initial report or source.
+- Date the relationship is said to have begun.
+- Date the service learned of it.
+- Verification steps and result.
+- Acknowledgement or dispute by involved parties where known.
+- Changes in category, scope or status.
+- End date and reason where known and appropriate.
+- Correction or retraction history.
+- Review date and responsible record owner.
+
+A relationship record is not silently overwritten when new information arrives. If an earlier record was wrong, the correction preserves the original assertion, the reason for correction, the source of the new information and the effective date of the corrected fact.
+
+The system distinguishes a relationship ending from a record being deleted. Historic relationships may remain relevant to an event, case, safeguarding decision or legal process. Retention and access follow BP-38, BP-39 and BP-42.
+
+### Knowledge, awareness and information flow
+The system distinguishes:
+- The underlying relationship, if known to the simulation.
+- Each participant's awareness of the relationship.
+- Each participant's description or understanding.
+- What another person has disclosed.
+- What an institution has recorded.
+- What is verified or disputed.
+- What the player is permitted to know.
+
+An NPC cannot automatically know every relationship in the database. Knowledge may arise from personal experience, observation, conversation, public information or another defined source. A person's knowledge may be incomplete, outdated or mistaken.
+
+A disclosure or introduction creates an information event only for the participants and recipients who could plausibly receive it. The engine must not propagate private relationship information to unrelated people or institutions without a defined communication or lawful access route.
+
+Where a relationship is relevant to a case, the record identifies whether it is established fact, self-report, third-party report, inference or unverified lead. A case connection does not automatically convert the social relationship into a verified fact.
+
+### Social context and simulation behaviour
+BP-35 uses relationship and social-context records to support plausible NPC activity. Social context may influence:
+- Household routines and shared responsibilities.
+- Visits, meetings and ordinary social activity.
+- Support, care and assistance.
+- Communication and information flow.
+- Employment and professional interaction.
+- Disputes, separation and changing social arrangements.
+- Witness availability and familiarity with a person or place.
+- Safeguarding needs and possible sources of support.
+- Opportunity, access and familiarity where relevant to an incident.
+- Community participation and local events.
+
+These factors influence behaviour probabilistically or through explicit scenario rules; they do not determine it. A relationship does not guarantee contact, cooperation, loyalty, conflict or shared knowledge. People may act independently of family, friends or group expectations.
+
+Social context must not become a deterministic suspicion score. The engine may use relationships to identify possible lines of enquiry or relevant context only where the applicable domain rules permit it. Any consequential decision must be supported by the evidence and legal standard required by that domain.
+
+### Police and case relevance
+Relationship information may become relevant where it helps establish:
+- A victim's support network or safeguarding needs.
+- A witness's familiarity with a person, location or event.
+- A suspect's documented connection to a location or person.
+- A conflict, motive allegation or prior relationship requiring investigation.
+- A household or care arrangement relevant to welfare.
+- A professional or financial connection relevant to an integrity enquiry.
+- A contact or association that may explain a communication or meeting.
+- A relationship that creates a conflict of interest for an officer or decision-maker.
+
+Relevance is specific to the matter and time period. A current relationship cannot automatically be projected backwards. A historic relationship cannot automatically be treated as current. A connection to one case does not make every connected person relevant to every other case.
+
+The system records why a relationship is relevant, who established the connection, which case or process uses it, the date range and any limitations. Access to relationship information is purpose-limited and subject to lawful authority.
+
+### Disputes, coercion and safeguarding
+Relationships may involve conflict, coercion, dependency, abuse, exploitation, intimidation, estrangement or safety concerns. These are not assumed from relationship type. They are recorded through appropriate safeguarding, incident, intelligence, investigative or legal processes with their own evidence and access controls.
+
+The system supports:
+- A person disputing a recorded relationship.
+- A relationship described differently by different participants.
+- Separation where one party continues unwanted contact.
+- Protective or non-contact arrangements where lawfully imposed.
+- A person whose location or contact details require heightened restriction.
+- Domestic or family safeguarding concerns.
+- Child or adult safeguarding referrals.
+- A support person who may also be a witness or subject of an enquiry.
+- Conflicting accounts of care, residence or responsibility.
+- A relationship that changes during an active case.
+- A person at risk from another person who shares a household or social network.
+
+Protective restrictions must be linked to the correct legal or safeguarding authority. The relationship system does not create restraining orders, custody powers or contact prohibitions. Those remain within the appropriate legal and operational domains.
+
+### Privacy, access and correction
+Relationship information can reveal sensitive personal circumstances. Access is restricted by purpose, role and legal authority. Users see only the relationship detail necessary for their assigned task.
+
+The system supports:
+- Restricted or sealed relationship records where authorised.
+- Protection of child, victim, witness and safeguarding information.
+- Limited disclosure of sensitive affiliations.
+- Separation of personal social records from police intelligence and case allegations.
+- Access logging and review.
+- Correction requests and disputed-record flags.
+- Retention and legal-hold controls.
+- Safe handling of records where disclosure could create a risk of harm.
+
+A person may be able to request access or correction under the fictional legal framework, subject to lawful exemptions and third-party rights. A correction must preserve provenance and must not expose another person's protected information without authority.
+
+### Player experience and authority
+The player may view or record relationship information only where their role, purpose and permissions allow it. A player may record a reported family connection, identify a witness's stated familiarity with a person, update an authorised household enquiry, submit a correction request or refer a safeguarding concern.
+
+The interface distinguishes:
+- Verified relationship from reported or inferred relationship.
+- Current relationship from historical relationship.
+- Legal status from informal description.
+- Household membership from shared address.
+- Relationship existence from knowledge of that relationship.
+- Social association from case involvement.
+- A safeguarding concern from a proven allegation.
+- A relationship record from a legal order or authority.
+
+The player cannot create a legal guardianship, change civil status, impose a contact restriction, access protected records or make an adverse decision solely because a relationship exists. Where the record is disputed or uncertain, that limitation is visible.
+
+### Connections to other divisions
+- **BP-01 to BP-04:** governing principles, population, person identity, property, household location and organisations.
+- **BP-05 to BP-09:** police roles, personnel, employment, deployment and operational resources.
+- **BP-10 to BP-18:** incidents, crime, cases, investigation, victims, witnesses, suspects and offenders.
+- **BP-19 to BP-24:** interviews, surveillance, intelligence, scenes, evidence and forensic processes.
+- **BP-25 to BP-29:** arrest, custody, legal proceedings, court orders and correctional status.
+- **BP-30 to BP-34:** governance, professional standards, training, employment and financial relationships.
+- **BP-35:** NPC knowledge, behaviour, relevance and event execution.
+- **BP-37:** time-bounded relationship changes, household routines and scheduled contact.
+- **BP-38 and BP-39:** authoritative relationship records, history, retention, persistence and recovery.
+- **BP-40 and BP-41:** authorised relationship views, notices, reports and safeguarding alerts.
+- **BP-42:** access permissions, sensitive-data restrictions and audit.
+- **BP-43:** relationship consistency, privacy, identity-linkage and simulation testing.
+- **BP-44:** controlled relationship categories, group types and configuration.
+
+### Exceptions and edge cases
+The design must handle uncertain identity; duplicate person records; a relationship reported by one party and denied by another; one-sided or unacknowledged relationships; a person using different relationship descriptions; a relationship that began before either party's current identity record; unknown start or end dates; a relationship ending while a case remains active; a relationship changing during an incident; multiple households at one address; multiple residences for one person; temporary absence; shared custody; disputed parentage; guardianship expiring or changing; informal care without legal authority; a nominated contact who is not a legal representative; a family member who is also a witness or suspect; a support person who creates a conflict; a group membership with uncertain dates; a person leaving or joining a group; a group dissolving; an affiliation recorded in error; sensitive affiliation accidentally exposed; an abusive or coercive relationship; a person at risk from someone in the same household; a protective order with a defined scope; a contact restriction that expires; a deceased person with continuing family links; a missing person whose household details are incomplete; a person whose relationship information is legally restricted; a safeguarding referral with limited disclosure; a relationship graph containing contradictory dates; a correction affecting several linked records; and recovery from a duplicate or corrupted relationship update.
+
+The system must preserve the original and corrected assertions, avoid inferring guilt or legal authority from association, and maintain safe access restrictions during correction or recovery.
+
+### Acceptance conditions
+- Every relationship links stable existing person or organisation identities.
+- Relationship records have their own identifiers, provenance, status and history.
+- Reciprocal, one-way, disputed and differently understood relationships can be represented.
+- Legal, biological, household, care, employment and informal social relationships remain distinct.
+- Household membership is time-bounded and is not inferred solely from a shared address.
+- Current and historical relationships can be reconstructed for a specified date.
+- A relationship record distinguishes the underlying relationship from what each person or institution knows.
+- NPCs receive relationship knowledge only through plausible and recorded information routes.
+- Relationship data supports social simulation without deterministic or arbitrary behaviour.
+- Association alone never proves guilt, knowledge, assistance or shared intent.
+- Case relevance is specific, time-bounded, sourced and access-controlled.
+- Safeguarding, child and vulnerable-person information receives appropriate protection.
+- Legal authority and protective restrictions are not created by the relationship system.
+- Disputed or corrected relationships preserve provenance and prior assertions.
+- Sensitive affiliations are not collected or exposed without a defined lawful purpose and safeguards.
+- The player sees the certainty, source, date and limits of relationship information.
+- Relationship processing integrates with BP-35 without duplicating identity or authoritative domain records.
+
+**Draft status:** BP-36 is a working design. The fictional civil-status and family-law framework, household definitions, relationship taxonomy, safeguarding law, data-protection rules, social-service interfaces, sensitive-data restrictions, access and correction rights, retention schedules and exact NPC social-behaviour model remain open. No relationship graph, household-management system, social-network engine or dedicated relationship database has been implemented by this design document.
