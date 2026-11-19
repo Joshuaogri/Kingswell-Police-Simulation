@@ -23,7 +23,7 @@ Each division is designed with its purpose, scope, responsibilities, components,
 | BP-15 | Case Management | Drafted; investigative methods and legal review to refine |
 | BP-16 | Investigation | Drafted; specialist procedures and legal powers to refine |
 | BP-17 | Victims and Witnesses | Drafted; specialist safeguarding and legal procedures to refine |
-| BP-18 | Suspects and Offenders | Not started |
+| BP-18 | Suspects and Offenders | Drafted; legal-status interfaces and specialist procedures to refine |
 | BP-19 | Interviews and Interrogations | Not started |
 | BP-20 | Surveillance | Not started |
 | BP-21 | Intelligence | Not started |

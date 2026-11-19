@@ -1883,3 +1883,208 @@ The system must handle anonymous or unidentified victims, witnesses who cannot c
 - Player access follows role and clearance; no hidden solution or automatic credibility verdict is disclosed.
 
 **Draft status:** BP-17 is a working design. Specialist safeguarding, interview procedures, witness protection powers, disclosure rules and detailed fictional legal standards will be refined in the relevant divisions. It is not a claim that victim or witness management software has been implemented.
+
+## BP-18 — Suspects and Offenders
+
+### Purpose
+Define how the police service records, assesses, manages and reviews people who may be connected to offending, while preserving the distinction between suspicion, investigative status, legal status and proven responsibility. The division provides a reliable person-centred framework for identifying potential offenders, managing suspect-related information, recording associations and offending history, and reflecting legal outcomes accurately.
+
+### Scope
+This division governs suspect and offender identity records and their case-specific status. It covers:
+- Identification and resolution of suspected persons.
+- Person-of-interest and suspect status.
+- Suspect assessment and case association.
+- Offender identity and legally established offending history.
+- Suspect contact, risk and management information.
+- Multiple suspects, co-offending and organised groups.
+- Status changes, mistaken identity and exonerating information.
+- Cross-case links and historical record integrity.
+- Access, correction, retention and disclosure controls.
+
+Arrest, custody, interview, charging, prosecution, trial, sentence and correctional management are governed by BP-19 and BP-25 to BP-29. This division maintains the person and case links needed by those processes; it does not replace them.
+
+### Foundational distinction: suspicion is not guilt
+The system must never equate a police suspicion with a finding of guilt. It must distinguish:
+- **Unidentified possible offender:** an event may involve an offender, but no person has been identified.
+- **Person of interest:** a person whose possible connection is being assessed; this label alone does not imply formal suspicion.
+- **Suspect:** a person against whom a defined suspicion is being investigated, with the basis and authorising decision recorded.
+- **Arrested person:** a person arrested under the applicable fictional legal power; arrest is not proof of guilt.
+- **Charged defendant:** a person formally charged under the fictional legal process.
+- **Accused person:** a person subject to criminal proceedings, according to the applicable procedural stage.
+- **Acquitted person:** a person found not guilty of the relevant charge or otherwise legally acquitted.
+- **Convicted offender:** a person whose guilt has been established by a competent court or other legally recognised final process.
+- **Sentenced person:** a convicted person for whom a sentence has been imposed.
+- **Rehabilitated or record-restricted person:** a person whose record is subject to a legal restriction, spent status or other consequence defined by fictional law.
+
+These are not necessarily a single linear sequence. A person may be arrested without charge, charged without conviction, acquitted on one charge and convicted on another, or have proceedings discontinued. The system must represent each charge and proceeding independently.
+
+### Person identity and suspect identity
+Every person is represented by the persistent identity system in BP-03. Suspect and offender records link to that identity rather than creating a separate person for every case.
+
+Identity confidence is recorded as unverified, provisional, partially corroborated, verified or disputed, with the basis and source. Names, aliases, dates of birth, physical descriptions, addresses, photographs, biometric identifiers and other identifiers are recorded only where lawfully obtained and relevant. Similarity of name or appearance is not sufficient to merge records.
+
+Where identity is uncertain, the system supports provisional identities and later reconciliation. Any merge or split is auditable, preserves source references and prevents one person's history from being silently attributed to another.
+
+### Case-specific suspect status
+A person's suspect status belongs to a specific case and, where necessary, a specific alleged offence. It does not become a permanent global label.
+
+A case-specific status may include:
+- Unassessed person of interest.
+- Enquiry subject.
+- Suspect under investigation.
+- Suspect no longer actively pursued.
+- Excluded from the current line of enquiry.
+- Arrested.
+- Released pending further action.
+- Charged.
+- Proceedings discontinued or charge withdrawn.
+- Acquitted.
+- Convicted.
+- Other status defined by fictional law.
+
+The status record includes the effective date and time, decision-maker, authority, case and offence scope, supporting information, rationale, review requirement and any conditions. A status change in one case must not automatically change another case's status.
+
+### Basis for suspect designation
+A suspect designation requires a recorded factual basis and a clear connection to an alleged offence or relevant investigative question. The record should identify:
+- The allegation or offence being considered.
+- The information linking the person to it.
+- The source and date of that information.
+- What is verified, unverified, disputed or inferred.
+- Relevant information that supports or undermines the suspicion.
+- The decision-maker and applicable threshold under fictional policy or law.
+- Any review date or trigger.
+
+The system must not permit a suspect label to be based solely on protected characteristics, lawful association, reputation, anonymous unsupported accusation or presence in a location without a relevant evidential connection. Any lawful intelligence-led basis must still be recorded and governed by BP-21 and BP-42.
+
+### Suspect assessment and review
+A suspect assessment is an evolving case-specific analysis, not a permanent score. It may consider opportunity, access, motive where evidentially relevant, capability, means, timeline, accounts, material links, corroboration, contradictions and alternative explanations.
+
+The assessment records the basis and limitations of each consideration. Motive is not required for every offence and its absence does not establish innocence. An apparent opportunity or association does not establish participation.
+
+Reviews should consider:
+- Whether the factual basis for suspicion remains valid.
+- Whether new information supports or undermines the suspicion.
+- Whether an alternative person or explanation has emerged.
+- Whether the person has been incorrectly identified.
+- Whether the current status remains necessary and proportionate.
+- Whether restrictions, alerts or investigative actions should be changed.
+
+A suspect can be downgraded, excluded or cleared in one case while remaining a suspect in another, provided the separate basis is recorded.
+
+### Suspect profile and relevant information
+A case-linked suspect profile may contain relevant identity details, known contact routes, verified aliases, relevant addresses, employment or organisational links, vehicles, access, relationships, relevant history, known risks and investigative references.
+
+Only information relevant to a defined policing purpose should be included. Unverified claims are labelled and attributed. Sensitive information is subject to role-based access, lawful purpose, retention limits and audit. A profile must not become an unrestricted collection of gossip, unrelated personal history or speculative character judgments.
+
+### Aliases and identity variants
+Aliases, nicknames, transliterations, former names, spelling variants, false identities and known identity documents are represented as separate identity attributes with source, validity period and confidence. An alias does not automatically establish deception or criminality. The system supports an alias shared by multiple people and a person using different names in different contexts.
+
+### Offending history and prior records
+The system distinguishes:
+- Allegations and reports.
+- Recorded police contacts.
+- Investigative suspicions.
+- Arrests.
+- Charges.
+- Court outcomes.
+- Convictions.
+- Sentences and correctional outcomes.
+- Rehabilitated, spent, sealed or otherwise restricted records.
+
+Only legally established outcomes are represented as convictions. A previous allegation, arrest or acquittal must not be presented as proof of current offending. Relevance of prior history is determined under fictional law and procedure, not automatically assumed by the simulation.
+
+Historical records retain the date, jurisdiction, offence, procedural status, source authority and outcome. Corrections, appeals, overturned convictions, pardons and record restrictions are reflected through traceable updates without erasing the historical procedural record.
+
+### Associations and co-offending
+People may be connected through family, employment, friendship, business, shared property, communications, financial dealings, group membership, common events or suspected co-offending. The system records the nature, source, time period and confidence of each relationship.
+
+Association is not guilt. A person's relationship with a suspect does not automatically make them a suspect or accomplice. Each alleged participant's conduct, knowledge, intent and relevant legal elements must be considered separately.
+
+For group offending, records can represent:
+- Alleged principal participants.
+- Alleged assistance or encouragement.
+- Organisers or coordinators.
+- Facilitators and intermediaries.
+- Receivers, handlers or disposers of property.
+- Unknown or unidentified participants.
+- People whose involvement is disproved or remains uncertain.
+
+These are investigative descriptions unless and until the relevant legal status is established. Group links may be tentative and must not be presented as confirmed criminal membership without a lawful evidential basis.
+
+### Risk and management information
+Operational risk information may be recorded where it is relevant to lawful policing, officer safety, safeguarding or public protection. Examples include a specific threat, known weapon-related concern, escape risk, intimidation allegation, vulnerability, medical or communication need, or a documented history relevant to a particular operational decision.
+
+Each item records source, date, confidence, context, review date, access restriction and the action it supports. The system distinguishes verified facts from unverified warnings. It must not create automatic dangerousness labels from offence category, background, identity or association alone.
+
+Risk information is reviewed when circumstances change and must not be allowed to persist indefinitely without justification.
+
+### Contact, availability and location information
+Investigators may record known addresses, contact methods, last verified contact, relevant location information and lawful attempts to contact a suspect. Each entry identifies its source and the period for which it is considered current.
+
+A last known address is not represented as a current residence without verification. A vehicle association does not establish who was driving. A device or account association does not establish who used it at a particular time. Location information must retain its source, precision, legal basis and limitations.
+
+### Multiple cases and cross-jurisdiction records
+A person may be connected to several incidents and cases. The system links those records while preserving each case's independent evidence, status, ownership and outcome.
+
+Potential cross-case patterns are recorded as hypotheses until assessed. Similarity of method, geography, associates or timing is not by itself proof of common authorship. Cross-jurisdiction information is shared only under applicable authority and information governance rules.
+
+### Mistaken identity, exclusion and exonerating material
+The system must support mistaken identity and false attribution as ordinary possibilities. Where information excludes a person or undermines the case against them, that information is linked to the relevant case and made visible to authorised investigators and reviewers.
+
+When a person is excluded:
+- The basis and decision-maker are recorded.
+- Case-specific suspect status is updated.
+- Active alerts and investigative tasks are reviewed.
+- Relevant recipients are notified where appropriate.
+- Any continuing lawful reason to retain information is documented.
+- Other case links are independently assessed rather than automatically deleted.
+
+A person cleared in one case is not globally declared innocent of every unrelated allegation; equally, suspicion in another case must not contaminate the record of the case in which they were excluded.
+
+### Arrest, charge and court outcome interfaces
+This division receives authoritative status updates from the arrest, legal and court systems. It does not independently create an arrest, charge, conviction or sentence merely because an investigator records a recommendation.
+
+The record must represent separate counts and charges, multiple defendants, partial verdicts, withdrawn charges, acquittals, convictions, appeals, retrials, overturned decisions and amended sentences. The originating authority, case reference and effective date are preserved.
+
+### Record correction, retention and access
+A person record may contain errors, disputed information or outdated details. Corrections are processed under BP-38 and BP-42 with provenance, author, reason, approval and audit history. The system supports restricted, sealed, spent or legally protected information without silently deleting required historical records.
+
+Access is role- and purpose-based. Viewing, adding, changing, exporting or disclosing suspect information is logged. Personnel must not search records for curiosity or personal reasons. Retention and deletion follow the fictional records schedule and applicable legal orders.
+
+### Player experience
+The player can register a person of interest, develop a case-specific suspect record, document the basis for suspicion, link relevant evidence and enquiries, record aliases and relationships, review status, request supervisory decisions, and update records following authoritative legal outcomes.
+
+The player must be able to record information that weakens or disproves suspicion. The system should never automatically identify a culprit, equate an arrest with guilt, or convert a generated hidden offender identity into police knowledge without an in-game evidential route.
+
+### Connections to other divisions
+- **BP-03:** persistent person identity and life history.
+- **BP-13 and BP-14:** offence definitions and hidden event/offender facts.
+- **BP-15 and BP-16:** case management, investigative leads and suspect assessment.
+- **BP-17:** victim and witness roles, including role overlap.
+- **BP-19:** suspect interviews and procedural safeguards.
+- **BP-20 and BP-21:** surveillance and intelligence records.
+- **BP-22 to BP-24:** scenes, evidence and forensic findings.
+- **BP-25 and BP-26:** arrest, warrants and custody.
+- **BP-27 to BP-29:** charges, court outcomes, sentencing and corrections.
+- **BP-30 to BP-34:** governance, professional standards, training and personnel.
+- **BP-37 to BP-43:** time, records, persistence, interface, notifications, security and testing.
+
+### Exceptions and edge cases
+The system must handle unknown offenders, unidentified or partially identified suspects, multiple people with similar identities, false aliases, mistaken identity, one person suspected in several cases, one case involving several suspects, a suspect who is also a victim or witness, a person arrested but never charged, a person charged and acquitted, mixed verdicts across several counts, withdrawn charges, appeals, overturned convictions, deceased suspects, juvenile suspects, extradition or cross-jurisdiction links, protected identities, sealed records, and later-discovered exonerating evidence.
+
+### Acceptance conditions
+- Person identity is persistent while suspect status remains case- and offence-specific.
+- Suspicion, arrest, charge, conviction and sentence are distinct statuses.
+- Every suspect designation has a recorded factual basis, source and decision-maker.
+- Unverified information remains visibly unverified.
+- Associations do not automatically imply criminal participation.
+- Prior allegations and arrests are not presented as convictions.
+- Risk information is sourced, contextual, reviewable and access-controlled.
+- Aliases and identity reconciliation preserve provenance and history.
+- Multiple cases and charges retain independent outcomes.
+- Exonerating information can be recorded and surfaced to authorised reviewers.
+- Authoritative legal outcomes update records without erasing procedural history.
+- Corrections, access and disclosure are auditable.
+- The player retains control of suspect assessment and receives no automatic culprit disclosure.
+
+**Draft status:** BP-18 is a working design. Detailed arrest thresholds, interview rights, charging standards, court outcomes, youth procedures and records restrictions will be refined in the dedicated divisions and fictional legal framework. It is not a claim that suspect or offender management software has been implemented.
