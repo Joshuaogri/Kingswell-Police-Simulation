@@ -30,7 +30,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-03 | Population and Individual Simulation Architecture | Drafted; processing model open |
 | BP-04 | Buildings, Properties, Businesses and Organisations | Drafted |
 | BP-05 | Police Architecture | Initial proposal drafted |
-| BP-06 | Personnel | Not started |
+| BP-06 | Personnel | Drafted |
 | BP-07 | Career System | Not started |
 | BP-08 | Units and Deployment | Not started |
 | BP-09 | Police Resources | Not started |
