@@ -77,6 +77,30 @@ begin
   and ((s.directionality='one_way_forward' and (l.from_junction_id<>s.from_junction_id or l.to_junction_id<>s.to_junction_id))
    or (s.directionality='one_way_reverse' and (l.from_junction_id<>s.to_junction_id or l.to_junction_id<>s.from_junction_id)))) then raise exception 'Route violated one-way direction';end if;
 
+ -- Directed reachability, coordinate bounds and measured-length reconciliation.
+ with recursive directed_reachable(id) as (
+  select id from game.road_junctions where city_id=v_city and junction_code='J001'
+  union
+  select case when s.from_junction_id=dr.id then s.to_junction_id else s.from_junction_id end
+  from game.road_segments s join directed_reachable dr
+   on ((s.from_junction_id=dr.id and s.directionality in ('two_way','one_way_forward'))
+    or (s.to_junction_id=dr.id and s.directionality in ('two_way','one_way_reverse')))
+  where s.city_id=v_city and s.is_routable
+ ) select count(*) into v_count from directed_reachable;
+ if v_count<>157 then raise exception 'Directed network cannot reach all junctions: % of 157',v_count;end if;
+ if exists(select 1 from game.road_segments s cross join lateral jsonb_array_elements(s.geometry_local_m) p
+  where s.city_id=v_city and ((p.value->>0)::integer<0 or (p.value->>0)::integer>20000 or (p.value->>1)::integer<0 or (p.value->>1)::integer>16000)) then
+  raise exception 'A road geometry vertex falls outside the city grid';end if;
+ with vertices as (
+  select s.id,(p.value->>0)::numeric x,(p.value->>1)::numeric y,
+   lag((p.value->>0)::numeric) over(partition by s.id order by p.ord) px,
+   lag((p.value->>1)::numeric) over(partition by s.id order by p.ord) py
+  from game.road_segments s cross join lateral jsonb_array_elements(s.geometry_local_m) with ordinality p(value,ord)
+  where s.city_id=v_city
+ ), measured as(select id,sum(sqrt((x-px)^2+(y-py)^2)) metres from vertices where px is not null group by id)
+ if exists(select 1 from measured m join game.road_segments s on s.id=m.id where abs(round(m.metres)::integer-s.segment_length_m)>1) then
+  raise exception 'Stored road-segment length does not reconcile to its line geometry';end if;
+
  select current_game_time into v_clock from game.simulation_state where id=1;
  if v_clock is not null then raise exception 'Geography regression must not initialise the fictional clock';end if;
 end $$;
