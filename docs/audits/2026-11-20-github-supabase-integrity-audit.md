@@ -552,3 +552,10 @@ The remote migration and GitHub reconstruction use different procedural seed imp
 - The live Kingswell city inventory currently contains 656 properties, 656 buildings, 26,888 building units, 656 addresses, 1,136 property access points, and 24 city landmarks.
 
 Classification: **reconstructed seed implementation with matching table/index/centre/loop inventory and live object counts**. The two SQL implementations are not text-equivalent; retain both. Detailed row-by-row seed-value comparison remains part of the final data parity review.
+
+
+## 26. Content-led review of version 20261120112406
+
+The complete remote statement and GitHub file for `kingswell_police_facilities_patrol_sectors_and_beats` produce identical canonical SQL after normalising comments, whitespace, dollar-quote tags, typed-NULL defaults, and equivalent declaration formatting.
+
+Classification: **canonical SQL match after formatting/declaration normalisation**. No substantive divergence was identified in this pair. Retain the existing file and remote history.
