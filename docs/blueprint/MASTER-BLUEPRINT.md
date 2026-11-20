@@ -227,7 +227,7 @@ Kingswell has 12 administrative districts and 24 neighbourhoods, with two neighb
 | KAS | Aerodrome | Airport and aviation support | Airport Campus; Aviation Village |
 | KMX | Riverside | Mixed-use riverfront and residential | Riverside East; Riverside West |
 
-District and neighbourhood codes are stable identifiers. Names may be refined through recorded changes, but must not be silently replaced by duplicate records. Each district has one map planning envelope. These rectangular envelopes may overlap and are not exact exclusive polygons; they must not override the authoritative district and neighbourhood references stored on individual properties and other location records.
+District and neighbourhood codes are stable identifiers. Names may be refined through recorded changes, but must not be silently replaced by duplicate records. Administrative membership is record-based: each property and other relevant location record carries its canonical district/neighbourhood reference. Each district also has one map planning envelope for orientation and display. These rectangular envelopes may overlap and are not exact exclusive polygons; no system may infer or change administrative membership from an envelope alone.
 
 ### Geographic hierarchy and stable references
 Country → administrative region → city → district → neighbourhood → street/road → property/building → building section/unit → specific internal or external location.
