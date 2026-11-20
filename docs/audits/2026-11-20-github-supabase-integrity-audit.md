@@ -1133,3 +1133,17 @@ The remote migration adds `court_hearing_event_subject_check`, requiring court-c
 The GitHub 153604 court bootstrap already includes the identical check expression inline in the `court_hearing_events` table definition. The remote-only 153836 migration is therefore represented in the repository as part of the earlier consolidated DDL.
 
 Classification: **constraint consolidated into the earlier GitHub court bootstrap; identical condition**. No source or live change is required.
+
+
+## 60. Content-led review of version 20261120140938 — investigative activity records and entity links
+
+Both sources define the same two tables, three indexes, two append-only triggers and the same immutable-history trigger function. The table structures and index inventories align.
+
+However, the remote applied migration additionally defines three operational functions that are entirely absent from the same-version GitHub file:
+- `game.record_case_activity(...)`
+- `game.link_case_activity(...)`
+- `game.get_case_activity(...)`
+
+These are not cosmetic omissions: they implement activity recording, linking activities to case entities, and retrieving the activity chronology. The following player-command migration invokes these functions, so the local migration sequence is incomplete as a standalone reconstruction of the live feature.
+
+Classification: **genuine missing operational SQL in the repository migration file**. Preserve the remote history and current repository file. Recover the three full function definitions into the reconciliation register and confirm whether another repository migration supplies them before any repair.
