@@ -17,7 +17,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Runtime foundation and forensic laboratory workflow implemented | Private `game` schema; 67 tables, 182 foreign keys and 299 indexes; 37 migrations applied; six runtime functions; RLS enabled on all 67 tables; no fictional world/personnel data seeded; fictional clock remains uninitialized |
+| Database schema | Runtime foundation and forensic laboratory workflow implemented | Private `game` schema; 67 tables, 182 foreign keys and 298 indexes; 37 migrations applied; six runtime functions; RLS enabled on all 67 tables; no fictional world/personnel data seeded; fictional clock remains uninitialized |
 | Application/gameplay code | In progress | Database-backed text command interpreter, controlled clock, emergency-call/dispatch/arrival, scene-control, field-report and resource-request workflows implemented; full domain handlers remain outstanding |
 | Runtime regression tests | Implemented; transaction smoke-tested | `database/tests/runtime_foundation.sql`, `database/tests/text_interpreter_dispatch.sql`, `database/tests/unit_dispatch.sql`, `database/tests/dispatch_acknowledgement_arrival.sql` and `database/tests/scene_control_field_reports.sql` cover the implemented runtime and operational slices; all test data rolls back |
 
@@ -238,7 +238,7 @@ Added `scene_resource_request_events` and `scene_lifecycle_events`, plus resourc
 
 Formal scene release requires a recorded safety assessment, no outstanding resource requests and no unmatched scene-entry records. Only the current scene manager can release. An on-scene officer can reopen a released scene while the originating incident remains active; scene command transfers to that officer. Reopening after incident resolution, closure or cancellation is rejected. Release/reopening history is append-only. Regression suite: `database/tests/scene_resource_lifecycle.sql`.
 
-Current verified state after the forensic workflow regression: 67 tables, 182 foreign keys, 299 indexes, RLS enabled on all 67 tables, 37 migrations and six runtime functions. Zero persistent forensic records or test commands; no world/personnel seed data; fictional clock remains uninitialized. The performance advisor reports no unindexed foreign keys. Unused-index notices are expected while the database is empty. The security advisor reports RLS-enabled/no-policy INFO notices because the private `game` schema is intentionally not exposed to the Data API and no public player access has been deployed.
+Current verified state after the forensic workflow regression: 67 tables, 182 foreign keys, 298 indexes, RLS enabled on all 67 tables, 37 migrations and six runtime functions. Zero persistent forensic records or test commands; no world/personnel seed data; fictional clock remains uninitialized. The performance advisor reports no unindexed foreign keys. Unused-index notices are expected while the database is empty. The security advisor reports RLS-enabled/no-policy INFO notices because the private `game` schema is intentionally not exposed to the Data API and no public player access has been deployed.
 
 
 ## Specialist attendance and scene examination — 2026-11-20
