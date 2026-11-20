@@ -133,6 +133,30 @@ begin
     )
  ) then raise exception 'BP04: current business site dossier is not aligned with business profile'; end if;
 
+ -- Property dossiers must be individually described without fabricating dated planning history.
+ if (select count(distinct site_description) from game.property_profiles)<>656
+ then raise exception 'BP04: property site descriptions are not individually differentiated'; end if;
+ if (select count(distinct planning_notes) from game.property_profiles)<>656
+ then raise exception 'BP04: property planning summaries are not individually differentiated'; end if;
+ if exists(
+  select 1 from game.property_profiles
+  where planning_notes not ilike '%not a planning application%'
+     or planning_notes not ilike '%remain unrecorded%'
+ ) then raise exception 'BP04: planning summary does not clearly distinguish missing planning history'; end if;
+
+ -- Building system design profiles are unique to canonical buildings and
+ -- explicitly distinguish seeded summaries from inspection/device inventories.
+ if exists(
+  select 1 from game.building_profiles bp
+  join game.buildings b on b.id=bp.building_id
+  where bp.building_systems #>> '{system_design_profile,profile_reference}' is distinct from b.building_ref
+     or bp.building_systems #>> '{system_design_profile,inspection_status}'<>'not_recorded'
+     or bp.building_systems #>> '{system_design_profile,asset_level_inventory}'<>'not_seeded'
+     or bp.building_systems #>> '{profile_provenance,source}' is null
+ ) then raise exception 'BP04: building system profile identity or provenance invalid'; end if;
+ if (select count(distinct building_systems #>> '{system_design_profile,profile_reference}') from game.building_profiles)<>656
+ then raise exception 'BP04: building system profile references are not unique'; end if;
+
  -- Confirm the event-location trigger rejects a building from another property.
  select id into v_property_id from game.properties order by property_ref limit 1;
  begin
