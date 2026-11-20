@@ -52,12 +52,12 @@ begin
  r:=game.execute_text_command('surveillance plan create CASE-TEST-SURV-001 by KWP-TEST-001 method static_observation at "Test Observation Point" objective "Verify end-to-end surveillance operation creation" subject "Temporary test vehicle"','kng-e2e-surv-plan-0001',null,n1);
  if not coalesce((r->>'ok')::boolean,false) then raise exception 'Plan failed: %',r;end if;
  op:=r->>'operation_ref';
- r:=game.execute_text_command('surveillance deploy '||op||' by KWP-TEST-001','kng-e2e-surv-no-lead-0001',null,n1);
+ r:=game.execute_text_command('surveillance team add '||op||' KWP-TEST-002 role observer by KWP-TEST-001','kng-e2e-surv-team2-0001',null,n1);
+ if not coalesce((r->>'ok')::boolean,false) then raise exception 'Observer assignment failed: %',r;end if;
+ r:=game.execute_text_command('surveillance deploy '||op||' by KWP-TEST-002','kng-e2e-surv-no-lead-0001',null,n2);
  if coalesce((r->>'ok')::boolean,false) or r->>'code'<>'team_lead_required' then raise exception 'Deployment without a team lead was not rejected: %',r;end if;
  r:=game.execute_text_command('surveillance team add '||op||' KWP-TEST-001 role team_lead by KWP-TEST-001','kng-e2e-surv-team1-0001',null,n1);
  if not coalesce((r->>'ok')::boolean,false) then raise exception 'Team lead assignment failed: %',r;end if;
- r:=game.execute_text_command('surveillance team add '||op||' KWP-TEST-002 role observer by KWP-TEST-001','kng-e2e-surv-team2-0001',null,n1);
- if not coalesce((r->>'ok')::boolean,false) then raise exception 'Observer assignment failed: %',r;end if;
  r:=game.execute_text_command('surveillance deploy '||op||' by KWP-TEST-001','kng-e2e-surv-deploy-0001',null,n1);
  if not coalesce((r->>'ok')::boolean,false) then raise exception 'Deployment failed: %',r;end if;
  if (select status from game.surveillance_operations where operation_ref=op)<>'deployed' then raise exception 'Operation did not transition to deployed: %',r;end if;
