@@ -22,6 +22,7 @@ declare
   v_call uuid;
   v_summary record;
   v_baseline record;
+  v_baseline record;
   v_count integer;
   v_rejected boolean;
   v_clock timestamptz;
@@ -45,6 +46,22 @@ begin
   if v_city is null or v_property is null or v_unit1 is null or v_unit2 is null then
     raise exception 'Kingswell or a multi-dwelling residential property is missing';
   end if;
+
+  -- The live city is fully occupied. Release two real dwellings inside this
+  -- rollback-only test; ROLLBACK restores every original resident and household.
+  update game.household_memberships
+     set valid_to=date '2026-01-01'
+   where household_id in (
+     select id from game.households
+     where primary_building_unit_id in (v_unit1,v_unit2)
+       and household_status='active'
+   ) and valid_to is null;
+  update game.households
+     set household_status='dissolved',dissolved_on=date '2026-01-01'
+   where primary_building_unit_id in (v_unit1,v_unit2)
+     and household_status='active';
+
+  select * into v_baseline from game.get_population_summary('KNG');
 
   -- The live city is now fully occupied. Temporarily release two real dwellings
   -- inside this rollback-only test, then restore them automatically on ROLLBACK.
