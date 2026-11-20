@@ -28,7 +28,7 @@ begin
   'activity-start-'||gen_random_uuid()::text,null,officer_id);
  if coalesce((start_result->>'ok')::boolean,false)=false then raise exception 'Start activity command failed: %',start_result; end if;
  session_ref:=start_result->>'session_ref';
- select id into event_id from game.patrol_activity_events where session_id=(select id from game.patrol_activity_sessions where session_ref=start_result->>'session_ref') and event_type='activity_started';
+ select ev.id into event_id from game.patrol_activity_events ev join game.patrol_activity_sessions sess on sess.id=ev.session_id where sess.session_ref=start_result->>'session_ref' and ev.event_type='activity_started';
  if event_id is null then raise exception 'Activity start event missing'; end if;
  begin
   update game.patrol_activity_events set details='{}'::jsonb where id=event_id;
