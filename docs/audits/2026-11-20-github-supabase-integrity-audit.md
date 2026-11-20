@@ -46,7 +46,7 @@ The initial filename/CLI comparison has now been supplemented by a direct, read-
 | Supabase records with no matching repository migration name after that normalisation | 17 |
 | GitHub migration files with no matching Supabase migration name after that normalisation | 3 |
 
-The 138 exact version identifiers are not proof of SQL equivalence. Two of those exact-version records have a genuine different-name collision, detailed in section 13. A third record (\`20261120130735\`) has a stored name prefixed with \`20261120_\`; after removing that date prefix its name matches the repository migration name.
+The 138 exact version identifiers are not proof of SQL equivalence. One exact-version record (`20261120121100`) is a genuine different-name and different-SQL collision. Another (`20261120110252`) has a different stored name but its executed SQL matches the repository file after comment/whitespace normalisation. A third record (\`20261120130735\`) has a stored name prefixed with \`20261120_\`; after removing that date prefix its name matches the repository migration name.
 
 The 17 unmatched Supabase names and three unmatched repository names must be mapped to actual SQL files, including renamed or retimestamped candidates. The Supabase history table stores executed statement arrays, which can be compared with repository SQL after accounting for statement splitting and formatting. That comparison has not yet been completed. No migration deployment or repair is authorised by this inventory.
 
@@ -336,18 +336,23 @@ The CLI inventory is timestamp-only. It is useful for version counts but cannot 
 
 A read-only query of \`supabase_migrations.schema_migrations\` confirmed the table columns include \`version\`, \`name\`, \`statements\`, \`created_by\`, \`idempotency_key\` and \`rollback\`. The audit retrieved all 225 version/name records and computed a digest over each stored statement array for later comparison. No rows were inserted, updated or deleted.
 
-### Exact-version name collisions
+### Exact-version name and content checks
 
-| Version | Supabase recorded name | GitHub file at same version | Finding |
+| Version | Supabase recorded name | GitHub file at same version | SQL comparison result |
 |---|---|---|---|
-| \`20261120110252\` | \`kingswell_bp02_geographic_foundation_schema_and_seed\` | \`20261120110252_kingswell_bp02_geographic_foundation.sql\` | Genuine version/name collision; SQL-content comparison required |
-| \`20261120121100\` | \`record_transit_and_on_beat_patrol_segments\` | \`20261120121100_index_patrol_schedule_coverage_foreign_keys.sql\` | Genuine version/name collision; SQL-content comparison required |
+| \`20261120110252\` | \`kingswell_bp02_geographic_foundation_schema_and_seed\` | \`20261120110252_kingswell_bp02_geographic_foundation.sql\` | **Content matches** after removing SQL comments and normalising whitespace; name differs only |
+| \`20261120121100\` | \`record_transit_and_on_beat_patrol_segments\` | \`20261120121100_index_patrol_schedule_coverage_foreign_keys.sql\` | **Content does not match**; remote SQL implements patrol movement, while the repository file creates patrol schedule/coverage indexes |
+
+For \`20261120121100\`, the remote statement was also compared with the later candidate file \`20261120121600_record_transit_and_on_beat_patrol_segments.sql\`. The candidate has substantial common beginning and ending sections, but the complete normalised SQL is not equal. It must not be assumed to be a faithful copy of the applied migration.
 
 The record at \`20261120130735\` is not treated as a third genuine collision: Supabase stores the name as \`20261120_case_investigative_leads_and_enquiries\`, while the repository suffix is \`case_investigative_leads_and_enquiries\`. Removing the leading eight-digit date prefix makes the names match.
 
 ### Duplicate applied migration name
 
-The remote history contains two records named \`case_review_dossier_and_player_command\`, at versions \`20261120133851\` and \`20261120133944\`. Both must remain distinct until their statement arrays and corresponding repository files are compared.
+The remote history contains two records named \`case_review_dossier_and_player_command\`, at versions \`20261120133851\` and \`20261120133944\`.
+
+- The stored SQL for \`20261120133851\` matches the repository file at the same version after removing SQL comments and normalising whitespace.
+- The stored SQL for \`20261120133944\` does **not** match either repository file at \`20261120133851\` or \`20261120133944\`. The repository's \`20261120133944\` file is a much shorter command-interpreter change, while the remote statement contains a different case-review dossier definition and additional SQL. This is a confirmed historical-file/content discrepancy requiring recovery or explicit classification.
 
 ### Migration names without a counterpart
 
