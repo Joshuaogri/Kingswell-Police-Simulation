@@ -2,7 +2,7 @@
 begin;
 do $test$
 declare c timestamptz:='2026-11-20 18:00:00+00'; b game.patrol_beats%rowtype; f uuid; access_id uuid; access_ref text;
- person_id uuid; officer_id uuid; roster_id uuid; unit_id uuid; v_unit_ref text; v_officer_ref text;
+ person_id uuid; person_ref text; officer_id uuid; roster_id uuid; unit_id uuid; v_unit_ref text; v_officer_ref text;
  start_result jsonb; obs1 jsonb; obs2 jsonb; search_result jsonb; help_result jsonb; parsed jsonb; after_time timestamptz;
 begin
  update game.simulation_state set current_game_time=c,time_paused=true where id=1;
@@ -15,7 +15,7 @@ begin
  if access_id is null then raise exception 'No beat access point found'; end if;
  insert into game.persons(person_ref,given_name,family_name,person_status)
  values('KNG-SEARCH-PERSON-'||substr(gen_random_uuid()::text,1,8),'Search','Officer','active')
- returning id,person_ref into person_id,officer_ref;
+ returning id,game.persons.person_ref into person_id,person_ref;
  insert into game.police_units(unit_ref,unit_name,unit_type,status,base_facility_id,assigned_beat_id,current_access_point_id,current_location_updated_at)
  values('KNG-SEARCH-UNIT-'||substr(gen_random_uuid()::text,1,8),'Search test unit','patrol','active',f,b.id,access_id,c)
  returning id,game.police_units.unit_ref into unit_id,v_unit_ref;
