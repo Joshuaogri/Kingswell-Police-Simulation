@@ -1112,8 +1112,8 @@ Resolved the open processing-model choice: every person has one persistent canon
 
 ### Regression
 The following live Supabase regression scripts passed and rolled back all fixtures:
-- `database/tests/kingswell_population_life_foundation.sql` — identity, addresses, households, overlapping categories, distinct population counts, relationships, routines, birth/death events, death-related membership closure, append-only history, monotonic promotions, automatic police-relevance promotion, activity clock guards, RLS and uninitialised clock.
-- `database/tests/kingswell_bp03_dwelling_unit_allocation.sql` — exact unit/property links, household-to-unit consistency, household capacity enforcement, rejection of non-dwelling allocation and rollback.
+- `database/tests/kingswell_population_life_foundation.sql` — identity, exact current residential unit addresses, household/unit allocation, rejection of property-only current residences, household occupancy/unit/dissolution guards, overlapping categories, distinct population counts, relationships, routines, birth/death events, death-related membership closure, append-only history, monotonic promotions, automatic police-relevance promotion, activity clock guards, RLS and uninitialised clock.
+- `database/tests/kingswell_bp03_dwelling_unit_allocation.sql` — exact unit/property links, household-to-unit consistency, household capacity enforcement, rejection of non-dwelling allocation, mismatched property/unit addresses and duplicate active households, and rollback.
 - `database/tests/kingswell_bp03_population_identity_scale.sql` — 100,000 unique canonical person identities inserted and verified in one rollback-only scale test.
 The existing BP-02 geography, property/address, police/patrol geography, weighted-routing, dispatch-route and BP-04 property/business regression suites also passed after the BP-03 schema change. A 100-person integrated household/address/relationship/routine/life-event regression passed. A complete 100,000-person linked-record end-to-end load was not confirmed: the database execution window timed out during that larger test. Do not mark the full population seed acceptance as passed on the basis of identity-only scale testing.
 
@@ -1123,6 +1123,7 @@ The existing BP-02 geography, property/address, police/patrol geography, weighte
 - `20261120162835_bp03_population_summary_requires_current_household_members`
 - `20261120163022_bp03_end_current_memberships_on_person_death`
 - `20261120171701_bp03_exact_dwelling_unit_allocation_and_capacity_reconciliation`
+- `20261120175212_bp03_require_exact_current_dwelling_membership_and_address`
 
 ### Housing capacity and population seed state
 The 24,512 dwelling profiles previously recorded only four occupants each, giving 98,048 places. The BP-03 reconciliation now sets five-person planning capacity in 244 dwellings in each of the eight residential neighbourhoods: 1,952 dwellings at five occupants and 22,560 at four, for exactly 100,000 places. Households and person address history now store exact canonical building-unit IDs. Triggers enforce dwelling classification, property/unit agreement, one active primary household per dwelling and maximum household occupancy.
