@@ -20,6 +20,8 @@ begin
 
  r:=game.execute_text_command('warrant create CASE-TEST-SEARCH-001 by KWP-SEARCH-001 authority "Kingswell Central Court" scope "Search of listed premises for stolen electronic equipment" valid_for 48 hours','kng-search-e2e-warrant-01',null,n1);
  if not coalesce((r->>'ok')::boolean,false) then raise exception 'Warrant creation failed: %',r;end if;w:=r->>'warrant_ref';
+ r:=game.execute_text_command('warrant create CASE-TEST-SEARCH-001 by KWP-SEARCH-001 authority "Kingswell Central Court" scope "Search of listed premises for stolen electronic equipment" valid_for 48 hours','kng-search-e2e-warrant-01',null,n1);
+ if not coalesce((r->>'duplicate')::boolean,false) or r->>'warrant_ref'<>w then raise exception 'Warrant idempotency replay failed: %',r;end if;
  r:=game.execute_text_command('search plan create CASE-TEST-SEARCH-001 warrant '||w||' by KWP-SEARCH-001 method premises_search objective "Locate and document stolen electronic equipment"','kng-search-e2e-plan-01',null,n1);
  if not coalesce((r->>'ok')::boolean,false) then raise exception 'Plan creation failed: %',r;end if;o:=r->>'operation_ref';
  r:=game.execute_text_command('search team add '||o||' KWP-SEARCH-002 role evidence_officer by KWP-SEARCH-001','kng-search-e2e-team-01',null,n1);
