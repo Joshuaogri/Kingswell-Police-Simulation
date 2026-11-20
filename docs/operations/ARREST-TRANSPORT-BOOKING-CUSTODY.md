@@ -22,7 +22,7 @@ Basis values: `warrant`, `grounds`, `other`. The person must already exist and b
 arrest transport ARREST_REF by PERSONNEL_REF to "Kingswell Custody Suite" vehicle "Marked police vehicle KW-12" handover "Transport completed; detainee condition recorded" duration 12 minutes
 ```
 
-Duration is mandatory (1–240 minutes). The transport leg records departure and arrival times and advances the fictional clock by the explicit duration, adding a clock-history entry. Transport requires an existing arrest that has not already been transported.
+Duration is mandatory (1–240 minutes). The transport leg records departure and arrival times and advances the fictional clock by the explicit duration, adding a clock-history entry. On arrival, the arrest status becomes `transported`; it does not remain marked as in transit. Transport requires an existing arrest that has not already been transported.
 
 ## Book into custody
 
