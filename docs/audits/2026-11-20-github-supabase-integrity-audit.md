@@ -1031,3 +1031,15 @@ A behavioural difference exists in `game.add_case_task_dependency(...)`:
 This means the repository version rejects some cyclic historical links that the remote version would allow when the prerequisite is terminal. The remaining validation and actor checks match.
 
 Classification: **genuine task-dependency cycle-policy divergence**. Preserve both sources. Compare the later task-management migrations and final live function before selecting the intended policy; do not repair migration history yet.
+
+
+## 57. Content-led review of disclosure access, receipt and command migrations 20261120152522–20261120153046
+
+The remote and repository chronology differs across four related changes:
+
+1. At 152522, the remote `execute_justice_command` permits any active prosecutor profile to perform disclosure-receipt actions. The GitHub 152522 version already requires the prosecutor to be linked through a prosecution review/referral for the specific case.
+2. At 152636, the remote migration adds that case-specific prosecutor scope and the disclosure-receipt mutation guard. The GitHub 152636 file contains the same hardening, plus the help branch that the remote history adds later.
+3. At 152706, the remote help migration replaces the executor using the earlier broad active-prosecutor check, temporarily reintroducing the access-scope regression. The GitHub 152706 file retains the case-specific check. The remote 152754 runtime-routing migration and GitHub 152754 file match after normalising the equivalent `search_path` declaration.
+4. At 153046, the remote migration restores case-specific prosecutor scope. Its complete SQL is canonically identical to the GitHub 153046 file. A read-only check of the current live executor confirms the case-specific prosecutor/referral scope is present; the broad any-active-prosecutor check is not.
+
+Classification: **repository hardening is moved earlier and retained through the help integration; the remote history briefly regresses at 152706 and repairs it at 153046**. The final live and repository state is case-scoped. Preserve the migration records and do not reintroduce the broad access condition.
