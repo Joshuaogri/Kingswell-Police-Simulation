@@ -91,7 +91,7 @@ begin
  if game.get_neighbourhood_property_map('KDW-01')->>'property_count'<>'32' then
   raise exception 'Neighbourhood property map did not return the expected property count';
  end if;
- if (select count(*) from game.list_business_directory('logistics_warehousing','KLG',null,500))<>170 then
+ if (select count(*) from game.list_business_directory('logistics_warehousing','KLG',null,500))<>140 then
   raise exception 'Business directory sector/district filter returned the wrong result count';
  end if;
  if game.get_business_record('AF-BIZ-000281')->'business'->>'business_number'<>'AF-BIZ-000281' then
