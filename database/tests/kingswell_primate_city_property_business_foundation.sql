@@ -136,7 +136,7 @@ begin
   raise exception 'Neighbourhood property map game command failed';
  end if;
  v_result:=game.execute_text_command('business directory sector logistics_warehousing by KW-TEST-OFFICER-BP04','bp04-business-directory-test-0001',null,v_officer);
- if coalesce((v_result->>'ok')::boolean,false) is not true or (v_result->>'count')::integer<>100 then
+ if coalesce((v_result->>'ok')::boolean,false) is not true or (v_result->>'count')::integer<>170 then
   raise exception 'Business directory game command failed';
  end if;
  v_result:=game.execute_text_command('business record AF-BIZ-000281 by KW-TEST-OFFICER-BP04','bp04-business-record-test-0001',null,v_officer);
