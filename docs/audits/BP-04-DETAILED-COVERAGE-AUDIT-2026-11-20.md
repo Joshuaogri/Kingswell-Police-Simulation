@@ -144,3 +144,15 @@ The new `game.get_organisation_record(organisation_ref)` query assembles the can
 No organisations, parent/subsidiary links, directors, beneficial owners, legal forms, registration numbers, regulators, contact details or staffing identities were invented. Those fields remain explicitly not recorded until supported by in-game records. Existing parent hierarchy remains authoritative in `organisations.parent_organisation_id`.
 
 Regression checks passed: 1,490/1,490 dossier coverage, 1,452 businesses and 38 institutions preserved, parent-link consistency, provenance/unknown-field controls, private access and complete dossier query output.
+
+## 8. Organisation workforce and job-role dossier refinement
+
+Audited the existing employment links before adding records: 43,412 links, 43,412 distinct people, 1,452 employing organisations, 13 distinct job titles, all current, and all with recorded start dates. No duplicate people or new personnel identities were created.
+
+Added a 13-entry canonical job-role catalogue derived from existing job titles, with role-family classification, role summaries and typical responsibility guides. Added 43,412 employment dossiers keyed one-to-one to existing `organisation_personnel.id` records. Dossiers preserve employment type and dates and link the existing person and employer through the original canonical record.
+
+Added `game.get_organisation_workforce_record(organisation_ref)` for employer workforce summaries, role breakdowns and person-linked employment dossiers, and `game.get_person_employment_record(person_ref)` for a person's employment history across organisations.
+
+Departments, named supervisors, physical work sites, shift schedules, delegated authority and system access remain explicitly not recorded. These were not inferred from job titles, employer premises, or home addresses. No reporting hierarchy or department was fabricated.
+
+Regression tests passed for 13 role catalogue entries, 43,412/43,412 dossier coverage, canonical title matching, unknown assignment preservation, private access and both workforce query functions.
