@@ -1,0 +1,3 @@
+create index if not exists unit_location_history_recorded_by_personnel_idx on game.unit_location_history(recorded_by_personnel_id);
+create index if not exists unit_operational_state_history_command_idx on game.unit_operational_state_history(command_id);
+create index if not exists unit_operational_state_history_unit_idx on game.unit_operational_state_history(unit_id);
