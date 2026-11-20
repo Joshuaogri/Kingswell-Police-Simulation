@@ -5,7 +5,7 @@ declare
  c timestamptz:='2026-11-20 18:00:00+00'; b game.patrol_beats%rowtype; facility_id uuid;
  access_id uuid; access_ref text; person_id uuid; person_ref text; officer_id uuid; officer_ref text;
  roster_id uuid; unit_id uuid; unit_ref text; session_ref text; obs jsonb; linked_incident jsonb; linked_case jsonb; duplicate_link jsonb;
- parsed jsonb; help_result jsonb; incident_ref text:='KNG-LINK-INC-'||substr(gen_random_uuid()::text,1,8);
+ parsed jsonb; help_result jsonb; link_history jsonb; incident_ref text:='KNG-LINK-INC-'||substr(gen_random_uuid()::text,1,8);
  case_ref text:='KNG-LINK-CASE-'||substr(gen_random_uuid()::text,1,8);
  v_observation_ref text; original_description text; link_count integer; event_count integer; after_time timestamptz;
 begin
@@ -60,7 +60,11 @@ begin
   if sqlerrm='Immutable link unexpectedly allowed update' then raise; end if;
  end;
  help_result:=game.execute_text_command('help','link-help-'||gen_random_uuid()::text,null,officer_id);
- if not (help_result->'available_commands' ? 'link_patrol_record') then raise exception 'Link command missing from help'; end if;
+ if not (help_result->'available_commands' ? 'link_patrol_record') or not (help_result->'available_commands' ? 'patrol_intelligence_links') then raise exception 'Patrol intelligence link commands missing from help'; end if;
+ parsed:=game.interpret_text_command('patrol intelligence links for '||v_observation_ref);
+ if parsed->>'command_type'<>'patrol_intelligence_links' then raise exception 'Link history parser failed: %',parsed; end if;
+ link_history:=game.execute_text_command('patrol intelligence links for '||v_observation_ref,'link-history-'||gen_random_uuid()::text,null,officer_id);
+ if not coalesce((link_history->>'ok')::boolean,false) or (link_history->>'links_match_count')::integer<>2 then raise exception 'Link history lookup failed: %',link_history; end if;
  select current_game_time into after_time from game.simulation_state where id=1;
  if after_time is distinct from c then raise exception 'Linking must not advance fictional time'; end if;
 end;$test$;
