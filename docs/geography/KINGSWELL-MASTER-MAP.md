@@ -76,7 +76,8 @@ Each district is subdivided into two neighbourhoods (24 total). Every neighbourh
 4. Create junctions and road segments with connectivity tests.
 5. Add secondary/local roads and transport links.
 6. Add properties, buildings, addresses and landmarks — implemented and regression-tested.
-7. Add police facilities, district patrol sectors and neighbourhood beats — implemented and regression-tested.\n8. Implement road-network route calculation, dispatch routing and response-time estimates.
+7. Add police facilities, district patrol sectors and neighbourhood beats — implemented and regression-tested.\n8. Implement weighted road-network routing — implemented and regression-tested.
+9. Integrate routing with live dispatch and calculate operational response-time estimates.
 
 ## Police facilities and patrol geography
 
@@ -88,11 +89,13 @@ The operational patrol hierarchy is distinct from the administrative district bo
 - All 151 currently routable road segments are attributed to a beat for geographic coverage. This association is a coverage index, not a turn-by-turn route or ordered patrol path.
 - Police unit records can reference a base facility and assigned beat when units are later created.
 
-The facility and beat coordinates inherit the current fictional local-metre planning grid and should not be treated as surveyed locations. Route calculation, turn restrictions, route optimisation, traffic and calibrated response-time estimates remain future work. Regression: `database/tests/kingswell_police_facilities_patrol_geography.sql`.
+The facility and beat coordinates inherit the current fictional local-metre planning grid and should not be treated as surveyed locations. A weighted Dijkstra route engine now calculates fastest and shortest paths between property access points, including police facility access points. It stores ordered road-segment legs and estimates baseline travel duration from posted speed limits. Public routes cannot use controlled access points or restricted freight/emergency segments; police/emergency routes may use the two public_emergency_freight segments. One-way directionality and non-routable segments are respected. Regression: database/tests/kingswell_weighted_road_routing.sql.
+
+This is a baseline route engine, not live traffic or calibrated response-time simulation. Dispatch integration, incident-to-unit auto-routing, turn penalties, congestion, road closures, emergency driving profiles and patrol route optimisation remain future work. Regression: `database/tests/kingswell_police_facilities_patrol_geography.sql`.
 
 ## Explicitly not yet represented
 
-Exact surveyed cadastral polygons, precise architectural building footprints and heights, secondary and service entrances for every building, detailed one-way turn restrictions, live traffic simulation and calibrated travel times remain later layers. The current property and building coordinates are deterministic fictional planning points tied to the connected road network, not survey-grade geometry.
+Exact surveyed cadastral polygons, precise architectural building footprints and heights, secondary and service entrances for every building, detailed turn restrictions, live traffic simulation and calibrated travel times remain later layers. The routing engine currently respects segment directionality, but the seeded network presently has all 151 segments marked two-way. The current property and building coordinates are deterministic fictional planning points tied to the connected road network, not survey-grade geometry.
 
 
 ## Property, building, address and landmark foundation
