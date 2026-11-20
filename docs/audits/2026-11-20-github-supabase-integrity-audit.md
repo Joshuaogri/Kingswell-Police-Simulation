@@ -1206,3 +1206,12 @@ Classification: **canonical SQL match after formatting/declaration normalisation
 The complete remote and GitHub migration SQL for `bp03_population_summary_and_person_provenance_hardening` is canonically identical after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults and equivalent declaration formatting.
 
 Classification: **canonical SQL match after formatting/declaration normalisation**. No substantive source difference was identified. Retain the existing file and remote history.
+
+
+## 63. Content-led review of version 20261120141620 — surveillance operations and observation workflow
+
+The remote migration and GitHub reconstruction define the same five tables with identical column inventories (15, 8, 8, 13 and 10 columns), the same five indexes, four append-only triggers and ten function definitions. Nine function bodies match after normalisation of equivalent `search_path` and typed-NULL declaration syntax. The command executor also matches after normalising its two optional UUID defaults.
+
+Primary-key, unique, foreign-key, check-constraint and RLS counts match between the sources. The live database column inventory matches the reconstructed GitHub table definitions.
+
+Classification: **structural and function-body parity; reconstructed DDL formatting and constraint declaration layout differ**. This is not evidence of missing columns. Detailed constraint-expression comparison remains in the final schema pass. Retain both records unchanged.
