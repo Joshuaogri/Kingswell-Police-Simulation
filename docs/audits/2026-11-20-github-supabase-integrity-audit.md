@@ -413,3 +413,28 @@ The repository file at that same version is 20261120121100_index_patrol_schedule
 The workflow did not run db push, migration repair, reset, or any SQL write. The direct row inspection was a SELECT. No migration-history rows, schema objects, game records or permissions were changed.
 
 The next work is content-led reconciliation: group remote and repository entries by canonical digest, then inspect unmatched migrations in chronological clusters, beginning with exact-version collisions and the duplicated case_review_dossier_and_player_command history entry. Compare complete SQL and current live object definitions; record each mapping as exact copy, renamed/retimestamped copy, equivalent-but-text-different, genuinely divergent, or unrecovered. Keep deployment and migration-history repair disabled until that register is complete.
+
+
+## 15. Content-led review of the first migration collisions
+
+The first two targeted collision groups were inspected using read-only queries against `supabase_migrations.schema_migrations` and the corresponding GitHub migration files. No live database changes were made.
+
+### 15.1 Version 20261120121100 — patrol movement versus indexes
+
+- Supabase stores version `20261120121100` under the name `record_transit_and_on_beat_patrol_segments`.
+- Its stored SQL is one 5,485-character statement that adds `within_assigned_beat` to `game.patrol_movement_events` and defines `game.move_patrol_unit(...)`.
+- GitHub's same-version file, `20261120121100_index_patrol_schedule_coverage_foreign_keys.sql`, is only 457 characters and creates four indexes. It is not the migration recorded remotely.
+- GitHub also contains `20261120121600_record_transit_and_on_beat_patrol_segments.sql` (5,162 characters), which implements a closely related patrol movement function. It is a plausible predecessor/related revision, but it is not an exact recovery of the remotely stored SQL. The remote statement includes additional destination-on-assigned-beat and schedule-boundary validation and differs in other implementation details.
+- Classification: **same-version content collision confirmed; related candidate found; exact historical source not yet recovered**. Do not replace either file or alter migration history on this evidence alone.
+
+### 15.2 Version 20261120133944 — duplicate case-review migration name
+
+- Supabase contains two rows named `case_review_dossier_and_player_command`, at versions `20261120133851` and `20261120133944`.
+- The remote `20261120133851` row matches the GitHub `20261120133851_case_review_dossier_and_player_command.sql` baseline after ordinary comment/whitespace normalisation.
+- The remote `20261120133944` row is not the GitHub file at the same version. The remote statement redefines the large case-review dossier function and the command interpreter/executor; the GitHub same-version file is a shorter follow-on that adds the named-actor and active-case-assignment access restriction.
+- The remote `20261120133944` SQL also does not match the GitHub `20261120133851` baseline. This is therefore not explained by a simple filename/name discrepancy or by the two local files being exact duplicates.
+- Classification: **duplicate remote name and same-version content collision confirmed; remote historical SQL differs from both local candidates; exact source/revision lineage unresolved**. Preserve both remote rows and both repository files pending recovery of the original migration artifact or a documented reconstruction decision.
+
+### 15.3 Reconciliation status and safety
+
+These checks confirm that at least two of the 82 same-version/different-content pairs are substantive historical-source mismatches, not merely dollar-quote-tag formatting. They do not establish that the differing SQL has equivalent or different runtime behaviour in every respect. Continue content-led investigation in chronological groups, retain all candidate files and remote history, and complete the remaining source mapping and live-schema comparison before considering any migration-history repair or deployment. The audit remains read-only; no migration was pushed, repaired, reset, or replayed.
