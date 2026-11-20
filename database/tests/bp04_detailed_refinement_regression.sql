@@ -157,6 +157,19 @@ begin
  if (select count(distinct building_systems #>> '{system_design_profile,profile_reference}') from game.building_profiles)<>656
  then raise exception 'BP04: building system profile references are not unique'; end if;
 
+ -- Every unit/premises now has a canonical access dossier and a referenced
+ -- metering design summary. No actual meter serials, readings or credentials are invented.
+ if (select count(distinct access_notes) from game.building_unit_profiles)<>26888
+ then raise exception 'BP04: unit access dossiers are not individually differentiated'; end if;
+ if exists(
+  select 1 from game.building_units u
+  join game.building_unit_profiles up on up.building_unit_id=u.id
+  where up.utility_meter_refs#>>'{unit_metering_profile,profile_reference}' is distinct from u.unit_ref
+   or up.utility_meter_refs#>>'{unit_metering_profile,meter_serial_numbers}'<>'not_recorded'
+   or up.utility_meter_refs#>>'{unit_metering_profile,meter_readings}'<>'not_recorded'
+   or up.access_notes not ilike '%not recorded in this profile%'
+ ) then raise exception 'BP04: unit access/metering provenance validation failed'; end if;
+
  -- Confirm the event-location trigger rejects a building from another property.
  select id into v_property_id from game.properties order by property_ref limit 1;
  begin
