@@ -50,4 +50,4 @@ Kingswell's approved BP-02 geographic foundation uses a fictional 20 km × 16 km
 
 ## Current implementation direction
 
-The project now includes patrol routing and coverage, scene and evidence workflows, forensics, case investigation, prosecution and disclosure, and an NPC court registry/hearing system. Trial proceedings are being built in layers: pleas, court events and evidence admissibility are implemented; verdicts per charge, sentencing, corrections and appeals remain to be added. See the [Implementation Register](docs/governance/IMPLEMENTATION-REGISTER.md) for verified status.
+The project now includes patrol routing and coverage, scene and evidence workflows, forensics, case investigation, prosecution and disclosure, and an NPC court registry/hearing system. Trial proceedings now include pleas, court events, evidence admissibility, per-charge verdicts and sentencing. Corrections and appeals remain to be added. See the [Implementation Register](docs/governance/IMPLEMENTATION-REGISTER.md) for verified status.
