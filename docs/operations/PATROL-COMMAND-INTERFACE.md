@@ -24,3 +24,10 @@ Regression: `database/tests/kingswell_patrol_command_interface.sql`.
 - `patrol move UNIT_REF to ACCESS_REF because REASON`
 
 This command routes the on-patrol unit to a registered access point on its assigned beat, records every road segment traversed, updates its current location and advances fictional time by the route's estimated duration. Transit legs outside the beat are recorded but excluded from beat coverage. See `PATROL-ROAD-MOVEMENT.md` for the detailed movement model.
+
+
+## Patrol intelligence
+
+- `patrol intelligence` — reports road-segment coverage, patrol movement minutes, beat gaps, least-visited roads and unit activity through current fictional time.
+- Aliases: `patrol gaps`, `patrol analysis`.
+- Optional timestamp-window reporting is available through the database reporting function; the standard player command reports all recorded history.
