@@ -833,3 +833,28 @@ The remote migration updates `game.execute_arrest_custody_command(...)` so evide
 The GitHub file at this version is comment-only. The consolidated 20261120144932 executor already includes the explicit `evidence_ref` column and generated `KWE-` value in the retained-as-evidence branch.
 
 Classification: **custody-property evidence-reference fix consolidated into the earlier GitHub workflow source**. The final corrected insert is present in the consolidated file; the standalone historical patch is omitted.
+
+
+## 35. Content-led review of version 20261120132555 — suspect interview records
+
+Both sources define the same two tables, with matching column names/counts; the same two indexes; the same two append-only triggers; matching primary/unique/foreign-key/check constraint counts; RLS on both tables; and matching grants/revokes. The assessment and review function bodies match exactly after normalisation.
+
+The initial classification function differs: the GitHub reconstruction includes a guard rejecting classification when the parent case is closed; the remote version at this timestamp does not. The subsequent applied migration `20261120132728` adds that exact closed-case guard to the live function.
+
+Classification: **historical function-body drift, subsequently corrected in the live migration sequence**. The repository reconstruction places the guard earlier than the remote history, but the final live function is aligned. Preserve both historical records; no repair is warranted.
+
+## 36. Content-led review of version 20261120132622 — suspect interview commands
+
+The command interpreter function matches between remote and repository sources. The command-executor function differs because the repository reconstruction already includes a `help` branch that adds the three suspect-interview commands to the available-command list. The remote version at this timestamp lacks that branch.
+
+The subsequent applied migration `20261120132728` installs the same help branch in the live executor. Thus the final live command behaviour is aligned, although the repository reconstruction places the help addition one migration earlier.
+
+Classification: **historical command-executor drift, subsequently corrected in the live migration sequence**. Preserve the history; do not rewrite either migration.
+
+## 37. Content-led review of version 20261120132728 — suspect interview guard and help
+
+The remote and repository versions contain matching bodies for both `game.record_case_suspect_interview(...)` and `game.execute_text_command(...)`. The closed-case guard and help-command branch are identical. Their function permissions also match: public/anon/authenticated are revoked and `service_role` is granted execution.
+
+The full files differ in formatting and declaration packaging, but no behavioural difference was found in the reviewed function bodies or permissions.
+
+Classification: **function-body and permission parity; this applied follow-up resolves the earlier 20261120132555 and 20261120132622 historical differences**. Retain both records unchanged.
