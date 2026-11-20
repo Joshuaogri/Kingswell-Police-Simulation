@@ -1147,3 +1147,12 @@ However, the remote applied migration additionally defines three operational fun
 These are not cosmetic omissions: they implement activity recording, linking activities to case entities, and retrieving the activity chronology. The following player-command migration invokes these functions, so the local migration sequence is incomplete as a standalone reconstruction of the live feature.
 
 Classification: **genuine missing operational SQL in the repository migration file**. Preserve the remote history and current repository file. Recover the three full function definitions into the reconciliation register and confirm whether another repository migration supplies them before any repair.
+
+
+## 61. Content-led review of version 20261120140954 — investigative activity player commands
+
+The complete remote and repository SQL for `case_investigative_activity_player_commands` is canonically identical after normalising whitespace and dollar-quote tags. Both command interpreter and executor bodies match exactly, including activity recording, entity-linking and activity retrieval command routing.
+
+This command migration depends on the three operational functions missing from the same-version repository reconstruction documented in section 60; its own command wrapper is not the missing implementation.
+
+Classification: **exact command-migration match; dependency gap remains in the preceding activity-record migration**. Preserve both records.
