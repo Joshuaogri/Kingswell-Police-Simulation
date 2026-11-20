@@ -26,7 +26,7 @@ The regional descriptions establish national orientation and jurisdictional cont
 - Kingswell city footprint: 20 km east–west by 16 km north–south, represented on a local metric grid (x=0–20,000 m; y=0–16,000 m).
 - Coordinates are integer metres, with north at the top and east to the right. They are fictional local-grid coordinates, not latitude/longitude.
 - The city is coastal on its southern edge. A navigable river enters from the north-east and reaches the harbour basin in the south-east.
-- The city map is version KNG-MAP-0.1. The same metre grid is used by district envelopes, road junctions, landmarks, properties and access points.
+- The city property-map layer is version KNG-MAP-0.2. Its underlying coordinate system remains KNG-MAP-0.1 on the same local metre grid used by district envelopes, road junctions, landmarks, properties, buildings, parcel outlines and access points.
 - District map records are rectangular planning envelopes. They may overlap and must not be treated as exact exclusive polygons. Administrative membership is record-based: canonical district/neighbourhood references on properties and other relevant location records are authoritative. No system may infer or change jurisdiction from a planning envelope alone.
 - Primary roads connect the districts to the central network and the principal city gateways.
 - The city begins with the BP-02 baseline of 100,000 permanent residents and has no fixed population ceiling. Population growth, decline, movement and district population distribution belong to BP-03, not the geography layer.
@@ -71,7 +71,7 @@ Three explicit bridge crossings are recorded as bridge segments with separate we
 
 ## Neighbourhood framework
 
-Each district is subdivided into two neighbourhoods (24 total). Every neighbourhood has a dedicated named local street and a connected five-segment access pattern in the road graph. Each neighbourhood contains 20 seeded property parcels. The existing BP-04 property/building layer records 480 properties, 480 buildings, 712 building units, 480 structured postal addresses and 480 road-linked access points. Twenty-four named geographic landmarks are linked to their existing property, building and access-point records. BP-02 references these records; it does not create a second property, building, unit, address or entrance system.
+Each district is subdivided into two neighbourhoods (24 total). Every neighbourhood has a dedicated named local street and a connected five-segment access pattern in the road graph. The BP-02 baseline seeded 20 parcels in each neighbourhood (480 total). BP-04 preserves that baseline and adds 96 residential towers and 80 multi-tenant commercial centres. The current layer contains 656 properties, 656 buildings, 26,888 building units, 656 structured postal addresses and 656 road-linked primary access points. Twenty-four named geographic landmarks remain linked to their existing property, building and access-point records. BP-02 references these records; it does not create a second property, building, unit, address or entrance system.
 
 ## Network modelling rules
 
@@ -117,11 +117,11 @@ Exact surveyed cadastral polygons, precise architectural building footprints and
 
 ## Property, building, address and landmark foundation
 
-The initial city inventory is seeded across all 24 neighbourhoods, with 20 parcels per neighbourhood (40 per district): 480 property records and 480 associated buildings. Property records carry district/neighbourhood ownership, street and road references, fictional local-grid coordinates, parcel area, frontage width, land-use classification, frontage road segment and postal code. Buildings carry their own local-grid position, footprint dimensions/area, building type, floor count, construction type and occupancy state. The current building-unit register contains 712 units/premises.
+The original city inventory is seeded across all 24 neighbourhoods, with 20 BP-02 baseline parcels per neighbourhood (40 per district): 480 property records and 480 associated buildings. BP-04 adds 176 further parcels/buildings, bringing the live property/building register to 656 each. The current building-unit register contains 26,888 units/premises, including 24,512 units classified as residential and the balance in commercial, industrial, logistics, transport and mixed-use premises. Property records carry district/neighbourhood references, street and road links, fictional local-grid coordinates, parcel area, frontage width, land-use classification, frontage road segment and postal code. Buildings carry their own position, footprint dimensions/area, type, floor count, construction type, occupancy state and a detailed building-systems profile.
 
-Every property has one structured primary postal address (480 total) and one primary access point (480 total). Access points resolve to an actual routable road segment and junction, providing a usable destination layer for future dispatch and navigation. The address format is: street number, named local street, neighbourhood, district, Kingswell, Asterfell and neighbourhood postal code. Twenty-four named landmarks—one per neighbourhood—resolve to their property, building and access point, rather than existing as unlinked map labels.
+Every property has one structured primary postal address (656 total) and one primary access point (656 total). Access points resolve to an actual routable road segment and the nearest endpoint junction, providing a usable destination layer for dispatch and navigation. Every property, building and unit now has a one-to-one detailed profile, including local-grid parcel/building outlines, utility/security/fire/accessibility information, floor directories and unit-level use/occupancy attributes. The address format is: street number, named local street, neighbourhood, district, Kingswell, Asterfell and neighbourhood postal code. Twenty-four named landmarks—one per neighbourhood—resolve to their property, building and access point, rather than existing as unlinked map labels.
 
-These are fictional planning records, not real-world addresses or surveyed property boundaries. The initial inventory is intentionally comprehensive enough to support address lookup, incident location, business/institution placement and future population occupancy; detailed cadastral shapes, building floor plans, multiple entrances and dynamic occupancy are later refinements. Regression: `database/tests/kingswell_properties_buildings_addresses.sql`.
+These are fictional planning records, not real-world addresses or surveyed property boundaries. The expanded inventory supports address lookup, incident location, business/institution placement and BP-03 household allocation. Parcel and building outlines are schematic local-grid footprints, not surveyed cadastral geometry; precise legal boundaries, architectural floor plans, multiple entrances and dynamic occupancy remain later refinements. Regression: `database/tests/kingswell_properties_buildings_addresses.sql`.
 
 
 ## BP-02 ownership boundaries and completion
@@ -136,3 +136,40 @@ These are fictional planning records, not real-world addresses or surveyed prope
 ### BP-02 verification
 
 The rollback-only BP-02 geography regression verifies the Asterfell country and eight-region register, capital-city link, Kingswell local-grid metadata, 12 districts, 24 neighbourhoods, 12 in-grid planning envelopes, 51 named roads, 118 in-grid junctions, 151 connected road segments, three explicit 1,000 m bridge segments, 24 in-grid landmarks, foreign-key consistency and RLS. Separate rollback-only regressions verify the existing property/building/address/landmark layer, police facilities and patrol geography, weighted route calculation and dispatch route integration. The fictional clock is required to remain uninitialised during these tests.
+
+
+## BP-04 primate-city property and business map layer — KNG-MAP-0.2
+
+Kingswell is Asterfell's primate city: the dominant political, financial, commercial, entertainment, logistics, transport and international-trade centre. The property map reflects that national role. The central city contains banking, capital markets, corporate headquarters, ministries, regulators and professional services; Market Ward provides wholesale and retail exchange; Foundry Park supports manufacturing; East Logistics and South Harbour concentrate freight, warehousing, import/export, customs and maritime trade; Central Terminal and Aerodrome serve passenger and cargo movement; Westhaven, Northgate, University Heights and Riverside provide high-density housing and daily neighbourhood services.
+
+### Current inventory by district
+
+| District | Properties/buildings | Units | Businesses | Character |
+|---|---:|---:|---:|---|
+| KDW — Westhaven | 64 | 6,240 | 48 | High-density housing, Old Westhaven and Willow Park local services |
+| KNA — Northgate | 64 | 6,240 | 48 | Northern residential towers and neighbourhood retail |
+| KED — University Heights | 64 | 6,184 | 48 | University, hospital, student/staff housing and local services |
+| KMX — Riverside | 64 | 6,304 | 208 | Riverfront housing, 160 mixed-use premises, retail and hospitality |
+| KCI — Civic Quarter | 50 | 240 | 130 | Parliament, Presidency, ministries, regulators and professional offices |
+| KCB — Central Exchange | 50 | 240 | 180 | Banking, insurance, investment, corporate and technology firms |
+| KST — Central Terminal | 50 | 240 | 80 | Passenger interchange, rail/bus and transport businesses |
+| KMA — Market Ward | 50 | 240 | 190 | Grand Market, wholesale, retail, food trade and hospitality |
+| KIN — Foundry Park | 50 | 240 | 140 | Manufacturing, engineering and industrial services |
+| KLG — East Logistics | 50 | 240 | 190 | Freight forwarding, distribution and warehousing |
+| KPT — South Harbour | 50 | 240 | 140 | Port, maritime trade, customs support and import/export |
+| KAS — Aerodrome | 50 | 240 | 50 | Airport campus, aviation and cargo support |
+
+The 96 residential towers are distributed 12 per neighbourhood across KDW-01/02, KNA-01/02, KED-01/02 and KMX-01/02. The 80 commercial centres are distributed five per neighbourhood across the 16 other neighbourhoods. The 192 residential-tower podium shops and 160 existing Riverside mixed-use premises support 352 additional neighbourhood-scale businesses. The business directory contains 1,452 businesses and 43,412 estimated employee positions; employee estimates are business profile data, not yet individual NPC employee identities.
+
+### Neighbourhood map commands and geometry
+
+The live database provides `game.get_neighbourhood_property_map(neighbourhood_code)`, returning the district/neighbourhood identity, property count, building count, unit count, property centres, parcel outline rings, addresses, road names, access-point coordinates, building footprints/heights, unit totals and current occupiers.
+
+The text-first game commands are:
+- `property map KDW-01 by PERSONNEL_REF`
+- `property record KNG-P-RH0001 by PERSONNEL_REF`
+- `property summary by PERSONNEL_REF`
+- `business directory sector logistics_warehousing by PERSONNEL_REF`
+- `business record AF-BIZ-000281 by PERSONNEL_REF`
+
+The detailed narrative and 24-neighbourhood inventory is maintained in `docs/geography/KINGSWELL-NEIGHBOURHOOD-ATLAS.md`. All added properties remain on the existing local-metre grid and use existing district, neighbourhood, road and junction identities. No duplicate geographic hierarchy has been introduced.
