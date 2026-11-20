@@ -2,18 +2,18 @@
 begin;
 do $test$
 declare c timestamptz:='2026-11-20 16:00:00+00'; b game.patrol_beats%rowtype; ap record;
- f uuid; u uuid; person_id uuid; officer_id uuid; roster_id uuid; start_result jsonb; end_result jsonb; intel jsonb; help_result jsonb; session_ref text; after_time timestamptz; event_id uuid; rejected boolean:=false;
+ f uuid; access_id uuid; access_ref text; u uuid; person_id uuid; officer_id uuid; roster_id uuid; start_result jsonb; end_result jsonb; intel jsonb; help_result jsonb; session_ref text; after_time timestamptz; event_id uuid; rejected boolean:=false;
 begin
  update game.simulation_state set current_game_time=c,time_paused=true where id=1;
  select * into b from game.patrol_beats where status='active' order by beat_ref limit 1;
- select pf.id,pf.access_point_id into f,ap from game.police_facilities pf where pf.status='active' and pf.access_point_id is not null order by pf.facility_ref limit 1;
+ select pf.id into f from game.police_facilities pf where pf.status='active' and pf.access_point_id is not null order by pf.facility_ref limit 1;
  if b.id is null or f is null then raise exception 'Required patrol fixtures missing'; end if;
- select x.id,x.access_ref into ap from game.property_access_points x join game.patrol_beat_road_segments br on br.road_segment_id=x.road_segment_id where br.beat_id=b.id and x.is_primary order by x.access_ref limit 1;
- if ap.id is null then raise exception 'No beat access point found'; end if;
+ select x.id,x.access_ref into access_id,access_ref from game.property_access_points x join game.patrol_beat_road_segments br on br.road_segment_id=x.road_segment_id where br.beat_id=b.id and x.is_primary order by x.access_ref limit 1;
+ if access_id is null then raise exception 'No beat access point found'; end if;
  insert into game.persons(person_ref,given_name,family_name,person_status)
  values('KNG-ACT-PERSON-'||substr(gen_random_uuid()::text,1,8),'Activity','Officer','active') returning id into person_id;
  insert into game.police_units(unit_ref,unit_name,unit_type,status,base_facility_id,assigned_beat_id,current_access_point_id,current_location_updated_at)
- values('KNG-ACT-UNIT-'||substr(gen_random_uuid()::text,1,8),'Patrol activity regression','patrol','active',f,b.id,ap.id,c) returning id into u;
+ values('KNG-ACT-UNIT-'||substr(gen_random_uuid()::text,1,8),'Patrol activity regression','patrol','active',f,b.id,access_id,c) returning id into u;
  insert into game.police_personnel(personnel_ref,person_id,service_number,current_unit_id,employment_status,joined_on)
  values('KNG-ACT-OFFICER-'||substr(gen_random_uuid()::text,1,8),person_id,'KNG-ACT-SVC-'||substr(gen_random_uuid()::text,1,8),u,'active',current_date) returning id into officer_id;
  insert into game.duty_rosters(roster_ref,unit_id,shift_name,starts_at,ends_at,status)
@@ -24,11 +24,11 @@ begin
  start_result:=game.execute_text_command(
   'start patrol activity '||(select unit_ref from game.police_units where id=u)||
   ' by '||(select personnel_ref from game.police_personnel where id=officer_id)||
-  ' at '||ap.access_ref||' type foot_patrol because regression foot patrol',
+  ' at '||access_ref||' type foot_patrol because regression foot patrol',
   'activity-start-'||gen_random_uuid()::text,null,officer_id);
  if coalesce((start_result->>'ok')::boolean,false)=false then raise exception 'Start activity command failed: %',start_result; end if;
  session_ref:=start_result->>'session_ref';
- select id into event_id from game.patrol_activity_events where session_id=(select id from game.patrol_activity_sessions where session_ref=session_ref) and event_type='activity_started';
+ select id into event_id from game.patrol_activity_events where session_id=(select id from game.patrol_activity_sessions where session_ref=start_result->>'session_ref') and event_type='activity_started';
  if event_id is null then raise exception 'Activity start event missing'; end if;
  begin
   update game.patrol_activity_events set details='{}'::jsonb where id=event_id;
