@@ -1,0 +1,5 @@
+create index if not exists deployment_route_history_route_calculation_fk_idx on game.deployment_route_history(route_calculation_id);
+create index if not exists deployment_route_history_origin_access_point_fk_idx on game.deployment_route_history(origin_access_point_id);
+create index if not exists deployment_route_history_destination_access_point_fk_idx on game.deployment_route_history(destination_access_point_id);
+create index if not exists incident_deployments_route_origin_access_point_fk_idx on game.incident_deployments(route_origin_access_point_id);
+create index if not exists incident_deployments_route_destination_access_point_fk_idx on game.incident_deployments(route_destination_access_point_id);
