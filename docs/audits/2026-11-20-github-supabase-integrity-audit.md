@@ -1099,3 +1099,21 @@ Classification: **equivalent SQL; one unused variable in the remote function dec
 The remote and GitHub migration files are byte-for-byte identical. Both create the unique index `case_task_submission_reviews_one_final_idx` on `submission_id`, enforcing one final review per submission.
 
 Classification: **exact source-file match**. Retain both records unchanged.
+
+
+## 59. Content-led review of court registry migrations 20261120153604–20261120153802
+
+The GitHub 153604 court bootstrap migration is a consolidated final-state source: its complete `game.execute_justice_command(...)` body is canonically identical to the remote 153802 version after formatting normalisation. It already contains the later remote changes for case-row mapping, hearing-attendance/read aliases, court creation/official appointment events, and adjournment-reason composition.
+
+The remote sequence introduces these changes incrementally:
+- 153611 fixes court-order return/event handling.
+- 153647 introduces the explicit `case_row` mapping for case records.
+- 153700 and 153720 correct attendance and hearing-read aliases.
+- 153738 adds court/official event subject links and changes the court-order reference default from `KWCO-` to `KWOR-`.
+- 153802 fixes adjournment-reason concatenation.
+
+The repository has the final `KWOR-` default in its earlier 153604 file. The live `court_orders.order_ref` default is also `KWOR-`; there are currently no court-order rows.
+
+**Outstanding live function defect:** the current `game.execute_justice_command(...)` and the consolidated repository function declare `cp` as `game.court_cases%rowtype`, but the `get_court_docket` branch loads the requested case into `case_row` and then uses `cp.id` in prosecutor, defence-counsel and court-official access subqueries. `cp` is not populated in that branch. A read-only inspection confirms the current live function still contains those `cp.id` references. This can deny court-docket access to prosecutors, defence counsel and court officials even when they are linked to the case; the police-assignment check uses `case_row.id`.
+
+Classification: **court workflow fixes consolidated into the earlier GitHub bootstrap; KWOR reference prefix is correct in live and repository state; separate live docket-access defect remains unresolved**. No live changes were made.
