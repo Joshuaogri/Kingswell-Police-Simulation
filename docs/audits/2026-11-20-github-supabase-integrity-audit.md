@@ -1064,3 +1064,10 @@ Classification: **same dossier wrapper and privilege boundary; formatting differ
 The GitHub file `20261120140100_case_task_player_commands.sql` is stored remotely at version `20261120125347`, under the same migration name. The complete SQL is canonically identical after normalising comments, whitespace and dollar-quote tags. Both command interpreter and executor bodies match exactly.
 
 Classification: **exact canonical SQL match with remote version/timestamp discrepancy**. Preserve both records.
+
+
+## 54. Content-led review of case-task create-command actor attribution
+
+The GitHub file `20261120140200_case_task_create_command_actor_attribution.sql` is stored remotely at version `20261120125411`, under the same migration name. The complete SQL is canonically identical after normalising comments and whitespace. The command grammar requires an explicit `by <personnel_ref>` actor for task creation and preserves the update, assignment and retrieval commands.
+
+Classification: **exact canonical SQL match with remote version/timestamp discrepancy**. Preserve both records.
