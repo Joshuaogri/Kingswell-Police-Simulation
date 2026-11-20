@@ -1298,3 +1298,10 @@ Classification: **canonical SQL match after formatting normalisation**. No subst
 The remote and GitHub migrations define the same four property/business command and retrieval functions. Each function body differs by one semicolon immediately before its dollar-quote terminator; after normalising that terminator formatting, all four bodies match. The business-record retrieval function matches exactly.
 
 Classification: **same property/business command and read behaviour; function-terminator formatting only**. Retain the existing file and remote history.
+
+
+## 76. Content-led review of version 20261120164744
+
+The remote and GitHub business-directory full-listing command parser is identical apart from the optional semicolon immediately before the dollar-quote terminator.
+
+Classification: **same parser and command behaviour; function-terminator formatting only**. Retain the existing file and remote history.
