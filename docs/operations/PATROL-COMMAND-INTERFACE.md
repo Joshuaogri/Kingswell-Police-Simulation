@@ -58,3 +58,16 @@ See `PATROL-ACTIVITY-SESSIONS.md` for the record model and constraints. Regressi
 - `patrol intelligence` includes observation counts by category and contact counts by type, including linked people/organisations/properties/incidents.
 
 See `PATROL-ACTIVITY-SESSIONS.md`. Regression: `database/tests/kingswell_patrol_observations_contacts.sql`.
+
+
+## Searchable patrol intelligence
+
+- `search patrol intelligence` — searches all recorded patrol observations and civilian contacts.
+- `search patrol intelligence for WORDS` — matches words against observation category/description and contact type/outcome/notes.
+- Results include the original source reference, time, record type, category/contact type, narrative/outcome, location, beat and linked entity references.
+- Repeated reports at the same access point are summarised by source type and category/contact type, with count and first/last recorded time.
+- The search is read-only. Original observations and contacts remain immutable, and search does not advance fictional time.
+- The underlying secured function additionally supports filters for beat, access point, person, organisation, incident, selected fictional-time range and result limit.
+- Repeated-record counts are not proof of a crime, corroboration, risk or guilt.
+
+Regression: `database/tests/kingswell_searchable_patrol_intelligence.sql`.
