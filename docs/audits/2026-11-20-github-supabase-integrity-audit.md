@@ -1085,3 +1085,10 @@ Classification: **exact canonical SQL match with remote version/timestamp discre
 The complete remote and repository migration SQL is canonically identical after normalising comments and whitespace. Both define the same three submission/evidence/review tables, three indexes, four triggers and six functions. This includes immutable submission history, evidence links, supervisor review, and the completion-review gate that controls task completion.
 
 Classification: **exact canonical SQL match**. Retain both records unchanged.
+
+
+## 57. Content-led review of version 20261120140537 — task submission command integration
+
+The remote and repository command interpreters match exactly. Their command-executor bodies also match after removing one unused remote local-variable declaration (`v_case_id uuid`). Both expand the case-task event-type constraint to include submission, acceptance and return events, and register the same task-submission commands in help and execution.
+
+Classification: **equivalent SQL; one unused variable in the remote function declaration**. No behavioural difference was identified. Retain both records unchanged.
