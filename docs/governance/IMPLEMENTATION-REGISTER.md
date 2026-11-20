@@ -504,3 +504,18 @@ The test was rerun from the committed GitHub file. Live game remains unseeded: z
 **PASS:** `database/tests/kingswell_unit_arrival_position_sync.sql` ran against live Supabase in a transaction ending in ROLLBACK. It verified unit position synchronization, exactly one arrival-history entry and unchanged fictional time. No fixture records or clock changes remain.
 
 Documentation: `docs/operations/PATROL-UNIT-LOCATION-HISTORY.md` and the updated `docs/operations/LIVE-DISPATCH-ROUTING.md`.
+
+
+## Patrol unit operational-state lifecycle — 2026-11-20
+
+**Implemented and rollback-only regression-tested.** Migrations:
+- `database/migrations/20261120120000_patrol_unit_operational_state_lifecycle.sql`
+- `database/migrations/20261120120100_block_dispatch_to_out_of_service_units.sql`
+
+Patrol units now have explicit operational states: `at_station`, `on_patrol`, `responding`, `on_scene`, `returning` and `out_of_service`. Dispatch creation automatically sets responding; officer arrival sets on-scene; ending the last active deployment sets returning. If another active deployment remains, the unit state reflects whether any officer is already on scene or still responding.
+
+The service-role function `game.set_unit_operational_state(unit_ref,state,reason)` supports manual transitions to at-station, on-patrol, returning and out-of-service. Active deployments prevent a unit being marked at-station, on-patrol or out-of-service. Returning to station relocates the unit to its registered base access point. A database guard rejects deployment creation or reassignment to an out-of-service unit.
+
+Every change is recorded in private RLS-enabled append-only `game.unit_operational_state_history`; service_role cannot update/delete its history. This is an authoritative state layer, not yet a complete patrol scheduler: patrol beat assignment, scheduled patrol tasks, player-facing state commands and automatic patrol commencement/return workflows remain outstanding.
+
+**PASS:** `database/tests/kingswell_patrol_operational_state_lifecycle.sql` verified initial station state, patrol, dispatch, arrival, clearing, return to station, out-of-service status, rejection of a deployment to an out-of-service unit, history entries and unchanged fictional clock. Transaction rolled back. Post-test checks confirm zero persistent test units, zero state/location history rows, uninitialized fictional clock, RLS enabled and no service_role UPDATE/DELETE grants on state history.
