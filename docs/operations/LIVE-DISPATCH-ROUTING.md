@@ -105,3 +105,13 @@ The replacement must be a different active unit with eligible on-duty personnel.
 Both commands use the normal parser and idempotent command ledger. No automatic time progression occurs.
 
 Regression: `database/tests/kingswell_player_dispatch_options_and_reassignment.sql` passed on Supabase in a transaction ending in ROLLBACK. The live world remains unseeded.
+
+
+## Arrival-driven patrol unit position synchronization — 2026-11-20
+
+When an officer's deployment records arrival, the associated unit's current map position now moves to the incident's registered primary routable property access point. Each movement is recorded in the append-only `game.unit_location_history` ledger with game time, source, deployment, officer and reason. Other active deployments assigned to the same unit are rerouted from the new position; the arrived deployment is excluded. Arrival requires the current fictional clock and a registered routable incident access point. The clock is never advanced automatically.
+
+Applied migration: `database/migrations/20261120115821_unit_location_history_and_arrival_position_sync.sql`.
+
+Rollback-only integration regression: `database/tests/kingswell_unit_arrival_position_sync.sql` verifies arrival updates the unit position, creates exactly one location-history entry and leaves the fictional clock unchanged. Temporary fixtures and the temporary clock update are rolled back.
+
