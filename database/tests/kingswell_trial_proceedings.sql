@@ -17,5 +17,7 @@ begin
  if r->>'command_type'<>'submit_prosecution_referral' then raise exception 'Prosecution parser regression: %',r; end if;
  if not exists(select 1 from information_schema.tables where table_schema='game' and table_name='trial_pleas') then raise exception 'Trial tables missing'; end if;
  if not exists(select 1 from pg_trigger where tgname='trial_pleas_append_only') then raise exception 'Plea immutability trigger missing'; end if;
+ r:=game.execute_text_command('help','trial-help-rollback-test-0001',null,null);
+ if not (r->'available_commands' ? 'record_trial_plea') or not (r->'available_commands' ? 'create_court') then raise exception 'Trial/court help registration failed: %',r; end if;
 end $$;
 rollback;
