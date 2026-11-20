@@ -638,3 +638,14 @@ Classification: **reconstructed DDL with matching table/column/index/sequence/tr
 - This later remote migration therefore accounts for both differences observed in the two earlier pairs.
 
 Overall classification: **the 20261120132555 and 20261120132622 repository files contain later function state ahead of its historical remote migration version; the subsequent 20261120132728 migration matches and formally introduces those changes**. The final runtime state is represented by the later migration. Preserve the history and do not backdate or rewrite the earlier files.
+
+
+## 34. Content-led review of version 20261120133310
+
+The remote and GitHub sources differ in DDL reconstruction and formatting, but the main object and function inventories align.
+
+- Both define the same three tables: `case_account_comparisons`, `case_account_comparison_assessments`, and `case_account_comparison_evidence_links`. All three have matching column counts and column names.
+- Both define the same seven indexes and enable row-level security on the same three tables.
+- All five function bodies match after normalising dollar-quote delimiters and typed-NULL defaults: append-only mutation guard, comparison recording, assessment, evidence linking, and comparison retrieval.
+
+Classification: **reconstructed DDL with matching table/column/index/RLS inventory and identical canonical function bodies**. Constraint-expression parity remains part of the final schema check. Retain both sources.
