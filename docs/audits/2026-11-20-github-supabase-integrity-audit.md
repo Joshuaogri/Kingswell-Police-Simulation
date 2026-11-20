@@ -1362,3 +1362,10 @@ The remote and GitHub `game.execute_evidence_action(...)` function bodies in 103
 The remote 103219 migration applies a narrow text replacement to register `record_scene_contamination`, `recover_scene_evidence` and `transfer_scene_evidence` in the help response. The GitHub 103219 file instead stores the full interpreter and command-submission definitions, including the same evidence command help entries and routing. This is a full-definition reconstruction rather than the remote dynamic text patch.
 
 Classification: **matching evidence-recovery handler; command routing/help materialised as full function definitions in GitHub instead of the remote's incremental wrapper/help patches**. The final commands are present. Retain the source files and preserve the sequence.
+
+
+## 84. Content-led review of version 20261120103941 — forensic laboratory records
+
+The remote and repository migration define the same eight forensic-laboratory tables. All eight tables have matching column counts and names. Both define the same seven indexes and enable row-level security on the same eight tables. The remote expresses more constraints inline, while the repository reconstruction emits explicit named constraints and uses a different column/DDL ordering.
+
+Classification: **reconstructed forensic DDL with matching table/column/index/RLS inventory**. Constraint-expression parity remains part of the final schema comparison; no application function is introduced by this migration. Retain the existing file and remote history.
