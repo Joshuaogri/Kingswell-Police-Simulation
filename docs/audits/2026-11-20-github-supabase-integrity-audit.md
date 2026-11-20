@@ -438,3 +438,16 @@ The first two targeted collision groups were inspected using read-only queries a
 ### 15.3 Reconciliation status and safety
 
 These checks confirm that at least two of the 82 same-version/different-content pairs are substantive historical-source mismatches, not merely dollar-quote-tag formatting. They do not establish that the differing SQL has equivalent or different runtime behaviour in every respect. Continue content-led investigation in chronological groups, retain all candidate files and remote history, and complete the remaining source mapping and live-schema comparison before considering any migration-history repair or deployment. The audit remains read-only; no migration was pushed, repaired, reset, or replayed.
+
+
+## 16. Content-led review of version 20261120095728
+
+The remote and repository SQL for `scene_control_field_reports_and_resource_requests` were retrieved and compared in full.
+
+- Remote record: one statement, 58,148 characters; stored MD5 `d3178061b652034f6bdfbb22bdef5a0c`.
+- GitHub file: `20261120095728_scene_control_field_reports_and_resource_requests.sql`, 58,268 characters.
+- The initial canonical comparison differed because of PostgreSQL-equivalent declaration formatting (including a typed NULL default and quoted versus unquoted `search_path`) and the location of the `execute_scene_action` permission statements.
+- After normalising those declaration forms and excluding the same two permission statements from the ordering comparison, the remaining complete SQL was identical. The remote version places the `execute_scene_action` revoke/grant immediately after that function; the repository version places the same revoke/grant at the end of the migration.
+- Classification: **equivalent SQL with statement-order/formatting differences; no missing function or schema definition identified in this pair**. Retain the existing migration file and remote history. Do not rewrite history merely to force a text hash match.
+
+This is a confirmed example where the raw canonical hash mismatch is not evidence of a substantive implementation divergence. The reconciliation process must distinguish this class from genuine content collisions.
