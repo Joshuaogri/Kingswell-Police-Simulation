@@ -1412,3 +1412,35 @@ Classification: **genuine road-network seed/topology divergence with material ge
 The remote 153647 migration replaces `game.execute_justice_command(...)` to load `game.cases` into a dedicated `case_row game.cases%rowtype` variable, rather than reusing the `court_cases` row variable. The GitHub 153647 file is comment-only; the same dedicated `case_row` mapping is already present in the consolidated 153604 court bootstrap, whose executor matches the later remote 153802 version.
 
 This confirms the rowtype correction is represented in the repository's earlier consolidated function. The separate `cp.id` docket-access defect described in section 59 remains; this rowtype correction did not resolve those three access subqueries.
+
+
+## 90. Reconciliation status after the 82 same-version collision reviews
+
+The 82 same-version/different-content pairs from run #6 have now been reviewed against their remote stored SQL and corresponding GitHub migration files. The reviewed cases fall into these broad groups:
+
+- Canonical SQL matches after formatting, declaration or default-index normalisation.
+- Reconstructed DDL with matching table/column/index/trigger/RLS inventories and function bodies, with constraint-expression parity still requiring the final schema comparison.
+- Later remote fixes consolidated into earlier GitHub bootstrap files, including arrest/custody, disclosure, court and trial workflows.
+- Source omissions or migration replay blockers requiring recovery before a clean migration replay.
+- Genuine behavioural or data-generation differences requiring explicit reconciliation rather than automatic copying.
+
+### Outstanding high-priority items
+
+1. **Road-network seed divergence — 20261120110935.** The remote three-bridge topology matches the live inventory; the GitHub procedural reconstruction would add 42 junctions and 63 river segments beyond the current live network.
+2. **Investigative activity source omission — 20261120140938.** Three live functions (`record_case_activity`, `link_case_activity`, `get_case_activity`) are absent from the GitHub migration and no alternate source definition was found.
+3. **Dossier migration replay blockers — 20261120141007 and 20261120143546.** The GitHub text-replacement anchors do not match the immediately preceding GitHub function bodies because the corresponding changes were moved into earlier consolidated migrations.
+4. **Surveillance dossier integration omission — 20261120141620.** The remote patch adding `surveillance_operations` to the dossier is absent from the GitHub migration and no alternate source file was found.
+5. **Business employment seed response — 20261120180521.** The GitHub function omits the live `employment_links` result field.
+6. **Court docket access — 20261120153604 onward.** The current live executor uses an unpopulated `cp.id` in prosecutor, defence-counsel and court-official access checks; replace those references with the loaded `case_row.id` only in a separately reviewed fix.
+7. **Case-task dependency cycle policy — 20261120135951.** The remote and repository versions differ on whether completed/cancelled prerequisites are exempt from recursive cycle checks; retain this as a design-level reconciliation item.
+8. **Case investigator assignment chronology — 20261120125918/125958.** The initial remote function has broader one-person-per-role replacement behaviour; the subsequent 125958 migration restores the repository's concurrent supporting-investigator policy.
+
+### Reconciliation guardrails
+
+- Do not run `db push`, migration repair, reset, replay or schema-changing SQL while any source omission, replay blocker or topology difference remains unresolved.
+- Do not rewrite applied migration history to make the version/name/content counts look aligned.
+- Preserve the remote applied history and current live data; recover missing source definitions and classify each historical difference first.
+- Continue next with the 74 repository-only and 87 Supabase-only version records, using canonical SQL/content matches and normalised migration names to distinguish renamed/retimestamped copies from genuinely missing history.
+- The read-only audit workflow remains manual-only and must stay free of deploy, repair, reset or write operations.
+
+Status: **same-version collision review complete; unmatched-version and cross-version content reconciliation remains open. Live Supabase remains unchanged.**
