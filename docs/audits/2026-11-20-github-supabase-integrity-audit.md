@@ -1277,3 +1277,10 @@ Classification: **same lease schema extension and constraint; formatting only**.
 The complete remote and GitHub SQL for `bp04_seed_businesses_and_institutions` is canonically identical after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults, `search_path` declarations and concatenation-operator spacing.
 
 Classification: **canonical SQL match after formatting normalisation**. No substantive seed or schema difference was identified. Retain the existing file and remote history.
+
+
+## 73. Content-led review of version 20261120164437
+
+The remote seed query's `owners` CTE projects one additional `p.land_use` column. The repository version omits that projected column. The CTE independently uses `p.land_use` in its owner-selection and ownership-kind `CASE` expressions; the additional output column is not needed by the downstream insert. The remaining canonical SQL matches.
+
+Classification: **unused CTE projection difference only; no change to selected owner, ownership kind or inserted records identified**. Retain the existing file and remote history.
