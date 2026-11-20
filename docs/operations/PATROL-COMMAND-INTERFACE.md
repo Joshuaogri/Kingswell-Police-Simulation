@@ -87,3 +87,8 @@ See `docs/operations/CASE-INTERVIEWS-WITNESS-STATEMENTS.md` for interview, trans
 ## Suspect interviews
 
 See `docs/operations/SUSPECT-INTERVIEWS.md` for suspect classification, per-turn response assessments and review commands.
+
+
+## Case account comparisons
+
+See `docs/operations/CASE-ACCOUNT-COMPARISONS.md` for comparing witness statements and interview turns, recording discrepancy assessments, linking existing evidence and retrieving comparison history.
