@@ -72,3 +72,8 @@ Lead and enquiry records are linked to existing cases and personnel. Assignment,
 - `case lead links LEAD_REF` lists the lead's entity associations.
 
 Links use typed foreign keys to the existing entity registries. Evidence links are restricted to evidence already attached to the same case or not yet case-assigned. Duplicate links are idempotently recognised; link records are append-only and do not advance fictional time. The acting officer must own the lead or hold an active assignment to its case.
+
+
+## Case interviews and witness statements
+
+See `docs/operations/CASE-INTERVIEWS-WITNESS-STATEMENTS.md` for interview, transcript, witness statement, adoption and retrieval commands.
