@@ -182,9 +182,9 @@ The runtime is a foundation, not a playable police simulation. Natural-language 
 
 Implemented a limited explicit text grammar through `game.interpret_text_command` and `game.execute_text_command`. Initial BP-11/BP-12 call intake creates a linked incident, dispatch call, `call_received` dispatch event and game event using the configured fictional clock. The separate `dispatch UNIT_REF to INCIDENT_REF` command deploys eligible personnel from the selected unit's active roster and records the dispatch. Invalid or unrecognised commands are rejected; retries remain idempotent.
 
-Supported forms include `help`, `status`, `advance time N minutes`, and `911/call/report/radio [report] at [location]`. The parser does not turn questions into actions.
+Supported forms include `help`, `status`, `advance time N minutes`, `911/call/report/radio [report] at [location]`, `dispatch UNIT_REF to INCIDENT_REF`, `acknowledge PERSONNEL_REF for INCIDENT_REF` and `arrive PERSONNEL_REF at INCIDENT_REF`. The parser does not turn questions into actions.
 
-Regression tests: `database/tests/text_interpreter_dispatch.sql`, `database/tests/unit_dispatch.sql` and `database/tests/dispatch_acknowledgement_arrival.sql`; all passed in transactions with rollback. Live verification: 42 tables, 80 foreign keys, 147 indexes, all 42 tables with RLS, ten migration records, three runtime functions; zero command, call, incident, deployment or dispatch-event records; fictional clock still unset.
+Regression tests: `database/tests/text_interpreter_dispatch.sql`, `database/tests/unit_dispatch.sql` and `database/tests/dispatch_acknowledgement_arrival.sql`; all passed in transactions with rollback. Live verification: 42 tables, 80 foreign keys, 147 indexes, all 42 tables with RLS, twelve migration records, three runtime functions; zero command, call, incident, deployment or dispatch-event records; fictional clock still unset.
 
 
 ## Roster-validated unit dispatch — 2026-11-20
@@ -192,7 +192,7 @@ Regression tests: `database/tests/text_interpreter_dispatch.sql`, `database/test
 Implemented `dispatch UNIT_REF to INCIDENT_REF`. The command checks the active unit, current game clock, active roster, time-bounded duty assignments, active employment, matching home unit and existing conflicting deployments. It creates one deployment and dispatch event per eligible officer, changes the incident and linked call to `dispatched`, and writes a game event. It does not record arrival or invent vehicle/resource availability. The workflow is covered by `database/tests/unit_dispatch.sql` and passed inside a rolled-back transaction.
 
 
-The roster-validated dispatch test passed with temporary fictional home-unit and cross-unit attached personnel, unit, roster, incident and call records; the transaction rolled back. Help output was separately verified to include `receive_call` and `dispatch_unit`. Live state after tests: 42 tables, 80 foreign keys, 147 indexes, 10 migration records, 3 runtime functions, zero game commands/calls/incidents/deployments/events and an uninitialized fictional clock.
+The roster-validated dispatch test passed with temporary fictional home-unit and cross-unit attached personnel, unit, roster, incident and call records; the transaction rolled back. Help output was separately verified to include `receive_call` and `dispatch_unit`. Live state after tests: 42 tables, 80 foreign keys, 147 indexes, 12 migration records, 3 runtime functions, zero game commands/calls/incidents/deployments/events and an uninitialized fictional clock.
 
 
 ## Officer acknowledgement and scene arrival — 2026-11-20
