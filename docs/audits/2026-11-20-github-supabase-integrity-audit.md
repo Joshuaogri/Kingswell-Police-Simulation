@@ -751,3 +751,10 @@ The GitHub migration file contains the helper function and its privilege stateme
 Therefore the repository history has moved the refactor into the earlier migration: applying the remote 20261120143546 patch after the repository's 20261120143344 version would not find the expected inline query anchor and would raise its explicit “Could not locate search retrieval block” exception.
 
 Classification: **historical change moved earlier in the GitHub reconstruction; the later remote patch is absent and would fail if replayed after the already-refactored repository version**. The helper itself is present. Preserve the current files and record this as a migration-order/replay blocker; do not execute the dynamic patch or alter history during this audit.
+
+
+## 46. Content-led review of version 20261120143630
+
+The remote and repository dynamic dossier patch use the same anchor, replacement, and failure guard. The only difference is statement formatting: the repository places `execute d;` on the same line as the preceding replacement; the remote places it on the next line.
+
+Classification: **same dossier integration patch; formatting difference only**. The patch adds `search_operations` after `surveillance_operations` in the case dossier. Retain the existing file and remote history.
