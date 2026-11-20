@@ -8,6 +8,7 @@ declare
   v_property uuid;
   v_unit1 uuid;
   v_unit2 uuid;
+  v_building uuid;
   v_person1 uuid;
   v_person2 uuid;
   v_person3 uuid;
@@ -30,35 +31,34 @@ begin
   if v_clock is not null then raise exception 'BP-03 regression requires an uninitialised fictional clock'; end if;
 
   select id into v_city from game.cities where code='KNG';
-  select b.property_id,
-         (array_agg(bu.id order by bu.unit_ref))[1],
-         (array_agg(bu.id order by bu.unit_ref))[2]
-    into v_property,v_unit1,v_unit2
+  select b.property_id,b.id
+    into v_property,v_building
   from game.buildings b
-  join game.building_units bu on bu.building_id=b.id
-  join game.building_unit_profiles up on up.building_unit_id=bu.id
+  join game.building_unit_profiles up on up.building_unit_id in (
+    select bu.id from game.building_units bu where bu.building_id=b.id
+  )
+  join game.properties p on p.id=b.property_id
   where up.use_class='dwelling'
-  group by b.property_id
+  group by b.property_id,b.id
   having count(*)>=2
-  order by b.property_id
+  order by b.property_id,b.id
   limit 1;
-  if v_city is null or v_property is null or v_unit1 is null or v_unit2 is null then
-    raise exception 'Kingswell or a multi-dwelling residential property is missing';
+  if v_city is null or v_property is null or v_building is null then
+    raise exception 'Kingswell or a multi-dwelling residential building is missing';
   end if;
 
-  -- The live city is fully occupied. Release two real dwellings inside this
-  -- rollback-only test; ROLLBACK restores every original resident and household.
-  update game.household_memberships
-     set valid_to=date '2026-01-01'
-   where household_id in (
-     select id from game.households
-     where primary_building_unit_id in (v_unit1,v_unit2)
-       and household_status='active'
-   ) and valid_to is null;
-  update game.households
-     set household_status='dissolved',dissolved_on=date '2026-01-01'
-   where primary_building_unit_id in (v_unit1,v_unit2)
-     and household_status='active';
+  -- Create two temporary test dwellings inside this rollback-only transaction.
+  insert into game.building_units(unit_ref,building_id,unit_name,unit_type,floor_label)
+  values('KW-BP03-TEST-UNIT-001',v_building,'BP-03 Test Dwelling 1','residential','Test')
+  returning id into v_unit1;
+  insert into game.building_units(unit_ref,building_id,unit_name,unit_type,floor_label)
+  values('KW-BP03-TEST-UNIT-002',v_building,'BP-03 Test Dwelling 2','residential','Test')
+  returning id into v_unit2;
+  insert into game.building_unit_profiles(
+    building_unit_id,use_class,occupancy_capacity,condition_grade,unit_description
+  ) values
+    (v_unit1,'dwelling',4,'good','Rollback-only BP-03 test dwelling'),
+    (v_unit2,'dwelling',4,'good','Rollback-only BP-03 test dwelling');
 
   select * into v_baseline from game.get_population_summary('KNG');
 
