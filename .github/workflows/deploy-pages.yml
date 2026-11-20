@@ -1,9 +1,10 @@
-name: Publish Kingswell live map
+name: Publish Kingswell Game Test Centre
 on:
   push:
     branches: [main]
     paths:
       - "index.html"
+      - "geography.html"
       - "docs/geography/kingswell-detailed-road-network.svg"
       - ".github/workflows/deploy-pages.yml"
   workflow_dispatch:
@@ -20,10 +21,15 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Enable GitHub Pages\n        uses: actions/configure-pages@v5\n        with:\n          enablement: true\n      - name: Assemble static site
+      - name: Enable GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Assemble test centre
         run: |
           mkdir -p _site
           cp index.html _site/index.html
+          cp geography.html _site/geography.html
           cp docs/geography/kingswell-detailed-road-network.svg _site/map.svg
           touch _site/.nojekyll
       - name: Upload Pages artifact
