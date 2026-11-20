@@ -471,3 +471,16 @@ This is a confirmed example where the raw canonical hash mismatch is not evidenc
 - Classification: **same implementation with one user-facing validation-message difference**. This is a minor source difference, not evidence of a missing handler or schema capability. Preserve both records pending the overall reconciliation; do not rewrite history.
 
 These two adjacent versions demonstrate why a version collision must be assessed at function level: one migration has an extra historical function replacement absent from the repository, while the next migration's implementation is substantially present in both sources.
+
+
+## 18. Content-led review of version 20261120103202
+
+The remote migration and the repository file `20261120103202_scene_contamination_evidence_recovery_and_custody.sql` use different source forms.
+
+- The remote statement creates the three scene contamination/evidence recovery/evidence transfer tables, defines `game.execute_evidence_action(...)`, and uses a dynamic `DO` block to patch the existing command interpreter and `game.submit_command`.
+- The repository file contains the same three table definitions in reconstructed form, defines `game.execute_evidence_action(...)`, and records static definitions for the affected command functions rather than the remote migration's dynamic `pg_get_functiondef`/text-replacement procedure.
+- The `execute_evidence_action` function body matches after normalising the dollar-quote delimiter, `search_path` declaration formatting, and typed-NULL default notation. The remote dynamic patch routes `record_scene_contamination`, `recover_scene_evidence`, and `transfer_scene_evidence` to that handler and registers those command types; the repository's static command handler contains the corresponding evidence-action routing.
+- This repository file explicitly identifies itself as reconstructed from the live database and applied migration history. It should therefore be treated as a reconstructed implementation record, not proof that the original migration text has been recovered verbatim.
+- The table definitions have been identified in both sources, but this pass has not yet completed a column-by-column and constraint-by-constraint comparison of the three table definitions or a full behavioural comparison of the dynamically patched functions.
+
+Classification: **reconstructed-source candidate; evidence handler and command-routing intent align, but exact historical source and full DDL parity remain unverified**. Preserve the current file and remote record. Do not rewrite migration history or treat this pair as fully cleared until the remaining schema/function parity checks are complete.
