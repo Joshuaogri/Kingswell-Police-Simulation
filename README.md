@@ -1,14 +1,12 @@
 # Kingswell Police Simulation
 
-A fictional, persistent, text-first police simulation set in the fictional sovereign country of Kingswell and centred on its capital city, Kingswell.
+A fictional, persistent, text-first police simulation set in the fictional sovereign country of **Asterfell**, centred on its capital city, Kingswell.
 
 ## Project status
 
-The **44-division master blueprint (BP-01 to BP-44) was approved on 2026-11-20**. The project is now in Stage 2: simulation runtime foundation.
+The **44-division master blueprint (BP-01 to BP-44) was approved on 2026-11-20**. The project is in Stage 2: simulation runtime and world foundation.
 
-The repository contains the game blueprint, project records, technical architecture and versioned database migrations. The connected Supabase project now has the initial private `game` schema: 40 tables, 78 foreign-key relationships and supporting indexes. All 40 tables have row-level security enabled. The schema currently contains no seeded game-world/personnel/incident data. A temporary end-to-end insert test across world, police, dispatch, case and evidence relationships passed and was rolled back cleanly. The simulation runtime, command processor and first playable workflow have not yet been implemented.
-
-See the [Implementation Register](docs/governance/IMPLEMENTATION-REGISTER.md) for the current build status.
+The repository contains the approved blueprint, project records, technical architecture, versioned database migrations, regression tests and the authored Kingswell geographic map. The connected Supabase project contains the private `game` schema, including the initial command/runtime, police operations, scene/evidence/forensics and geographic foundations. See the [Implementation Register](docs/governance/IMPLEMENTATION-REGISTER.md) for verified current status.
 
 ## Three-part project architecture
 
@@ -33,6 +31,8 @@ See the [Implementation Register](docs/governance/IMPLEMENTATION-REGISTER.md) fo
 - [Implementation Register](docs/governance/IMPLEMENTATION-REGISTER.md)
 - [Project Decisions and Working Rules](docs/governance/PROJECT-DECISIONS.md)
 - [Technical Architecture](docs/architecture/TECHNICAL-ARCHITECTURE.md)
+- [Kingswell Master Geographic Map](docs/geography/KINGSWELL-MASTER-MAP.md)
+- [Kingswell City Map (SVG)](docs/geography/kingswell-city-map.svg)
 
 ## Connected services
 
@@ -42,8 +42,12 @@ See the [Implementation Register](docs/governance/IMPLEMENTATION-REGISTER.md) fo
 
 ## Current setting
 
-Kingswell is the political and economic capital of a fictional sovereign country. It is the country's principal commercial, financial, business, transport, logistics, industrial, trading and administrative centre. The city begins with 100,000 permanent residents and may grow or decline through realistic population change.
+Asterfell is the approved fictional sovereign country. Kingswell is its capital and principal commercial, financial, business, transport, logistics, industrial, trading and administrative centre. The city begins with 100,000 permanent residents and may grow or decline through realistic population change.
+
+## Geographic foundation
+
+Kingswell's approved BP-02 geographic foundation uses a fictional 20 km × 16 km local coordinate grid. The current connected road network has 51 named roads, 118 junctions and 151 routable segments, including three explicit East River bridge crossings. All 118 junctions are connected, and all 24 neighbourhoods have dedicated local street connections. See the geographic map specification and regression test for exact modelling limits.
 
 ## Immediate implementation direction
 
-Populate the fictional world and police foundations, then build the command/runtime layer and connect the first complete playable police workflow: personnel deployment, dispatch, incident response, reporting and saved game records.
+Continue the world foundation with properties, buildings, address ranges and landmarks. Then connect police facilities and patrol sectors to the road graph and implement network-based dispatch routing and response-time calculations.
