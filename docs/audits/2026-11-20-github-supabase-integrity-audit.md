@@ -873,3 +873,17 @@ The remote sequence contains five successive replacements of `game.execute_arres
 The GitHub files for all five versions are comment-only, each pointing to the consolidated 144932 workflow migration. That consolidated executor contains the corrected `ca.case_id=v_case_id` checks, `to_jsonb(v_arrest)` event snapshot, consistent `ar`/person retrieval aliases, and the corrected parenthesised release/transfer text composition.
 
 Classification: **five successive remote bug fixes consolidated into the earlier GitHub workflow source**. The consolidated source includes the final corrected patterns, but the individual intermediate patches are not retained as SQL. Preserve the existing files and continue checking the later transport-duration changes.
+
+
+## 38. Content-led review of version 20261120133310 — case account comparisons
+
+The remote migration and repository reconstruction have matching inventories:
+
+- Three tables with identical column names and counts (19, 9 and 9 columns).
+- Seven indexes and three append-only triggers.
+- Matching primary-key (3), unique (2), foreign-key (18), and check-constraint (10) counts.
+- RLS enabled on all three tables.
+- The four operational function bodies match exactly after canonical normalisation: record comparison, assess comparison, link evidence, and retrieve comparison history.
+- The immutable-history trigger function has the same append-only rejection behaviour.
+
+Classification: **structural and operational function parity; reconstructed DDL formatting differs**. No substantive discrepancy was identified. Retain both records unchanged.
