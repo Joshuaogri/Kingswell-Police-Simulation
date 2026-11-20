@@ -47,7 +47,9 @@ begin
   end if;
 
   insert into game.person_addresses(person_id,property_id,address_role,valid_from,is_current,is_primary)
-  values(v_person1,v_property,'residence','2020-01-01',true,true);
+  values
+    (v_person1,v_property,'residence','2020-01-01',true,true),
+    (v_person2,v_property,'residence','2020-01-01',true,true);
 
   v_rejected:=false;
   begin
@@ -113,6 +115,15 @@ begin
 
   if not exists(select 1 from game.persons where id=v_person2 and person_status='deceased' and date_of_death='2024-01-01') then
     raise exception 'Death life event did not update the canonical person status';
+  end if;
+  if exists(select 1 from game.person_addresses where person_id=v_person2 and is_current)
+    or exists(select 1 from game.household_memberships where person_id=v_person2 and valid_to is null)
+    or exists(select 1 from game.person_population_memberships where person_id=v_person2 and valid_to is null) then
+    raise exception 'Death event did not close current address, household and population memberships';
+  end if;
+  select * into v_summary from game.get_population_summary('KNG');
+  if v_summary.unique_people<>1 or v_summary.permanent_residents<>1 or v_summary.current_households<>1 then
+    raise exception 'Deceased person was still counted in current population or household totals';
   end if;
   if game.calculate_person_age(v_person2)<>19 then
     raise exception 'Deceased person age-at-death calculation is incorrect';
