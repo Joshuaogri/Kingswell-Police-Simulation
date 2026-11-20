@@ -1291,3 +1291,10 @@ Classification: **unused CTE projection difference only; no change to selected o
 The complete remote and GitHub SQL for `bp04_property_record_neighbourhood_map_and_business_directory_queries` is canonically identical after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults, `search_path` declarations and concatenation-operator spacing.
 
 Classification: **canonical SQL match after formatting normalisation**. No substantive query or permission difference was identified. Retain the existing file and remote history.
+
+
+## 75. Content-led review of version 20261120164626
+
+The remote and GitHub migrations define the same four property/business command and retrieval functions. Each function body differs by one semicolon immediately before its dollar-quote terminator; after normalising that terminator formatting, all four bodies match. The business-record retrieval function matches exactly.
+
+Classification: **same property/business command and read behaviour; function-terminator formatting only**. Retain the existing file and remote history.
