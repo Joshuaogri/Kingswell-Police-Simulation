@@ -118,3 +118,13 @@ Commands:
 - `transfer evidence PERSONNEL_REF EVIDENCE_REF to RECIPIENT_REF: FROM_LOCATION | TO_LOCATION | REASON`
 
 Regression script: `database/tests/scene_contamination_evidence_custody.sql`. Parser, help-catalogue, private-table RLS and uninitialized-clock guard checks pass in a rolled-back transaction. The database has no seeded operational records, so full end-to-end scene/examiner/recovery/custody scenarios still require the integrated seeded-world regression fixture. No public policies or Data API exposure were added.
+
+
+### Source migration recovery — 2026-11-20
+
+The two already-applied live migrations for scene contamination, evidence recovery, custody transfer and command registration now have committed SQL source files:
+
+- `database/migrations/20261120103202_scene_contamination_evidence_recovery_and_custody.sql`
+- `database/migrations/20261120103219_register_evidence_recovery_commands_in_help.sql`
+
+The SQL was reconstructed from the live PostgreSQL definitions and schema metadata, including table constraints, indexes, RLS, function bodies, command routing, parser grammar and help catalogue. These files restore source-control reproducibility; they were **not** reapplied to the live database because their migration versions are already present there.
