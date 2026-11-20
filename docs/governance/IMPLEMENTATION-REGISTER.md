@@ -605,7 +605,7 @@ Documentation: `docs/operations/PATROL-INTELLIGENCE.md`.
 
 ## Patrol activity sessions and officer activity intelligence — 2026-11-20
 
-**Implemented and rollback-only end-to-end tested.** Migrations: `database/migrations/20261120123000_patrol_activity_sessions_and_intelligence.sql` and `database/migrations/20261120122500_harden_patrol_activity_record_history.sql`.
+**Implemented and rollback-only end-to-end tested.** Migrations: `database/migrations/20261120123000_patrol_activity_sessions_and_intelligence.sql` and `database/migrations/20261120122500_harden_patrol_activity_record_history.sql`; movement-history foreign-key indexes were added in `database/migrations/20261120122600_index_patrol_movement_event_foreign_keys.sql`.
 
 - Added private RLS-enabled `game.patrol_activity_sessions` and append-only `game.patrol_activity_events`.
 - Player commands: `start patrol activity UNIT_REF by PERSONNEL_REF at ACCESS_REF type TYPE because REASON` and `end patrol activity SESSION_REF after N minutes because REASON`.
