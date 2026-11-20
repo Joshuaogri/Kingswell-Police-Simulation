@@ -12,7 +12,7 @@ The first case-workflow implementation extends the existing case and police-pers
 - Added service-role-only functions `game.create_case_task`, `game.update_case_task` and `game.get_case_tasks`.
 - Added player-facing command integration through the existing `game.interpret_text_command` and `game.execute_text_command` path.
 - Commands support task creation, status changes, reassignment, case task lists and individual task history.
-- Task commands use the shared idempotency ledger and explicit officer attribution.
+- Task commands use the shared idempotency ledger and explicit officer attribution; all task commands are registered in `help`.
 - Requires an initialized fictional clock and active or seconded police personnel attribution.
 - Closed cases cannot receive new tasks. Completed/cancelled tasks cannot be reopened.
 - Uses fictional game timestamps and does not advance the clock.
@@ -32,7 +32,7 @@ Use `assign none` when creating an unassigned task.
 
 ## Verification
 
-**PASS:** A live Supabase rollback-only transaction created temporary case/personnel fixtures and exercised the complete text-command path: parser recognition, task creation, idempotent replay, in-progress status, reassignment, case task listing, individual task retrieval, completion and unchanged fictional time. The database-level regression separately verified event history and final-state protection. All fixtures and clock changes rolled back.
+**PASS:** Live Supabase rollback-only transactions exercised database functions and the complete text-command path: parser recognition, task creation, idempotent replay, in-progress status, reassignment, case task listing, individual task retrieval, completion, help registration and unchanged fictional time. The database-level regression separately verified event history and final-state protection. All fixtures and clock changes rolled back.
 
 The first command regression attempt caught a missing actor field in the create grammar; explicit actor attribution was added and the complete corrected regression passed.
 
@@ -44,6 +44,7 @@ Migrations:
 - `database/migrations/20261120140000_case_investigative_task_management.sql`
 - `database/migrations/20261120140100_case_task_player_commands.sql`
 - `database/migrations/20261120140200_case_task_create_command_actor_attribution.sql`
+- `database/migrations/20261120140300_case_task_help_command_registration.sql`
 
 Operations guide: `docs/operations/CASE-INVESTIGATIVE-TASKS.md`
 
