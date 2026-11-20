@@ -1,49 +1,48 @@
 # Runtime foundation
 
-**Status:** Initial database-backed runtime foundation implemented and smoke-tested. This is not yet a complete playable simulation.
+**Status:** Initial command interpreter and emergency-call intake are implemented and transaction-tested. Kingswell remains an entirely fictional game; these systems create fictional records only.
 
-## Responsibilities
-
+## Architecture
 - ChatGPT is the player-facing text interface.
 - Supabase's private `game` schema is authoritative for persisted game state.
-- GitHub `main` holds the blueprint, migrations, implementation source and tests.
-- All Kingswell content is fictional game-world data.
+- GitHub `main` holds migrations, tests, documentation and implementation history.
+- Fictional operational timestamps use the configured game clock. Real-world database timestamps are audit metadata only and never advance game time.
 
-## Command intake
+## Text command interpreter
+`game.interpret_text_command(text)` translates a deliberately small, explicit command grammar into typed commands. `game.execute_text_command(text, idempotency_key, ...)` interprets the text and submits the result through `game.submit_command(...)`.
 
-`game.game_commands` preserves the original command text, command type, JSON payload, optional session and fictional officer identity, idempotency key, result, rejection reason and timestamps. `game.submit_command(...)` is the initial controlled command entry point.
+Supported player text:
+- `help` or `commands`
+- `status`, `game status` or `clock status`
+- `advance time 30 minutes` (whole minutes, 1–1,440)
+- `911 <caller report> at <location>`
+- `call <caller report> at <location>`
+- `report <caller report> at <location>`
+- `radio <radio report> at <location>`
 
-Registered foundation commands:
-- `help` — returns currently registered command types.
-- `status` — returns the authoritative clock configuration state.
-- `initialize_clock` — accepts an explicit `start_at` timestamp once. No fictional start date is assumed by the software.
-- `advance_time` — advances by an explicit whole-minute request from 1 to 1,440 minutes.
+The call grammar is intentionally narrow. It does not guess missing locations, turn questions into actions, invent caller identities or dispatch officers automatically. Unrecognised text is logged as a rejected command. Idempotency keys prevent duplicate execution on retries.
 
-Unregistered command types are recorded as rejected. Re-delivery with the same idempotency key and payload returns the original result; reusing a key for a different payload is rejected as a conflict.
+## Initial emergency-call workflow
+A recognised call command:
+1. Validates the summary, location, channel and optional priority/caller reference.
+2. Requires the fictional game clock to have been explicitly initialized.
+3. Creates one incident in `game.incidents`.
+4. Creates its linked call record in `game.dispatch_calls`.
+5. Creates a `call_received` dispatch event and linked `game_events` record.
+6. Returns the call and incident references and confirms that no unit has yet been dispatched.
 
-This is a typed command boundary, not yet a natural-language parser or police-domain command catalogue. Domain commands will call their owning division's rules rather than placing domain logic in the runtime engine.
+Priority is 1 (highest) through 5 (lowest); omitted priority defaults to 3. Malformed supplied values are rejected. Call and incident timestamps use the same authoritative fictional game time. All inserts and the command outcome are committed in one transaction.
+
+This is initial BP-11/BP-12 functionality, not a complete dispatch centre or incident lifecycle. Unit selection, availability, dispatch authority, radio acknowledgements, attendance, scene management and incident closure remain outstanding.
 
 ## Clock and event history
+The singleton `game.simulation_state` row is paused and its fictional time remains unset until explicitly configured. Manual time advancement is a deliberate player command. Leaving ChatGPT does not advance the game. No autonomous event processor or NPC scheduler is active yet.
 
-The singleton `game.simulation_state` row is created paused, with its fictional time unset. The calendar/start date remains unconfigured until explicitly selected. An unconfigured clock cannot be advanced.
-
-Manual time advancement is an explicit player action. The paused flag prevents autonomous progression; it does not block a deliberate `advance_time` command. Clock initialization and each advancement create a `game_clock_history` record and a linked `game_events` event in the same database transaction.
-
-The engine does not use real-world elapsed time to move the fictional clock. Leaving ChatGPT does not advance game time.
-
-## Current boundaries
-
-- The command function is in the private schema and is not exposed through the public Data API.
-- No public Edge Function has been deployed. Project authentication and the player/session identity mapping are not yet implemented, so exposing a privileged command endpoint now would be premature.
-- The optional `actor_personnel_id` is a fictional police-personnel reference, not the user's ChatGPT identity.
-- Domain authority, rank/position rules, dispatch, incidents, cases, NPC scheduling and event handlers remain to be implemented by their owning divisions.
-- A future natural-language parser must map requests to typed commands; it must never treat a question as an action or claim success before the database confirms the result.
+## Security boundary
+The command functions use invoker rights, are in the private `game` schema, and are executable by `service_role` only; authenticated and anonymous roles have no execute grant. No public Edge Function is deployed. Player authentication/session mapping and the fictional officer identity/authority model must be implemented before exposing a player-facing privileged endpoint. No service-role secret belongs in GitHub or client code.
 
 ## Verification
+- `database/tests/runtime_foundation.sql` — command ledger, idempotency, clock guards, advancement, event history and duration validation.
+- `database/tests/text_interpreter_dispatch.sql` — text parsing, call/incident creation, event linkage, duplicate prevention, unknown-command rejection and invalid-priority rejection.
 
-The regression script in `database/tests/runtime_foundation.sql` exercises status, uninitialized-clock rejection, explicit clock initialization, idempotent retry, idempotency conflict, time advancement, range rejection, clock history and event creation inside a transaction that rolls back.
-
-
-## Validation hardening
-
-The command entry function validates minute values as integers before casting. Fractional and out-of-range values are returned as rejected commands and retained in the command ledger. This is applied by `database/migrations/20261120020000_harden_runtime_command_validation.sql`.
+Both scripts run in a transaction and roll back all generated test records.
