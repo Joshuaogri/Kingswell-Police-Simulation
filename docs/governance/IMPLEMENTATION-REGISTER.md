@@ -618,3 +618,25 @@ Documentation: `docs/operations/PATROL-INTELLIGENCE.md`.
 **PASS:** `database/tests/kingswell_patrol_activity.sql` exercised both commands through `game.execute_text_command`, checked the explicit 15-minute clock advancement, activity intelligence, append-only event history and help registration. The SQL test completed successfully inside a transaction ending in ROLLBACK. No fixtures persist.
 
 Documentation: `docs/operations/PATROL-ACTIVITY-SESSIONS.md` and updated `docs/operations/PATROL-COMMAND-INTERFACE.md`.
+
+
+
+## Patrol observations, civilian contacts and linked intelligence — 2026-11-20
+
+**Implemented and rollback-only end-to-end tested.** Migrations:
+- `database/migrations/20261120124000_patrol_observations_and_civilian_contacts.sql`
+- `database/migrations/20261120124100_patrol_intelligence_observation_contact_reporting.sql`
+- `database/migrations/20261120124200_allow_patrol_observation_contact_events.sql`
+
+- Added private RLS-enabled `game.patrol_observations` and `game.patrol_contacts`; both are append-only and link to activity session, officer, unit, beat, location and source command.
+- Observation records have structured categories and a narrative description.
+- Contact records can link existing persons, organisations/businesses, properties and incidents. Required entity-link rules vary by contact type; no duplicate people or organisations are created.
+- Both commands require an active patrol activity session and the officer assigned to it. Supplied location must match the session's registered access point.
+- Observation/contact records use current fictional game time and do not advance it.
+- Player commands: `record patrol observation SESSION_REF category CATEGORY [at ACCESS_REF] because DESCRIPTION`; `record patrol contact SESSION_REF type TYPE [person PERSON_REF] [organisation ORG_REF] [property PROPERTY_REF] [incident INCIDENT_REF] outcome OUTCOME [notes NOTES]`.
+- `patrol intelligence` now includes observation totals by category and contact totals by type with linked-entity counts.
+- Help command list and activity-event types updated.
+
+**PASS:** `database/tests/kingswell_patrol_observations_contacts.sql` exercised both commands through `game.execute_text_command`, validated parser payloads, person/organisation/property links, intelligence totals, immutable observation/contact records and unchanged fictional time. Test ran in a transaction ending in ROLLBACK; no fixtures persist.
+
+Documentation: `docs/operations/PATROL-ACTIVITY-SESSIONS.md` and `docs/operations/PATROL-COMMAND-INTERFACE.md`.
