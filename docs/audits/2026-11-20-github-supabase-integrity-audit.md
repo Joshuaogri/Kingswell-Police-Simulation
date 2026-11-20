@@ -887,3 +887,12 @@ The remote migration and repository reconstruction have matching inventories:
 - The immutable-history trigger function has the same append-only rejection behaviour.
 
 Classification: **structural and operational function parity; reconstructed DDL formatting differs**. No substantive discrepancy was identified. Retain both records unchanged.
+
+
+## 39. Content-led review of version 20261120133333 — account-comparison commands
+
+The remote and repository definitions of both `game.interpret_text_command(...)` and `game.execute_text_command(...)` match exactly after canonical normalisation. This includes the command parsing and dispatch for recording comparisons, assessing their status, linking evidence and retrieving comparison records.
+
+The complete files differ in formatting/declaration packaging, but no difference was found in either function body.
+
+Classification: **command interpreter and executor parity**. Retain both records unchanged.
