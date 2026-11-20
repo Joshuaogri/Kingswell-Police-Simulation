@@ -17,7 +17,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Runtime foundation and multiple police/justice/correctional/population systems implemented | Private `game` schema; live audit snapshot: 180 tables, 619 foreign keys, 889 indexes; RLS enabled on all 180 tables; Kingswell geography, property/access, police facilities and patrol geography seeded; BP-03 life/household/routine foundation deployed; no persistent persons, households, cases, incidents, evidence, dispatch calls or route records; fictional clock remains uninitialized |
+| Database schema | Runtime foundation and multiple police/justice/correctional/population/property/business systems implemented | Private `game` schema; live audit snapshot: 185 tables, 627 foreign keys, 912 indexes; RLS enabled on all 185 tables; Kingswell BP-02 geography and BP-04 property/business layer seeded; BP-03 life/household/routine foundation deployed; no persistent persons, households, cases, incidents, evidence, dispatch calls or route records; fictional clock remains uninitialized |
 | Application/gameplay code | In progress | Database-backed text command interpreter, controlled clock, emergency-call/dispatch/arrival, scene-control, field-report and resource-request workflows implemented; full domain handlers remain outstanding |
 | Runtime regression tests | Implemented; transaction smoke-tested | Runtime, dispatch, scene, evidence, forensic laboratory, geography and police-facility/patrol-geography SQL regression scripts cover implemented slices; test fixtures roll back |
 
@@ -27,8 +27,8 @@ This register tracks actual progress. A design being written does not mean it ha
 |---|---|---|
 | BP-01 | Game Identity, Foundations and Governing Rules | Approved |
 | BP-02 | Country, City and Geographical Architecture | Complete and verified; Asterfell's eight regions, Kingswell's 20 km × 16 km grid, 12 districts/24 neighbourhoods, 51 roads/118 junctions/151 segments/3 bridges/24 landmarks; corrected all 12 map envelopes; route and dispatch integration regression suites pass |
-| BP-03 | Population and Individual Simulation Architecture | Foundation implemented and tested; persistent identities, households, overlapping population memberships, life events, routines and monotonic relevance promotion; full 100,000-person seed awaits BP-04 housing capacity and BP-35 routine execution |
-| BP-04 | Buildings, Properties, Businesses and Organisations | Approved |
+| BP-03 | Population and Individual Simulation Architecture | Foundation implemented and tested; persistent identities, households, overlapping population memberships, life events, routines and monotonic relevance promotion; BP-04 now supplies 24,512 residential units for the 100,000-person seed; population/household allocation is next; routine execution awaits BP-35 |
+| BP-04 | Buildings, Properties, Businesses and Organisations | Implemented and regression-tested: 656 properties/buildings, 26,888 units, 1,452 businesses, 25 public institutional sites, full property/building/unit dossiers, ownership/occupancy and neighbourhood map queries/commands |
 | BP-05 | Police Architecture | Approved; initial headquarters, 12 district stations, five specialist facilities and 12 district patrol sectors geographically seeded; command/personnel structure remains outstanding |
 | BP-06 | Police Personnel | Approved |
 | BP-07 | Career System | Approved; detailed rules remain open for refinement |
@@ -1120,7 +1120,44 @@ Resolved the open processing-model choice: every person has one persistent canon
 - `20261120163022_bp03_end_current_memberships_on_person_death`
 
 ### Deliberate dependency; no premature population seed
-The existing BP-04 inventory currently has 80 residential properties, 64 detached houses, 16 apartment blocks, 128 units marked residential and 160 mixed-use units. This cannot credibly house 100,000 permanent residents at ordinary household densities. The 100,000-person seed and household/address allocation are therefore deferred until BP-04 expands the existing residential inventory. No duplicate properties, buildings, units or addresses will be created under BP-03. Routine execution is owned by the runtime scheduling work in BP-35; this foundation does not advance fictional time.
+BP-04 now provides 24,512 units classified as residential across the 656-property city inventory. This supports the 100,000-person baseline at approximately 4.08 residents per dwelling. The former housing-capacity blocker is cleared; the next BP-03 task is the 100,000-person seed and household/address allocation using only canonical BP-04 property, building, unit and address references. No duplicate properties, buildings, units or addresses will be created under BP-03. Routine execution is owned by the runtime scheduling work in BP-35; this foundation does not advance fictional time.
 
 ### Live structural/health snapshot
 180 private `game` tables; 619 foreign keys; 889 indexes; RLS enabled on all 180 tables; Supabase health advisors returned no findings. No persistent test population was created. Fictional clock remains NULL/uninitialised.
+
+
+## BP-04 — Primate-city properties, businesses and neighbourhood maps — delivered 2026-11-20
+
+### Canonical expansion
+The BP-02 base inventory remains intact: the original 480 properties, 480 buildings, 712 units, 480 addresses and 480 access points are preserved. BP-04 extends those canonical records to 656 properties, 656 buildings, 26,888 units/premises, 656 primary addresses and 656 primary road-linked access points.
+
+The 176 added parcels are 96 residential towers and 80 multi-tenant commercial centres. The towers have 32 floors each; their existing 256 unit records include two ground-floor retail units and 254 residential units. The 80 commercial centres provide 1,600 separately addressable commercial/industrial/transport units. A further 160 existing Riverside mixed-use units are occupied by neighbourhood businesses. The 192 tower podium retail units and 160 Riverside mixed-use units add 352 neighbourhood businesses.
+
+### Detailed property and occupancy records
+One-to-one detail profiles now exist for all 656 properties, all 656 buildings and all 26,888 building units. Property profiles include cadastral/title identifiers, zoning/permitted uses, tenure, heritage/flood/contamination, fictional valuation/charges/insurance, utilities, security, fire safety, accessibility, local-grid parcel outline, map label and planning notes. Building profiles include architecture, structure, materials, floor directory, gross floor area, estimated height, condition, lifts, fire compartments, alarms, sprinklers, backup power, CCTV, access control, loading bays/docks, parking, service yard, footprint and systems. Unit profiles include floor/suite, use, area, occupancy capacity, bedrooms/bathrooms, meters, access, security zone and condition.
+
+Property interests distinguish registered owners, landlords and property managers. All 656 properties have one current registered-owner record. Twelve property holding groups and relevant public estate authorities support the fictional title/management register. Organisation site records extend the existing `organisation_locations` identity with exact building-unit, occupancy, lease, operating-hours and site-detail information.
+
+### Primate-city business and public institution register
+The city now has 1,452 businesses across financial services (150), import/export (130), logistics/warehousing (170), transport (100), manufacturing (100), wholesale (100), retail (100), hospitality/entertainment (80), professional services (60), technology/media (50), construction/property (40), property management (20) and neighbourhood services (352). The business register estimates 43,412 employee positions; these are not person/NPC records. Twenty-five public/institutional headquarters have current site records, including Parliament, the Presidency, ministries, Central Bank, financial regulator, revenue/customs authorities, City Authority, Port/Airport/Rail authorities, transit operator, hospital, university, emergency service, archives and trade/public media institutions. Total organisation count is 1,490; current business/institution sites are 1,477.
+
+### Map and player interface
+City property-map layer is KNG-MAP-0.2; the underlying KNG-MAP-0.1 local-metre coordinate system and BP-02 road/district/neighbourhood identities are unchanged. All properties have a primary address and access point connected to a real seeded road segment and nearest endpoint junction. Parcel/building outlines are local-grid schematic geometry, not surveyed legal boundaries.
+
+Read-only query functions and text commands:
+- `property record PROPERTY_REF by PERSONNEL_REF`
+- `property map NEIGHBOURHOOD_CODE by PERSONNEL_REF`
+- `property summary by PERSONNEL_REF`
+- `business record BUSINESS_NUMBER by PERSONNEL_REF`
+- `business directory by PERSONNEL_REF`
+- `business directory sector SECTOR by PERSONNEL_REF`
+- `business directory district DISTRICT_CODE by PERSONNEL_REF`
+- `business directory search "TEXT" by PERSONNEL_REF`
+
+### Regression and health
+`database/tests/kingswell_primate_city_property_business_foundation.sql` passed as a rollback-only live Supabase test. It checks baseline preservation, property/building/unit counts, full dossier coverage, addresses/access/road junction links, local-grid bounds and non-colliding property centres, registered ownership, business and public-site counts, unique unit occupancy, map and directory queries, property/business text commands, idempotency, help and preservation of existing correctional command parsing. New-property route calculations to police headquarters also passed. BP-02 geography/property/patrol/routing suites and BP-03 individual-life suite passed again after BP-04.
+
+Live structural snapshot: 185 tables, 627 foreign keys, 912 indexes; RLS enabled on all 185 tables; no Supabase health-advisor findings. No persistent persons, households, cases, incidents, dispatch calls or route calculations were created by the regression tests. The fictional clock remains uninitialised.
+
+### BP-03 dependency cleared
+24,512 residential units now provide planning capacity for the 100,000-person baseline at about 4.08 residents per unit. BP-03 population and household allocation can proceed next. BP-05 must wait until BP-03's population seed is complete, preserving blueprint order.
