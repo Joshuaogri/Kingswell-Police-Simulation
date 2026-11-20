@@ -124,3 +124,13 @@ BP-04 must remain open until the following are addressed and tested:
 The existing baseline is populated and its audited structural invariants pass. The map-version defect is corrected; valuation history and formal tenant agreement history are available; asset-event and business-control structures are now present. However, the asset-event and business-control registers are empty, several ownership/lease counterparties remain unknown, and property/business detail still needs more individualized fictional content and full write/runtime/UI integration.
 
 All records remain entirely fictional Kingswell game data.
+
+## 6. Agreement lifecycle history refinement
+
+A dedicated `game.organisation_site_agreement_events` append-only event register has been added for executed/commenced agreements, variations, rent reviews, break notices, renewal offers and renewals, expiry, termination, surrender, assignment, subletting consent, disputes and corrections. Each event links to the existing canonical agreement and may reference an existing person or organisation actor; it does not create duplicate site or party identities.
+
+The register is intentionally empty at migration time. No renewal, expiry, termination, variation, notice or dispute has been invented. Events are immutable; a correction is recorded as a new event so the original history remains traceable. Direct client-role access is revoked and the table is available through the service-role game backend.
+
+A new `game.get_site_agreement_record(agreement_ref)` dossier returns the agreement, tenant, counterparty, linked sites/properties/buildings/units, lifecycle event timeline, clause-coverage register and provenance. It explicitly distinguishes occupancy dates from contractual dates and retains unrecorded contract terms as unknown.
+
+Regression coverage verifies dossier completeness, unknown-date provenance, empty initial history, event immutability, rollback of transient test data and private access. The migration and regression script both applied/executed successfully.
