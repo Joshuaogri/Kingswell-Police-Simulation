@@ -26,8 +26,8 @@ begin
  if (select closed_at from game.cases where id=case_id) is not null then raise exception 'reopen did not clear active close timestamp'; end if;
  r:=game.execute_text_command('case governance TEST-GOVERNANCE-CASE by TEST-GOVERNANCE-OFFICER','test-gov-history-001',null,personnel_id);
  if not coalesce((r->>'ok')::boolean,false) or jsonb_array_length(r->'supervisory_reviews')<>1 or jsonb_array_length(r->'status_history')<>3 then raise exception 'history retrieval failed: %',r; end if;
- begin update game.case_supervisory_reviews set review_reason='tampered' where case_id=case_id; raise exception 'supervisory review was mutable'; exception when others then if sqlerrm='supervisory review was mutable' then raise; end if; end;
- begin delete from game.case_status_events where case_id=case_id; raise exception 'case status history was deletable'; exception when others then if sqlerrm='case status history was deletable' then raise; end if; end;
+ begin update game.case_supervisory_reviews set review_reason='tampered' where game.case_supervisory_reviews.case_id=case_id; raise exception 'supervisory review was mutable'; exception when others then if sqlerrm='supervisory review was mutable' then raise; end if; end;
+ begin delete from game.case_status_events where game.case_status_events.case_id=case_id; raise exception 'case status history was deletable'; exception when others then if sqlerrm='case status history was deletable' then raise; end if; end;
  r:=game.execute_text_command('help','test-gov-help-001',null,personnel_id);
  if not (r->'available_commands' @> '["record_case_supervisory_review","transition_case_status","get_case_governance_history"]'::jsonb) then raise exception 'help missing commands: %',r; end if;
  if (select current_game_time from game.simulation_state where id=1)<>t then raise exception 'governance commands advanced fictional time'; end if;
