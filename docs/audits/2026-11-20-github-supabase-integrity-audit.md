@@ -943,3 +943,10 @@ Classification: **duration persistence correction consolidated into the earlier 
 The complete remote and repository SQL for `deduplicate_case_review_help_command` is canonically identical after comment and whitespace normalisation. Both preserve the case-review access checks and add `get_case_review_dossier` to the help list only when it is not already present. The executor permission revoke/grant statements also match.
 
 Classification: **exact canonical SQL match**. Retain both records unchanged.
+
+
+## 44. Content-led review of version 20261120134345 — active personnel guard
+
+The remote and repository versions of `case_review_require_active_personnel` are canonically identical after comment, whitespace, dollar-quote and typed-NULL normalisation. Both require the dossier requester to be active or seconded, and retain the case-lead/active-assignment access boundary. The command executor permissions are unchanged and match.
+
+Classification: **exact canonical SQL match**. Retain both records unchanged.
