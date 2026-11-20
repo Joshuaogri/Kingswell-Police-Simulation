@@ -45,7 +45,7 @@ begin
  if (intel->'totals'->>'patrol_activity_sessions')::integer<>1 then raise exception 'Activity session missing from intelligence: %',intel; end if;
  if (intel->'totals'->>'patrol_activity_minutes')::numeric<>15 then raise exception 'Activity minutes missing from intelligence: %',intel; end if;
  begin
-  update game.patrol_activity_sessions set reason='tampered' where session_ref=start_result->>'session_ref';
+  update game.patrol_activity_sessions sess set reason='tampered' where sess.session_ref=start_result->>'session_ref';
  exception when others then session_rejected:=true;
  end;
  if not session_rejected then raise exception 'Completed patrol activity session accepted mutation'; end if;
