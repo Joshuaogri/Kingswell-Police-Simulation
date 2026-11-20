@@ -539,3 +539,24 @@ The following integrity checks returned zero exceptions:
 This is a focused integrity check of the listed invariants, not proof that every refinement requirement above has been implemented. A complete BP-04 detailed-coverage audit and acceptance suite is still required before the refined scope can be called complete.
 
 **Fictional-world rule:** All Kingswell properties, titles, owners, businesses, organisations, agreements, valuations, dates, facilities and events are fictional game data.
+
+
+## 16. Detailed coverage audit and implementation update — 2026-11-20
+
+The live audit is recorded in `docs/audits/BP-04-DETAILED-COVERAGE-AUDIT-2026-11-20.md`. It confirmed the core profiles are complete at the field-presence level, but identified important quality and history gaps: generic planning notes, only three building-system profile variants, templated business hours/security details, missing beneficial-owner/director records, and missing asset inspection/maintenance history.
+
+The following additive migrations are applied:
+- `20261120202603_bp04_detailed_history_control_agreements_and_map_alignment.sql`
+- `20261120202640_bp04_neighbourhood_property_map_use_current_city_version.sql`
+
+The migration work:
+- Aligns all 656 parcel outlines and 656 building footprints to KNG-MAP-0.3.
+- Creates 656 property valuation history snapshots from the existing dated profile values.
+- Creates the property asset-event register with property/building/unit hierarchy validation. It remains empty until actual fictional inspections, defects or maintenance events are recorded.
+- Creates the organisation ownership/control register. It remains empty until canonical people and organisations can be linked to real fictional ownership/director facts.
+- Creates 1,232 formal site-agreement records and 1,232 site links from existing tenant lease references, without inventing missing dates, rent amounts, deposits or landlord identities.
+- Extends property and business dossier query outputs to include the new histories and relationships.
+
+Regression test: `database/tests/bp04_detailed_refinement_regression.sql`. It was executed successfully against the live Kingswell database. It verifies profile coverage, tenant-agreement links, dwelling bedroom/bathroom coverage, floor-directory consistency, map-version alignment, dossier sections and rejection of cross-property asset-event references.
+
+**Current completion position:** baseline profiles and the above additive capabilities are implemented. Individual business operational/security enrichment, actual ownership/control records, property condition/maintenance events, unresolved landlord facts, fuller planning/title histories, write workflows and browser interfaces remain outstanding. BP-04 must remain open.
