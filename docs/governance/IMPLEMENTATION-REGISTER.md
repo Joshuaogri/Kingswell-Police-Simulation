@@ -17,7 +17,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Runtime foundation, forensic laboratory and police-geography layers implemented | Private `game` schema; 89 tables, 275 foreign keys and 439 indexes; 76 migrations applied; RLS enabled on all 89 tables; city geography and police facility/beat data seeded; no persons, police personnel, units or incidents seeded; fictional clock remains uninitialized |
+| Database schema | Runtime foundation, forensic laboratory and police-geography layers implemented | Private `game` schema; 89 tables, 275 foreign keys and 441 indexes; 78 migrations applied; RLS enabled on all 89 tables; city geography and police facility/beat data seeded; no persons, police personnel, units or incidents seeded; fictional clock remains uninitialized |
 | Application/gameplay code | In progress | Database-backed text command interpreter, controlled clock, emergency-call/dispatch/arrival, scene-control, field-report and resource-request workflows implemented; full domain handlers remain outstanding |
 | Runtime regression tests | Implemented; transaction smoke-tested | Runtime, dispatch, scene, evidence, forensic laboratory, geography and police-facility/patrol-geography SQL regression scripts cover implemented slices; test fixtures roll back |
 
@@ -34,7 +34,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-07 | Career System | Approved; detailed rules remain open for refinement |
 | BP-08 | Units and Deployment | Approved; roster-validated deployment, individual dispatch acknowledgement and on-scene arrival implemented; resource, qualification, command and remaining deployment lifecycle rules remain outstanding |
 | BP-09 | Police Resources | Approved; details to refine with later operational divisions |
-| BP-10 | Patrol Operations | Approved; roster-validated patrol dispatch, road movement, segment-level beat coverage, coverage-gap intelligence, foot-patrol/stationary-observation/community/business activity sessions, structured patrol observations and person/organisation/property/incident-linked contact records implemented and rollback-tested; wider field-status workflows remain outstanding |
+| BP-10 | Patrol Operations | Approved; roster-validated patrol dispatch, road movement, segment-level beat coverage, coverage-gap intelligence, foot-patrol/stationary-observation/community/business activity sessions, structured patrol observations, person/organisation/property/incident-linked contacts, searchable patrol intelligence and repeat-location reporting implemented and rollback-tested; wider field-status workflows remain outstanding |
 | BP-11 | Emergency Communications | Approved; text call intake, linked incident creation, roster-validated dispatch and individual officer acknowledgement/arrival events implemented; radio integration and live dispatch-console workflows remain outstanding |
 | BP-12 | Incident Management | Approved; incident intake, dispatch, attendance, linked scene records, field reports and resource requests implemented; ownership transfer, full progression, resolution and closure remain outstanding |
 | BP-13 | Crime Architecture | Approved; detailed fictional offence catalogue to populate |
@@ -640,3 +640,23 @@ Documentation: `docs/operations/PATROL-ACTIVITY-SESSIONS.md` and updated `docs/o
 **PASS:** `database/tests/kingswell_patrol_observations_contacts.sql` exercised both commands through `game.execute_text_command`, validated parser payloads, person/organisation/property links, intelligence totals, immutable observation/contact records and unchanged fictional time. Test ran in a transaction ending in ROLLBACK; no fixtures persist.
 
 Documentation: `docs/operations/PATROL-ACTIVITY-SESSIONS.md` and `docs/operations/PATROL-COMMAND-INTERFACE.md`.
+
+
+## Searchable patrol intelligence and repeat-concern reporting — 2026-11-20
+
+**Implemented and rollback-only end-to-end tested.** Migrations:
+- `database/migrations/20261120125000_searchable_patrol_intelligence.sql`
+- `database/migrations/20261120125100_refine_patrol_intelligence_search.sql`
+
+- Added `game.search_patrol_intelligence(...)`, a unified read-only search over the original immutable patrol observation and contact records.
+- Search supports free-text matching, optional beat, access-point, person, organisation and incident references, fictional-time windows, and a bounded result limit (1–500).
+- Results retain source record type/reference, recorded game time, category/contact type, narrative/outcome, notes, beat, access point, location and linked entity references.
+- Repeat-concern summaries group repeated records by source type, category/contact type and location, showing count and first/last recorded times.
+- Results are explicitly labelled as recorded reports only; repeat counts do not establish criminality, corroboration, risk, identity or guilt.
+- Player command: `search patrol intelligence [for WORDS]`. The current concise text command exposes free-text search; the secured database function also accepts structured filters and a selected fictional-time window.
+- Search is read-only, uses the existing idempotent command ledger, does not modify source records and does not advance fictional time.
+- Function/parser execution remains service_role-only in the private `game` schema.
+
+**PASS:** `database/tests/kingswell_searchable_patrol_intelligence.sql` creates temporary patrol/officer/session fixtures, records two traffic observations at the same access point, searches through the real text command, verifies both source records and the repeat-location count, checks help registration and confirms unchanged fictional time. Test ends in ROLLBACK; no fixtures persist.
+
+Live database verification: 89 tables, 275 foreign keys, 441 indexes, 78 migrations; fictional clock remains uninitialized. All 89 game tables remain RLS-enabled.
