@@ -972,3 +972,32 @@ Guide: `docs/operations/CORRECTIONAL-FOUNDATION.md`
 Added 18 covering indexes for correctional admission, sentence-term, credit-event, correctional-event and placement foreign keys. The correctional foundation regression test now asserts these indexes exist.
 
 Migration: `database/migrations/20261120162000_correctional_foreign_key_indexes.sql`.
+
+
+## Correctional command/runtime integration — 2026-11-20
+
+**Implemented and regression-tested.**
+
+The correctional parser and runtime now integrate with the existing Kingswell command chain. Existing interpreter/executor implementations were preserved as fallback functions rather than replaced. New correctional commands use the shared `game.game_commands` idempotency ledger and manual fictional clock.
+
+Commands now supported:
+- `prison facility create`: create a fictional facility with type, capacity and location description.
+- `prison admit`: admit an existing NPC person to remand, sentenced custody or transfer-in; remand requires an existing court-case link; sentenced admission requires an existing custodial sentence, guilty verdict and matching accused identity.
+- `prison sentence add`: attach additional custodial sentences to an active admission with ordered first/concurrent/consecutive term mode, matching person and matching court case.
+- `prison place`: assign or change a unit/cell placement; occupied cells are rejected.
+- `prison record`: retrieve the correctional record.
+- `prison facilities`: list facility status, capacity and occupancy.
+
+All commands require active/seconded police personnel identity at this stage. No correctional NPC/staff profile or autonomous prison workflow is yet implemented. No commands advance fictional time.
+
+**PASS:** rollback-only tests covered all six parser routes, an existing court-verdict parser regression, and executor dispatch rejection for an unknown actor. Test ledger rows were rolled back. Live state remains **171 game tables, 171 RLS-enabled**, zero correctional facilities/admissions, and uninitialized fictional clock.
+
+Follow-up migration corrected sentence-to-court-case matching for additional sentence terms.
+
+Migrations:
+- `database/migrations/20261120170000_correctional_command_runtime_integration.sql`
+- `database/migrations/20261120170500_correctional_sentence_case_link_validation.sql`
+
+Test: `database/tests/kingswell_correctional_runtime.sql`
+
+Guide: `docs/operations/CORRECTIONAL-RUNTIME.md`
