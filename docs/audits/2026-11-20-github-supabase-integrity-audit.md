@@ -603,3 +603,15 @@ Classification: **matching runtime function bodies; repository adds a legacy-ove
 The remote migration name is `20261120_case_investigative_leads_and_enquiries`, while the GitHub filename omits that date prefix. The complete SQL is canonically identical after normalising formatting and declaration syntax.
 
 Classification: **migration-name prefix difference only; exact canonical SQL match**. No source or runtime change is needed.
+
+
+## 32. Content-led review of version 20261120131748
+
+The remote and repository sources differ in table creation order and reconstructed constraint formatting, but their object inventories and function bodies were compared.
+
+- Both define the same five tables, three sequences, ten indexes, and five append-only triggers.
+- All five tables have matching column counts and column names.
+- Both enable row-level security on the same five tables.
+- All ten function definitions match after normalising dollar-quote delimiters and declaration formatting, including the command interpreter/executor, interview lifecycle, transcript, witness-statement lifecycle and read functions.
+
+Classification: **reconstructed DDL with matching table/column/index/sequence/trigger/RLS inventory and identical canonical function bodies**. Constraint-expression parity remains part of the final schema check. Retain the repository file and remote history.
