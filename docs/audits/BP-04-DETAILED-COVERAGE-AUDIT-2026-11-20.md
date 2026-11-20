@@ -174,3 +174,9 @@ Created 1,232 occupancy-agreement review dossiers, one per existing site agreeme
 Added `game.get_property_interest_record(property_ref)` and `game.get_site_agreement_review(agreement_ref)`. Regression tests passed for 1,608/1,608 interest dossier coverage, 1,232/1,232 agreement review coverage, the existing 656 registered owners and 476 landlords, 152 unresolved counterparties, missing-field completeness, private access and both query functions.
 
 BP-04 remains in progress. Remaining property work includes source-backed title/transfer history, beneficial ownership or mortgage records where established, landlord/counterparty resolution, actual contract details and property asset/inspection event capture.
+
+## 11. Property title and conveyance history framework
+
+Added `game.property_title_events`, an append-only, property-linked register for initial registration, transfers, sales, gifts, inheritance, court orders, subdivisions, amalgamations, title corrections, restrictions, caveats, registered leases and mortgage registration/discharge. It supports instrument references, prior/resulting title references, transferor/transferee identities, interest/share transferred, consideration, registration status, provenance and correction links. Corrections are recorded as new events; existing events cannot be edited or deleted.
+
+Added `game.get_property_title_history(property_ref)` and `game.get_property_asset_history(property_ref)` to expose current registered-title entries and recorded conveyance/asset events. Regression passed, including a transaction-scoped immutability test. The title event and property asset event histories currently contain zero events. This is deliberate: no historical transfers, mortgages, inspections, repairs or title instruments were invented. The existing register still has 656 current registered-owner entries. No beneficial-owner or mortgagee interests are currently recorded.
