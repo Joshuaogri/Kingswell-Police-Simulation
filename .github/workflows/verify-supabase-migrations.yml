@@ -41,11 +41,11 @@ jobs:
           test -n "$SUPABASE_DB_PASSWORD"
           echo "Database password secret was injected (value not displayed)."
 
-      - name: Read local and remote migration versions over the database connection
+      - name: Read local and remote migration versions over the IPv4 session pooler
         shell: bash
         run: |
           set -euo pipefail
-          DB_URL="$(node -e 'process.stdout.write("postgresql://postgres:" + encodeURIComponent(process.env.SUPABASE_DB_PASSWORD) + "@db.gdbzkgejyfwfackyuorl.supabase.co:5432/postgres?sslmode=require")')"
+          DB_URL="$(node -e 'process.stdout.write("postgresql://postgres.gdbzkgejyfwfackyuorl:" + encodeURIComponent(process.env.SUPABASE_DB_PASSWORD) + "@aws-1-eu-west-1.pooler.supabase.com:5432/postgres?sslmode=require")')"
           echo "::add-mask::$DB_URL"
           supabase migration list --db-url "$DB_URL" | tee migration-inventory.txt
           echo "" >> migration-inventory.txt
