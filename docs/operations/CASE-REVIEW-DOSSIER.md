@@ -6,14 +6,14 @@ The read-only `case review CASE_REF by OFFICER_REF` command assembles the curren
 
 - Case identity, title, type, status, summary and recorded lead.
 - Current and historical case assignments.
-- Investigative leads and their linked people, organisations, properties, evidence and incidents.
+- Investigative tasks, assignees, priorities, status, due/completion times and recorded outcomes.\n- Investigative leads and their linked people, organisations, properties, evidence and incidents.
 - Enquiry actions, results and outcomes.
 - Investigative tasks and their current status.
 - Witness interviews with chronological question-and-answer turns.
 - Suspect interview record and investigator assessments of individual turns.
 - Witness statements.
 - Account comparisons, discrepancy assessments and associated evidence.
-- Evidence register, collection details, current status, storage location and transfer history.
+- Evidence register, collection details, current status, storage location and transfer history, including items linked through case comparisons, investigative leads or forensic requests even when their primary case_id is unset.
 - Forensic requests, requested evidence context, examinations, findings, limitations and issued report versions.
 - Linked incidents and their relationship to the case.
 
