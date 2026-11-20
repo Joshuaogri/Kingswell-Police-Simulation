@@ -559,3 +559,10 @@ Classification: **reconstructed seed implementation with matching table/index/ce
 The complete remote statement and GitHub file for `kingswell_police_facilities_patrol_sectors_and_beats` produce identical canonical SQL after normalising comments, whitespace, dollar-quote tags, typed-NULL defaults, and equivalent declaration formatting.
 
 Classification: **canonical SQL match after formatting/declaration normalisation**. No substantive divergence was identified in this pair. Retain the existing file and remote history.
+
+
+## 27. Content-led review of version 20261120112929
+
+The remote and repository definitions of `game.calculate_road_route(...)` differ by one redundant assignment in the remote SQL: `v_duration := v_duration;`. Removing that no-op statement makes the complete canonical SQL identical after formatting/declaration normalisation.
+
+Classification: **equivalent routing function; remote contains a redundant self-assignment only**. No functional difference was identified. Retain the existing file and remote history.
