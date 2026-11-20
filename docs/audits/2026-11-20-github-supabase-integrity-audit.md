@@ -578,3 +578,14 @@ Three of the four function definitions match after normalisation: the append-onl
 - Both sources still maintain the unique active lead constraint and the unique active case/person/role constraint.
 
 Classification: **genuine function-level behavioural divergence; assignment multiplicity policy unresolved**. Preserve the remote history and repository file. Do not silently choose one policy or alter the live database; this needs an explicit design decision during the final runtime/schema reconciliation.
+
+
+## 29. Content-led review of version 20261120125958 — assignment-policy follow-up
+
+The remote and GitHub versions of `case_assignment_supporting_investigator_fix` produce identical canonical SQL after whitespace and dollar-quote normalisation.
+
+The migration's explicit design note states that supporting investigators are concurrent assignments and only the lead-investigator role transfers ownership. Its function implements the same role-specific rule found in the GitHub reconstruction of version `20261120125918`: duplicate assignment of the same person/role is idempotent, and only a new lead-investigator assignment releases the previous lead.
+
+This later applied migration therefore resolves the earlier historical divergence in the live migration sequence. The version `20261120125918` pair remains a genuine historical-source mismatch, but the subsequent remote migration restores the repository's role-specific assignment behaviour.
+
+Classification: **exact canonical match; later migration explicitly supersedes the earlier assignment-policy discrepancy**. No live change is required.
