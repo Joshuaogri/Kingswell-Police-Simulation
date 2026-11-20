@@ -1,6 +1,7 @@
 -- BP-03 exact dwelling-unit allocation and capacity enforcement integration regression.
 -- 100 fictional NPC fixtures exercise the live schema; all records are rolled back.
 BEGIN;
+SET LOCAL ROLE service_role;
 CREATE TEMP TABLE bp03_u ON COMMIT DROP AS
 SELECT row_number() over(order by n.code,bu.unit_ref)::integer unit_no,bu.id unit_id,b.property_id,up.occupancy_capacity
 FROM game.building_units bu JOIN game.buildings b ON b.id=bu.building_id
