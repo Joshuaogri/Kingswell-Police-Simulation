@@ -65,6 +65,12 @@ jobs:
           echo "::add-mask::$DB_URL"
           psql "$DB_URL" -X -qAt -v ON_ERROR_STOP=1 -c "BEGIN READ ONLY; SELECT COALESCE(json_agg(json_build_object('version', version, 'name', name, 'statements', statements) ORDER BY version), '[]'::json) FROM supabase_migrations.schema_migrations; COMMIT;" > remote-migration-history.json
 
+      - name: Test migration reconciliation logic
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s tests -p "test_*.py"
+
       - name: Compare stored SQL statements with repository migration files
         shell: bash
         run: |
