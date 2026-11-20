@@ -50,7 +50,9 @@ No owners or directors were assigned from the existing workforce because the cur
 
 ## Applied migrations
 
-- `bp04_individual_business_operating_security_and_access_profiles`
-- `bp04_individualise_business_security_profiles`
+- `database/migrations/20261120203318_bp04_individual_business_operating_security_and_access_profiles.sql`
+- `database/migrations/20261120203333_bp04_individualise_business_security_profiles.sql`
+
+The updated `database/tests/bp04_detailed_refinement_regression.sql` was executed successfully after the enrichment and returned no exceptions.
 
 The source migration files and regression coverage must remain version-controlled with the repository. BP-04 is not complete.
