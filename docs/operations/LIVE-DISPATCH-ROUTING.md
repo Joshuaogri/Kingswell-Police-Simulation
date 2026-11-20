@@ -79,3 +79,29 @@ Verification:
 - `database/tests/kingswell_unit_position_and_road_recalculation.sql`
 
 Both are rollback-only and passed on the live Supabase project. Neither test leaves fixture records or changes the live fictional clock.
+
+
+## Player-facing dispatch options
+
+Use:
+
+`dispatch options for INCIDENT_REF`
+
+The result shows the incident and ETA-ranked eligible units. Each unit includes available officer names, personnel references and service numbers, base facility, route status, route distance, estimated duration and estimated arrival. The options command does not dispatch anyone.
+
+## Reassigning an active response
+
+Use:
+
+`reassign UNIT_REF to INCIDENT_REF because REASON`
+
+The replacement must be a different active unit with eligible on-duty personnel. The current incident response must have one active unit only, and no responding officer may already be on scene. On success:
+- prior deployment rows are retained and marked cancelled at the current fictional game time;
+- outgoing and incoming reassignment events are recorded;
+- a game event records the reason and unit change;
+- new deployment rows are created for the replacement unit's eligible officers;
+- deployment route snapshots and append-only route history are created for the replacement response.
+
+Both commands use the normal parser and idempotent command ledger. No automatic time progression occurs.
+
+Regression: `database/tests/kingswell_player_dispatch_options_and_reassignment.sql` passed on Supabase in a transaction ending in ROLLBACK. The live world remains unseeded.
