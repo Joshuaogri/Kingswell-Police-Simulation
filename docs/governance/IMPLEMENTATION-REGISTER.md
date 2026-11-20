@@ -748,3 +748,22 @@ Operations guide: `docs/operations/CASE-INTERVIEWS-WITNESS-STATEMENTS.md`.
 **PASS:** `database/tests/kingswell_suspect_interviews.sql` verifies parser/executor, classification, idempotent replay, chronological Q&A, response assessment, review retrieval, append-only enforcement, help registration and unchanged fictional time. Test transaction rolls back without persistent fixtures.
 
 Operations guide: `docs/operations/SUSPECT-INTERVIEWS.md`.
+
+
+## Case account comparison and discrepancy analysis — 2026-11-20
+
+**Implemented and rollback-only end-to-end tested.** Migrations:
+- `database/migrations/20261120133310_case_account_comparison_and_discrepancy_records.sql`
+- `database/migrations/20261120133333_case_account_comparison_player_commands.sql`
+
+- Compares two existing same-case sources: witness statements and chronological interview turns. Original accounts are never rewritten.
+- Records discrepancy categories and the investigator's description.
+- Appends assessments (unresolved, explained, partially explained, not a conflict) with full history.
+- Links existing case evidence without changing custody or forensic records.
+- Retrieval returns both source accounts, discrepancy, assessment history and linked evidence.
+- Officer must be case lead or actively assigned; case must remain open. Commands use idempotency and actor attribution and do not advance fictional time.
+- Three new tables are RLS-enabled, private-schema/service-role-only and append-only.
+
+**PASS:** `database/tests/kingswell_case_account_comparisons.sql` tests parser/executor, source resolution, idempotency, assessments, evidence links, retrieval, help, append-only protection and unchanged fictional time. Transaction rolls back without persistent fixtures.
+
+Operations guide: `docs/operations/CASE-ACCOUNT-COMPARISONS.md`.
