@@ -74,7 +74,7 @@ The case arrest retrieval and consolidated dossier show arrest details, officer,
 ## Controls and simulation time
 
 - Private `game` schema; RLS enabled; no `anon` or `authenticated` table access; service-role runtime only.
-- All player commands use the idempotent command ledger and active personnel attribution.
+- All player commands use the idempotent command ledger and active personnel attribution. Booking, property, welfare, custody-event, release and transfer actions require the booking/arresting officer, case lead or an active case assignee.
 - Arrest event, transport, property, custody event and welfare-check histories are append-only.
 - The main arrest/custody state records only the current state; consequential transitions are retained in their event histories.
 - The clock advances only for an explicitly entered transport duration. Other record-writing and retrieval commands use the current fictional time without advancing it.
