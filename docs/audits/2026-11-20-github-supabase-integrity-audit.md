@@ -1057,3 +1057,10 @@ Classification: **equivalent SQL with one unused-variable difference and a remot
 The remote and GitHub versions of the disclosure-history dossier wrapper are functionally identical. Both rename the previous dossier function, wrap it, and add defence-counsel assignments, disclosure packages, disclosure items, service receipts and acknowledgements. Both revoke execution from public/anon/authenticated and grant it to `service_role`.
 
 Classification: **same dossier wrapper and privilege boundary; formatting difference only**. Retain the existing file and remote history.
+
+
+## 53. Content-led review of case task player commands
+
+The GitHub file `20261120140100_case_task_player_commands.sql` is stored remotely at version `20261120125347`, under the same migration name. The complete SQL is canonically identical after normalising comments, whitespace and dollar-quote tags. Both command interpreter and executor bodies match exactly.
+
+Classification: **exact canonical SQL match with remote version/timestamp discrepancy**. Preserve both records.
