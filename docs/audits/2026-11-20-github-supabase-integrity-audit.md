@@ -484,3 +484,12 @@ The remote migration and the repository file `20261120103202_scene_contamination
 - The table definitions have been identified in both sources, but this pass has not yet completed a column-by-column and constraint-by-constraint comparison of the three table definitions or a full behavioural comparison of the dynamically patched functions.
 
 Classification: **reconstructed-source candidate; evidence handler and command-routing intent align, but exact historical source and full DDL parity remain unverified**. Preserve the current file and remote record. Do not rewrite migration history or treat this pair as fully cleared until the remaining schema/function parity checks are complete.
+
+
+## 19. Content-led review of version 20261120103219
+
+The remote migration is a single dynamic `DO` block (484 characters) that changes the help text in the existing `game.submit_command` function. It replaces the generic “domain actions will be registered” note with the specific notice that scene contamination, evidence recovery and custody transfer commands are available.
+
+The GitHub file is a reconstructed full-definition source (45,836 characters), not a copy of the original short `DO` block. Its static function definitions contain the updated help notice and all three evidence command names. This is consistent with the effect of the remote replacement, but the exact historical migration text is not preserved in the repository.
+
+Classification: **reconstructed equivalent help/runtime state; original dynamic patch not reproduced verbatim**. Retain the file and remote history. This entry can be cleared as a source-form difference once the static command-function definition is included in the overall function parity review.
