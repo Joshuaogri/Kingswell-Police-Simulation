@@ -37,5 +37,17 @@ if not exists(select 1 from game.court_hearing_events where event_type='court_cr
 if (select count(*) from game.court_hearing_events where event_type='official_appointed')<>2 then raise exception 'Official appointment events missing';end if;
 if (select current_game_time from game.simulation_state where id=1)<>clk then raise exception 'Fictional clock advanced unexpectedly';end if;
 if not (game.execute_text_command('help','kng-court-help-001',null,null)->'available_commands' ? 'create_court') then raise exception 'Court commands missing from help';end if;
+begin
+ update game.court_orders set order_text='tampered' where order_ref=orderref;
+ raise exception 'Court order history unexpectedly allowed mutation';
+exception when others then
+ if sqlerrm not like 'Court order and hearing event history is append-only%' then raise;end if;
+end;
+begin
+ update game.court_hearing_events set details='{}'::jsonb where court_id=(select id from game.courts where court_ref=courtref);
+ raise exception 'Court event history unexpectedly allowed mutation';
+exception when others then
+ if sqlerrm not like 'Court order and hearing event history is append-only%' then raise;end if;
+end;
 end $$;
 rollback;
