@@ -995,3 +995,10 @@ Classification: **shared command-runtime integration shifted from the first GitH
 The complete remote and repository migration SQL is canonically identical. Both define two governance tables, two indexes, two append-only triggers, and the same six function bodies: command interpretation/execution, supervisory review recording, case-status transition, governance-history retrieval, and immutable-history enforcement.
 
 Classification: **exact canonical SQL match**. Retain both records unchanged.
+
+
+## 48. Content-led review of version 20261120135234 — supervisory history in the case dossier
+
+The complete remote and repository SQL for `case_dossier_supervisory_history` is canonically identical. Both replace the case-review dossier read model to include supervisory reviews and case-status transition history.
+
+Classification: **exact canonical SQL match**. Retain both records unchanged.
