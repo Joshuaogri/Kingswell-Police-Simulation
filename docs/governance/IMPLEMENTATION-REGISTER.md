@@ -537,3 +537,21 @@ Every change is recorded in private RLS-enabled append-only `game.unit_operation
 Player-facing parser integration and automatic schedule commencement are not yet implemented; these functions are currently callable through the secured runtime database interface.
 
 Documentation: `docs/operations/PATROL-BEAT-SCHEDULING-COVERAGE.md`.
+
+
+## Player-facing patrol commands and live beat coverage — 2026-11-20
+
+**Implemented and end-to-end regression-tested.** The existing natural-language command path now recognises and executes patrol commands through `game.execute_text_command`, retaining the existing command ledger and idempotency model.
+
+Commands:
+- `assign beat UNIT_REF to BEAT_REF because REASON`
+- `schedule patrol SCHEDULE_REF UNIT_REF in BEAT_REF from ISO_TIMESTAMP to ISO_TIMESTAMP`
+- `start patrol UNIT_REF because REASON`
+- `end patrol UNIT_REF because REASON`
+- `patrol status` (aliases: `patrol coverage`, `beat coverage`)
+
+The coverage report returns all active beats, on-patrol unit details and schedule windows, plus covered/uncovered beat totals. Scheduled-but-not-started units do not count as covering a beat. Timestamps in schedule commands require ISO-8601 offsets. The command grammar does not yet expose optional roster selection, although the database scheduling function supports it.
+
+**PASS:** `database/tests/kingswell_patrol_command_interface.sql` exercises assignment, scheduling, patrol start, live coverage query and patrol end through the real text-command dispatcher. It verifies the unit returns to station and the fictional clock remains unchanged. Transaction ends in ROLLBACK; no fixtures persist.
+
+Parser and coverage function execution are restricted to service_role. Documentation: `docs/operations/PATROL-COMMAND-INTERFACE.md`.
