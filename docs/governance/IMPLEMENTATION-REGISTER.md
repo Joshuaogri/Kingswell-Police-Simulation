@@ -1144,6 +1144,8 @@ The city now has 1,452 businesses across financial services (150), import/export
 ### Map and player interface
 City property-map layer is KNG-MAP-0.2; the underlying KNG-MAP-0.1 local-metre coordinate system and BP-02 road/district/neighbourhood identities are unchanged. All properties have a primary address and access point connected to a real seeded road segment and nearest endpoint junction. Parcel/building outlines are local-grid schematic geometry, not surveyed legal boundaries.
 
+The final BP-04 regression also executes the property record, business record, neighbourhood map and business directory commands under the actual `service_role`, using a temporary officer fixture inside a rollback transaction. All 13 BP-04 migration files are mirrored to GitHub `main`; no test fixture or fictional clock change remains.
+
 Read-only query functions and text commands:
 - `property record PROPERTY_REF by PERSONNEL_REF`
 - `property map NEIGHBOURHOOD_CODE by PERSONNEL_REF`
