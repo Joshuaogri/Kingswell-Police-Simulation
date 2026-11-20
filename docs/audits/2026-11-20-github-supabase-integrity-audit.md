@@ -1222,3 +1222,10 @@ Classification: **structural and function-body parity; reconstructed DDL formatt
 The complete remote and GitHub migration SQL for `bp03_population_summary_requires_current_household_members` is canonically identical after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults and equivalent declaration formatting.
 
 Classification: **canonical SQL match after formatting/declaration normalisation**. No substantive source difference was identified. Retain the existing file and remote history.
+
+
+## 67. Content-led review of version 20261120163022
+
+The complete remote and GitHub migration SQL for `bp03_end_current_memberships_on_person_death` is canonically identical after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults and equivalent declaration formatting.
+
+Classification: **canonical SQL match after formatting/declaration normalisation**. No substantive source difference was identified. Retain the existing file and remote history.
