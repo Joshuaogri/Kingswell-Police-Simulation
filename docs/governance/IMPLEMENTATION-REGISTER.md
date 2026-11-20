@@ -682,3 +682,20 @@ Live database verification after investigation-link work: 90 tables, 281 foreign
 **PASS:** `database/tests/kingswell_patrol_intelligence_links.sql` verifies parser and command help, creates a temporary patrol observation, links it to an existing test incident and case, confirms duplicate protection, verifies two immutable audit events, confirms the source observation is unchanged, checks link-history lookup and unchanged fictional time. Transaction ends in ROLLBACK; no test fixtures persist.
 
 Live database verification: 90 tables, 281 foreign keys, 453 indexes, 81 migrations; all 90 game tables RLS-enabled; no link/test-person/test-unit rows remain; fictional clock remains uninitialized.
+
+
+
+## Investigative leads and enquiry records — 2026-11-20
+
+**Implemented and rollback-only end-to-end regression-tested.** Migration: `database/migrations/20261120130735_case_investigative_leads_and_enquiries.sql`.
+
+- Added `game.case_leads` with stable lead references, case link, source type/reference, description, assigned investigator, status, priority, confidence, assessment rationale and fictional timestamps.
+- Added append-only `game.case_lead_events` for creation, assignment, reassignment and assessment/status history.
+- Added append-only `game.case_enquiries` and `game.case_enquiry_events` for the conducting officer, recording officer, method, action, result, outcome, source reference and fictional time.
+- Commands: `case lead create`, `case lead assign`, `case lead assess`, `case enquiry record`, `case leads` and `case enquiries`. All are integrated into the text parser, command ledger, idempotency and help response.
+- Enquiry officers must own the lead or hold an active assignment to its case. Only active or seconded personnel may be assigned or attributed.
+- Investigative records do not advance fictional time. Private schema, RLS and service-role-only access are retained.
+
+**PASS:** `database/tests/kingswell_case_investigative_leads.sql` passed through the actual parser/executor and verified creation, assignment, enquiry, assessment, list retrieval, idempotency, append-only protections, help and unchanged fictional time. Transaction ended in ROLLBACK.
+
+Documentation: `docs/operations/CASE-INVESTIGATIVE-LEADS.md` and updated `docs/operations/PATROL-COMMAND-INTERFACE.md`.
