@@ -200,6 +200,5 @@ $i$;
  help_new:=$hn$'patrol_coverage','patrol_move','patrol_intelligence','start_patrol_activity','end_patrol_activity')$hn$;
  if position(help_old in def)=0 then raise exception 'Could not locate patrol help list'; end if;
  def:=replace(def,help_old,help_new);
- def:=replace(def,$n$'note','Patrol intelligence and forensic laboratory commands are available.')$n$,$nn$'note','Patrol movement, activity logging, intelligence and forensic laboratory commands are available.')$nn$;
  execute def;
 end;$patch$;
