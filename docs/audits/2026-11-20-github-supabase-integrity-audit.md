@@ -596,3 +596,10 @@ Classification: **exact canonical match; later migration explicitly supersedes t
 The `game.release_case_investigator(...)` function body, `game.interpret_text_command(...)`, and `game.execute_text_command(...)` match between remote and repository sources after normalisation. The only substantive source-file difference is an additional repository permission statement revoking `service_role` access to the legacy five-argument `release_case_investigator` overload. The remote migration revokes public/anon/authenticated access to the new six-argument role-specific function and grants that new function to `service_role`, but does not include the legacy-overload revoke.
 
 Classification: **matching runtime function bodies; repository adds a legacy-overload permission cleanup**. Treat the extra revoke as a separate permission delta for the final privilege audit, not as a function-body mismatch. Do not change live privileges during this reconciliation.
+
+
+## 31. Content-led review of version 20261120130735
+
+The remote migration name is `20261120_case_investigative_leads_and_enquiries`, while the GitHub filename omits that date prefix. The complete SQL is canonically identical after normalising formatting and declaration syntax.
+
+Classification: **migration-name prefix difference only; exact canonical SQL match**. No source or runtime change is needed.
