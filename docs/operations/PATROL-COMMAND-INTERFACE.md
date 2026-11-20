@@ -77,3 +77,8 @@ Links use typed foreign keys to the existing entity registries. Evidence links a
 ## Case interviews and witness statements
 
 See `docs/operations/CASE-INTERVIEWS-WITNESS-STATEMENTS.md` for interview, transcript, witness statement, adoption and retrieval commands.
+
+
+## Case interviews and witness statements
+
+See `docs/operations/CASE-INTERVIEWS-WITNESS-STATEMENTS.md` for interview, transcript, witness statement, adoption and retrieval commands.
