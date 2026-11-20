@@ -799,3 +799,10 @@ The remote migration replaces `game.execute_arrest_custody_command(...)` to corr
 The consolidated GitHub executor uses the explicit `v_case_id` variable in the case-assignment and lead checks and does not retain the ambiguous `case_id=case_id` comparisons present in the earlier remote implementation.
 
 Classification: **bug-fix migration consolidated into the earlier GitHub workflow source**. The exact intermediate correction is not retained as a standalone patch, but its disambiguated logic is present in the earlier consolidated file. Preserve the current chronology; later arrest/custody fixes still require review.
+
+
+## 34. Content-led review of patrol-intelligence link index migration
+
+The GitHub file `20261120132000_index_patrol_intelligence_link_foreign_keys.sql` is recorded remotely under version `20261120124058`, with the same migration name `20261120132000_index_patrol_intelligence_link_foreign_keys`. The complete SQL is identical: both define the same two indexes on `actor_personnel_id` and `source_command_id`.
+
+Classification: **exact canonical SQL match with a remote version/timestamp discrepancy**. This is a migration-history mapping issue, not a SQL-content divergence. Preserve both records pending the full chronology reconciliation; do not repair the history now.
