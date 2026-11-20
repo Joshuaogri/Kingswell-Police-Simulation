@@ -815,3 +815,12 @@ The remote migration replaces `game.execute_arrest_custody_command(...)` again, 
 The consolidated GitHub executor already uses `v_case_id` in both checks, matching the corrected remote 145200 logic. The previous remote 145111 version corrected the case/person lookup but left the case-assignment references ambiguous; 145200 completes the correction.
 
 Classification: **second-stage bug fix consolidated into the earlier GitHub workflow source**. The final disambiguated logic is present in the consolidated file, but the intermediate historical fix is not retained as a standalone SQL patch. Preserve the current chronology.
+
+
+## 50. Content-led review of version 20261120145329 — arrest/custody dossier consolidation
+
+The remote migration replaces the full `game.get_case_review_dossier(text)` function to add arrest, transport, custody, custody-property, welfare-check and custody-event details to the dossier. The GitHub file at this version is comment-only and points to the consolidated 20261120144932 workflow migration.
+
+The full dossier function embedded in the consolidated GitHub 144932 migration is canonically identical to the remote 145329 function after normalising formatting and declaration syntax. It already includes the arrest/custody section as well as the previously added investigative-activity, surveillance and search-operation sections.
+
+Classification: **dossier update consolidated into the earlier GitHub arrest/custody workflow source; exact standalone historical replacement omitted, final function body preserved**. No live change is required.
