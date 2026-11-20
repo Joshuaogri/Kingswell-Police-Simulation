@@ -18,3 +18,12 @@ CREATE INDEX IF NOT EXISTS idx_fk_forensic_requests_source_command_id ON game.fo
 CREATE INDEX IF NOT EXISTS idx_fk_forensic_requests_triaged_by_personnel_id ON game.forensic_requests USING btree (triaged_by_personnel_id);
 CREATE INDEX IF NOT EXISTS idx_fk_forensic_reviews_reviewer_personnel_id ON game.forensic_reviews USING btree (reviewer_personnel_id);
 CREATE INDEX IF NOT EXISTS idx_fk_forensic_reviews_source_command_id ON game.forensic_reviews USING btree (source_command_id);
+CREATE INDEX IF NOT EXISTS idx_fk_scene_contamination_events_recorded_by_personnel_id ON game.scene_contamination_events USING btree (recorded_by_personnel_id);
+CREATE INDEX IF NOT EXISTS idx_fk_scene_contamination_events_source_command_id ON game.scene_contamination_events USING btree (source_command_id);
+CREATE INDEX IF NOT EXISTS idx_fk_scene_evidence_recoveries_incident_id ON game.scene_evidence_recoveries USING btree (incident_id);
+CREATE INDEX IF NOT EXISTS idx_fk_scene_evidence_recoveries_recovered_by_personnel_id ON game.scene_evidence_recoveries USING btree (recovered_by_personnel_id);
+CREATE INDEX IF NOT EXISTS idx_fk_scene_evidence_recoveries_source_command_id ON game.scene_evidence_recoveries USING btree (source_command_id);
+CREATE INDEX IF NOT EXISTS idx_fk_scene_evidence_transfer_events_from_personnel_id ON game.scene_evidence_transfer_events USING btree (from_personnel_id);
+CREATE INDEX IF NOT EXISTS idx_fk_scene_evidence_transfer_events_recorded_by_personnel_id ON game.scene_evidence_transfer_events USING btree (recorded_by_personnel_id);
+CREATE INDEX IF NOT EXISTS idx_fk_scene_evidence_transfer_events_source_command_id ON game.scene_evidence_transfer_events USING btree (source_command_id);
+CREATE INDEX IF NOT EXISTS idx_fk_scene_evidence_transfer_events_to_personnel_id ON game.scene_evidence_transfer_events USING btree (to_personnel_id);
