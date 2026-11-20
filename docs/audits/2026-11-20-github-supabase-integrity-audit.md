@@ -905,3 +905,18 @@ The remote migration adds `duration_minutes` to `game.arrest_transport_legs`, co
 The consolidated GitHub 144932 workflow source already contains the duration column, a 1–240 range check, the duration-aware command syntax, and the executor's `v_arrival`/`v_minutes` clock advancement.
 
 Classification: **transport-duration schema, parser and clock behaviour consolidated into the earlier GitHub workflow source**. The standalone 145803 GitHub file is comment-only; the final functionality is present in the consolidated migration.
+
+
+## 40. Content-led review of version 20261120133851 — case review dossier
+
+The remote and repository sources for `case_review_dossier_and_player_command` are canonically identical after normalising comments, whitespace and dollar-quote tags. Both contain the same three function definitions: dossier retrieval, command interpretation and command execution.
+
+Classification: **exact canonical SQL match**. Retain both records unchanged.
+
+## 41. Content-led review of version 20261120133944 — duplicate case review migration name
+
+Supabase records a second migration with the same name, `case_review_dossier_and_player_command`, at version `20261120133944`. The GitHub file at that exact version contains only the command interpreter and executor wrappers. Those two function bodies match the remote versions.
+
+The remote migration additionally replaces `game.get_case_review_dossier(text)` with a substantially expanded version that restricts retrieval to the recorded case lead or an actively assigned investigator and constructs a fuller dossier. That function definition is absent from the same-version GitHub file. It is not the same content as the earlier `20261120133851` dossier function.
+
+Classification: **genuine unrecovered historical SQL at version 20261120133944**. The remote dossier-function replacement is not represented in the same-version repository file. Preserve the remote migration record and current repository file; recover and compare the missing function source before any history repair. Do not infer that the earlier dossier function is a substitute.
