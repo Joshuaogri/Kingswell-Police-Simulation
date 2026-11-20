@@ -17,7 +17,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Runtime foundation, forensic laboratory and police-geography layers implemented | Private `game` schema; 90 tables, 281 foreign keys and 451 indexes; 80 migrations applied; RLS enabled on all 90 tables; city geography and police facility/beat data seeded; no persons, police personnel, units or incidents seeded; fictional clock remains uninitialized |
+| Database schema | Runtime foundation, forensic laboratory and police-geography layers implemented | Private `game` schema; 90 tables, 281 foreign keys and 453 indexes; 81 migrations applied; RLS enabled on all 90 tables; city geography and police facility/beat data seeded; no persons, police personnel, units or incidents seeded; fictional clock remains uninitialized |
 | Application/gameplay code | In progress | Database-backed text command interpreter, controlled clock, emergency-call/dispatch/arrival, scene-control, field-report and resource-request workflows implemented; full domain handlers remain outstanding |
 | Runtime regression tests | Implemented; transaction smoke-tested | Runtime, dispatch, scene, evidence, forensic laboratory, geography and police-facility/patrol-geography SQL regression scripts cover implemented slices; test fixtures roll back |
 
@@ -659,7 +659,7 @@ Documentation: `docs/operations/PATROL-ACTIVITY-SESSIONS.md` and `docs/operation
 
 **PASS:** `database/tests/kingswell_searchable_patrol_intelligence.sql` creates temporary patrol/officer/session fixtures, records two traffic observations at the same access point, searches through the real text command, verifies both source records and the repeat-location count, checks help registration and confirms unchanged fictional time. Test ends in ROLLBACK; no fixtures persist.
 
-Live database verification after investigation-link work: 90 tables, 281 foreign keys, 451 indexes, 80 migrations; RLS enabled on all 90 game tables; no persistent link or test-person/unit rows; fictional clock remains uninitialized.
+Live database verification after investigation-link work: 90 tables, 281 foreign keys, 453 indexes, 81 migrations; RLS enabled on all 90 game tables; no persistent link or test-person/unit rows; fictional clock remains uninitialized.
 
 
 ## Patrol intelligence investigation links and history — 2026-11-20
@@ -667,12 +667,13 @@ Live database verification after investigation-link work: 90 tables, 281 foreign
 **Implemented and rollback-only end-to-end tested.** Migrations:
 - `database/migrations/20261120130000_patrol_intelligence_investigation_links.sql`
 - `database/migrations/20261120131000_patrol_intelligence_link_history_lookup.sql`
+- `database/migrations/20261120132000_index_patrol_intelligence_link_foreign_keys.sql`
 
 - Added `game.patrol_intelligence_links` as a separate append-only linkage record. It links exactly one existing patrol observation or contact to exactly one existing incident or case.
 - Each link records its unique reference, source and target, reason, fictional link time, active officer attribution, originating command and an immutable `game_events` event.
 - Source patrol records and target incident/case records are not modified. No new incident or case is created by linking.
 - Duplicate source-target links return the existing link and do not create another record/event. Different targets can be linked separately.
-- Foreign keys restrict deletion of referenced source/target/actor/command records. Link updates and deletes are rejected.
+- Foreign keys restrict deletion of referenced source/target/actor/command records. All linkage foreign keys are indexed. Link updates and deletes are rejected.
 - Player command: `link patrol record RECORD_REF to incident INCIDENT_REF because REASON` or `link patrol record RECORD_REF to case CASE_REF because REASON`.
 - Link history command: `patrol intelligence links` or `patrol intelligence links for RECORD_REF` (also accepts a link, incident or case reference).
 - Link creation requires an initialized fictional clock and an active police personnel actor. Linking and lookup do not advance fictional time.
@@ -680,4 +681,4 @@ Live database verification after investigation-link work: 90 tables, 281 foreign
 
 **PASS:** `database/tests/kingswell_patrol_intelligence_links.sql` verifies parser and command help, creates a temporary patrol observation, links it to an existing test incident and case, confirms duplicate protection, verifies two immutable audit events, confirms the source observation is unchanged, checks link-history lookup and unchanged fictional time. Transaction ends in ROLLBACK; no test fixtures persist.
 
-Live database verification: 90 tables, 281 foreign keys, 451 indexes, 80 migrations; all 90 game tables RLS-enabled; no link/test-person/test-unit rows remain; fictional clock remains uninitialized.
+Live database verification: 90 tables, 281 foreign keys, 453 indexes, 81 migrations; all 90 game tables RLS-enabled; no link/test-person/test-unit rows remain; fictional clock remains uninitialized.
