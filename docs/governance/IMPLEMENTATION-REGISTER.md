@@ -890,3 +890,23 @@ Commands: `court create`, `court official appoint`, `court case register`, `cour
 **PASS:** `database/tests/kingswell_court_registry_and_hearings.sql` verifies full NPC-to-NPC court workflow, access denial, court event history, docket, case dossier, help and clock preservation. All fixtures roll back.
 
 Operations guide: `docs/operations/COURT-REGISTRY-HEARINGS.md`.
+
+
+## NPC trial proceedings foundation — 2026-11-20
+
+**Deployed and parser/runtime regression-tested.** Added four private, RLS-enabled tables: `game.trial_pleas`, `game.trial_proceedings`, `game.trial_evidence_tenders` and `game.trial_proceeding_events`. Each plea, proceeding and event history is append-only. Evidence tenders are linked to existing same-case evidence; judicial admissibility rulings are recorded without altering the original evidence item or its chain of custody.
+
+Commands: `court plea record`, `court trial record`, `court trial tender` and `court trial rule`. Help registration includes all four commands. The command runtime retains the existing court, prosecution and earlier command fallbacks, uses the shared idempotency ledger, and does not advance fictional time.
+
+Plea records are per individual filed charge. Trial proceedings can record openings, witness examination/cross-examination/re-examination, accused testimony, submissions, objections, judicial rulings, closing submissions and jury directions. Only the assigned active judge can record proceedings or rule on a tender. Prosecutors and assigned defence counsel tender evidence on their respective sides.
+
+**PASS:** parser checks for all four trial commands, existing court command parsing, existing prosecution command parsing, help registration and the trial handler's clock guard. The help-command test record was removed after verification. Full end-to-end NPC trial fixtures are not yet possible because the game currently has no seeded people, prosecutors, defence counsel, evidence or court officials. `database/tests/kingswell_trial_proceedings.sql` contains rollback-only parser/schema regression checks.
+
+Migrations:
+- `20261120155118_trial_proceedings_foundation.sql`
+- `20261120155132_trial_runtime_fixes.sql`
+- `20261120155210_trial_help_registration.sql`
+
+Operations guide: `docs/operations/TRIAL-PROCEEDINGS.md`.
+
+Current database total: **162 `game` tables**. The fictional clock remains uninitialized; no trial NPCs or records have been seeded.
