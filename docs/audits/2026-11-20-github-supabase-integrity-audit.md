@@ -1284,3 +1284,10 @@ Classification: **canonical SQL match after formatting normalisation**. No subst
 The remote seed query's `owners` CTE projects one additional `p.land_use` column. The repository version omits that projected column. The CTE independently uses `p.land_use` in its owner-selection and ownership-kind `CASE` expressions; the additional output column is not needed by the downstream insert. The remaining canonical SQL matches.
 
 Classification: **unused CTE projection difference only; no change to selected owner, ownership kind or inserted records identified**. Retain the existing file and remote history.
+
+
+## 74. Content-led review of version 20261120164540
+
+The complete remote and GitHub SQL for `bp04_property_record_neighbourhood_map_and_business_directory_queries` is canonically identical after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults, `search_path` declarations and concatenation-operator spacing.
+
+Classification: **canonical SQL match after formatting normalisation**. No substantive query or permission difference was identified. Retain the existing file and remote history.
