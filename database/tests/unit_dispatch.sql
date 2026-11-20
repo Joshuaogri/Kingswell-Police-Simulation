@@ -32,6 +32,11 @@ begin
   insert into game.dispatch_calls(call_ref,incident_id,received_at,call_summary,status)
     values('KW-CALL-TEST-01',v_incident,'2036-02-10T08:00:00Z','Test burglary report','received');
 
+  r:=game.execute_text_command('help','unit-dispatch-test-help-0001');
+  if not (r->'available_commands' ? 'dispatch_unit') or not (r->'available_commands' ? 'receive_call') then
+    raise exception 'Help command catalogue is incomplete: %',r;
+  end if;
+
   r:=game.interpret_text_command('dispatch PATROL-TEST-01 to KW-INC-TEST-01');
   if r->>'command_type'<>'dispatch_unit' then raise exception 'Dispatch parser failed: %',r; end if;
   r:=game.execute_text_command('dispatch PATROL-TEST-01 to KW-INC-TEST-01','unit-dispatch-test-action-0001');
