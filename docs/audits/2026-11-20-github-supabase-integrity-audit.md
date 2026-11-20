@@ -988,3 +988,10 @@ The GitHub 151654 file contains the justice-specific schema and functions but do
 The justice-specific function bodies match after normalising equivalent `search_path` quote syntax. The remote and repository 151723 executor bodies also match after that normalisation; the repository includes the interpreter wrapper in this migration because it was not included in its 151654 file.
 
 Classification: **shared command-runtime integration shifted from the first GitHub migration into the follow-up integration migration; final prosecution command path is present**. This is a chronology/consolidation difference, not a missing final runtime handler. Preserve both files and their current ordering.
+
+
+## 47. Content-led review of version 20261120135028 — case supervisory review and status governance
+
+The complete remote and repository migration SQL is canonically identical. Both define two governance tables, two indexes, two append-only triggers, and the same six function bodies: command interpretation/execution, supervisory review recording, case-status transition, governance-history retrieval, and immutable-history enforcement.
+
+Classification: **exact canonical SQL match**. Retain both records unchanged.
