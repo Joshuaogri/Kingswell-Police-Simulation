@@ -2,6 +2,8 @@ begin;
 do $$
 declare r jsonb;
 begin
+ r:=game.submit_command('help','help','{}'::jsonb,'evidence-help-test-001',null,null);
+ if not coalesce((r->>'ok')::boolean,false) or not (r->'available_commands' ? 'record_scene_contamination') or not (r->'available_commands' ? 'recover_scene_evidence') or not (r->'available_commands' ? 'transfer_scene_evidence') then raise exception 'evidence help catalogue regression'; end if;
  r:=game.interpret_text_command('record contamination OFF-001 at SCN-001: Zone A | unknown fluid | isolate area');
  if not coalesce((r->>'recognized')::boolean,false) or r->>'command_type'<>'record_scene_contamination' then raise exception 'contamination parser regression'; end if;
  r:=game.interpret_text_command('recover evidence OFF-001 from SCN-001 under PLN-001: trace | glass fragment | window sill | sterile forceps | rigid box | SEAL-001 | intact');
