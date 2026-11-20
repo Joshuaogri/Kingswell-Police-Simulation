@@ -950,3 +950,10 @@ Classification: **exact canonical SQL match**. Retain both records unchanged.
 The remote and repository versions of `case_review_require_active_personnel` are canonically identical after comment, whitespace, dollar-quote and typed-NULL normalisation. Both require the dossier requester to be active or seconded, and retain the case-lead/active-assignment access boundary. The command executor permissions are unchanged and match.
 
 Classification: **exact canonical SQL match**. Retain both records unchanged.
+
+
+## 55. Content-led review of version 20261120151113
+
+The complete remote and repository prosecution-referral migration differs only by an unused local variable declaration, `v_ref text`, in the remote executor. The referral insert uses the table's generated `referral_ref` in both versions; the variable is never referenced. The remaining canonical SQL is identical after formatting/declaration normalisation.
+
+Classification: **equivalent prosecution-referral and decision workflow; unused variable only**. Retain the existing file and remote history.
