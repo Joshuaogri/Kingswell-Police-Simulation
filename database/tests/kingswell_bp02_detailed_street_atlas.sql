@@ -47,6 +47,7 @@ begin
   if game.road_turn_is_permitted(v_in,v_via,v_out1,'public',v_now) then raise exception 'Prohibited turn was permitted';end if;
   if not game.road_turn_is_permitted(v_in,v_via,v_out1,'emergency',v_now) then raise exception 'Vehicle-specific restriction leaked to emergency';end if;
  end if;
+ delete from game.road_turn_restrictions where restriction_ref like 'TEST-TURN-PROHIBIT-%';
  if v_out1 is not null and v_out2 is not null then
   insert into game.road_turn_restrictions(restriction_ref,city_id,incoming_segment_id,via_junction_id,outgoing_segment_id,restriction_kind,turn_type,vehicle_profiles,reason)
   values('TEST-TURN-ONLY-'||replace(gen_random_uuid()::text,'-',''),v_city,v_in,v_via,v_out1,'only','only_straight',array['public']::text[],'Rollback-only only-turn test');
