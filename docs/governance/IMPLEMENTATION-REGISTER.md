@@ -62,7 +62,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-35 | Simulation Engine | Approved; typed command intake, limited text interpreter, idempotency, roster-validated dispatch, individual acknowledgement/arrival, scene control, safety, boundary, resource response, specialist attendance and examination lifecycle handlers with transactional event processing implemented; broader domain handlers, scheduler and NPC processing outstanding |
 | BP-36 | Relationships and Social Context | Approved; design only; no relationship or social-context system implemented |
 | BP-37 | Time and Scheduling | Approved; paused singleton clock, explicit initialization/advancement and clock history implemented; fictional calendar configuration and scheduler outstanding |
-| BP-38 | Records and Databases | Approved; 55-table private schema and 26 migrations implemented; command, clock-history, dispatch, scene, access, field-report and resource-request records integrated; full domain coverage incomplete |
+| BP-38 | Records and Databases | Approved; 55-table private schema and 26 migrations implemented; command, clock-history, dispatch, scene, access, field-report, resource, specialist-attendance and examination records integrated; full domain coverage incomplete |
 | BP-39 | Persistence and Recovery | Approved; design only; no backup or restore process implemented |
 | BP-40 | Interface | Approved; ChatGPT remains the intended text interface; limited explicit text command grammar exists; live ChatGPT-to-runtime connection remains outstanding |
 | BP-41 | Notifications and Reporting | Approved; design only; no notification or reporting service implemented |
@@ -153,7 +153,7 @@ The live repository, approved BP-01 to BP-44 baseline, migration history and Sup
 
 ### Blueprint coverage assessment
 
-The current relational schema is a useful foundation, not a completed implementation of the 44 divisions. Coverage is partial across BP-02 to BP-18, BP-23, BP-32 to BP-38 and BP-42 to BP-43. BP-19 to BP-21, BP-24 to BP-31, BP-34, BP-39, BP-41 and BP-44 have no substantive dedicated implementation yet; BP-22 now has an operational scene and examination slice, not full scene lifecycle coverage. The detailed division-by-division mapping and gaps are in the audit report.
+The current relational schema is a useful foundation, not a completed implementation of the 44 divisions. Coverage is partial across BP-02 to BP-18, BP-23, BP-32 to BP-38 and BP-42 to BP-43. BP-19 to BP-21, BP-25 to BP-31, BP-34, BP-39, BP-41 and BP-44 have no substantive dedicated implementation yet; BP-22 now has an operational scene and examination slice, not full scene lifecycle coverage. The detailed division-by-division mapping and gaps are in the audit report.
 
 ### Immediate build sequence
 
