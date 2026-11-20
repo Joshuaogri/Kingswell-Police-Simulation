@@ -206,7 +206,7 @@ begin
         and dr.starts_at<=v_clock.current_game_time and dr.ends_at>v_clock.current_game_time
         and da.status in ('assigned','on_duty')
         and da.starts_at<=v_clock.current_game_time and da.ends_at>v_clock.current_game_time
-        and pp.employment_status='active' and pp.current_unit_id=v_unit_id
+        and pp.employment_status='active' 
         and not exists (
           select 1 from game.incident_deployments prior
           where prior.personnel_id=pp.id and prior.cleared_at is null
