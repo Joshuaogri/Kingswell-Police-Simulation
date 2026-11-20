@@ -7,7 +7,7 @@ declare
  roster_id uuid; unit_id uuid; unit_ref text; session_ref text; obs jsonb; linked_incident jsonb; linked_case jsonb; duplicate_link jsonb;
  parsed jsonb; help_result jsonb; incident_ref text:='KNG-LINK-INC-'||substr(gen_random_uuid()::text,1,8);
  case_ref text:='KNG-LINK-CASE-'||substr(gen_random_uuid()::text,1,8);
- observation_ref text; original_description text; link_count integer; event_count integer; after_time timestamptz;
+ v_observation_ref text; original_description text; link_count integer; event_count integer; after_time timestamptz;
 begin
  update game.simulation_state set current_game_time=c,time_paused=true where id=1;
  select * into b from game.patrol_beats where status='active' order by beat_ref limit 1;
@@ -35,13 +35,13 @@ begin
  session_ref:=obs->>'session_ref';
  obs:=game.execute_text_command('record patrol observation '||session_ref||' category community_concern at '||access_ref||' because Test observation for linking','link-observation-'||gen_random_uuid()::text,null,officer_id);
  if not coalesce((obs->>'ok')::boolean,false) then raise exception 'Observation failed: %',obs; end if;
- observation_ref:=obs->>'observation_ref';
- select description into original_description from game.patrol_observations where observation_ref=observation_ref;
+ v_observation_ref:=obs->>'observation_ref';
+ select description into original_description from game.patrol_observations where game.patrol_observations.observation_ref=v_observation_ref;
  insert into game.incidents(incident_ref,summary,status,reported_at,details)
  values(incident_ref,'Test incident for patrol linkage','new',c,'{}');
  insert into game.cases(case_ref,case_title,status,opened_at,case_data)
  values(case_ref,'Test case for patrol linkage','open',c,'{}');
- parsed:=game.interpret_text_command('link patrol record '||observation_ref||' to incident '||incident_ref||' because Same location and matching time window');
+ parsed:=game.interpret_text_command('link patrol record '||v_observation_ref||' to incident '||incident_ref||' because Same location and matching time window');
  if parsed->>'command_type'<>'link_patrol_record' or parsed->'payload'->>'target_type'<>'incident' then raise exception 'Incident link parser failed: %',parsed; end if;
  linked_incident:=game.execute_text_command('link patrol record '||observation_ref||' to incident '||incident_ref||' because Same location and matching time window','link-incident-'||gen_random_uuid()::text,null,officer_id);
  if not coalesce((linked_incident->>'ok')::boolean,false) or linked_incident->>'link_ref' is null then raise exception 'Incident link failed: %',linked_incident; end if;
@@ -50,7 +50,7 @@ begin
  duplicate_link:=game.execute_text_command('link patrol record '||observation_ref||' to incident '||incident_ref||' because Duplicate should not create a second link','link-duplicate-'||gen_random_uuid()::text,null,officer_id);
  if not coalesce((duplicate_link->>'duplicate')::boolean,false) then raise exception 'Duplicate link was not handled safely: %',duplicate_link; end if;
  select count(*) into link_count from game.patrol_intelligence_links where source_observation_id=(select id from game.patrol_observations where observation_ref=observation_ref);
- select count(*) into event_count from game.game_events where event_key='patrol_intelligence.record_linked' and event_data->>'source_ref'=observation_ref;
+ select count(*) into event_count from game.game_events where event_key='patrol_intelligence.record_linked' and event_data->>'source_ref'=v_observation_ref;
  if link_count<>2 or event_count<>2 then raise exception 'Expected two distinct links and events, got links %, events %',link_count,event_count; end if;
  if (select description from game.patrol_observations where observation_ref=observation_ref) is distinct from original_description then raise exception 'Original observation was modified'; end if;
  begin
