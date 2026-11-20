@@ -1,3 +1,5 @@
+> **Current authoritative map update — KNG-MAP-0.3 (2026-11-20):** This document's original BP-02 baseline has been expanded. The live and version-controlled map now contains 75 named roads, 157 junctions and 229 connected segments. All roads have segment geometry; 24 neighbourhood rear service lanes and 480 secondary entrances have been added; the 96 one-way neighbourhood-loop segments, turn controls, scheduled traffic, dynamic closure/condition support and full patrol-beat coverage are enforced by the updated routing engine. Use [KINGSWELL-DETAILED-ROAD-NETWORK.md](./KINGSWELL-DETAILED-ROAD-NETWORK.md) and [kingswell-detailed-road-network.svg](./kingswell-detailed-road-network.svg) for the complete current gazetteer and vector map.
+
 # Kingswell Master Geographic Map
 
 **Status:** BP-02 geographic design baseline completed; national regions and Kingswell's city grid are recorded. City district extents remain planning-level envelopes, not surveyed cadastral boundaries.  
@@ -26,7 +28,7 @@ The regional descriptions establish national orientation and jurisdictional cont
 - Kingswell city footprint: 20 km east–west by 16 km north–south, represented on a local metric grid (x=0–20,000 m; y=0–16,000 m).
 - Coordinates are integer metres, with north at the top and east to the right. They are fictional local-grid coordinates, not latitude/longitude.
 - The city is coastal on its southern edge. A navigable river enters from the north-east and reaches the harbour basin in the south-east.
-- The city property-map layer is version KNG-MAP-0.2. Its underlying coordinate system remains KNG-MAP-0.1 on the same local metre grid used by district envelopes, road junctions, landmarks, properties, buildings, parcel outlines and access points.
+- The city property-map layer is version KNG-MAP-0.3. Its underlying coordinate system remains KNG-MAP-0.3 on the same local metre grid used by district envelopes, road junctions, landmarks, properties, buildings, parcel outlines and access points.
 - District map records are rectangular planning envelopes. They may overlap and must not be treated as exact exclusive polygons. Administrative membership is record-based: canonical district/neighbourhood references on properties and other relevant location records are authoritative. No system may infer or change jurisdiction from a planning envelope alone.
 - Primary roads connect the districts to the central network and the principal city gateways.
 - The city begins with the BP-02 baseline of 100,000 permanent residents and has no fixed population ceiling. Population growth, decline, movement and district population distribution belong to BP-03, not the geography layer.
@@ -64,7 +66,7 @@ The twelve district names, codes and planning envelopes are the canonical initia
 - Port Access Road: controlled freight route between East Logistics and South Harbour.
 
 ### Secondary and local streets
-Each of the 24 neighbourhoods now has a named local street loop, four local intersections and a collector tie into the arterial graph. Local streets are represented as explicit routable segments, not drawn-only map decoration. The live network contains 51 named roads, 118 junctions and 151 segments. Road names are unique within the city; road segments, not names alone, define connectivity.
+Each of the 24 neighbourhoods now has a named local street loop, four local intersections and a collector tie into the arterial graph. Local streets are represented as explicit routable segments, not drawn-only map decoration. The live network contains 75 named roads, 157 junctions and 229 segments. Road names are unique within the city; road segments, not names alone, define connectivity.
 
 ### River crossings
 Three explicit bridge crossings are recorded as bridge segments with separate west/east bank junctions and approach links: East River Bridge North, Riverside Bridge and Harbour River Bridge. Their bank coordinates span x=16,400 m to x=17,400 m, crossing the mapped eastern river corridor. Each bridge is represented as a distinct 1,000 m bridge segment with connected approaches. Bridge segments are tagged `crossing_type=bridge`; their approaches remain distinct connected road segments. No false at-grade junction is created at the river crossing.
@@ -103,16 +105,16 @@ The police operational geography is now seeded against the existing property and
 The operational patrol hierarchy is distinct from the administrative district boundaries:
 - 12 district patrol sectors, one per district.
 - 24 neighbourhood beats, one per neighbourhood, each attached to its district sector.
-- All 151 currently routable road segments are attributed to a beat for geographic coverage. This association is a coverage index, not a turn-by-turn route or ordered patrol path.
+- All 229 currently routable road segments are attributed to a beat for geographic coverage. This association is a coverage index, not a turn-by-turn route or ordered patrol path.
 - Police unit records can reference a base facility and assigned beat when units are later created.
 
 The facility and beat coordinates inherit the current fictional local-metre planning grid and should not be treated as surveyed locations. A weighted Dijkstra route engine now calculates fastest and shortest paths between property access points, including police facility access points. It stores ordered road-segment legs and estimates baseline travel duration from posted speed limits. Public routes cannot use controlled access points or restricted freight/emergency segments; police/emergency routes may use the two public_emergency_freight segments. One-way directionality and non-routable segments are respected. Regression: database/tests/kingswell_weighted_road_routing.sql.
 
-This is a baseline route engine, not live traffic or calibrated response-time simulation. It calculates fastest and shortest paths using segment lengths and posted speed limits, respects directionality, routability and access profiles, and records ordered route legs. Dispatch route snapshots and ETA ranking are integrated. Live congestion, calibrated emergency response times, turn penalties, dynamic road closures, emergency driving behaviour and full patrol-route optimisation remain future refinements. Regressions: `database/tests/kingswell_weighted_road_routing.sql` and `database/tests/kingswell_live_dispatch_route_integration.sql`.
+This is a baseline route engine, not live traffic or calibrated response-time simulation. It calculates fastest and shortest paths using segment lengths and posted speed limits, respects directionality, routability and access profiles, and records ordered route legs. Dispatch route snapshots and ETA ranking are integrated. Unscheduled live congestion feeds, calibrated emergency response times, emergency-driving behaviour and full patrol-route optimisation remain future refinements. Scheduled weekday peak traffic, turn restrictions, temporary closures and road-condition penalties are now represented and enforced by routing. Regressions: `database/tests/kingswell_weighted_road_routing.sql` and `database/tests/kingswell_live_dispatch_route_integration.sql`.
 
 ## Explicitly not yet represented
 
-Exact surveyed cadastral polygons, precise architectural building footprints and heights, secondary and service entrances for every building, detailed turn restrictions, live traffic simulation and calibrated travel times remain later layers. The routing engine currently respects segment directionality, but the seeded network presently has all 151 segments marked two-way. The current property and building coordinates are deterministic fictional planning points tied to the connected road network, not survey-grade geometry.
+Exact surveyed cadastral polygons, precise architectural building footprints and heights, secondary and service entrances for every building, detailed turn restrictions, live traffic simulation and calibrated travel times remain later layers. The routing engine currently respects segment directionality, but the seeded network presently has all 229 segments marked two-way. The current property and building coordinates are deterministic fictional planning points tied to the connected road network, not survey-grade geometry.
 
 
 ## Property, building, address and landmark foundation
@@ -135,10 +137,10 @@ These are fictional planning records, not real-world addresses or surveyed prope
 
 ### BP-02 verification
 
-The rollback-only BP-02 geography regression verifies the Asterfell country and eight-region register, capital-city link, Kingswell local-grid metadata, 12 districts, 24 neighbourhoods, 12 in-grid planning envelopes, 51 named roads, 118 in-grid junctions, 151 connected road segments, three explicit 1,000 m bridge segments, 24 in-grid landmarks, foreign-key consistency and RLS. Separate rollback-only regressions verify the existing property/building/address/landmark layer, police facilities and patrol geography, weighted route calculation and dispatch route integration. The fictional clock is required to remain uninitialised during these tests.
+The rollback-only BP-02 geography regression verifies the Asterfell country and eight-region register, capital-city link, Kingswell local-grid metadata, 12 districts, 24 neighbourhoods, 12 in-grid planning envelopes, 75 named roads, 118 in-grid junctions, 151 connected road segments, three explicit 1,000 m bridge segments, 24 in-grid landmarks, foreign-key consistency and RLS. Separate rollback-only regressions verify the existing property/building/address/landmark layer, police facilities and patrol geography, weighted route calculation and dispatch route integration. The fictional clock is required to remain uninitialised during these tests.
 
 
-## BP-04 primate-city property and business map layer — KNG-MAP-0.2
+## BP-04 primate-city property and business map layer — KNG-MAP-0.3
 
 Kingswell is Asterfell's primate city: the dominant political, financial, commercial, entertainment, logistics, transport and international-trade centre. The property map reflects that national role. The central city contains banking, capital markets, corporate headquarters, ministries, regulators and professional services; Market Ward provides wholesale and retail exchange; Foundry Park supports manufacturing; East Logistics and South Harbour concentrate freight, warehousing, import/export, customs and maritime trade; Central Terminal and Aerodrome serve passenger and cargo movement; Westhaven, Northgate, University Heights and Riverside provide high-density housing and daily neighbourhood services.
 
