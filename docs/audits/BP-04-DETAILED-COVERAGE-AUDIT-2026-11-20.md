@@ -33,7 +33,7 @@ All 656 properties have exactly one profile. The audited baseline has no missing
 
 The current profile includes parcel/title identifiers, cadastral block, zoning and permitted uses, development intensity, tenure, heritage and exposure fields, assessments, utilities, security, fire safety, accessibility, geometry and site description.
 
-**Quality limitation:** There are 30 distinct site-description texts but only one distinct planning-notes text. Planning notes are therefore still a shared baseline statement rather than individual property planning histories. A complete planning application/decision history is not yet present.
+**Initial quality limitation (now refined):** the first audit found 30 site-description texts and one shared planning-notes text. The latest enrichment now gives all 656 properties individually differentiated site summaries and planning-profile summaries. These are descriptive summaries of existing seeded fields, not planning histories; applications, decisions, conditions, enforcement actions and dated development history remain unrecorded unless separately authored.
 
 ### 2.2 Buildings
 
@@ -41,7 +41,7 @@ All 656 buildings have exactly one building profile. The audited fields are popu
 
 Every building's floor count equals the length of its floor directory; all floor directories begin at ground floor index 0 and end at floors minus 1. No floor-directory mismatch was found.
 
-**Quality limitation:** There are 656 distinct building descriptions, but only three distinct building-systems JSON profiles. This is a populated baseline, not a fully individualized inventory of every installed system, device, inspection and maintenance history.
+**Initial quality limitation (now refined):** the first audit found only three distinct building-systems JSON profiles. The latest enrichment now gives all 656 buildings a uniquely referenced system-design dossier with differentiated electrical, HVAC and water-distribution design classifications, plus fire, vertical-transport, backup-power and security/access summaries drawn from existing profile attributes. These remain seeded design summaries, not physical inspections or device-level inventories; inspection status remains not recorded and asset-level inventory remains not seeded.
 
 A preliminary comparison of buildings.floors to the maximum building_unit_profiles.floor_number produced 544 apparent differences. This was a flawed comparison: floor numbers are zero-based, and a single unit can represent a whole multi-floor building. The corrected test compares the declared floor count with the actual floor-directory length and returns zero exceptions. Do not reintroduce the flawed comparison as a defect.
 
@@ -86,7 +86,7 @@ The following additive changes were applied to Supabase and version-controlled i
 3. **Property/building/unit asset event history:** added game.property_asset_events for inspections, condition assessments, defects, maintenance, repairs, alterations, safety reviews, utility events and damage. It is intentionally empty until real fictional events are recorded; no inspections or repairs were fabricated. A trigger validates that a referenced building and unit belong to the selected property.
 4. **Business ownership/control register:** added game.organisation_control_interests for beneficial owners, shareholders, directors, partners, controlling persons and franchise operators. It is intentionally empty because no canonical named ownership/director relationships were present in the existing data. The existing organisations.parent_organisation_id remains the parent-company hierarchy; the new table does not duplicate it.
 5. **Formal site agreement records:** added game.organisation_site_agreements and its site-link table. Backfilled all 1,232 existing tenant lease references, with 1,232 valid site links. Unknown contract dates, actual rent amounts, deposits and 152 unrecorded landlord counterparties remain unknown.
-6. **Dossier outputs:** extended get_property_record with valuation history, asset events and site agreements; extended get_business_record with ownership/control interests and site agreements. Existing canonical property/business/site identities and command names are preserved.
+6. **Dossier outputs:** extended get_property_record with valuation history, asset events and site agreements; extended get_business_record with ownership/control interests and site agreements. Existing canonical property/business/site identities and command names are preserved.\n7. **Individual property dossiers:** all 656 property profiles now have individually differentiated site descriptions and planning-profile summaries derived from their own address, property reference, type, parcel area, frontage, status, linked building/premises counts, zoning and permitted-use fields. The summaries explicitly state that they are not planning application/decision histories.\n8. **Individual building system dossiers:** all 656 building profiles now carry a uniquely referenced seeded system-design summary. Existing recorded fire, lift/stair, backup-power, CCTV and access-control attributes are surfaced; design classifications are differentiated deterministically by canonical building reference. The record explicitly marks physical inspection as not recorded and device-level inventory as not seeded.
 
 ## 4. Post-migration verification
 
@@ -99,7 +99,7 @@ The following post-migration results were verified:
 - 220 owner-occupier sites remain without artificial tenant agreements.
 - Neighbourhood map output returns KNG-MAP-0.3 for both map version and coordinate system.
 - Property dossier returns valuation and agreement history.
-- Business dossier returns site-agreement and control-interest sections.
+- Business dossier returns site-agreement and control-interest sections.\n- 656/656 property site descriptions and planning summaries are individually differentiated.\n- 656/656 building system dossiers have a unique canonical building reference and explicit seeded-profile provenance.\n- Building-system dossiers do not claim physical inspections, device-level inventories or live system operation.
 - Invalid cross-property building references are rejected by the asset-event validation trigger; the test inserted no persistent event.
 - No property/building/unit/business/person/organisation identities were duplicated.
 
@@ -113,7 +113,7 @@ BP-04 must remain open until the following are addressed and tested:
 4. Add lease execution/commencement/expiry/break/renewal/notice terms, rent amounts/frequency, deposits, permitted use, repair/service-charge obligations and supporting document references only when established by fictional records.
 5. Add genuine property/building/unit inspection, condition, defect, maintenance and repair events through the new event register and future gameplay workflows.
 6. Expand property development/planning history, valuation changes, easements, mortgages and other title interests where supported by the world records.
-7. Improve per-building systems and per-site utility, safety, accessibility and security inventories; preserve the distinction between site-level and building/unit-level facts.
+7. Continue from the new per-building system-design summaries toward device-level inventories only when fictional asset records are established; improve per-site utility, safety, accessibility and security inventories while preserving site/building/unit fact boundaries.
 8. Add safe, permission-aware write workflows and browser/game interfaces for the new histories and records, then test integration with BP-02, BP-03, police, dispatch, incident, case and scene systems.
 9. Run the complete BP-04 regression suite after the above data and workflows exist.
 
