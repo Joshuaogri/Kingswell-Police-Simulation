@@ -828,3 +828,8 @@ Operations guide: `docs/operations/CASE-GOVERNANCE.md`.
 
 
 The case review dossier now includes supervisory reviews and case status transition history. The governance foreign-key indexes were added after advisor review.
+
+
+**Dossier supervisory history:** `database/migrations/20261120135234_case_dossier_supervisory_history.sql` adds the supervisory review and status history arrays to the consolidated dossier. 
+
+**Governance indexes:** `database/migrations/20261120135332_case_governance_foreign_key_indexes.sql` adds covering indexes for reviewer, actor and command foreign keys identified by the database advisor.
