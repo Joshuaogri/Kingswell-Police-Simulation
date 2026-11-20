@@ -1009,3 +1009,12 @@ Classification: **exact canonical SQL match**. Retain both records unchanged.
 The remote and GitHub migration files are byte-for-byte identical. Both create the same four foreign-key support indexes for supervisory reviewer, supervisory command, case-status actor and case-status command references.
 
 Classification: **exact source-file match**. Retain both records unchanged.
+
+
+## 50. Content-led review of case lead handovers and continuity
+
+The GitHub file `20261120135500_case_lead_handovers_and_continuity.sql` is stored remotely at version `20261120135626`, under the same migration name. Both sources define the same handover table, three indexes, append-only trigger, and the same command interpreter, executor and lead-transfer function bodies.
+
+The only function-body text difference is in `game.get_case_handovers(...)`: local aliases `o/n/a` are named `oldp/newp/actor` in the remote SQL. The selected columns, joins, ordering and returned JSON fields are the same.
+
+Classification: **equivalent read function with alias-only differences; exact match for the remaining functions and structural inventory; remote version/timestamp discrepancy**. Preserve both records.
