@@ -85,3 +85,22 @@ The current scene manager can approve, decline or cancel a scene resource reques
 A scene manager can formally release a scene only after at least one safety assessment exists, no resource request remains requested/acknowledged/approved, and all recorded scene entries have matching exits. The release is stored in the scene record and a separate lifecycle history. An officer deployed on scene can reopen a released scene if the originating incident is still active; reopening transfers scene command to that officer. Reopening after incident resolution, closure or cancellation is rejected. Each release/reopening remains in the lifecycle history.
 
 Commands: `resource approve PERSONNEL_REF REQUEST_REF: NOTES`, `resource decline PERSONNEL_REF REQUEST_REF: NOTES`, `resource fulfil PERSONNEL_REF REQUEST_REF: NOTES`, `resource cancel PERSONNEL_REF REQUEST_REF: NOTES`, `release scene PERSONNEL_REF SCENE_REF because REASON`, `reopen scene PERSONNEL_REF SCENE_REF because REASON`. Regression script: `database/tests/scene_resource_lifecycle.sql`.
+
+
+## Specialist attendance and scene examination
+
+Specialist attendance is recorded separately from ordinary scene access. A specialist must have an active on-scene deployment at the originating incident and a current personnel qualification whose code or name exactly matches the declared discipline. Attendance stores the scene, incident, officer, deployed unit, deployment, qualification, discipline, purpose and fictional arrival time. Duplicate active attendance by the same person at the same scene is rejected. Departure records a reason and is blocked while that specialist has a planned or in-progress examination.
+
+The current scene manager alone can authorise an examination plan. The named examiner must be actively employed, signed in as a specialist at that scene, remain on scene and hold a current matching qualification. The plan stores the examination question, scope and known limitations. Only the assigned examiner can start or complete it. Completion requires separate observations, findings and limitations; the result is stored in a separate record, and the plan/event history is retained. The assigned examiner or current scene manager can cancel an uncompleted plan with a reason.
+
+A scene cannot be released while specialist attendance remains open or any examination plan is planned/in progress. These records do not automatically create an evidence item, alter evidence custody, establish laboratory capability, validate a forensic method or turn an examiner's recorded findings into a case conclusion. Formal forensic service allocation, method validation, peer/technical review, report authorisation and evidence handover remain later BP-23/BP-24 work.
+
+Commands:
+- `specialist attend PERSONNEL_REF at SCENE_REF as DISCIPLINE: PURPOSE`
+- `specialist depart PERSONNEL_REF from SCENE_REF because REASON`
+- `plan examination SCENE_MANAGER_REF for SCENE_REF by EXAMINER_REF in DISCIPLINE: QUESTION | SCOPE | LIMITATIONS`
+- `start examination EXAMINER_REF PLAN_REF because REASON`
+- `complete examination EXAMINER_REF PLAN_REF: OBSERVATIONS | FINDINGS | LIMITATIONS`
+- `cancel examination PERSONNEL_REF PLAN_REF because REASON`
+
+Regression script: `database/tests/scene_specialist_examination.sql`.
