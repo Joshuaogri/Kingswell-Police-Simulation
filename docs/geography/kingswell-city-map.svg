@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1120" viewBox="0 0 1400 1120" role="img" aria-labelledby="title desc">
+<title id="title">Kingswell fictional city planning map v0.1</title>
+<desc id="desc">A schematic local-grid map of twelve proposed districts, major orbital and radial roads, a river and southern harbour edge. Not to scale.</desc>
+<defs>
+ <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#d7d9d4" stroke-width="1"/></pattern>
+ <style>
+ .district{stroke:#43534b;stroke-width:3;rx:12}
+ .name{font:700 19px sans-serif;fill:#17251f;text-anchor:middle}
+ .sub{font:13px sans-serif;fill:#27372f;text-anchor:middle}
+ .road{fill:none;stroke:#fff;stroke-width:15;stroke-linecap:round;stroke-linejoin:round}
+ .roadedge{fill:none;stroke:#59645d;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+ .minor{fill:none;stroke:#fff;stroke-width:7;stroke-linecap:round}
+ .minorEdge{fill:none;stroke:#929a91;stroke-width:1.2}
+ .label{font:700 15px sans-serif;fill:#26362e}
+ </style>
+</defs>
+<rect width="1400" height="1120" fill="#edf0e8"/>
+<rect x="70" y="85" width="1260" height="930" fill="url(#grid)" stroke="#45564b" stroke-width="4" rx="16"/>
+<text x="700" y="48" text-anchor="middle" font-family="sans-serif" font-size="28" font-weight="700" fill="#1d3026">KINGSWELL — MASTER CITY MAP v0.1</text>
+<text x="700" y="72" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#526258">Fictional local-grid planning schematic • North at top • proposed district layout</text>
+<!-- District envelopes -->
+<rect class="district" x="95" y="275" width="310" height="330" fill="#c9d9bd"/><text class="name" x="250" y="425">WESTHAVEN</text><text class="sub" x="250" y="452">KDW • Residential / mixed use</text>
+<rect class="district" x="405" y="100" width="310" height="230" fill="#c4d9c5"/><text class="name" x="560" y="205">NORTHGATE</text><text class="sub" x="560" y="232">KNA • Residential services</text>
+<rect class="district" x="500" y="350" width="310" height="255" fill="#e4d5a8"/><text class="name" x="655" y="455">CIVIC QUARTER</text><text class="sub" x="655" y="482">KCI • Government / civic</text>
+<rect class="district" x="810" y="275" width="300" height="330" fill="#e8c99e"/><text class="name" x="960" y="425">CENTRAL EXCHANGE</text><text class="sub" x="960" y="452">KCB • Business / finance</text>
+<rect class="district" x="95" y="100" width="310" height="175" fill="#c8d6e2"/><text class="name" x="250" y="170">UNIVERSITY HEIGHTS</text><text class="sub" x="250" y="197">KED • Education / health</text>
+<rect class="district" x="500" y="605" width="310" height="170" fill="#d6c9df"/><text class="name" x="655" y="675">CENTRAL TERMINAL</text><text class="sub" x="655" y="702">KST • Rail / bus interchange</text>
+<rect class="district" x="810" y="605" width="300" height="170" fill="#e8d8a7"/><text class="name" x="960" y="675">MARKET WARD</text><text class="sub" x="960" y="702">KMA • Trading / commercial</text>
+<rect class="district" x="1110" y="275" width="195" height="330" fill="#d9c6b5"/><text class="name" x="1207" y="425">FOUNDRY</text><text class="sub" x="1207" y="452">KIN • Industry</text>
+<rect class="district" x="1110" y="605" width="195" height="170" fill="#c9c9b2"/><text class="name" x="1207" y="675">EAST</text><text class="sub" x="1207" y="702">KLG • Logistics</text>
+<rect class="district" x="810" y="775" width="495" height="170" fill="#b8d4d9"/><text class="name" x="1057" y="845">SOUTH HARBOUR</text><text class="sub" x="1057" y="872">KPT • Port / maritime</text>
+<rect class="district" x="95" y="775" width="310" height="170" fill="#c4d7df"/><text class="name" x="250" y="845">AERODROME</text><text class="sub" x="250" y="872">KAS • Airport / aviation</text>
+<rect class="district" x="405" y="775" width="405" height="170" fill="#c9d9bd"/><text class="name" x="607" y="845">RIVERSIDE</text><text class="sub" x="607" y="872">KMX • Mixed use / riverfront</text>
+<!-- River -->
+<path d="M1160 90 C1110 210 1185 300 1130 400 S1100 570 1190 680 S1190 810 1160 945" fill="none" stroke="#7db7cf" stroke-width="48" opacity=".9"/>
+<path d="M1160 90 C1110 210 1185 300 1130 400 S1100 570 1190 680 S1190 810 1160 945" fill="none" stroke="#e2f3f7" stroke-width="3" stroke-dasharray="10 9"/>
+<text x="1230" y="210" class="label" fill="#23556a">EAST RIVER</text>
+<!-- arterial ring -->
+<path class="road" d="M155 250 Q155 145 300 145 H1000 Q1260 145 1260 360 V830 Q1260 980 1050 980 H300 Q135 980 135 820 V350 Q135 250 155 250Z"/>
+<path class="roadedge" d="M155 250 Q155 145 300 145 H1000 Q1260 145 1260 360 V830 Q1260 980 1050 980 H300 Q135 980 135 820 V350 Q135 250 155 250Z"/>
+<!-- central loop and radials -->
+<path class="road" d="M470 320 Q470 300 510 300 H850 Q900 300 900 350 V730 Q900 755 850 755 H480 Q445 755 445 710 V350 Q445 320 470 320Z"/>
+<path class="roadedge" d="M470 320 Q470 300 510 300 H850 Q900 300 900 350 V730 Q900 755 850 755 H480 Q445 755 445 710 V350 Q445 320 470 320Z"/>
+<path class="road" d="M655 100 V945 M95 520 H1305 M250 100 V945 M960 100 V945"/>
+<path class="roadedge" d="M655 100 V945 M95 520 H1305 M250 100 V945 M960 100 V945"/>
+<!-- grid streets -->
+<g class="minor"><path d="M170 350H390 M170 430H390 M170 510H390 M170 590H390 M520 390H790 M520 470H790 M520 550H790 M930 350H1080 M930 430H1080 M930 510H1080 M930 590H1080 M520 800H790 M520 880H790"/></g>
+<g class="minorEdge"><path d="M170 350H390 M170 430H390 M170 510H390 M170 590H390 M520 390H790 M520 470H790 M520 550H790 M930 350H1080 M930 430H1080 M930 510H1080 M930 590H1080 M520 800H790 M520 880H790"/></g>
+<!-- airport runway and port -->
+<rect x="130" y="800" width="240" height="35" rx="4" fill="#65737a" transform="rotate(-8 250 817)"/><path d="M145 817H355" stroke="#fff" stroke-width="2" stroke-dasharray="12 9"/>
+<g fill="#627c84" stroke="#36545f" stroke-width="2"><rect x="850" y="900" width="110" height="30"/><rect x="975" y="900" width="110" height="30"/><rect x="1100" y="900" width="110" height="30"/></g>
+<text x="700" y="1035" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#2c5362">SOUTHERN COAST / HARBOUR APPROACH</text>
+<g transform="translate(1325 105)"><path d="M0 36L15 0L30 36L15 28Z" fill="#20382b"/><text x="15" y="55" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold">N</text></g>
+<text x="700" y="1080" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#536259">Schematic only. Exact district polygons, road centre-lines, junction topology and scale are defined in the geographic database.</text>
+</svg>
