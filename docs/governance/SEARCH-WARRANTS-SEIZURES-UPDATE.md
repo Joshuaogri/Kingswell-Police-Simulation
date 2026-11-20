@@ -14,7 +14,7 @@
 - Evidence custody transfer through the existing `game.evidence_transfers` chain.
 - Explicit searched/not-searched outcome for every registered premises before operation closure.
 - Search records included in the consolidated case review dossier.
-- Idempotent player commands, actor attribution, private-schema access controls and append-only operational history.
+- Idempotent player commands, actor attribution, private-schema access controls and append-only operational history. All foreign keys introduced by the workflow have supporting indexes.
 
 ## Live migrations
 
@@ -22,6 +22,7 @@
 - `20261120143546_add_search_operation_retrieval_helper`
 - `20261120143630_include_search_operations_in_case_dossier`
 - `20261120143810_require_explicit_search_premises_outcomes`
+- `20261120144314_index_search_workflow_foreign_keys`
 
 ## Player commands
 
