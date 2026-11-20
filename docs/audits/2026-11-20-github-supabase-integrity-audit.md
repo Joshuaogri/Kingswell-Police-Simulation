@@ -1335,3 +1335,12 @@ Classification: **repository function output is incomplete relative to the appli
 The complete remote and GitHub SQL for `bp04_detailed_history_control_agreements_and_map_alignment` is canonically identical after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults, `search_path` declarations and concatenation-operator spacing.
 
 Classification: **canonical SQL match after formatting normalisation**. No substantive ownership-history, organisation-site agreement, map-alignment, table, function or privilege difference was identified. Retain the existing file and remote history.
+
+
+## 81. Content-led review of version 20261120095728 — scene control and field reports
+
+The remote and GitHub `game.execute_scene_action(...)` bodies differ only in the parameter default notation (`DEFAULT NULL` versus `DEFAULT NULL::uuid`); the interpreter and `game.submit_command(...)` bodies match.
+
+The remote migration also explicitly revokes execution of `game.execute_scene_action(...)` from public/anon/authenticated and grants it to `service_role`. Those statements are absent from the GitHub file. A read-only live privilege check confirms the current function is not executable by anon or authenticated and is executable by service_role.
+
+Classification: **matching scene-control runtime; explicit function ACL declarations missing from the GitHub migration source, while the live privilege boundary is correct**. Keep the permission statements in the source-recovery register; no live permission change was made.
