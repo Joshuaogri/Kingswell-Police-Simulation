@@ -39,11 +39,11 @@ The Pages workflow does not use `SUPABASE_ACCESS_TOKEN` or `SUPABASE_DB_PASSWORD
 | Applied migration records in Supabase | 225 |
 | Records matching by normalised migration name | 208 |
 | Name matches with the exact same version timestamp | 134 |
-| Name matches with different version timestamps | 74 |
+| Name matches with different version timestamps | 72 |
 | Supabase records with no matching GitHub migration name | 17 |
 | GitHub migration files with no matching Supabase migration name | 3 |
 
-The 74 migrations with matching names but different version timestamps require particular attention. Supabase uses migration versions as well as names. A name match does not make a different version safe to deploy.
+The 72 migrations with matching names but different version timestamps require particular attention. Supabase uses migration versions as well as names. A name match does not make a different version safe to deploy.
 
 The 17 unmatched Supabase migration names and three unmatched repository migration names must be mapped to their actual SQL files, including renamed or retimestamped candidates. The Supabase migration history provides version/name records, not a checksum or copy of each historical SQL file, so byte-for-byte comparison with the SQL originally applied is not currently possible from migration history alone.
 
@@ -193,7 +193,7 @@ The live database does contain `game.move_patrol_unit` and the patrol movement e
 
 ## 11. Full migration-name and version reconciliation inventory
 
-The following table maps each of the 74 normalised-name matches whose repository filename timestamp differs from the applied Supabase version. The pairing is by normalised migration name; it is an inventory aid, not proof that the historical SQL bytes are identical.
+The following table maps each of the 72 normalised-name matches whose repository filename timestamp differs from the applied Supabase version. The pairing is by normalised migration name; it is an inventory aid, not proof that the historical SQL bytes are identical.
 
 | Supabase version | Supabase name | GitHub file timestamp | GitHub filename |
 |---|---|---|---|
