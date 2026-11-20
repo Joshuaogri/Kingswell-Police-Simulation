@@ -1,7 +1,12 @@
--- Explicit history record for dispatch event_type correction.
--- The corrected definition is included in 20261120030000_text_interpreter_dispatch_intake.sql.
-do $$ begin
-  if not exists (select 1 from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='game' and p.proname='submit_command') then
-    raise exception 'Runtime command function is missing.';
+-- Assertion for the corrected dispatch event insert.
+-- The complete corrected function definition is committed in
+-- 20261120030000_text_interpreter_dispatch_intake.sql.
+do $$
+declare v_definition text;
+begin
+  select pg_get_functiondef('game.submit_command(text,text,jsonb,text,uuid,uuid)'::regprocedure) into v_definition;
+  if position('values(v_incident_id,v_clock.current_game_time,''call_received'',p_actor_personnel_id,' in v_definition)=0 then
+    raise exception 'Dispatch event type correction is missing.';
   end if;
-end $$;
+end;
+$$;
