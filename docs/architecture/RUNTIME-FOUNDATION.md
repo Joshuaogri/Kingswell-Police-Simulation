@@ -207,3 +207,18 @@ The command writes the current access point and fictional timestamp, emits a gam
 When a road segment's `is_routable` flag changes, a database trigger recalculates every active deployment route against the updated network and appends the result. This intentionally favours route freshness over narrowly filtering deployments by their former route; the current town is small enough for this straightforward approach.
 
 The route history remains append-only for service_role. Route calculations do not advance the fictional clock.
+
+
+## Player-facing dispatch selection and reassignment
+
+The command `dispatch options for INCIDENT_REF` returns the incident summary and a ranked list of currently eligible patrol units. Each candidate includes its available on-duty officers by name, personnel reference and service number, plus the route status, distance, baseline travel duration and estimated arrival. It is an inspection command; it does not dispatch a unit.
+
+After a unit has been dispatched, the player can use:
+
+`reassign UNIT_REF to INCIDENT_REF because REASON`
+
+The replacement unit must be active and have eligible on-duty personnel. The current response must be from one unit only, and no officer may already have arrived at the scene. The previous deployment rows are retained as cancelled with a fictional closure timestamp; replacement deployments are inserted and receive fresh route snapshots and append-only route history. Outgoing/incoming dispatch events and a game event preserve the reassignment reason.
+
+Both commands are registered in the interpreter and help catalogue and run through the idempotent command ledger. Neither command advances fictional time.
+
+Regression: `database/tests/kingswell_player_dispatch_options_and_reassignment.sql` (rollback-only; passed).
