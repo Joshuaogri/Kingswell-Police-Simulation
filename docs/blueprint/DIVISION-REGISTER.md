@@ -8,7 +8,7 @@ Each division is designed with its purpose, scope, responsibilities, components,
 |---|---|---|
 | BP-01 | Game Identity, Foundations and Governing Rules | Approved |
 | BP-02 | Country, City and Geographical Architecture | Complete and verified; Asterfell's eight-region hierarchy, Kingswell city grid, 12 districts/24 neighbourhoods, 51 roads/118 junctions/151 segments/3 bridges/24 landmarks, corrected planning envelopes, weighted routing and dispatch integration all regression-tested |
-| BP-03 | Population and Individual Simulation Architecture | Approved; processing model open |
+| BP-03 | Population and Individual Simulation Architecture | Foundation implemented and tested; persistent person identities, households, overlapping population categories, life events, routines and police-relevance promotion; full population seed awaits BP-04 housing capacity and BP-35 runtime scheduling |
 | BP-04 | Buildings, Properties, Businesses and Organisations | Approved |
 | BP-05 | Police Architecture | Approved; detailed structure open |
 | BP-06 | Police Personnel | Approved |
