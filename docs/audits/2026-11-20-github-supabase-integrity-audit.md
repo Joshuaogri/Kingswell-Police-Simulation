@@ -1353,3 +1353,12 @@ The remote 102135 migration already replaces `game.execute_scene_action(...)` wi
 The final remote and GitHub 102257 executor bodies match apart from one user-facing error message: the repository asks for “a scene reference or a valid examination plan reference”, while the remote says only “a scene reference”. The interpreter and command-submission functions are present in the repository sequence.
 
 Classification: **specialist scene/examination handler introduced one migration later in GitHub; final handler is present, with a clearer missing-reference message**. This is a chronology shift plus message-only difference, not a missing final capability.
+
+
+## 83. Content-led review of evidence recovery migrations 20261120103202 and 20261120103219
+
+The remote and GitHub `game.execute_evidence_action(...)` function bodies in 103202 are canonically identical. The GitHub 103202 file additionally materialises the command-submission wrapper with evidence-action routing, whereas the remote 103202 migration leaves `submit_command` unchanged.
+
+The remote 103219 migration applies a narrow text replacement to register `record_scene_contamination`, `recover_scene_evidence` and `transfer_scene_evidence` in the help response. The GitHub 103219 file instead stores the full interpreter and command-submission definitions, including the same evidence command help entries and routing. This is a full-definition reconstruction rather than the remote dynamic text patch.
+
+Classification: **matching evidence-recovery handler; command routing/help materialised as full function definitions in GitHub instead of the remote's incremental wrapper/help patches**. The final commands are present. Retain the source files and preserve the sequence.
