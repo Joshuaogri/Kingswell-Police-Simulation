@@ -1,6 +1,6 @@
 begin;
 do $$
-declare person_id uuid; personnel_id uuid; case_id uuid; r jsonb; cmd text; t timestamptz;
+declare person_id uuid; personnel_id uuid; investigator_person_id uuid; investigator_id uuid; case_id uuid; r jsonb; cmd text; t timestamptz;
 begin
  update game.simulation_state set current_game_time='2026-02-05 09:00:00+00',time_paused=true where id=1;
  select current_game_time into t from game.simulation_state where id=1;
@@ -8,6 +8,11 @@ begin
  insert into game.police_personnel(personnel_ref,person_id,service_number,employment_status) values('TEST-GOVERNANCE-OFFICER',person_id,'TEST-GOV-SVC','active') returning id into personnel_id;
  insert into game.cases(case_ref,case_title,case_type,status,opened_at,summary,case_data) values('TEST-GOVERNANCE-CASE','Governance lifecycle test','burglary','open',t,'Temporary test case','{}') returning id into case_id;
  insert into game.case_assignments(case_id,personnel_id,assignment_role,assigned_at,status) values(case_id,personnel_id,'supervisor',t,'active');
+ insert into game.persons(person_ref,given_name,family_name) values('TEST-GOVERNANCE-INVESTIGATOR-PERSON','Other','Officer') returning id into investigator_person_id;
+ insert into game.police_personnel(personnel_ref,person_id,service_number,employment_status) values('TEST-GOVERNANCE-INVESTIGATOR',investigator_person_id,'TEST-GOV-INV-SVC','active') returning id into investigator_id;
+ insert into game.case_assignments(case_id,personnel_id,assignment_role,assigned_at,status) values(case_id,investigator_id,'investigator',t,'active');
+ r:=game.execute_text_command('case supervisory review TEST-GOVERNANCE-CASE outcome continue_investigation because "Should be denied" by TEST-GOVERNANCE-INVESTIGATOR','test-gov-denied-001',null,investigator_id);
+ if coalesce((r->>'ok')::boolean,false) or r->>'code'<>'supervisor_access_denied' then raise exception 'non-supervisor was not denied: %',r; end if;
  cmd:='case supervisory review TEST-GOVERNANCE-CASE outcome further_enquiries because "Check the remaining witness accounts" by TEST-GOVERNANCE-OFFICER';
  r:=game.interpret_text_command(cmd); if r->>'command_type'<>'record_case_supervisory_review' then raise exception 'review parser failed: %',r; end if;
  r:=game.execute_text_command(cmd,'test-gov-review-001',null,personnel_id);
