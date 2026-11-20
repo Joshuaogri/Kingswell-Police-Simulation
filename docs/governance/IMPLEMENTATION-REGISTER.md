@@ -17,7 +17,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Runtime foundation, forensic laboratory, police-geography, patrol-intelligence and case-investigation layers implemented | Private `game` schema; 104 tables, 343 foreign keys and 508 indexes; 97 migrations applied; RLS enabled on all 104 tables; city geography and police facility/beat data seeded; no persistent test persons, police personnel, units, leads or enquiries; fictional clock remains uninitialized |
+| Database schema | Runtime foundation, forensic laboratory, police-geography, patrol-intelligence and case-investigation layers implemented | Private `game` schema; 106 tables, 353 foreign keys and 513 indexes; 100 migrations applied; RLS enabled on all 106 tables; city geography and police facility/beat data seeded; no persistent test persons, police personnel, units, leads or enquiries; fictional clock remains uninitialized |
 | Application/gameplay code | In progress | Database-backed text command interpreter, controlled clock, emergency-call/dispatch/arrival, scene-control, field-report and resource-request workflows implemented; full domain handlers remain outstanding |
 | Runtime regression tests | Implemented; transaction smoke-tested | Runtime, dispatch, scene, evidence, forensic laboratory, geography and police-facility/patrol-geography SQL regression scripts cover implemented slices; test fixtures roll back |
 
@@ -39,7 +39,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-12 | Incident Management | Approved; incident intake, dispatch, attendance, linked scene records, field reports and resource requests implemented; ownership transfer, full progression, resolution and closure remain outstanding |
 | BP-13 | Crime Architecture | Approved; detailed fictional offence catalogue to populate |
 | BP-14 | Crime Generation | Approved; frequency and behaviour tuning to follow |
-| BP-15 | Case Management | Approved; case task management, investigator ownership/assignment history, investigative lead register, enquiry records, interview transcripts and witness statements implemented and rollback-tested; wider case progression, disclosure and legal review remain outstanding |
+| BP-15 | Case Management | Approved; case task management, investigator ownership/assignment history, investigative lead register, enquiry records, interview transcripts, witness statements and suspect response assessments implemented and rollback-tested; wider case progression, disclosure and legal review remain outstanding |
 | BP-16 | Investigation | Approved; lead creation, source classification, investigator allocation, priority/confidence assessment, immutable enquiry actions/results and history implemented; investigative methods and specialist procedures remain outstanding; typed lead links and case interview/witness statement workflows are implemented |
 | BP-17 | Victims and Witnesses | Approved; specialist safeguarding and legal procedures to refine |
 | BP-18 | Suspects and Offenders | Approved; legal-status interfaces and specialist procedures to refine |
@@ -59,14 +59,14 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-32 | Training and Development | Approved; police training-centre location seeded; training programmes, courses, attendance and competence workflows remain outstanding |
 | BP-33 | Human Resources | Approved; design only; no HR or workforce software implemented |
 | BP-34 | Finance and Procurement | Approved; design only; no finance or procurement software implemented |
-| BP-35 | Simulation Engine | Approved; typed command intake, limited text interpreter, idempotency, dispatch, scene control, patrol movement/activity/observations/contacts/intelligence, case tasks/ownership/leads/enquiries/interviews/witness statements, safety, boundary, resource response, specialist examination, contamination, evidence recovery/custody and forensic laboratory command handlers implemented; seeded end-to-end regression fixtures pass in rollback transactions; broader domain handlers, scheduler and NPC processing outstanding |
+| BP-35 | Simulation Engine | Approved; typed command intake, limited text interpreter, idempotency, dispatch, scene control, patrol movement/activity/observations/contacts/intelligence, case tasks/ownership/leads/enquiries/interviews/witness statements/suspect interviews, safety, boundary, resource response, specialist examination, contamination, evidence recovery/custody and forensic laboratory command handlers implemented; seeded end-to-end regression fixtures pass in rollback transactions; broader domain handlers, scheduler and NPC processing outstanding |
 | BP-36 | Relationships and Social Context | Approved; design only; no relationship or social-context system implemented |
 | BP-37 | Time and Scheduling | Approved; paused singleton clock, explicit initialization/advancement and clock history implemented; fictional calendar configuration and scheduler outstanding |
-| BP-38 | Records and Databases | Approved; 104-table private schema, 343 foreign keys, 508 indexes and 97 migrations implemented; command/clock, dispatch, scene, evidence custody, specialist examination, forensic laboratory, police geography, patrol intelligence and case investigation records integrated; full domain coverage incomplete |
+| BP-38 | Records and Databases | Approved; 106-table private schema, 353 foreign keys, 513 indexes and 100 migrations implemented; command/clock, dispatch, scene, evidence custody, specialist examination, forensic laboratory, police geography, patrol intelligence and case investigation records integrated; full domain coverage incomplete |
 | BP-39 | Persistence and Recovery | Approved; design only; no backup or restore process implemented |
 | BP-40 | Interface | Approved; ChatGPT remains the intended text interface; limited explicit text command grammar exists; live ChatGPT-to-runtime connection remains outstanding |
 | BP-41 | Notifications and Reporting | Approved; design only; no notification or reporting service implemented |
-| BP-42 | Security and Permissions | Approved; RLS enabled on all 104 tables; private schema remains unexposed; service-role-only runtime execution; player authentication and fictional authority enforcement outstanding |
+| BP-42 | Security and Permissions | Approved; RLS enabled on all 106 tables; private schema remains unexposed; service-role-only runtime execution; player authentication and fictional authority enforcement outstanding |
 | BP-43 | Testing and Quality Assurance | Approved; seeded scene-specialist-examination-to-contamination/recovery/custody and forensic request-to-report SQL end-to-end regression tests pass inside rolled-back transactions, alongside parser/help/RLS/clock guards; CI and broader domain tests outstanding |
 | BP-44 | Configuration and Expansion | Approved; design only; no configuration or expansion framework implemented |
 
@@ -729,3 +729,22 @@ Documentation: `docs/operations/CASE-INVESTIGATIVE-LEADS.md` and updated `docs/o
 **PASS:** `database/tests/kingswell_case_interviews_witness_statements.sql` verified parser/executor integration, interview creation, chronological Q&A, interview-linked witness statement, adoption event, conclusion, transcript/list retrieval, rejection of post-conclusion turns and unchanged fictional time. Transaction rolled back with no persistent fixtures.
 
 Operations guide: `docs/operations/CASE-INTERVIEWS-WITNESS-STATEMENTS.md`.
+
+
+## Suspect interviews and response assessments — 2026-11-20
+
+**Implemented and rollback-only end-to-end tested.** Migrations:
+- `database/migrations/20261120132555_case_suspect_interview_records_and_assessments.sql`
+- `database/migrations/20261120132622_suspect_interview_player_commands.sql`
+- `database/migrations/20261120132728_suspect_interview_help_and_case_state_guard.sql`
+
+- Reuses existing case interviews and transcripts; suspect capacity is a separate append-only classification linked to the same interview, case and person.
+- Adds append-only per-turn response assessments: admission, denial, no comment, qualified response, correction or other. Multiple assessments can be recorded without rewriting the transcript or prior assessments.
+- Classification requires an open case/interview and the recorded interviewer. Assessments must point to a turn in that suspect interview and be recorded by its interviewer.
+- Classification adds the existing person to the existing case-person relationship as suspect when needed. It does not create a new person record and does not imply guilt.
+- New commands are registered in runtime help. Writes use the command ledger/idempotency and actor attribution; no action advances fictional time.
+- Both new tables have RLS enabled, private-schema access and service-role-only grants; updates and deletes are rejected.
+
+**PASS:** `database/tests/kingswell_suspect_interviews.sql` verifies parser/executor, classification, idempotent replay, chronological Q&A, response assessment, review retrieval, append-only enforcement, help registration and unchanged fictional time. Test transaction rolls back without persistent fixtures.
+
+Operations guide: `docs/operations/SUSPECT-INTERVIEWS.md`.
