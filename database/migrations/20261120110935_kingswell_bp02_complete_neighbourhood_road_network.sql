@@ -75,7 +75,7 @@ begin
    if not exists(select 1 from game.road_segments where city_id=v_city and segment_code='RIVER-'||n.code||'-'||case when s.side='W' then 'WEST' else 'EAST' end) then
     insert into game.road_segments(city_id,road_id,segment_code,from_junction_id,to_junction_id,segment_length_m,
      road_class,lanes_each_direction,speed_limit_kph,directionality,surface_type,crossing_type,access_profile)
-    values(v_city,v_road,'RIVER-'||n.code||'-'||s.side,v_a,v_nearest,v_len,'primary',2,50,'two_way','sealed','at_grade','public');
+    values(v_city,v_road,'RIVER-'||n.code||'-'||case when s.side='W' then 'WEST' else 'EAST' end,v_a,v_nearest,v_len,'primary',2,50,'two_way','sealed','at_grade','public');
    end if;
   end loop;
   select id into v_a from game.road_junctions where city_id=v_city and junction_code=n.code||'-W';
