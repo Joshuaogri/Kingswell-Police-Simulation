@@ -1,7 +1,7 @@
 -- Rollback-only end-to-end case interview and witness statement regression.
 begin;
 do $$
-declare p1 uuid;p2 uuid;pp1 uuid;c uuid;r jsonb;iref text;sref text;before_time timestamptz;cmd text;
+declare p1 uuid;p2 uuid;pp1 uuid;c uuid;r jsonb;iref text;sref text;before_time timestamptz;cmd text;n integer;
 begin
  update game.simulation_state set current_game_time='2026-02-03 10:00:00+00',time_paused=true where id=1;
  select current_game_time into before_time from game.simulation_state where id=1;
@@ -12,13 +12,20 @@ begin
  cmd:='case interview record TEST-INT-CASE with TEST-INT-P2 by TEST-INT-O1 method face_to_face purpose "Obtain the witness account of the reported event." location "Interview Room 2" notes "Test fixture only"';
  r:=game.interpret_text_command(cmd); if r->>'command_type'<>'start_case_interview' then raise exception 'interview parser: %',r; end if;
  r:=game.execute_text_command(cmd,'test-int-start-001',null,pp1); if not coalesce((r->>'ok')::boolean,false) then raise exception 'interview start: %',r; end if; iref:=r->>'interview_ref';
+ r:=game.execute_text_command(cmd,'test-int-start-001',null,pp1); if not coalesce((r->>'duplicate')::boolean,false) or r->>'interview_ref'<>iref then raise exception 'interview idempotency replay: %',r; end if;
+ select count(*) into n from game.case_interviews where interview_ref=iref; if n<>1 then raise exception 'idempotent interview created duplicate rows'; end if;
  cmd:='case interview turn '||iref||' by TEST-INT-O1 question "Where were you at the relevant time?" answer "I was at the east entrance and saw a delivery vehicle arrive."';
  r:=game.execute_text_command(cmd,'test-int-turn-001',null,pp1); if not coalesce((r->>'ok')::boolean,false) or (r->>'turn_number')::int<>1 then raise exception 'turn record: %',r; end if;
+ begin update game.case_interview_turns set answer_text='altered' where interview_id=(select id from game.case_interviews where interview_ref=iref); raise exception 'interview turn update unexpectedly succeeded'; exception when others then if sqlerrm='interview turn update unexpectedly succeeded' then raise; end if; end;
  cmd:='case witness statement record TEST-INT-CASE for TEST-INT-P2 form written_signed text "I was at the east entrance and saw a delivery vehicle arrive." from '||iref||' by TEST-INT-O1';
  r:=game.interpret_text_command(cmd); if r->>'command_type'<>'record_case_witness_statement_from_interview' then raise exception 'statement parser: %',r; end if;
  r:=game.execute_text_command(cmd,'test-int-statement-001',null,pp1); if not coalesce((r->>'ok')::boolean,false) then raise exception 'statement record: %',r; end if; sref:=r->>'statement_ref';
+ r:=game.execute_text_command(cmd,'test-int-statement-001',null,pp1); if not coalesce((r->>'duplicate')::boolean,false) or r->>'statement_ref'<>sref then raise exception 'statement idempotency replay: %',r; end if;
+ begin update game.case_witness_statements set statement_text='altered' where statement_ref=sref; raise exception 'statement update unexpectedly succeeded'; exception when others then if sqlerrm='statement update unexpectedly succeeded' then raise; end if; end;
  cmd:='case witness statement status '||sref||' set adopted because "Witness reviewed the written account and confirmed it as accurate." by TEST-INT-O1';
  r:=game.execute_text_command(cmd,'test-int-adopt-001',null,pp1); if not coalesce((r->>'ok')::boolean,false) then raise exception 'statement adoption: %',r; end if;
+ r:=game.execute_text_command('case witness statement status '||sref||' set not_adopted because "Attempted second status change." by TEST-INT-O1','test-int-adopt-002',null,pp1);
+ if coalesce((r->>'ok')::boolean,true) then raise exception 'statement status overwrite unexpectedly accepted'; end if;
  cmd:='case interview status '||iref||' set concluded because "All planned questions were completed." by TEST-INT-O1';
  r:=game.execute_text_command(cmd,'test-int-close-001',null,pp1); if not coalesce((r->>'ok')::boolean,false) then raise exception 'interview close: %',r; end if;
  r:=game.execute_text_command('case interviews TEST-INT-CASE','test-int-list-001',null,pp1); if not coalesce((r->>'ok')::boolean,false) or (r->>'count')::int<>1 then raise exception 'interview list: %',r; end if;
@@ -27,6 +34,6 @@ begin
  r:=game.execute_text_command('case interview turn '||iref||' by TEST-INT-O1 question "Another question?" answer "Not allowed after closure."','test-int-after-close',null,pp1);
  if coalesce((r->>'ok')::boolean,true) then raise exception 'post-close turn unexpectedly accepted'; end if;
  if (select current_game_time from game.simulation_state where id=1)<>before_time then raise exception 'interview actions advanced fictional time'; end if;
- raise notice 'PASS: interview creation, Q&A chronology, linked witness statement, adoption event, conclusion, retrieval, post-close rejection and fixed fictional clock';
+ raise notice 'PASS: parser/executor, interview creation and idempotency, Q&A chronology and append-only guard, linked witness statement and idempotency, adoption history, conclusion, retrieval, post-conclusion rejection and fixed fictional clock';
 end $$;
 rollback;
