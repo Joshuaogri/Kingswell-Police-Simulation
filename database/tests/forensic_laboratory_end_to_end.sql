@@ -67,59 +67,59 @@ begin
    'scope','Examine the submitted swab only.','legal_basis','Fictional test authority',
    'priority',2,'context','Synthetic regression evidence.'),pp1);
  if r->>'ok'<>'true' then raise exception 'Forensic request failed: %',r; end if;
- v_request_ref:=r->>'v_request_ref';
+ v_request_ref:=r->>'request_ref';
 
  r:=game.execute_forensic_action(null,'triage_forensic_request',
-   jsonb_build_object('personnel_ref','FL-PP-001','v_request_ref',v_request_ref,
+   jsonb_build_object('personnel_ref','FL-PP-001','request_ref',v_request_ref,
    'decision','accept','notes','Accepted for test workflow.'),pp1);
  if r->>'ok'<>'true' then raise exception 'Request triage failed: %',r; end if;
 
  r:=game.execute_forensic_action(null,'receive_forensic_submission',
-   jsonb_build_object('personnel_ref','FL-PP-001','v_request_ref',v_request_ref,
+   jsonb_build_object('personnel_ref','FL-PP-001','request_ref',v_request_ref,
    'evidence_ref','KW-EVID-FL-TEST','receiver_ref','FL-PP-002',
    'from_location','Evidence locker A','lab_location','Test laboratory intake',
    'condition','Packaging intact','seal_condition','intact','discrepancy','none'),pp1);
  if r->>'ok'<>'true' then raise exception 'Laboratory receipt failed: %',r; end if;
- v_submission_ref:=r->>'v_submission_ref';
+ v_submission_ref:=r->>'submission_ref';
 
  r:=game.execute_forensic_action(null,'assign_forensic_examiner',
-   jsonb_build_object('personnel_ref','FL-PP-001','v_request_ref',v_request_ref,
-   'v_submission_ref',v_submission_ref,'method_ref',method_ref,'examiner_ref','FL-PP-003',
+   jsonb_build_object('personnel_ref','FL-PP-001','request_ref',v_request_ref,
+   'submission_ref',v_submission_ref,'method_ref',method_ref,'examiner_ref','FL-PP-003',
    'propositions','The material may or may not yield a usable profile.'),pp1);
  if r->>'ok'<>'true' then raise exception 'Examiner assignment failed: %',r; end if;
- v_examination_ref:=r->>'v_examination_ref';
+ v_examination_ref:=r->>'examination_ref';
 
  r:=game.execute_forensic_action(null,'start_forensic_examination',
-   jsonb_build_object('personnel_ref','FL-PP-003','v_examination_ref',v_examination_ref),pp3);
+   jsonb_build_object('personnel_ref','FL-PP-003','examination_ref',v_examination_ref),pp3);
  if r->>'ok'<>'true' then raise exception 'Examination start failed: %',r; end if;
 
  r:=game.execute_forensic_action(null,'record_forensic_findings',
-   jsonb_build_object('personnel_ref','FL-PP-003','v_examination_ref',v_examination_ref,
+   jsonb_build_object('personnel_ref','FL-PP-003','examination_ref',v_examination_ref,
    'observations','A synthetic test profile was detected.',
    'interpretation','The test material yielded a profile suitable for the exercise.',
    'propositions','Profile recovery is possible from this synthetic material.',
    'limitations','No comparison sample is supplied; no source attribution is possible.',
    'outcome','inconclusive'),pp3);
  if r->>'ok'<>'true' then raise exception 'Finding record failed: %',r; end if;
- v_finding_ref:=r->>'v_finding_ref';
+ v_finding_ref:=r->>'finding_ref';
 
  r:=game.execute_forensic_action(null,'review_forensic_findings',
-   jsonb_build_object('personnel_ref','FL-PP-003','v_finding_ref',v_finding_ref,
+   jsonb_build_object('personnel_ref','FL-PP-003','finding_ref',v_finding_ref,
    'review_type','technical','decision','approved','notes','Self-review must not be permitted.'),pp3);
  if r->>'code'<>'review_invalid' then raise exception 'Examiner self-review was not rejected: %',r; end if;
 
  r:=game.execute_forensic_action(null,'review_forensic_findings',
-   jsonb_build_object('personnel_ref','FL-PP-004','v_finding_ref',v_finding_ref,
+   jsonb_build_object('personnel_ref','FL-PP-004','finding_ref',v_finding_ref,
    'review_type','independent','decision','approved',
    'notes','Independent qualified review completed; limitations retained.'),pp4);
  if r->>'ok'<>'true' then raise exception 'Independent review failed: %',r; end if;
 
  r:=game.execute_forensic_action(null,'issue_forensic_report',
-   jsonb_build_object('personnel_ref','FL-PP-001','v_request_ref',v_request_ref,
+   jsonb_build_object('personnel_ref','FL-PP-001','request_ref',v_request_ref,
    'summary','Synthetic test report issued.',
    'report_body','Findings are inconclusive and limited to the synthetic material; no legal conclusion is drawn.'),pp1);
  if r->>'ok'<>'true' then raise exception 'Report issue failed: %',r; end if;
- v_report_ref:=r->>'v_report_ref';
+ v_report_ref:=r->>'report_ref';
 
  if (select fr.status from game.forensic_requests fr where fr.v_request_ref=v_request_ref)<>'reported' then
    raise exception 'Request did not reach reported state';
