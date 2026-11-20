@@ -1,6 +1,6 @@
 # Kingswell Master Geographic Map
 
-**Status:** Initial working map, version 0.1 — proposed geography for the approved BP-02.  
+**Status:** Approved country setting (Asterfell); Kingswell geographic layout and district envelopes remain planning-level map data.  
 **Use:** Canonical design reference for the city geography and road-network build.  
 **Fiction:** Kingswell and all mapped places are entirely fictional. This is an authored vector schematic, not an image-generation output and not a real-world map.
 
@@ -47,11 +47,14 @@ The twelve district names and envelopes are the proposed first map layout. They 
 - Port Access Road: controlled freight route between East Logistics and South Harbour.
 
 ### Secondary and local streets
-Each neighbourhood will receive a connected local street grid, with named collectors, local streets, service lanes, pedestrian links and access restrictions. Road names are unique within the city; road segments, not names alone, define connectivity.
+Each of the 24 neighbourhoods now has a named local street loop, four local intersections and a collector tie into the arterial graph. Local streets are represented as explicit routable segments, not drawn-only map decoration. The live network contains 51 named roads, 118 junctions and 151 segments. Road names are unique within the city; road segments, not names alone, define connectivity.
+
+### River crossings
+Three explicit bridge crossings are recorded as bridge segments with separate west/east bank junctions and approach links: East River Bridge North, Riverside Bridge and Harbour River Bridge. Bridge segments are tagged `crossing_type=bridge`; their approaches remain distinct connected road segments. No false at-grade junction is created at the river crossing.
 
 ## Neighbourhood framework
 
-Each district is subdivided into neighbourhoods recorded in the database. The initial neighbourhood list is in the seed register and will be expanded with local roads, properties and addresses in later passes.
+Each district is subdivided into two neighbourhoods (24 total). Every neighbourhood has a dedicated named local street and a connected five-segment access pattern in the road graph. Individual property addresses and building frontage remain a later layer.
 
 ## Network modelling rules
 
@@ -77,4 +80,4 @@ Each district is subdivided into neighbourhoods recorded in the database. The in
 
 ## Explicitly not yet represented
 
-Exact cadastral polygons, terrain elevation, building footprints, individual property addresses, street-by-street local grid, real-world coordinates, traffic simulation and travel-time calibration. These are later map layers, not silently assumed facts.
+Exact cadastral polygons, terrain elevation, building footprints, individual property addresses, detailed one-way turn restrictions, live traffic simulation and travel-time calibration. These remain later map layers, not silently assumed facts.
