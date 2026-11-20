@@ -201,7 +201,7 @@ The regional records are stable jurisdictional references. Other regions are not
 
 ### Kingswell city baseline
 - One detailed primary city: **Kingswell** (code KNG), in Kingswell Capital Region.
-- Initial permanent-resident baseline: **100,000**. Population growth, decline and distribution are owned by BP-03.
+- Initial permanent-resident baseline: **100,000**, with no fixed city population ceiling. Population growth, decline, movement and distribution are owned by BP-03.
 - City footprint: **20 km east–west × 16 km north–south**.
 - Local coordinate grid: x = 0–20,000 metres; y = 0–16,000 metres.
 - North-up orientation; x increases eastward and y increases northward.
