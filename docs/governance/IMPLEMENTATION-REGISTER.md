@@ -17,7 +17,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Runtime foundation, forensic laboratory, police-geography, patrol-intelligence and case-investigation layers implemented | Private `game` schema; 138 tables, 479 foreign keys and 675 indexes; case-task dependency/workload, supervisor-reviewed completion, investigative activity, surveillance, search/warrant/seizure, arrest/transport/booking/custody workflows applied; RLS enabled on all 138 tables; city geography and police facility/beat data seeded; no persistent test persons, police personnel, units, leads, enquiries, search, arrest or custody records; fictional clock remains uninitialized |
+| Database schema | Runtime foundation and multiple police/justice/correctional systems implemented | Private `game` schema; live audit snapshot: 173 tables, 595 foreign keys, 846 indexes; RLS enabled on all 173 tables; Kingswell geography, property/access, police facilities and patrol geography seeded; no persistent test persons, police personnel, units, cases, incidents, evidence, dispatch calls or route records; fictional clock remains uninitialized |
 | Application/gameplay code | In progress | Database-backed text command interpreter, controlled clock, emergency-call/dispatch/arrival, scene-control, field-report and resource-request workflows implemented; full domain handlers remain outstanding |
 | Runtime regression tests | Implemented; transaction smoke-tested | Runtime, dispatch, scene, evidence, forensic laboratory, geography and police-facility/patrol-geography SQL regression scripts cover implemented slices; test fixtures roll back |
 
@@ -26,7 +26,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | ID | Division | Status |
 |---|---|---|
 | BP-01 | Game Identity, Foundations and Governing Rules | Approved |
-| BP-02 | Country, City and Geographical Architecture | Approved; several details open |
+| BP-02 | Country, City and Geographical Architecture | Complete and verified; Asterfell's eight regions, Kingswell's 20 km × 16 km grid, 12 districts/24 neighbourhoods, 51 roads/118 junctions/151 segments/3 bridges/24 landmarks; corrected all 12 map envelopes; route and dispatch integration regression suites pass |
 | BP-03 | Population and Individual Simulation Architecture | Approved; processing model open |
 | BP-04 | Buildings, Properties, Businesses and Organisations | Approved |
 | BP-05 | Police Architecture | Approved; initial headquarters, 12 district stations, five specialist facilities and 12 district patrol sectors geographically seeded; command/personnel structure remains outstanding |
@@ -1052,3 +1052,37 @@ The staff profile/event tables remain as the persistent foundation. The supporte
 Migration: `database/migrations/20261120174500_correctional_staff_directory_authority_boundary.sql`
 
 Test: `database/tests/kingswell_correctional_staff_authority.sql`
+
+
+## BP-02 — Country, city and geographical architecture — completed 2026-11-20
+
+### Canonical geography delivered
+- One fictional country: Republic of Asterfell (AST).
+- Eight national administrative regions; Kingswell Capital Region is the single capital region.
+- One detailed primary city: Kingswell (KNG), linked to the capital region and the country's capital-city reference.
+- City baseline: 100,000 permanent residents; 20,000 m × 16,000 m north-up local metre grid; southern coast; north-eastern river corridor terminating at the south-eastern harbour.
+- Twelve stable district codes and 24 stable neighbourhood codes (two neighbourhoods per district).
+- Twelve district planning envelopes, corrected in place from millimetre-scaled values to the documented metre grid. All 12 now fit x=0–20,000 m and y=0–16,000 m. Envelopes remain planning extents, not exact exclusive cadastral polygons.
+- 51 named roads, 118 junctions, 151 road segments and three explicit 1,000 m river bridges; the routable graph is connected.
+- Twenty-four named landmarks are linked to the existing BP-04 property/building/access records.
+- Existing BP-04 property/building/address/access inventory and BP-05/BP-10 police facility/sector/beat layers are referenced, not duplicated.
+- Weighted fastest/shortest road routing and live dispatch route/ETA snapshots are implemented against the canonical road network.
+
+### Database extension
+Applied:
+- `20261120162026_bp02_complete_national_geography_and_correct_city_grid`
+- `20261120162040_bp02_finish_all_district_envelope_coordinate_corrections`
+
+The existing `world_countries`, `regions` and `cities` tables were extended; no duplicate geography tables were created. Existing district map-envelope rows were corrected in place. The country now records its geographic profile and capital city; regions record order, relative position and geographic description; the city records its local-grid dimensions and map conventions.
+
+### Passed rollback-only regression suites
+- `database/tests/kingswell_geography_seed.sql` — country/region/capital hierarchy, grid metadata, districts/neighbourhoods, corrected envelopes, road topology/connectivity, bridges, landmarks and RLS.
+- `database/tests/kingswell_properties_buildings_addresses.sql` — existing property/building/unit/address/access/landmark inventory and hierarchy.
+- `database/tests/kingswell_police_facilities_patrol_geography.sql` — existing police facilities, district sectors, neighbourhood beats and road-segment coverage.
+- `database/tests/kingswell_weighted_road_routing.sql` — fastest/shortest paths, distance/time reconciliation, access restrictions, directionality and route security.
+- `database/tests/kingswell_live_dispatch_route_integration.sql` — route-history protections, dispatch integration guards, ETA-related indexes and no persistent route writes during readiness checks.
+
+All five suites executed successfully against the live Supabase project and rolled back. Post-test verification: 173 tables, 595 foreign keys, 846 indexes, RLS on all 173 tables; zero persons, police personnel, police units, cases, evidence, incidents, dispatch calls, route calculations or route-history records; fictional clock remains NULL/uninitialised.
+
+### Remaining deliberate limits
+National regions are jurisdictional references, not surveyed polygons. Kingswell district extents are planning envelopes, not exact exclusive polygons. Outside Kingswell there is no detailed street/property map. Live traffic, calibrated response-time simulation, exact cadastral boundaries and detailed building interiors remain later refinements under their owning divisions.
