@@ -185,7 +185,7 @@ begin
  end if;
 end $bp04$;
 set local role service_role;
-do $
+do $bp04$
 declare v_officer uuid:=current_setting('bp04.test_officer_id')::uuid; v_result jsonb;
 begin
  v_result:=game.execute_text_command('property record KNG-P-RH0001 by KW-TEST-OFFICER-BP04','bp04-service-property-record-0001',null,v_officer);
