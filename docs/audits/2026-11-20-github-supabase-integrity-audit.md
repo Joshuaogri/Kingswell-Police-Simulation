@@ -1229,3 +1229,16 @@ Classification: **canonical SQL match after formatting/declaration normalisation
 The complete remote and GitHub migration SQL for `bp03_end_current_memberships_on_person_death` is canonically identical after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults and equivalent declaration formatting.
 
 Classification: **canonical SQL match after formatting/declaration normalisation**. No substantive source difference was identified. Retain the existing file and remote history.
+
+
+## 64. Content-led review of surveillance foreign-key indexes
+
+The GitHub file `20261120141805_index_surveillance_operation_foreign_keys.sql` is stored remotely at version `20261120142033`, under the same migration name. The complete SQL is canonically identical and creates the same five surveillance-operation/team foreign-key indexes.
+
+Classification: **exact canonical SQL match with remote version/timestamp discrepancy**. Preserve both records.
+
+## 65. Content-led review of surveillance team-lead deployment guard
+
+The GitHub file `20261120142215_require_surveillance_team_lead_before_deployment.sql` is stored remotely at version `20261120142136`, under the same migration name. The complete SQL is canonically identical. Both add the unique single-team-lead index and require a team lead before a surveillance operation can be deployed.
+
+Classification: **exact canonical SQL match with remote version/timestamp discrepancy**. Preserve both records.
