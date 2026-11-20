@@ -129,17 +129,25 @@ The live simulation clock is paused and its fictional current time is still unse
 
 ## 6. Regression tests executed
 
-The following existing repository tests were executed against the connected database:
+The following existing repository tests were executed against the connected live database:
 
 | Test | Result |
 |---|---|
-| `database/tests/kingswell_correctional_runtime.sql` | Passed; rollback-only parser/runtime assertions returned without SQL error |
+| `database/tests/kingswell_bp03_live_population_acceptance.sql` | Read-only acceptance checks executed without SQL error; exact acceptance metrics were separately queried and recorded above |
 | `database/tests/bp04_organisation_dossier_regression.sql` | Passed; read-only assertions returned without SQL error |
-| `database/tests/kingswell_bp03_live_population_acceptance.sql` | Read-only checks executed without SQL error; exact acceptance metrics separately queried and recorded above |
+| `database/tests/kingswell_correctional_runtime.sql` | Passed; rollback-only parser/runtime assertions returned without SQL error |
+| `database/tests/kingswell_patrol_road_movement.sql` | Passed; rollback-only end-to-end movement, clock, location and coverage assertions returned without SQL error |
+| `database/tests/kingswell_court_registry_and_hearings.sql` | Passed; rollback-only court registry/docket/hearing assertions returned without SQL error |
+| `database/tests/kingswell_trial_proceedings.sql` | Passed; rollback-only trial parser/routing assertions returned without SQL error |
+| `database/tests/kingswell_correctional_foundation.sql` | Passed; rollback-only schema/index assertions returned without SQL error |
+| `database/tests/kingswell_correctional_staff.sql` | Passed after correcting a brittle test assertion; delegated runtime routing and actor validation verified |
+| `database/tests/kingswell_correctional_staff_authority.sql` | Passed after correcting a brittle test assertion; staff listing remains available while police-driven staff appointment remains unavailable |
 
-No persistent test fixtures were intentionally created. The correctional runtime regression explicitly begins a transaction and rolls it back.
+The first versions of the two correctional staff tests inspected only the outermost `execute_text_command` wrapper and falsely reported that the staff directory handler was missing. Inspection showed the outer wrapper delegates to `execute_text_command_before_property`, which contains the correctional staff route and calls the correctional executor. A rollback-only command call reached actor validation as expected. The two tests were corrected in GitHub to verify this actual delegation chain and were rerun successfully.
 
-These results validate only the tested slices; they do not prove every system or every migration is correct.
+No production database function, schema, permission or game record was changed while correcting the tests. The two staff test files were updated in GitHub only.
+
+These results validate the listed slices; they do not prove every system, every migration or the complete game is correct.
 
 ## 7. Documentation drift
 
