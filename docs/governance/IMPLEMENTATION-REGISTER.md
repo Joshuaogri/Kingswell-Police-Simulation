@@ -17,7 +17,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Runtime foundation implemented | Private `game` schema; 42 tables, 80 foreign keys and 147 indexes; nine migrations applied; one paused, unconfigured clock row; no fictional world/personnel data seeded |
+| Database schema | Runtime foundation implemented | Private `game` schema; 42 tables, 80 foreign keys and 147 indexes; ten migrations applied; one paused, unconfigured clock row; no fictional world/personnel data seeded |
 | Application/gameplay code | In progress | Database-backed text command interpreter, controlled clock and initial emergency-call/incident intake implemented; full domain handlers remain outstanding |
 | Runtime regression tests | Implemented; transaction smoke-tested | `database/tests/runtime_foundation.sql` and `database/tests/text_interpreter_dispatch.sql` cover command parsing, idempotency, clock guards, emergency-call/incident creation and event history; test data rolls back |
 
@@ -62,7 +62,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-35 | Simulation Engine | Approved; typed command intake, limited text interpreter, idempotency and transactional event emission implemented; broader domain handlers, scheduler and NPC processing outstanding |
 | BP-36 | Relationships and Social Context | Approved; design only; no relationship or social-context system implemented |
 | BP-37 | Time and Scheduling | Approved; paused singleton clock, explicit initialization/advancement and clock history implemented; fictional calendar configuration and scheduler outstanding |
-| BP-38 | Records and Databases | Approved; 42-table private schema and nine migrations implemented; command and clock-history records added; full domain coverage incomplete |
+| BP-38 | Records and Databases | Approved; 42-table private schema and ten migrations implemented; command and clock-history records added; full domain coverage incomplete |
 | BP-39 | Persistence and Recovery | Approved; design only; no backup or restore process implemented |
 | BP-40 | Interface | Approved; ChatGPT remains the intended text interface; limited explicit text command grammar exists; live ChatGPT-to-runtime connection remains outstanding |
 | BP-41 | Notifications and Reporting | Approved; design only; no notification or reporting service implemented |
@@ -113,6 +113,7 @@ Migration files in `database/migrations/`:
 - `20261120050000_validate_optional_dispatch_call_fields.sql`
 - `20261120060000_unit_dispatch_and_rostered_personnel.sql`
 - `20261120070000_register_dispatch_commands_in_help.sql`
+- `20261120080000_honour_rostered_cross_unit_attachments.sql`
 - `20261120070000_register_dispatch_commands_in_help.sql`
 
 The original two migrations established the base schema. The current live schema has 42 tables, 80 foreign keys, 147 indexes and RLS enabled on all 42 tables. Seven migrations are recorded in Supabase.
@@ -182,7 +183,7 @@ Implemented a limited explicit text grammar through `game.interpret_text_command
 
 Supported forms include `help`, `status`, `advance time N minutes`, and `911/call/report/radio [report] at [location]`. The parser does not turn questions into actions.
 
-Regression test: `database/tests/text_interpreter_dispatch.sql`; passed in a transaction with rollback. Live verification: 42 tables, 80 foreign keys, 147 indexes, all 42 tables with RLS, nine migration records, three runtime functions; zero command, call, incident or dispatch-event records; fictional clock still unset.
+Regression test: `database/tests/text_interpreter_dispatch.sql`; passed in a transaction with rollback. Live verification: 42 tables, 80 foreign keys, 147 indexes, all 42 tables with RLS, ten migration records, three runtime functions; zero command, call, incident or dispatch-event records; fictional clock still unset.
 
 
 ## Roster-validated unit dispatch — 2026-11-20
@@ -190,4 +191,4 @@ Regression test: `database/tests/text_interpreter_dispatch.sql`; passed in a tra
 Implemented `dispatch UNIT_REF to INCIDENT_REF`. The command checks the active unit, current game clock, active roster, time-bounded duty assignments, active employment, matching home unit and existing conflicting deployments. It creates one deployment and dispatch event per eligible officer, changes the incident and linked call to `dispatched`, and writes a game event. It does not record arrival or invent vehicle/resource availability. The workflow is covered by `database/tests/unit_dispatch.sql` and passed inside a rolled-back transaction.
 
 
-The roster-validated dispatch test passed with temporary fictional test personnel, unit, roster, incident and call records; the transaction rolled back. Help output was separately verified to include `receive_call` and `dispatch_unit`. Live state after tests: 42 tables, 80 foreign keys, 147 indexes, 9 migration records, 3 runtime functions, zero game commands/calls/incidents/deployments/events and an uninitialized fictional clock.
+The roster-validated dispatch test passed with temporary fictional home-unit and cross-unit attached personnel, unit, roster, incident and call records; the transaction rolled back. Help output was separately verified to include `receive_call` and `dispatch_unit`. Live state after tests: 42 tables, 80 foreign keys, 147 indexes, 10 migration records, 3 runtime functions, zero game commands/calls/incidents/deployments/events and an uninitialized fictional clock.
