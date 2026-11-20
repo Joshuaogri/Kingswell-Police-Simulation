@@ -1,0 +1,1 @@
+create index prosecution_reviews_command_idx on game.prosecution_reviews(source_command_id);
