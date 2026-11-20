@@ -1,18 +1,35 @@
 # Kingswell Master Geographic Map
 
-**Status:** Approved country setting (Asterfell); Kingswell geographic layout and district envelopes remain planning-level map data.  
+**Status:** BP-02 geographic design baseline completed; national regions and Kingswell's city grid are recorded. City district extents remain planning-level envelopes, not surveyed cadastral boundaries.  
 **Use:** Canonical design reference for the city geography and road-network build.  
 **Fiction:** Kingswell and all mapped places are entirely fictional. This is an authored vector schematic, not an image-generation output and not a real-world map.
 
+## Country and national administrative geography
+
+Asterfell is a wholly fictional sovereign country. Its national geography is represented at regional-reference level; Kingswell is the only city with a detailed street, property-access and routable-road map.
+
+| Order | Code | Administrative region | Relative geography and character |
+|---:|---|---|---|
+| 1 | CAP | Kingswell Capital Region | South-central coast; contains Kingswell and the harbour near the eastern river mouth |
+| 2 | NTH | Northreach Region | Northern uplands, highland settlements and upper headwater country |
+| 3 | WST | Westmere Region | Western lake districts, agricultural plains and market towns |
+| 4 | CTR | Highplain Region | Central plateau, inland farming basins and the principal east-west overland corridor |
+| 5 | EST | Eastmarch Region | Eastern river basin, borderland crossings and regional transport corridors |
+| 6 | IRV | Ironvale Region | North-eastern uplands, mineral workings and industrial towns |
+| 7 | SCO | South Coast Region | Southern coastal arc west of the capital region, with fishing towns and maritime settlements |
+| 8 | OIS | Outer Isles Region | Offshore island groups, smaller ports and maritime communities beyond the southern and eastern coast |
+
+The regional descriptions establish national orientation and jurisdictional context, not surveyed region boundaries. Other regions do not receive a second, duplicate city-road database or detailed routable street networks in this division. Additional cities and their local geography may be introduced later when a gameplay requirement calls for them.
+
 ## Map conventions
 
-- City footprint: 20 km east–west by 16 km north–south, represented on a local metric grid (x=0–20,000 m; y=0–16,000 m).
-- North is at the top; east is right.
-- Districts are contiguous planning zones. Their initial extents are rectangular planning envelopes, not surveyed cadastral boundaries.
+- Kingswell city footprint: 20 km east–west by 16 km north–south, represented on a local metric grid (x=0–20,000 m; y=0–16,000 m).
+- Coordinates are integer metres, with north at the top and east to the right. They are fictional local-grid coordinates, not latitude/longitude.
 - The city is coastal on its southern edge. A navigable river enters from the north-east and reaches the harbour basin in the south-east.
-- Primary roads connect every district to the central ring and at least one external gateway.
-- All map coordinates are fictional local coordinates. They are not latitude/longitude.
-- Population baseline remains the BP-02 figure of 100,000 permanent residents. No district population allocations are asserted yet.
+- The city map is version KNG-MAP-0.1. The same metre grid is used by district envelopes, road junctions, landmarks, properties and access points.
+- District map records are rectangular planning envelopes. They may overlap and must not be treated as exact exclusive polygons or used to override a property's recorded district/neighbourhood assignment.
+- Primary roads connect the districts to the central network and the principal city gateways.
+- The city begins with the BP-02 baseline of 100,000 permanent residents. Population change and district population distribution belong to BP-03, not the geography layer.
 
 ## City structure
 
@@ -31,7 +48,7 @@
 | KAS | Aerodrome | Airport and aviation support | 0–6; 0–5 |
 | KMX | Riverside | Mixed-use riverfront and residential | 5–12; 0–5 |
 
-The twelve district names and envelopes are the proposed first map layout. They can be refined as the detailed street grid is developed; stable district codes should be retained if names change.
+The twelve district names, codes and planning envelopes are the canonical initial Kingswell geography. Codes are stable identifiers; a later name refinement must preserve the code and record the change rather than create a duplicate district.
 
 ## Major road hierarchy
 
@@ -54,7 +71,7 @@ Three explicit bridge crossings are recorded as bridge segments with separate we
 
 ## Neighbourhood framework
 
-Each district is subdivided into two neighbourhoods (24 total). Every neighbourhood has a dedicated named local street and a connected five-segment access pattern in the road graph. Each neighbourhood now contains 20 seeded property parcels, each with one building, a structured postal address and a road-linked access point. The initial city inventory therefore contains 480 properties, 480 buildings, 712 building units and 480 property entrances. Twenty-four named landmarks are linked to their actual property, building and access-point records.
+Each district is subdivided into two neighbourhoods (24 total). Every neighbourhood has a dedicated named local street and a connected five-segment access pattern in the road graph. Each neighbourhood contains 20 seeded property parcels. The existing BP-04 property/building layer records 480 properties, 480 buildings, 712 building units, 480 structured postal addresses and 480 road-linked access points. Twenty-four named geographic landmarks are linked to their existing property, building and access-point records. BP-02 references these records; it does not create a second property, building, unit, address or entrance system.
 
 ## Network modelling rules
 
@@ -77,7 +94,7 @@ Each district is subdivided into two neighbourhoods (24 total). Every neighbourh
 5. Add secondary/local roads and transport links.
 6. Add properties, buildings, addresses and landmarks — implemented and regression-tested.
 7. Add police facilities, district patrol sectors and neighbourhood beats — implemented and regression-tested.\n8. Implement weighted road-network routing — implemented and regression-tested.
-9. Integrate routing with live dispatch and calculate operational response-time estimates.
+9. Integrate routing with live dispatch and retain route/ETA snapshots — implemented and regression-tested.
 
 ## Police facilities and patrol geography
 
@@ -91,7 +108,7 @@ The operational patrol hierarchy is distinct from the administrative district bo
 
 The facility and beat coordinates inherit the current fictional local-metre planning grid and should not be treated as surveyed locations. A weighted Dijkstra route engine now calculates fastest and shortest paths between property access points, including police facility access points. It stores ordered road-segment legs and estimates baseline travel duration from posted speed limits. Public routes cannot use controlled access points or restricted freight/emergency segments; police/emergency routes may use the two public_emergency_freight segments. One-way directionality and non-routable segments are respected. Regression: database/tests/kingswell_weighted_road_routing.sql.
 
-This is a baseline route engine, not live traffic or calibrated response-time simulation. Dispatch integration, incident-to-unit auto-routing, turn penalties, congestion, road closures, emergency driving profiles and patrol route optimisation remain future work. Regression: `database/tests/kingswell_police_facilities_patrol_geography.sql`.
+This is a baseline route engine, not live traffic or calibrated response-time simulation. It calculates fastest and shortest paths using segment lengths and posted speed limits, respects directionality, routability and access profiles, and records ordered route legs. Dispatch route snapshots and ETA ranking are integrated. Live congestion, calibrated emergency response times, turn penalties, dynamic road closures, emergency driving behaviour and full patrol-route optimisation remain future refinements. Regressions: `database/tests/kingswell_weighted_road_routing.sql` and `database/tests/kingswell_live_dispatch_route_integration.sql`.
 
 ## Explicitly not yet represented
 
@@ -105,3 +122,17 @@ The initial city inventory is seeded across all 24 neighbourhoods, with 20 parce
 Every property has one structured primary postal address (480 total) and one primary access point (480 total). Access points resolve to an actual routable road segment and junction, providing a usable destination layer for future dispatch and navigation. The address format is: street number, named local street, neighbourhood, district, Kingswell, Asterfell and neighbourhood postal code. Twenty-four named landmarks—one per neighbourhood—resolve to their property, building and access point, rather than existing as unlinked map labels.
 
 These are fictional planning records, not real-world addresses or surveyed property boundaries. The initial inventory is intentionally comprehensive enough to support address lookup, incident location, business/institution placement and future population occupancy; detailed cadastral shapes, building floor plans, multiple entrances and dynamic occupancy are later refinements. Regression: `database/tests/kingswell_properties_buildings_addresses.sql`.
+
+
+## BP-02 ownership boundaries and completion
+
+- BP-02 owns the fictional country/region/city hierarchy, district and neighbourhood geography, city map conventions, road/junction/segment topology, landmarks and the geographic reference system.
+- BP-03 owns people, households, population counts and population movement. The 100,000 resident figure is a starting city baseline, not a geography-layer population engine.
+- BP-04 owns properties, buildings, units, addresses, access-point records and business/organisation premises. BP-02 uses those existing location references and must not duplicate them.
+- BP-05 and BP-10 own police facilities, patrol sectors, beats and their operational use. Their geography is linked to the city map, not recreated as administrative districts.
+- BP-35 owns runtime coordination. The route calculation and dispatch integration use the existing geography records.
+- National regions are reference-level only. No detailed road network, property inventory or city simulation is implied outside Kingswell.
+
+### BP-02 verification
+
+The rollback-only BP-02 geography regression verifies the Asterfell country and eight-region register, capital-city link, Kingswell local-grid metadata, 12 districts, 24 neighbourhoods, 12 in-grid planning envelopes, 51 named roads, 118 in-grid junctions, 151 connected road segments, three explicit 1,000 m bridge segments, 24 in-grid landmarks, foreign-key consistency and RLS. Separate rollback-only regressions verify the existing property/building/address/landmark layer, police facilities and patrol geography, weighted route calculation and dispatch route integration. The fictional clock is required to remain uninitialised during these tests.
