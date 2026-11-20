@@ -318,3 +318,15 @@ The following table maps each of the 72 normalised-name matches whose repository
 | `20261120121100` | `record_transit_and_on_beat_patrol_segments` | `20261120121100_index_patrol_schedule_coverage_foreign_keys.sql` |
 
 The version `20261120121100` is the confirmed patrol collision described in section 10. The other exact-version/name differences also require inspection; a matching timestamp alone does not prove matching SQL.
+
+
+## 12. GitHub Actions connectivity verification
+
+A read-only GitHub Actions workflow was added at `.github/workflows/verify-supabase-migrations.yml`. It is deliberately manual-only while connection details are being completed. It contains no `db push`, migration repair, reset or write operation.
+
+Two connection attempts produced useful diagnostics:
+
+1. The initial `supabase link` attempt confirmed that both configured secret values were injected without displaying them. The Supabase access token then failed the CLI's project-status lookup because it lacks the `project_admin_read` permission. This does not mean the token is invalid; its current project/database scope is insufficient for that Management API operation. No broader token permission is required if the database-password route is used.
+2. A direct PostgreSQL connection using the database password reached the project's direct hostname but failed because that endpoint resolved to IPv6 and GitHub-hosted runners are IPv4-only. Supabase's current connection guide recommends the shared session pooler for IPv4-only networks. The exact pooler hostname must be copied from the project's Connect panel; it cannot safely be inferred from the region.
+
+The workflow was therefore changed to manual-only. It must be updated to use the exact shared session-pooler hostname and then rerun. The database password secret was injected successfully; no password value was displayed or copied into the repository. No database write was performed.
