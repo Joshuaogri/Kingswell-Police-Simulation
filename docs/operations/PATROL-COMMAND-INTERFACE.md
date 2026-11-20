@@ -63,3 +63,12 @@ Regression: `database/tests/kingswell_patrol_intelligence_reviews.sql` and `data
 - `case enquiries LEAD_REF`
 
 Lead and enquiry records are linked to existing cases and personnel. Assignment, assessment and enquiry history is retained; enquiry records and history are append-only. These commands use the current fictional clock without advancing it. See `docs/operations/CASE-INVESTIGATIVE-LEADS.md` and `database/tests/kingswell_case_investigative_leads.sql`.
+
+
+## Linking leads to existing game entities
+
+- `case lead link LEAD_REF entity person PERSON_REF because "REASON" by ACTOR_REF`
+- Replace `person` with `organisation`, `property`, `evidence` or `incident` and supply that entity's existing reference.
+- `case lead links LEAD_REF` lists the lead's entity associations.
+
+Links use typed foreign keys to the existing entity registries. Evidence links are restricted to evidence already attached to the same case or not yet case-assigned. Duplicate links are idempotently recognised; link records are append-only and do not advance fictional time. The acting officer must own the lead or hold an active assignment to its case.
