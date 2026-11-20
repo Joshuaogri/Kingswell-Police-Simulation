@@ -1156,3 +1156,12 @@ The complete remote and repository SQL for `case_investigative_activity_player_c
 This command migration depends on the three operational functions missing from the same-version repository reconstruction documented in section 60; its own command wrapper is not the missing implementation.
 
 Classification: **exact command-migration match; dependency gap remains in the preceding activity-record migration**. Preserve both records.
+
+
+## 62. Content-led review of version 20261120141007 — add investigative activity to dossier
+
+The migration's intended operation is to inject an `activities` field into the existing case dossier before its `forensic_requests` field.
+
+The remote SQL uses the anchor prefix ending at `'request_ref',fr.request_ref`. The GitHub reconstruction extends that anchor to `'request_ref',fr.request_ref)`. In the preceding dossier definition from version `20261120134455`, the request-reference value is followed by additional JSON fields (including `discipline`), not a closing parenthesis at that position. The repository anchor therefore does not match the preceding dossier definition and would raise its explicit `Dossier top-level forensic section anchor not found` exception rather than apply the intended change.
+
+Classification: **genuine broken migration patch anchor in the repository reconstruction**. The remote version has the compatible anchor prefix. Preserve both sources; do not deploy the local migration as written. Recover the exact expected preceding function version and correct the patch anchor in a separately reviewed migration-source repair.
