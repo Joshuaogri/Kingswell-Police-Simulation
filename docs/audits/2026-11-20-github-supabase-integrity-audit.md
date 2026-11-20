@@ -702,3 +702,10 @@ The remote migration contains the full investigative-activity implementation. Th
 A repository-wide GitHub code search for all three function names returned no matching file. A read-only live database check confirms all three functions exist and are executable by `service_role`, but not by `anon` or `authenticated`.
 
 Classification: **confirmed source-code omission: three live investigative-activity functions are absent from the repository migration file and no alternate repository definition was found**. This is a substantive GitHub source-recovery gap, not a formatting difference. Preserve the current file and live database; recover the exact function definitions into the reconciliation register before any future source repair or migration-history action.
+
+
+## 41. Content-led review of version 20261120140954
+
+The complete remote and repository SQL for `case_investigative_activity_player_commands` is canonically identical after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults and equivalent declaration formatting.
+
+Classification: **canonical SQL match after formatting/declaration normalisation**. The command integration migration is present in GitHub; the preceding 20261120140938 omission is specifically the three investigative-activity application functions. Retain the existing file and remote history.
