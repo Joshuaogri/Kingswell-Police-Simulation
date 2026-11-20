@@ -163,3 +163,6 @@ The trusted runtime can call game.get_dispatch_candidates(incident_ref) to list 
 The existing dispatch command's validation and idempotency remain authoritative. A deployment route snapshot is additive; it does not dispatch a unit, acknowledge an officer, record arrival or advance the clock. Missing structured incident location or origin produces location_unresolved; a disconnected graph produces unreachable. ETA is a baseline posted-speed estimate only, without live traffic, siren uplift or turn-delay modelling.
 
 Regression source: database/tests/kingswell_live_dispatch_route_integration.sql. Structural/security/clock and incident-guard checks pass. Full seeded end-to-end route/ETA testing awaits rollback-only personnel/unit/roster/incident fixtures; the live world remains intentionally unseeded.
+
+
+Route-history integrity hardening: the runtime service role can read and append deployment route history but cannot update or delete it. The table remains RLS-enabled and private. Migration 20261120114700_enforce_deployment_route_history_append_only.sql enforces this, and the route integration regression asserts the ACL.
