@@ -1,0 +1,17 @@
+create index if not exists recovered_property_found_by_personnel_idx on game.recovered_property(found_by_personnel_id);
+create index if not exists recovered_property_source_command_idx on game.recovered_property(source_command_id);
+create index if not exists search_logs_recorded_by_personnel_idx on game.search_logs(recorded_by_personnel_id);
+create index if not exists search_logs_source_command_idx on game.search_logs(source_command_id);
+create index if not exists search_operation_events_actor_personnel_idx on game.search_operation_events(actor_personnel_id);
+create index if not exists search_operation_events_source_command_idx on game.search_operation_events(source_command_id);
+create index if not exists search_operation_team_assigned_by_personnel_idx on game.search_operation_team(assigned_by_personnel_id);
+create index if not exists search_operation_team_source_command_idx on game.search_operation_team(source_command_id);
+create index if not exists search_operations_planned_by_personnel_idx on game.search_operations(planned_by_personnel_id);
+create index if not exists search_operations_source_command_idx on game.search_operations(source_command_id);
+create index if not exists search_premises_added_by_personnel_idx on game.search_premises(added_by_personnel_id);
+create index if not exists search_premises_source_command_idx on game.search_premises(source_command_id);
+create index if not exists search_seizures_premises_idx on game.search_seizures(premises_id);
+create index if not exists search_seizures_seized_by_personnel_idx on game.search_seizures(seized_by_personnel_id);
+create index if not exists search_seizures_source_command_idx on game.search_seizures(source_command_id);
+create index if not exists search_warrants_issued_by_personnel_idx on game.search_warrants(issued_by_personnel_id);
+create index if not exists search_warrants_source_command_idx on game.search_warrants(source_command_id);
