@@ -30,7 +30,7 @@ Supported player text:
 - `scene entry PERSONNEL_REF into SCENE_REF for PURPOSE`
 - `scene exit PERSONNEL_REF from SCENE_REF for PURPOSE`
 - `scene safety PERSONNEL_REF for SCENE_REF: HAZARDS | CONTROLS | RESIDUAL RISK`
-- `set boundary PERSONNEL_REF for SCENE_REF: DESCRIPTION | REASON`
+- `set boundary PERSONNEL_REF for SCENE_REF: DESCRIPTION | REASON`, `resource approve|decline|fulfil|cancel PERSONNEL_REF REQUEST_REF: NOTES`, `release scene PERSONNEL_REF SCENE_REF because REASON` and `reopen scene PERSONNEL_REF SCENE_REF because REASON`
 
 The call grammar is intentionally narrow. It does not guess missing locations, turn questions into actions, invent caller identities or dispatch officers automatically. Unrecognised text is logged as a rejected command. Idempotency keys prevent duplicate execution on retries.
 
@@ -66,9 +66,9 @@ All three scripts run in a transaction and roll back all generated test records.
 
 Initial BP-12/BP-22 scene and field workflows are now implemented through the explicit command parser and the `game.execute_scene_action` handler. An officer must be actively employed and have an on-scene deployment at the incident to establish scene control, take scene command, submit a field report, add a scene update or request resources. Scene creation records a unique scene reference, originating incident, location, designation reason, confidence, initial controlled status, scene manager and fictional control timestamps. Scene command transfers are recorded as separate activity and game events.
 
-Scene activity entries and officer field reports are separately stored and linked to the originating incident/scene. Scene entry and exit events record personnel, zone, purpose and fictional time; unmatched exits and duplicate entries are rejected. A resource request is recorded with type, quantity, priority and reason as `requested`; this does not falsely imply approval, allocation or deployment. All command retries are idempotent. The new tables have RLS enabled and remain inside the private `game` schema.
+Scene activity entries and officer field reports are separately stored and linked to the originating incident/scene. Scene entry and exit events record personnel, zone, purpose and fictional time; unmatched exits and duplicate entries are rejected. A resource request is recorded with type, quantity, priority and reason as `requested`. The current scene manager can approve, decline or cancel it; an officer on scene can record fulfilment after approval. Each response is retained in a separate request-event history. This is a recorded operational response, not an automated stock allocation or proof of dispatch from an external resource system. All command retries are idempotent. The new tables have RLS enabled and remain inside the private `game` schema.
 
-Supported scene/field commands are listed above. The regression suite is `database/tests/scene_control_field_reports.sql`; it covers scene creation, command transfer, field updates/reports, resource requests, access-log pairing and invalid resource quantities. Scene safety assessments, boundary/zone management, multi-agency attendance, specialist examination plans, formal evidence handover, release/reopening and resource approval/deployment remain future work.
+Supported scene/field commands are listed above. The regression suite is `database/tests/scene_control_field_reports.sql`; it covers scene creation, command transfer, field updates/reports, resource requests, access-log pairing and invalid resource quantities. Scene safety, boundary management and resource response/lifecycle are implemented in subsequent slices. Multi-agency attendance, specialist examination plans, detailed zone geometry, formal evidence/material handover, resource inventory and deployment integration remain future work.
 
 
 ## Scene safety and boundary control
@@ -76,3 +76,12 @@ Supported scene/field commands are listed above. The regression suite is `databa
 A deployed officer recorded on scene can append a safety assessment describing hazards, people at risk, controls taken and residual risk. The scene's safety status updates to assessed, while the assessment itself remains a separate historical record. The current scene manager can set or revise the scene boundary. Each revision is retained; the prior active boundary becomes superseded, and the current boundary description is reflected on the scene record. A non-manager cannot revise the boundary. Both workflows use the fictional game clock and write scene activity/game events.
 
 Commands: `scene safety PERSONNEL_REF for SCENE_REF: HAZARDS | CONTROLS | RESIDUAL RISK` and `set boundary PERSONNEL_REF for SCENE_REF: DESCRIPTION | REASON`. Regression script: `database/tests/scene_safety_and_boundaries.sql`. This is an initial recordkeeping layer; specialist hazard response, formal authority review, detailed zone geometry, multi-agency safety coordination, partial release and scene release/reopening remain outstanding.
+
+
+## Resource response and scene lifecycle
+
+The current scene manager can approve, decline or cancel a scene resource request. An approved request can be marked fulfilled by an actively employed officer with an on-scene deployment at the originating incident. Every response stores the actor, fictional timestamp, notes and source command in `scene_resource_request_events`; the request record retains its current state and responder/fulfilment details. This records a reported fulfilment and does not yet reserve stock, dispatch a vehicle or verify an external unit's physical arrival.
+
+A scene manager can formally release a scene only after at least one safety assessment exists, no resource request remains requested/acknowledged/approved, and all recorded scene entries have matching exits. The release is stored in the scene record and a separate lifecycle history. An officer deployed on scene can reopen a released scene if the originating incident is still active; reopening transfers scene command to that officer. Reopening after incident resolution, closure or cancellation is rejected. Each release/reopening remains in the lifecycle history.
+
+Commands: `resource approve PERSONNEL_REF REQUEST_REF: NOTES`, `resource decline PERSONNEL_REF REQUEST_REF: NOTES`, `resource fulfil PERSONNEL_REF REQUEST_REF: NOTES`, `resource cancel PERSONNEL_REF REQUEST_REF: NOTES`, `release scene PERSONNEL_REF SCENE_REF because REASON`, `reopen scene PERSONNEL_REF SCENE_REF because REASON`. Regression script: `database/tests/scene_resource_lifecycle.sql`.
