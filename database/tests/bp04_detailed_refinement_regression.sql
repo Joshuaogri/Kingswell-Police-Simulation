@@ -115,6 +115,24 @@ begin
   where bp.security_arrangements->>'security_provider_status'<>'provider_identity_not_yet_recorded'
  ) then raise exception 'BP04: seeded security profile incorrectly asserts provider identity'; end if;
 
+
+ -- Each current business site must reflect its linked business schedule and
+ -- operational access profile, while preserving the canonical site record.
+ if exists(
+  select 1 from game.organisation_locations l
+  join game.business_profiles bp on bp.organisation_id=l.organisation_id
+  where l.valid_to is null
+    and l.location_role in ('tenant','owner_occupier','headquarters','branch','operating_site')
+    and (
+      l.operating_hours is distinct from bp.business_hours
+      or not (l.site_details ? 'operating_model'
+        and l.site_details ? 'customer_access_model'
+        and l.site_details ? 'delivery_and_visitors'
+        and l.site_details ? 'premises_access_control'
+        and l.site_details ? 'site_profile_basis')
+    )
+ ) then raise exception 'BP04: current business site dossier is not aligned with business profile'; end if;
+
  -- Confirm the event-location trigger rejects a building from another property.
  select id into v_property_id from game.properties order by property_ref limit 1;
  begin
