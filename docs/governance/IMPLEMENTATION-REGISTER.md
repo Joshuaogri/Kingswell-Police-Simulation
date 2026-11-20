@@ -791,3 +791,8 @@ Follow-up migration: `database/migrations/20261120133944_case_review_dossier_and
 The player command now requires `case review CASE_REF by OFFICER_REF`. The named officer must match the command actor and be the recorded case lead or have an active case assignment. This prevents unassigned personnel from retrieving a case dossier through the player command. The underlying dossier function remains private/service-role-only.
 
 The rollback-only regression now verifies actor attribution and case access alongside dossier aggregation, idempotent replay, missing-case rejection and help registration.
+
+
+### Case review help registration deduplication — 2026-11-20
+
+Migration: `database/migrations/20261120134240_deduplicate_case_review_help_command.sql`. The help wrapper now checks whether `get_case_review_dossier` is already present before appending it, so the command appears exactly once. The rollback-only case review test asserts unique help registration, assigned-officer access and successful dossier retrieval.
