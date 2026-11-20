@@ -8,7 +8,7 @@ Each division is designed with its purpose, scope, responsibilities, components,
 |---|---|---|
 | BP-01 | Game Identity, Foundations and Governing Rules | Approved |
 | BP-02 | Country, City and Geographical Architecture | Complete and verified; Asterfell's eight-region hierarchy, Kingswell city grid, 12 districts/24 neighbourhoods, 51 roads/118 junctions/151 segments/3 bridges/24 landmarks, corrected planning envelopes, weighted routing and dispatch integration all regression-tested |
-| BP-03 | Population and Individual Simulation Architecture | Individual-life foundation, exact current residence and household-unit links, occupancy enforcement and household lifecycle guards implemented; residential capacity reconciled to 100,000; rollback-only identity-scale and unit-allocation regressions pass; live population seed remains uncommitted; routine execution awaits BP-35 |
+| BP-03 | Population and Individual Simulation Architecture | Complete static foundation and live-seeded: 100,000 unique NPCs, 24,512 households, 100,000 exact residential addresses and memberships, 309,760 relationships, 100,000 birth events, 700,000 sleep routines, 43,412 business employees and 217,060 weekday work routines; dwelling capacities and business headcounts reconcile; live acceptance checks pass; actual activity execution awaits BP-35/BP-37; fictional clock remains uninitialised |
 | BP-04 | Buildings, Properties, Businesses and Organisations | Implemented and regression-tested: 656 properties/buildings, 26,888 units, 1,452 businesses, 25 public institutional sites, detailed property/building/unit profiles, ownership/occupancy and neighbourhood map commands |
 | BP-05 | Police Architecture | Approved; detailed structure open |
 | BP-06 | Police Personnel | Approved |
