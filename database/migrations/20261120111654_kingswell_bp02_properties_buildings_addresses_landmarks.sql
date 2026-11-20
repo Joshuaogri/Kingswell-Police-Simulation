@@ -96,7 +96,11 @@ begin
    elsif side_no=1 then v_x:=n.cx+270; v_y:=n.cy+250-((lot-6)*83+41);
    elsif side_no=2 then v_x:=n.cx+250-((lot-11)*83+41); v_y:=n.cy-270;
    else v_x:=n.cx-270; v_y:=n.cy-250+((lot-16)*83+41); end if;
-   select s.id,s.from_junction_id into v_segment,v_junction from game.road_segments s
+   select s.id,case when ((jf.x_m-v_x)::bigint*(jf.x_m-v_x)::bigint+(jf.y_m-v_y)::bigint*(jf.y_m-v_y)::bigint)
+      <= ((jt.x_m-v_x)::bigint*(jt.x_m-v_x)::bigint+(jt.y_m-v_y)::bigint*(jt.y_m-v_y)::bigint)
+      then jf.id else jt.id end into v_segment,v_junction
+    from game.road_segments s join game.road_junctions jf on jf.id=s.from_junction_id
+    join game.road_junctions jt on jt.id=s.to_junction_id
     where s.city_id=v_city and s.segment_code='N-'||replace(n.code,'-','')||'-0'||(side_no+1);
    v_property_ref:='KNG-P-'||replace(n.code,'-','')||lpad(lot::text,3,'0');
    v_building_ref:='KNG-B-'||replace(n.code,'-','')||lpad(lot::text,3,'0');
