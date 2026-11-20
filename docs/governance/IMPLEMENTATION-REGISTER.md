@@ -809,3 +809,19 @@ The case review command now rejects personnel who are neither active nor seconde
 Migration: `database/migrations/20261120134455_case_review_dossier_tasks_and_linked_evidence.sql`.
 
 The read-only dossier now includes the case task register and includes evidence associated through case account comparisons, investigative lead links and forensic requests, even where the evidence item's primary case_id is not populated. Original evidence records remain authoritative.
+
+
+## Supervisory case review and status governance — 2026-11-20
+
+**Implemented and live-tested.** Applied migration: `database/migrations/20261120135028_case_supervisory_review_and_status_governance.sql`.
+
+- Added append-only `game.case_supervisory_reviews` and `game.case_status_events` records.
+- Added supervisor review outcomes: continue investigation, further enquiries, recommend submission, suspension, closure or reopening. Recommendations do not automatically alter case status.
+- Added controlled status transitions across open, under investigation, suspended, submitted, closed and reopened. Invalid transitions are rejected.
+- Status changes require an active/seconded officer holding an active `supervisor` assignment on that case, a reason, and an initialized fictional clock.
+- Closure records the current fictional close time; reopening clears the active close timestamp while retaining immutable closure history.
+- Added idempotent player commands and history retrieval; no command advances fictional time.
+- Tables remain private, RLS-enabled and service_role-only. Review and status histories reject update/delete.
+
+Rollback-only regression: `database/tests/kingswell_case_governance.sql`.
+Operations guide: `docs/operations/CASE-GOVERNANCE.md`.
