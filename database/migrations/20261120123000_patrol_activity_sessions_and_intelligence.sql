@@ -150,8 +150,8 @@ begin
  into unit_activities from (
   select u.unit_ref,count(s.id)::integer sessions,
    round(coalesce(sum(extract(epoch from (coalesce(s.ended_at_game_time,s.started_at_game_time)-s.started_at_game_time))/60.0),0),1) minutes,
-   round(coalesce(sum(extract(epoch from (coalesce(s.ended_at_game_time,s.started_at_game_time)-s.started_at_game_time)) filter(where s.activity_type='foot_patrol')/60.0,0),1) foot_minutes,
-   round(coalesce(sum(extract(epoch from (coalesce(s.ended_at_game_time,s.started_at_game_time)-s.started_at_game_time)) filter(where s.activity_type='stationary_observation')/60.0,0),1) observation_minutes
+   round(coalesce(sum(case when s.activity_type='foot_patrol' then extract(epoch from (coalesce(s.ended_at_game_time,s.started_at_game_time)-s.started_at_game_time))/60.0 else 0 end),0),1) foot_minutes,
+   round(coalesce(sum(case when s.activity_type='stationary_observation' then extract(epoch from (coalesce(s.ended_at_game_time,s.started_at_game_time)-s.started_at_game_time))/60.0 else 0 end),0),1) observation_minutes
   from game.police_units u join game.patrol_activity_sessions s on s.unit_id=u.id
   where s.started_at_game_time>=v_from and s.started_at_game_time<=v_to group by u.id,u.unit_ref
  ) x;
