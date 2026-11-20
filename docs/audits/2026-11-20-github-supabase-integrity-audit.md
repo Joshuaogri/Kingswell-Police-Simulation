@@ -936,3 +936,10 @@ The remote 150044 migration corrects the 145803 executor by adding `duration_min
 The consolidated GitHub 144932 workflow migration already includes `duration_minutes` in the transport-leg INSERT, alongside the arrival time and clock-history record.
 
 Classification: **duration persistence correction consolidated into the earlier GitHub workflow source**. The final executor records the duration in both the transport leg and game-clock history. The standalone 150044 file is present as a comment-only chronology note.
+
+
+## 43. Content-led review of version 20261120134240 — case-review help deduplication
+
+The complete remote and repository SQL for `deduplicate_case_review_help_command` is canonically identical after comment and whitespace normalisation. Both preserve the case-review access checks and add `get_case_review_dossier` to the help list only when it is not already present. The executor permission revoke/grant statements also match.
+
+Classification: **exact canonical SQL match**. Retain both records unchanged.
