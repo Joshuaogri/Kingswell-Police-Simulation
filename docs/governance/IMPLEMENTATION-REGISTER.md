@@ -353,7 +353,7 @@ Patrol geography:
 
 New private RLS-enabled tables: `game.police_facilities`, `game.patrol_sectors`, `game.patrol_beats` and `game.patrol_beat_road_segments`. Sensitive access remains service_role-only. The existing police station and unit tables were extended with facility/base/beat references.
 
-Follow-up index migration: `database/migrations/20261120112618_index_police_geography_and_landmark_foreign_keys.sql` (covers all nine FK-index findings from the performance advisor). Migration: `database/migrations/20261120112406_kingswell_police_facilities_patrol_sectors_and_beats.sql`. Regression: `database/tests/kingswell_police_facilities_patrol_geography.sql`; live rollback-only assertions passed for facility counts and physical links, station links, all 24 beats, all 12 sectors, complete 151-segment coverage and RLS.
+Follow-up index migration: `database/migrations/20261120112545_index_police_geography_and_landmark_foreign_keys.sql` (covers all nine FK-index findings from the performance advisor). Migration: `database/migrations/20261120112406_kingswell_police_facilities_patrol_sectors_and_beats.sql`. Regression: `database/tests/kingswell_police_facilities_patrol_geography.sql`; live rollback-only assertions passed for facility counts and physical links, station links, all 24 beats, all 12 sectors, complete 151-segment coverage and RLS.
 
 This does not yet implement road routing, turn-by-turn paths, route optimisation, travel-time estimates, traffic, patrol schedules, active unit deployment bases or beat-level staffing. The local-grid property/facility coordinates remain planning-level fictional coordinates, not surveyed geometry.
 
