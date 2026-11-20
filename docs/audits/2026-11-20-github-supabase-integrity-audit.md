@@ -1312,3 +1312,10 @@ Classification: **same parser and command behaviour; function-terminator formatt
 The complete remote and GitHub SQL for `bp04_neighbourhood_retail_and_riverside_mixed_use_occupancy` is canonically identical after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults, `search_path` declarations and concatenation-operator spacing.
 
 Classification: **canonical SQL match after formatting normalisation**. No substantive property occupancy, business or institution seed difference was identified. Retain the existing file and remote history.
+
+
+## 78. Content-led review of version 20261120171701
+
+The complete remote and GitHub SQL for `bp03_exact_dwelling_unit_allocation_and_capacity_reconciliation` is canonically identical after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults, `search_path` declarations and concatenation-operator spacing.
+
+Classification: **canonical SQL match after formatting normalisation**. No substantive dwelling allocation, capacity or validation difference was identified. Retain the existing file and remote history.
