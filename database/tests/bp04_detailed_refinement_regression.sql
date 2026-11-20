@@ -87,6 +87,34 @@ begin
  if not (v_json ? 'control_interests' and v_json ? 'site_agreements')
  then raise exception 'BP04: business dossier missing refined sections'; end if;
 
+
+ -- All canonical businesses must have individualised operational detail and
+ -- explicit provenance; do not treat these profile fields as actual events.
+ if exists(
+  select 1 from game.business_profiles bp
+  where not (
+   bp.trade_profile ? 'operating_model'
+   and bp.trade_profile ? 'customer_access_model'
+   and bp.trade_profile ? 'stock_and_asset_handling'
+   and bp.trade_profile ? 'delivery_and_visitors'
+   and bp.trade_profile ? 'detail_basis'
+   and bp.security_arrangements ? 'premises_access_control'
+   and bp.security_arrangements ? 'cctv_coverage_profile'
+   and bp.security_arrangements ? 'out_of_hours_control'
+   and bp.business_hours ? 'weekday_pattern'
+   and bp.business_hours ? 'schedule_variant'
+  )
+ ) then raise exception 'BP04: one or more business profiles lack operational enrichment'; end if;
+
+ if (select count(*) from game.business_profiles)<>1452 then
+  raise exception 'BP04: canonical business profile population changed unexpectedly';
+ end if;
+
+ if exists(
+  select 1 from game.business_profiles bp
+  where bp.security_arrangements->>'security_provider_status'<>'provider_identity_not_yet_recorded'
+ ) then raise exception 'BP04: seeded security profile incorrectly asserts provider identity'; end if;
+
  -- Confirm the event-location trigger rejects a building from another property.
  select id into v_property_id from game.properties order by property_ref limit 1;
  begin
