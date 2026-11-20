@@ -162,7 +162,7 @@ The trusted runtime can call game.get_dispatch_candidates(incident_ref) to list 
 
 The existing dispatch command's validation and idempotency remain authoritative. A deployment route snapshot is additive; it does not dispatch a unit, acknowledge an officer, record arrival or advance the clock. Missing structured incident location or origin produces location_unresolved; a disconnected graph produces unreachable. ETA is a baseline posted-speed estimate only, without live traffic, siren uplift or turn-delay modelling.
 
-Regression source: database/tests/kingswell_live_dispatch_route_integration.sql. Structural/security/clock and incident-guard checks pass. Full seeded end-to-end route/ETA testing awaits rollback-only personnel/unit/roster/incident fixtures; the live world remains intentionally unseeded.
+Regression source: database/tests/kingswell_live_dispatch_route_integration.sql. Structural/security/clock and incident-guard checks pass. Seeded end-to-end route/ETA testing passed in rollback-only transactions. ETA-ranked candidates, the unit-position text command and route recalculation on movement/road availability changes are implemented and tested; the live world remains intentionally unseeded.
 
 
 Route-history integrity hardening: the runtime service role can read and append deployment route history but cannot update or delete it. The table remains RLS-enabled and private. Migration 20261120114700_enforce_deployment_route_history_append_only.sql enforces this, and the route integration regression asserts the ACL.
@@ -192,3 +192,18 @@ It then verifies:
 All temporary persons, personnel, units, rosters, assignments, incidents, deployments, command-ledger rows, route calculations and route-history records are rolled back. The test leaves no fixture data in the live game.
 
 Source: `database/tests/kingswell_dispatch_route_end_to_end.sql`.
+
+
+## ETA-ranked dispatch and unit position
+
+Use `game.get_dispatch_candidates_ranked(incident_ref)` to obtain eligible dispatch candidates ordered by earliest estimated arrival, with unresolved routes last. The estimate uses the current road graph and posted speeds only.
+
+Record movement through the text command:
+
+`position unit UNIT_REF at ACCESS_POINT_UUID because REASON`
+
+The command writes the current access point and fictional timestamp, emits a game event, and recalculates routes for active deployments assigned to that unit. Each recalculation is appended to `game.deployment_route_history`.
+
+When a road segment's `is_routable` flag changes, a database trigger recalculates every active deployment route against the updated network and appends the result. This intentionally favours route freshness over narrowly filtering deployments by their former route; the current town is small enough for this straightforward approach.
+
+The route history remains append-only for service_role. Route calculations do not advance the fictional clock.
