@@ -2,10 +2,6 @@ name: Read-only Supabase Migration Inventory
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - ".github/workflows/verify-supabase-migrations.yml"
-      - "database/migrations/**"
 
 permissions:
   contents: read
