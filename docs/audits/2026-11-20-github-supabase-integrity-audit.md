@@ -964,3 +964,16 @@ Classification: **equivalent prosecution-referral and decision workflow; unused 
 The remote migration and GitHub reconstruction replace `game.get_case_review_dossier(text)` with the same canonical function body. The updated dossier includes case tasks, linked evidence and forensic-request/report material. The repository file additionally repeats an explicit revoke of public/anon/authenticated execution and grant to `service_role`; the remote history already applied those same permissions in version `20261120133944`.
 
 Classification: **exact dossier function-body match; repository repeats an already-applied permission declaration**. No functional or effective permission divergence was identified. Retain both records unchanged.
+
+
+## 46. Content-led review of patrol-intelligence review player commands
+
+The GitHub file `20261120135000_patrol_intelligence_review_player_commands.sql` is stored remotely at version `20261120124710`, under the same migration name. The command-interpreter function matches exactly after normalisation.
+
+The command-executor function differs materially in its fallback path:
+- Remote SQL delegates unrecognised/non-review commands to `game.execute_text_command_before_patrol_reviews(...)`.
+- The GitHub reconstruction routes the fallback through `game.submit_command(...)`, returns parser feedback for unrecognised commands, and adds the two patrol-review commands to the help list.
+
+The patrol-review-specific command handling is otherwise aligned in the compared function tail, but the fallback architecture and help behaviour are not the same.
+
+Classification: **genuine command-executor architecture divergence plus remote version/timestamp discrepancy**. Preserve both sources. Check the final live executor/delegate chain and command-help behaviour before deciding which implementation is authoritative; do not rewrite migration history.
