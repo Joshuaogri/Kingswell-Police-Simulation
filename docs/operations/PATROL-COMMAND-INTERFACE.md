@@ -102,3 +102,6 @@ See `docs/operations/CASE-ACCOUNT-COMPARISONS.md` for comparing witness statemen
 ## Investigative case review dossier
 
 `case review CASE_REF by OFFICER_REF` returns a unified, read-only case dossier containing assignments, leads, enquiries, tasks, interviews, statements, suspect interview assessments, account comparisons, evidence and custody history, forensic examinations/findings/reports and linked incidents. The named officer must be the recorded case lead or hold an active case assignment. See `docs/operations/CASE-REVIEW-DOSSIER.md`.
+
+
+The dossier also includes case task assignments and evidence linked to the case through comparison, lead or forensic-request relationships, not only evidence whose primary case_id is set.
