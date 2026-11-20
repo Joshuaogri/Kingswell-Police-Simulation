@@ -1043,3 +1043,10 @@ The remote and repository chronology differs across four related changes:
 4. At 153046, the remote migration restores case-specific prosecutor scope. Its complete SQL is canonically identical to the GitHub 153046 file. A read-only check of the current live executor confirms the case-specific prosecutor/referral scope is present; the broad any-active-prosecutor check is not.
 
 Classification: **repository hardening is moved earlier and retained through the help integration; the remote history briefly regresses at 152706 and repairs it at 153046**. The final live and repository state is case-scoped. Preserve the migration records and do not reintroduce the broad access condition.
+
+
+## 52. Content-led review of case investigative task management
+
+The GitHub file `20261120140000_case_investigative_task_management.sql` is stored remotely at version `20261120125144`, under the same migration name. Both define the same two task tables, three indexes and the same three task-management functions. The read/list and update functions match exactly. The create function differs only by an unused local declaration `v_event text` in the remote source; removing that unused declaration makes the complete SQL canonically identical.
+
+Classification: **equivalent SQL with one unused-variable difference and a remote version/timestamp discrepancy**. Preserve both records.
