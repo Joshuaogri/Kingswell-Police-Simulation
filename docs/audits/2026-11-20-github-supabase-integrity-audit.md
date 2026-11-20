@@ -198,6 +198,8 @@ The live database does contain `game.move_patrol_unit` and the patrol movement e
 
 **Required treatment:** preserve both the live schema and all existing migration records. Do not rename files, repair migration history, push migrations or replay the patrol sequence until each migration has an explicit one-to-one reconciliation decision.
 
+Supabase's [CLI migration-list reference](https://supabase.com/docs/reference/cli/supabase-migration-list) explicitly states that it compares timestamps only. It does not compare migration names or SQL contents. Therefore, a same-version/different-name collision such as `20261120121100` may not be reported by `supabase migration list` at all. CLI output alone is not a sufficient integrity check for Kingswell.
+
 
 ## 11. Full migration-name and version reconciliation inventory
 
