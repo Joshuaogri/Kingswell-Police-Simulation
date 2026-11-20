@@ -615,3 +615,26 @@ The remote and repository sources differ in table creation order and reconstruct
 - All ten function definitions match after normalising dollar-quote delimiters and declaration formatting, including the command interpreter/executor, interview lifecycle, transcript, witness-statement lifecycle and read functions.
 
 Classification: **reconstructed DDL with matching table/column/index/sequence/trigger/RLS inventory and identical canonical function bodies**. Constraint-expression parity remains part of the final schema check. Retain the repository file and remote history.
+
+
+## 33. Content-led review of suspect-interview migrations 20261120132555, 20261120132622 and 20261120132728
+
+### 33.1 Version 20261120132555
+
+- Both sources define the same two suspect-interview tables with matching column counts and names, the same two indexes, the same two RLS-enabled tables, and the same append-only history trigger function.
+- The response-assessment, review, and immutable-history trigger functions match. The `record_case_suspect_interview` function differs: the GitHub reconstruction adds a check that the case exists and is not closed before suspect-interview classification. The remote version at 20261120132555 does not yet contain that guard.
+- Classification: **later case-state guard appears early in the repository reconstruction; the remote history adds it in a subsequent migration**.
+
+### 33.2 Version 20261120132622
+
+- The interpreter function matches.
+- The GitHub reconstruction's `execute_text_command` also includes the help-command augmentation listing the three suspect-interview commands. The remote 20261120132622 version does not yet include that help branch.
+- Classification: **later help integration appears early in the repository reconstruction; the remote history adds it in the next migration**.
+
+### 33.3 Version 20261120132728
+
+- The remote migration adds both the closed/missing-case guard to `record_case_suspect_interview` and the help-command augmentation to `execute_text_command`.
+- Both complete function bodies match the corresponding GitHub migration file after formatting/declaration normalisation.
+- This later remote migration therefore accounts for both differences observed in the two earlier pairs.
+
+Overall classification: **the 20261120132555 and 20261120132622 repository files contain later function state ahead of its historical remote migration version; the subsequent 20261120132728 migration matches and formally introduces those changes**. The final runtime state is represented by the later migration. Preserve the history and do not backdate or rewrite the earlier files.
