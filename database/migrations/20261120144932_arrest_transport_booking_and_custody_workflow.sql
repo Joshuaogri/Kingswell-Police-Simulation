@@ -220,7 +220,7 @@ begin
   v_minutes:=coalesce((p->>'duration_minutes')::integer,0);
   if nullif(btrim(p->>'destination'),'') is null or nullif(btrim(p->>'vehicle'),'') is null or nullif(btrim(p->>'handover'),'') is null or v_minutes not between 1 and 240 then return jsonb_build_object('ok',false,'code','transport_details_incomplete','message','Destination, vehicle, handover and a 1–240 minute duration are required.');end if;
   v_arrival:=n+make_interval(mins=>v_minutes);
-  insert into game.arrest_transport_legs(arrest_id,transporting_personnel_id,departure_location,destination_location,vehicle_description,departed_at_game_time,arrived_at_game_time,handover_notes,source_command_id) values(v_arrest.id,p_actor_id,v_arrest.arrest_location,p->>'destination',p->>'vehicle',n,v_arrival,p->>'handover',p_command_id);
+  insert into game.arrest_transport_legs(arrest_id,transporting_personnel_id,departure_location,destination_location,vehicle_description,departed_at_game_time,arrived_at_game_time,duration_minutes,handover_notes,source_command_id) values(v_arrest.id,p_actor_id,v_arrest.arrest_location,p->>'destination',p->>'vehicle',n,v_arrival,v_minutes,p->>'handover',p_command_id);
   update game.arrests set status='transporting' where id=v_arrest.id;
   update game.simulation_state set current_game_time=v_arrival,updated_at=now() where id=1;
   insert into game.game_clock_history(command_id,previous_game_time,resulting_game_time,advancement_minutes,reason) values(p_command_id,n,v_arrival,v_minutes,'Arrest transport: '||btrim(p->>'handover'));
