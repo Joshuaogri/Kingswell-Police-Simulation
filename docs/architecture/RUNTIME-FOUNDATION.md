@@ -128,3 +128,6 @@ The two already-applied live migrations for scene contamination, evidence recove
 - `database/migrations/20261120103219_register_evidence_recovery_commands_in_help.sql`
 
 The SQL was reconstructed from the live PostgreSQL definitions and schema metadata, including table constraints, indexes, RLS, function bodies, command routing, parser grammar and help catalogue. These files restore source-control reproducibility; they were **not** reapplied to the live database because their migration versions are already present there.
+
+
+The evidence-action handler's execute ACL was separately hardened in applied migration `20261120103649_restrict_evidence_action_execution.sql`: execution is granted to `service_role` only; `PUBLIC`, `anon` and `authenticated` are explicitly revoked. A live privilege check confirms `anon` and `authenticated` cannot execute it, while `service_role` can.
