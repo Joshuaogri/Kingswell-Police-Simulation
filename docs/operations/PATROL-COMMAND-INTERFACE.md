@@ -17,3 +17,10 @@ The coverage report lists every active beat, active on-patrol units and schedule
 All commands use the established command ledger and idempotency keys. Patrol operations do not advance fictional time. The regression test uses temporary fixtures in a transaction ending in ROLLBACK.
 
 Regression: `database/tests/kingswell_patrol_command_interface.sql`.
+
+
+## Road movement
+
+- `patrol move UNIT_REF to ACCESS_REF because REASON`
+
+This command routes the on-patrol unit to a registered access point on its assigned beat, records every road segment traversed, updates its current location and advances fictional time by the route's estimated duration. Transit legs outside the beat are recorded but excluded from beat coverage. See `PATROL-ROAD-MOVEMENT.md` for the detailed movement model.
