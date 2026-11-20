@@ -63,7 +63,7 @@ begin
 
   select count(*) into v_count from game.roads where city_id=v_city;
   if v_count<>75 then raise exception 'Expected 75 named roads; found %',v_count; end if;
-  if (select count(distinct name) from game.roads where city_id=v_city)<>51 then raise exception 'Duplicate road names exist'; end if;
+  if (select count(distinct name) from game.roads where city_id=v_city)<>75 then raise exception 'Duplicate road names exist'; end if;
   select count(*) into v_count from game.road_junctions where city_id=v_city;
   if v_count<>142 then raise exception 'Expected 142 junctions; found %',v_count; end if;
   select count(*) into v_bad from game.road_junctions where city_id=v_city
