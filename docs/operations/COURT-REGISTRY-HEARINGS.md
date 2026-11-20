@@ -48,3 +48,7 @@ Docket retrieval is limited to the case's active police assignees, the case's re
 
 ## Regression
 `database/tests/kingswell_court_registry_and_hearings.sql` is rollback-only. It tests court and official creation, registration, judge assignment, hearing scheduling, attendance, an order, adjournment, conclusion, docket access, dossier integration, help registration and unchanged fictional time.
+
+## Migration replay note
+
+The deployed database records the court feature's incremental correction migrations. For clean repository replay, the corrected final court schema and runtime definitions are consolidated in the initial court feature migration; the subsequent versioned files are compatibility notes documenting the corrections already included in that baseline.
