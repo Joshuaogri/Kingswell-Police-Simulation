@@ -40,7 +40,7 @@ begin
   end if;
   if not exists(select 1 from game.cities where id=v_city and population=100000
     and grid_width_m=20000 and grid_height_m=16000 and map_orientation='north_up'
-    and coastal_edge='south' and map_version='KNG-MAP-0.1'
+    and coastal_edge='south' and map_version='KNG-MAP-0.2'
     and major_waterway_description is not null) then
     raise exception 'Kingswell baseline or local-grid metadata is incomplete';
   end if;
