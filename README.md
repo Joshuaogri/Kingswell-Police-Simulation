@@ -48,6 +48,6 @@ Asterfell is the approved fictional sovereign country. Kingswell is its capital 
 
 Kingswell's approved BP-02 geographic foundation uses a fictional 20 km × 16 km local coordinate grid. The connected road network has 51 named roads, 118 junctions and 151 routable segments, including three explicit East River bridge crossings. All 118 junctions are connected. The city now also has 480 property parcels, 480 buildings, 712 building units/premises, 480 structured postal addresses, 480 road-linked access points and 24 named landmarks—one in every neighbourhood. See the geographic map specification and regression tests for exact modelling limits.
 
-## Immediate implementation direction
+## Current implementation direction
 
-Next, connect police facilities and patrol sectors to the road graph, then implement network-based dispatch routing and response-time calculations. Detailed cadastral polygons, floor plans, multiple building entrances and calibrated traffic effects can be refined as later geography layers.
+The project now includes patrol routing and coverage, scene and evidence workflows, forensics, case investigation, prosecution and disclosure, and an NPC court registry/hearing system. Trial proceedings are being built in layers: pleas, court events and evidence admissibility are implemented; verdicts per charge, sentencing, corrections and appeals remain to be added. See the [Implementation Register](docs/governance/IMPLEMENTATION-REGISTER.md) for verified status.
