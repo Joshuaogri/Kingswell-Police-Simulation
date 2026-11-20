@@ -294,3 +294,24 @@ Two full rollback-only seeded integration suites now pass against the live Supab
 - `database/tests/forensic_laboratory_end_to_end.sql`: creates four fictional officers, two current DNA qualifications, case and evidence; registers and independently validates a method; submits and accepts a case-linked request; receives the sealed item through canonical evidence custody; assigns a qualified examiner; starts examination; records structured findings; rejects examiner self-review; accepts independent qualified review; issues the report; and verifies final request, submission, examination, report and custody states.
 
 The earlier `database/tests/scene_contamination_evidence_custody.sql` parser/help/RLS/clock-guard regression also passes. Each test runs in a transaction and ends with rollback. A post-test live count confirms zero persons, police personnel, cases, evidence items and forensic requests; the fictional clock remains uninitialized. Current live structural counts: 67 tables, 182 foreign keys, 298 indexes, RLS on all 67 tables and 37 migrations.
+
+
+## BP-02 — Kingswell initial geographic map and road skeleton — 2026-11-20
+
+Created and committed the first authored, non-generated vector city map and geographic specification:
+- `docs/geography/KINGSWELL-MASTER-MAP.md`
+- `docs/geography/kingswell-city-map.svg`
+
+The working map uses a fictional 20 km × 16 km local coordinate grid, north-up orientation, a southern coastal edge, a proposed eastern river corridor and twelve proposed districts. It establishes the geographic hierarchy and road-network modelling rules. District envelopes are explicitly planning extents, not surveyed cadastral boundaries. The twelve district names and their placement remain an initial proposal for refinement; BP-02 itself remains approved and unchanged.
+
+Applied the initial geographic database foundation and seed:
+- one fictional country and capital region; Kingswell city seeded at the BP-02 baseline of 100,000 permanent residents;
+- 12 districts and 24 neighbourhoods;
+- 12 district map envelopes;
+- 24 named roads;
+- 16 road junctions and 22 routable road segments;
+- new private, RLS-enabled tables: `district_map_areas`, `road_junctions`, and `road_segments`.
+
+Road topology is stored independently from named roads. Junctions use local-grid metre coordinates, and segments reference both endpoint junctions and a canonical road. The initial network has a connected 16-junction graph, with explicit road class, length, lane count, speed limit, directionality, surface, crossing and access fields. All three new tables remain in private schema `game`; direct access is revoked from PUBLIC, anon and authenticated and granted to service_role.
+
+Regression: `database/tests/kingswell_geography_seed.sql` checks the seeded hierarchy, district extents, named roads, junctions, valid same-city references, graph connectivity and RLS. This is the first geographic foundation only: local street grids, full property/address coverage, exact district polygons, bridge/tunnel detail, traffic and travel-time calibration remain subsequent build stages.
