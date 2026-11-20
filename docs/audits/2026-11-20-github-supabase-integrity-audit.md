@@ -1242,3 +1242,10 @@ Classification: **exact canonical SQL match with remote version/timestamp discre
 The GitHub file `20261120142215_require_surveillance_team_lead_before_deployment.sql` is stored remotely at version `20261120142136`, under the same migration name. The complete SQL is canonically identical. Both add the unique single-team-lead index and require a team lead before a surveillance operation can be deployed.
 
 Classification: **exact canonical SQL match with remote version/timestamp discrepancy**. Preserve both records.
+
+
+## 68. Content-led review of version 20261120164104
+
+The complete remote and GitHub SQL for `bp04_detailed_property_building_unit_business_and_ownership_records` is canonically identical after normalising whitespace around PostgreSQL string-concatenation operators, comments, whitespace and declaration formatting.
+
+Classification: **canonical SQL match; whitespace around `||` only**. No substantive source difference was identified. Retain the existing file and remote history.
