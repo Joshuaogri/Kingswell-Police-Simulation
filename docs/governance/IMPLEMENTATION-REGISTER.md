@@ -17,9 +17,9 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Runtime foundation implemented | Private `game` schema; 42 tables, 80 foreign keys and 147 indexes; four migrations applied; one paused, unconfigured clock row; no fictional world/personnel data seeded |
-| Application/gameplay code | In progress | Database-backed command intake and controlled clock functions implemented; natural-language parser and domain handlers remain outstanding |
-| Runtime regression tests | Implemented; transaction smoke-tested | `database/tests/runtime_foundation.sql` covers command intake, idempotency, clock guards, time advancement and event history; test data rolls back |
+| Database schema | Runtime foundation implemented | Private `game` schema; 42 tables, 80 foreign keys and 147 indexes; six migrations applied; one paused, unconfigured clock row; no fictional world/personnel data seeded |
+| Application/gameplay code | In progress | Database-backed text command interpreter, controlled clock and initial emergency-call/incident intake implemented; full domain handlers remain outstanding |
+| Runtime regression tests | Implemented; transaction smoke-tested | `database/tests/runtime_foundation.sql` and `database/tests/text_interpreter_dispatch.sql` cover command parsing, idempotency, clock guards, emergency-call/incident creation and event history; test data rolls back |
 
 ## Master blueprint divisions
 
@@ -35,8 +35,8 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-08 | Units and Deployment | Approved; detailed rules remain open for refinement |
 | BP-09 | Police Resources | Approved; details to refine with later operational divisions |
 | BP-10 | Patrol Operations | Approved; links to dispatch and incident design to refine |
-| BP-11 | Emergency Communications | Approved; incident lifecycle and service standards to refine |
-| BP-12 | Incident Management | Approved; offence and case connections to refine |
+| BP-11 | Emergency Communications | Approved; initial text-based call intake, call ledger and dispatch event creation implemented; full call-taking and dispatch workflow remains outstanding |
+| BP-12 | Incident Management | Approved; initial incident creation from dispatch calls implemented; full incident lifecycle remains outstanding |
 | BP-13 | Crime Architecture | Approved; detailed fictional offence catalogue to populate |
 | BP-14 | Crime Generation | Approved; frequency and behaviour tuning to follow |
 | BP-15 | Case Management | Approved; investigative methods and legal review to refine |
@@ -62,12 +62,12 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-35 | Simulation Engine | Approved; initial command intake, idempotency, state coordination and event emission implemented; parser, domain handlers, scheduler and NPC processing outstanding |
 | BP-36 | Relationships and Social Context | Approved; design only; no relationship or social-context system implemented |
 | BP-37 | Time and Scheduling | Approved; paused singleton clock, explicit initialization/advancement and clock history implemented; fictional calendar configuration and scheduler outstanding |
-| BP-38 | Records and Databases | Approved; 42-table private schema and three migrations implemented; command and clock-history records added; full domain coverage incomplete |
+| BP-38 | Records and Databases | Approved; 42-table private schema and six migrations implemented; command and clock-history records added; full domain coverage incomplete |
 | BP-39 | Persistence and Recovery | Approved; design only; no backup or restore process implemented |
-| BP-40 | Interface | Approved; ChatGPT remains the intended text interface; typed database command entry exists, natural-language parsing/integration remains outstanding |
+| BP-40 | Interface | Approved; ChatGPT remains the intended text interface; limited explicit text command grammar exists; live ChatGPT-to-runtime connection remains outstanding |
 | BP-41 | Notifications and Reporting | Approved; design only; no notification or reporting service implemented |
 | BP-42 | Security and Permissions | Approved; RLS enabled on all 42 tables; private schema remains unexposed; player authentication and fictional authority enforcement outstanding |
-| BP-43 | Testing and Quality Assurance | Approved; runtime SQL regression script implemented and passed inside a rolled-back transaction; CI and broader domain tests outstanding |
+| BP-43 | Testing and Quality Assurance | Approved; runtime and text/dispatch SQL regression scripts passed inside rolled-back transactions; CI and broader domain tests outstanding |
 | BP-44 | Configuration and Expansion | Approved; design only; no configuration or expansion framework implemented |
 
 ## Delivery stages
@@ -120,7 +120,7 @@ The live repository, approved BP-01 to BP-44 baseline, migration history and Sup
 
 - Supabase project is `ACTIVE_HEALTHY`, PostgreSQL 17.12, region `eu-west-1`.
 - Private `game` schema: 40 base tables, 78 foreign keys, 141 indexes.
-- RLS is enabled on all 40 tables; zero RLS policies exist. There are zero public-schema tables, one invoker-rights command function in `game`, and zero deployed Edge Functions.
+- RLS is enabled on all 40 tables; zero RLS policies exist. There are zero public-schema tables, three invoker-rights runtime functions in `game`, and zero deployed Edge Functions.
 - Both committed migrations are present in live migration history.
 - The singleton `simulation_state` row exists with the clock unset and paused. Command, clock-history and all fictional world/personnel/incident/case tables remain empty; no fictional world or police data has been seeded.
 - A prior temporary end-to-end relationship smoke test passed and rolled back cleanly; this is not an automated test suite.
@@ -146,7 +146,7 @@ The 42-table schema is a useful relational foundation, not a completed implement
 4. Add automated tests for the complete workflow, including time control, authority checks, event history and persistence.
 5. Expand the schema only where the approved divisions require missing records or behaviours; add migrations to GitHub `main` and apply the same migrations to Supabase.
 
-**Current verified completion:** infrastructure, initial relational schema, typed command intake, explicit clock controls, command idempotency, clock audit history and a rolled-back runtime regression test are in place. **The game is not yet playable:** no fictional world/personnel seed data, natural-language command parser, domain command handlers, authenticated player mapping, deployed Edge Function, full automated test pipeline or backup/restore workflow exists.
+**Current verified completion:** infrastructure, initial relational schema, typed command intake, explicit clock controls, command idempotency, clock audit history and a rolled-back runtime regression test are in place. **The game is not yet playable:** no fictional world/personnel seed data, live ChatGPT-to-runtime connection, full domain command handlers, authenticated player mapping, deployed Edge Function, full automated test pipeline or backup/restore workflow exists.
 
 
 ## Runtime foundation — 2026-11-20
@@ -166,3 +166,12 @@ Implemented the first database-backed runtime slice under BP-35, BP-37, BP-38, B
 Migrations: `database/migrations/20261120010000_runtime_foundation_commands_clock.sql` and `database/migrations/20261120020000_harden_runtime_command_validation.sql`.
 
 The runtime is a foundation, not a playable police simulation. Natural-language parsing, fictional officer identity/authority, domain actions, event handlers, autonomous schedules and NPC processing remain to be implemented.
+
+
+## Text interpreter and initial dispatch workflow — 2026-11-20
+
+Implemented a limited explicit text grammar through `game.interpret_text_command` and `game.execute_text_command`. Initial BP-11/BP-12 call intake creates a linked incident, dispatch call, `call_received` dispatch event and game event using the configured fictional clock. It does not dispatch a unit. Invalid or unrecognised commands are rejected; retries remain idempotent.
+
+Supported forms include `help`, `status`, `advance time N minutes`, and `911/call/report/radio [report] at [location]`. The parser does not turn questions into actions.
+
+Regression test: `database/tests/text_interpreter_dispatch.sql`; passed in a transaction with rollback. Live verification: 42 tables, 80 foreign keys, 147 indexes, all 42 tables with RLS, six migration records, three runtime functions; zero command, call, incident or dispatch-event records; fictional clock still unset.
