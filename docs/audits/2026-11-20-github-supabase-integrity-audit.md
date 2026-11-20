@@ -774,3 +774,12 @@ The remote migration and GitHub reconstruction for `case_interviews_and_witness_
 - Table, sequence and function grants/revokes match.
 
 Classification: **canonical structural and function-body parity; only reconstruction formatting/declaration differences**. No substantive discrepancy was identified. Retain both records unchanged.
+
+
+## 47. Content-led review of version 20261120145037 — parser correction consolidated forward
+
+The remote migration replaces `game.interpret_arrest_custody_command(text)` with the corrected arrest/custody command-token parser. The GitHub file at this version is intentionally comment-only and states that the corrected parser is retained in the consolidated 20261120144932 workflow migration.
+
+The consolidated GitHub parser is already ahead of the remote 20261120145037 version: its transport command also parses a duration field, which belongs to later transport-duration work. Thus the repository does not preserve the exact intermediate parser revision at 145037; it carries a later parser state earlier in its migration sequence.
+
+Classification: **intentional forward consolidation; exact historical parser revision omitted, later parser implementation retained earlier**. The following duration-related migrations must be checked to establish that the consolidated parser and live final parser agree. Do not backdate or replace the consolidated definition during this audit.
