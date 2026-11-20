@@ -1270,3 +1270,10 @@ Classification: **canonical SQL match after formatting normalisation**. No subst
 The remote and GitHub migration both add the same four lease fields to `game.organisation_locations` and the same JSON-object check constraint on `lease_details`. The SQL is identical apart from whitespace and indentation.
 
 Classification: **same lease schema extension and constraint; formatting only**. Retain the existing file and remote history.
+
+
+## 72. Content-led review of version 20261120164430
+
+The complete remote and GitHub SQL for `bp04_seed_businesses_and_institutions` is canonically identical after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults, `search_path` declarations and concatenation-operator spacing.
+
+Classification: **canonical SQL match after formatting normalisation**. No substantive seed or schema difference was identified. Retain the existing file and remote history.
