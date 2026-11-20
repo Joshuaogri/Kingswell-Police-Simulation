@@ -19,6 +19,7 @@ Supported player text:
 - `call <caller report> at <location>`
 - `report <caller report> at <location>`
 - `radio <radio report> at <location>`
+- `dispatch UNIT_REF to INCIDENT_REF`
 
 The call grammar is intentionally narrow. It does not guess missing locations, turn questions into actions, invent caller identities or dispatch officers automatically. Unrecognised text is logged as a rejected command. Idempotency keys prevent duplicate execution on retries.
 
@@ -33,7 +34,7 @@ A recognised call command:
 
 Priority is 1 (highest) through 5 (lowest); omitted priority defaults to 3. Malformed supplied values are rejected. Call and incident timestamps use the same authoritative fictional game time. All inserts and the command outcome are committed in one transaction.
 
-This is initial BP-11/BP-12 functionality, not a complete dispatch centre or incident lifecycle. Unit selection, availability, dispatch authority, radio acknowledgements, attendance, scene management and incident closure remain outstanding.
+This is initial BP-11/BP-12 functionality, not a complete dispatch centre or incident lifecycle. Unit dispatch is now implemented through `dispatch UNIT_REF to INCIDENT_REF`. It requires an active unit, an active roster covering the current fictional time, active employed personnel whose home unit matches, an active duty assignment and no conflicting existing deployment. Each eligible officer receives an incident-deployment record; the incident and originating call move to `dispatched`. No arrival is assumed. Qualification/authorisation checks, vehicle/resource availability, dispatch supervisor authority, radio acknowledgements, arrival, scene management and incident closure remain outstanding.
 
 ## Clock and event history
 The singleton `game.simulation_state` row is paused and its fictional time remains unset until explicitly configured. Manual time advancement is a deliberate player command. Leaving ChatGPT does not advance the game. No autonomous event processor or NPC scheduler is active yet.
@@ -44,5 +45,6 @@ The command functions use invoker rights, are in the private `game` schema, and 
 ## Verification
 - `database/tests/runtime_foundation.sql` — command ledger, idempotency, clock guards, advancement, event history and duration validation.
 - `database/tests/text_interpreter_dispatch.sql` — text parsing, call/incident creation, event linkage, duplicate prevention, unknown-command rejection and invalid-priority rejection.
+- `database/tests/unit_dispatch.sql` — roster eligibility, deployment creation, incident/call state changes, dispatch event history, help catalogue and idempotent retry.
 
-Both scripts run in a transaction and roll back all generated test records.
+All three scripts run in a transaction and roll back all generated test records.
