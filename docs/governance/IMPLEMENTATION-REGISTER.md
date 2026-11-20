@@ -825,3 +825,6 @@ The read-only dossier now includes the case task register and includes evidence 
 
 Rollback-only regression: `database/tests/kingswell_case_governance.sql`.
 Operations guide: `docs/operations/CASE-GOVERNANCE.md`.
+
+
+The case review dossier now includes supervisory reviews and case status transition history. The governance foreign-key indexes were added after advisor review.
