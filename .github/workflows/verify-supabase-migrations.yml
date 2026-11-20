@@ -1,0 +1,74 @@
+name: Read-only Supabase Migration Inventory
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/verify-supabase-migrations.yml"
+      - "database/migrations/**"
+
+permissions:
+  contents: read
+
+jobs:
+  migration-inventory:
+    name: Read remote migration history (no deployment)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      SUPABASE_PROJECT_ID: gdbzkgejyfwfackyuorl
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Configure CLI for the existing migration directory
+        shell: bash
+        run: |
+          mkdir -p supabase
+          cat > supabase/config.toml <<'EOF'
+          project_id = "gdbzkgejyfwfackyuorl"
+
+          [db]
+          major_version = 17
+          EOF
+          ln -s ../database/migrations supabase/migrations
+
+      - name: Verify required secret injection
+        shell: bash
+        run: |
+          test -n "$SUPABASE_ACCESS_TOKEN"
+          test -n "$SUPABASE_DB_PASSWORD"
+          echo "Both required secret values were injected (values not displayed)."
+
+      - name: Link the existing Supabase project
+        run: supabase link --project-ref "$SUPABASE_PROJECT_ID"
+
+      - name: Read local and remote migration versions
+        shell: bash
+        run: |
+          set +e
+          supabase migration list > migration-inventory.txt 2>&1
+          result=$?
+          cat migration-inventory.txt
+          echo "" >> migration-inventory.txt
+          echo "CLI exit code: $result" >> migration-inventory.txt
+          echo "READ-ONLY CHECK: no db push, migration repair, reset or SQL write command was run." >> migration-inventory.txt
+          echo "LIMITATION: Supabase CLI compares migration timestamps only; it does not verify names or SQL content." >> migration-inventory.txt
+          exit "$result"
+
+      - name: Upload migration inventory
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kingswell-supabase-migration-inventory
+          path: migration-inventory.txt
+          if-no-files-found: ignore
+          retention-days: 7
