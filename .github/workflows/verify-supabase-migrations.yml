@@ -41,6 +41,11 @@ jobs:
           test -n "$SUPABASE_DB_PASSWORD"
           echo "Database password secret was injected (value not displayed)."
 
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
       - name: Read local and remote migration versions over the IPv4 session pooler
         shell: bash
         run: |
@@ -52,11 +57,33 @@ jobs:
           echo "READ-ONLY CHECK: no db push, migration repair, reset or SQL write command was run." >> migration-inventory.txt
           echo "LIMITATION: Supabase CLI compares migration timestamps only; it does not verify names or SQL content." >> migration-inventory.txt
 
+      - name: Export remote migration statements in a read-only transaction
+        shell: bash
+        run: |
+          set -euo pipefail
+          DB_URL="$(node -e 'process.stdout.write("postgresql://postgres.gdbzkgejyfwfackyuorl:" + encodeURIComponent(process.env.SUPABASE_DB_PASSWORD) + "@aws-1-eu-west-1.pooler.supabase.com:5432/postgres?sslmode=require")')"
+          echo "::add-mask::$DB_URL"
+          psql "$DB_URL" -X -qAt -v ON_ERROR_STOP=1 -c "BEGIN READ ONLY; SELECT COALESCE(json_agg(json_build_object('version', version, 'name', name, 'statements', statements) ORDER BY version), '[]'::json) FROM supabase_migrations.schema_migrations; COMMIT;" > remote-migration-history.json
+
+      - name: Compare stored SQL statements with repository migration files
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/audit_supabase_migrations.py \\
+            --remote remote-migration-history.json \\
+            --migrations-dir database/migrations \\
+            --markdown migration-reconciliation.md \\
+            --json migration-reconciliation.json
+          rm remote-migration-history.json
+
       - name: Upload migration inventory
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: kingswell-supabase-migration-inventory
-          path: migration-inventory.txt
+          path: |
+            migration-inventory.txt
+            migration-reconciliation.md
+            migration-reconciliation.json
           if-no-files-found: ignore
           retention-days: 7
