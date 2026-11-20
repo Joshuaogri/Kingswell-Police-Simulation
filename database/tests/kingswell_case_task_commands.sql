@@ -27,7 +27,9 @@ begin
  if (r->>'count')::int<>1 then raise exception 'Get command failed: %',r; end if;
  r:=game.execute_text_command('case task update '||ref||' completed by TEST-KWTC-O1 outcome "Interview completed"','kwtc-complete-0001',null,pp1);
  if r->>'status'<>'completed' or not coalesce((r->>'ok')::boolean,false) then raise exception 'Complete command failed: %',r; end if;
+ r:=game.execute_text_command('help','kwtc-help-0001',null,pp1);
+ if not (r->'available_commands' ? 'create_case_task') then raise exception 'Help missing case task commands: %',r; end if;
  if (select current_game_time from game.simulation_state where id=1)<>'2026-01-01 09:00:00+00'::timestamptz then raise exception 'Task commands advanced time'; end if;
- raise notice 'PASS: parser, create, idempotency, status update, reassignment, list/get, completion and fixed fictional time';
+ raise notice 'PASS: parser, create, idempotency, status update, reassignment, list/get, completion, help and fixed fictional time';
 end $$;
 rollback;
