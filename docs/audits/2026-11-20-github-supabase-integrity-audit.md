@@ -167,3 +167,25 @@ The approved BP-01 to BP-44 master blueprint remains the design baseline. This a
 **Unverified:** Exact historical SQL equivalence for every applied migration, full schema reproducibility from the repository, all 44 blueprint divisions, backup/restore readiness and full end-to-end game playability.
 
 **No production migration, schema, data or permission changes were made during this audit.**
+
+
+## 10. Migration version-collision case study: patrol road movement
+
+A focused comparison of the patrol migration sequence found a concrete version collision:
+
+| Supabase applied version | Supabase recorded name | GitHub file/version |
+|---|---|---|
+| `20261120120433` | `index_patrol_schedule_coverage_foreign_keys` | `20261120121100_index_patrol_schedule_coverage_foreign_keys.sql` |
+| `20261120121100` | `record_transit_and_on_beat_patrol_segments` | `20261120121600_record_transit_and_on_beat_patrol_segments.sql` |
+
+The GitHub file `20261120121100_index_patrol_schedule_coverage_foreign_keys.sql` contains four index statements. The Supabase history row at that exact version is instead named `record_transit_and_on_beat_patrol_segments`. The GitHub file for that recorded migration is now timestamped `20261120121600`.
+
+This means the repository file at version `20261120121100` and the applied Supabase migration at version `20261120121100` do not represent the same named change. Meanwhile, the matching index migration exists in Supabase under the earlier version `20261120120433`.
+
+The same patrol sequence shows several other name-matched migrations whose GitHub timestamps have moved later than their Supabase applied versions. One applied migration, `restrict_patrol_command_parser_and_coverage_access` at `20261120120636`, has no same-name migration file in the current repository inventory.
+
+The live database does contain `game.move_patrol_unit` and the patrol movement event structure. The rollback-only regression `database/tests/kingswell_patrol_road_movement.sql` executed successfully against the live database. This confirms the current patrol movement slice works under that test; it does not prove the historical migration files are identical.
+
+**Why this matters:** migration tools reconcile by version identifiers. A file whose timestamp collides with a different applied migration can be treated as already applied even though its SQL is different. A retimestamped migration may instead appear pending and be replayed. The migration chain must therefore be reconciled by version, recorded name, repository path, SQL purpose and current live object state—not by filenames or names alone.
+
+**Required treatment:** preserve both the live schema and all existing migration records. Do not rename files, repair migration history, push migrations or replay the patrol sequence until each migration has an explicit one-to-one reconciliation decision.
