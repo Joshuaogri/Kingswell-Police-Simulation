@@ -17,7 +17,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Runtime foundation, forensic laboratory and police-geography layers implemented | Private `game` schema; 80 tables, 231 foreign keys and 376 indexes; 50 migrations applied; RLS enabled on all 77 tables; city geography and police facility/beat data seeded; no persons, police personnel, units or incidents seeded; fictional clock remains uninitialized |
+| Database schema | Runtime foundation, forensic laboratory and police-geography layers implemented | Private `game` schema; 87 tables, 259 foreign keys and 419 indexes; 71 migrations applied; RLS enabled on all 87 tables; city geography and police facility/beat data seeded; no persons, police personnel, units or incidents seeded; fictional clock remains uninitialized |
 | Application/gameplay code | In progress | Database-backed text command interpreter, controlled clock, emergency-call/dispatch/arrival, scene-control, field-report and resource-request workflows implemented; full domain handlers remain outstanding |
 | Runtime regression tests | Implemented; transaction smoke-tested | Runtime, dispatch, scene, evidence, forensic laboratory, geography and police-facility/patrol-geography SQL regression scripts cover implemented slices; test fixtures roll back |
 
