@@ -1183,3 +1183,12 @@ The remote and repository sources define the same three tables (`trial_verdicts`
 The only DDL difference identified is redundant parentheses around the non-custodial and non-fine branches of the sentence-type check constraints. The truth conditions are the same: custodial sentences require positive duration, fine sentences require a positive amount, and other sentence types do not require those fields.
 
 Classification: **same verdict/sentencing schema and runtime behaviour; constraint-parenthesis and declaration-format differences only**. Retain the existing file and remote history.
+
+
+## 63. Content-led review of version 20261120162026 — national geography and city grid
+
+The remote and repository SQL are otherwise canonically identical. The only content difference is the geographic description for the `ois` outer-isles region: remote says “offshore island groups, smaller ports and maritime communities”; GitHub says “offshore island groups and maritime communities”.
+
+The city-grid dimensions, north-up orientation, southern coastal edge, major-waterway description, national-region codes and all other seed/update statements match.
+
+Classification: **one descriptive seed-text difference; no schema, coordinate or city-grid difference identified**. Preserve the more complete remote wording in the reconciliation register; do not alter live geography during this audit.
