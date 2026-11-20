@@ -106,5 +106,5 @@ BEGIN
    JOIN game.buildings b ON b.id=bu.building_id
    WHERE h.household_ref='KW-BP03-INT-AUTOPROP' AND h.primary_property_id=b.property_id
  ) THEN RAISE EXCEPTION 'Household property was not derived from its unit'; END IF;
-END $;
+END $$;
 ROLLBACK;
