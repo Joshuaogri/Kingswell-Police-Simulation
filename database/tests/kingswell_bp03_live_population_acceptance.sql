@@ -53,12 +53,9 @@ WHERE a.is_current AND a.is_primary
 SELECT * FROM game.get_population_summary('KNG');
 
 -- 5. Business employee counts must match every BP-04 business estimate.
-SELECT sum(bp.estimated_employee_count) AS estimated_business_jobs,
-       count(op.id) AS actual_current_employment_links,
-       count(DISTINCT op.person_id) AS distinct_current_employees
-FROM game.business_profiles bp
-LEFT JOIN game.organisation_personnel op
-  ON op.organisation_id=bp.organisation_id AND op.is_current;
+SELECT (SELECT sum(estimated_employee_count) FROM game.business_profiles) AS estimated_business_jobs,
+       (SELECT count(*) FROM game.organisation_personnel WHERE is_current) AS actual_current_employment_links,
+       (SELECT count(DISTINCT person_id) FROM game.organisation_personnel WHERE is_current) AS distinct_current_employees;
 
 SELECT count(*) AS businesses_with_headcount_mismatch
 FROM (
@@ -77,10 +74,8 @@ FROM game.person_routines
 WHERE routine_category='sleep' AND routine_status='active'
 GROUP BY day_of_week ORDER BY day_of_week;
 
-SELECT count(*) AS weekday_work_routines,
-       count(DISTINCT person_id) AS employed_people_with_work_routines
-FROM game.person_routines
-WHERE routine_category='work' AND routine_status='active';
+SELECT (SELECT count(*) FROM game.organisation_personnel WHERE is_current)*5 AS expected_weekday_work_routines,
+       (SELECT count(*) FROM game.organisation_personnel WHERE is_current) AS employees_with_five_expected_workdays;
 
 SELECT count(*) AS employees_not_assigned_five_weekday_routines
 FROM (
