@@ -16,6 +16,8 @@
 | Primary + secondary property entrances | 1136 |
 | Weekday peak traffic profiles | 458 |
 | Explicit no-U-turn controls | 266 |
+| Signalised no-left/no-right movement bans | 16 |
+| Total active turn-control records | 282 |
 | Segments covered by patrol beats | 229 |
 
 All named roads have at least one connected segment. Every segment has local-grid line geometry and valid start/end junction references. All mapped segments are included in patrol-beat coverage.
@@ -382,7 +384,7 @@ The primary entrance layer is retained. An additional 480 secondary access point
 ## 8. Turn restrictions, traffic and road closures
 
 ### Turn restrictions
-`game.road_turn_restrictions` stores incoming segment, via-junction and outgoing segment combinations, restriction kind (prohibited or only), turn type, vehicle profiles, validity period and reason. The baseline has explicit no-immediate-U-turn controls at both ends of every two-way segment. The routing helper enforces vehicle-specific prohibited and only-turn rules.
+`game.road_turn_restrictions` stores incoming segment, via-junction and outgoing segment combinations, restriction kind (prohibited or only), turn type, vehicle profiles, validity period and reason. The baseline has explicit no-immediate-U-turn controls at both ends of every two-way segment (266 records). Eight signalised junctions also have authored movement bans: one prohibited left-turn and one prohibited right-turn movement at each junction (16 records). These public-traffic bans preserve police/emergency exemptions. The routing helper enforces vehicle-specific prohibited and only-turn rules.
 
 ### Scheduled traffic
 `game.road_segment_traffic_profiles` stores weekday morning and evening peak profiles for every segment. Profiles include applicable days, local clock interval, speed multiplier, fixed delay and vehicle applicability. The route engine applies these only when supplied with the fictional simulation timestamp; no fictional clock is started by geography tests.
