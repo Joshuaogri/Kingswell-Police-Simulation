@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1120" viewBox="0 0 1400 1120" role="img" aria-labelledby="title desc">
-<title id="title">Kingswell fictional city planning map v0.1</title>
-<desc id="desc">A schematic local-grid map of twelve proposed districts, major orbital and radial roads, a river and southern harbour edge. Not to scale.</desc>
+<title id="title">Kingswell in Asterfell — fictional city map</title>
+<desc id="desc">A schematic local-grid map of Kingswell, Asterfell, with twelve districts, arterial and neighbourhood streets, three explicit river bridges and southern harbour edge. Not to scale.</desc>
 <defs>
  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#d7d9d4" stroke-width="1"/></pattern>
  <style>
@@ -16,8 +16,8 @@
 </defs>
 <rect width="1400" height="1120" fill="#edf0e8"/>
 <rect x="70" y="85" width="1260" height="930" fill="url(#grid)" stroke="#45564b" stroke-width="4" rx="16"/>
-<text x="700" y="48" text-anchor="middle" font-family="sans-serif" font-size="28" font-weight="700" fill="#1d3026">KINGSWELL — MASTER CITY MAP v0.1</text>
-<text x="700" y="72" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#526258">Fictional local-grid planning schematic • North at top • proposed district layout</text>
+<text x="700" y="48" text-anchor="middle" font-family="sans-serif" font-size="28" font-weight="700" fill="#1d3026">KINGSWELL — ASTERFELL MASTER CITY MAP</text>
+<text x="700" y="72" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#526258">Asterfell • fictional local-grid schematic • North at top • district envelopes are planning areas</text>
 <!-- District envelopes -->
 <rect class="district" x="95" y="275" width="310" height="330" fill="#c9d9bd"/><text class="name" x="250" y="425">WESTHAVEN</text><text class="sub" x="250" y="452">KDW • Residential / mixed use</text>
 <rect class="district" x="405" y="100" width="310" height="230" fill="#c4d9c5"/><text class="name" x="560" y="205">NORTHGATE</text><text class="sub" x="560" y="232">KNA • Residential services</text>
@@ -46,10 +46,14 @@
 <!-- grid streets -->
 <g class="minor"><path d="M170 350H390 M170 430H390 M170 510H390 M170 590H390 M520 390H790 M520 470H790 M520 550H790 M930 350H1080 M930 430H1080 M930 510H1080 M930 590H1080 M520 800H790 M520 880H790"/></g>
 <g class="minorEdge"><path d="M170 350H390 M170 430H390 M170 510H390 M170 590H390 M520 390H790 M520 470H790 M520 550H790 M930 350H1080 M930 430H1080 M930 510H1080 M930 590H1080 M520 800H790 M520 880H790"/></g>
+<!-- explicit river bridge crossings; bridge strokes are shown over the river -->
+<g fill="none" stroke="#fff" stroke-width="13" stroke-linecap="square"><path d="M1080 315H1205 M1080 560H1205 M1080 800H1205"/></g>
+<g fill="none" stroke="#59645d" stroke-width="2"><path d="M1080 315H1205 M1080 560H1205 M1080 800H1205"/></g>
+<g font-family="sans-serif" font-size="12" font-weight="700" fill="#244b5a"><text x="1080" y="300">NORTH BRIDGE</text><text x="1080" y="545">RIVERSIDE BRIDGE</text><text x="1080" y="785">HARBOUR BRIDGE</text></g>
 <!-- airport runway and port -->
 <rect x="130" y="800" width="240" height="35" rx="4" fill="#65737a" transform="rotate(-8 250 817)"/><path d="M145 817H355" stroke="#fff" stroke-width="2" stroke-dasharray="12 9"/>
 <g fill="#627c84" stroke="#36545f" stroke-width="2"><rect x="850" y="900" width="110" height="30"/><rect x="975" y="900" width="110" height="30"/><rect x="1100" y="900" width="110" height="30"/></g>
 <text x="700" y="1035" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#2c5362">SOUTHERN COAST / HARBOUR APPROACH</text>
 <g transform="translate(1325 105)"><path d="M0 36L15 0L30 36L15 28Z" fill="#20382b"/><text x="15" y="55" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold">N</text></g>
-<text x="700" y="1080" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#536259">Schematic only. Exact district polygons, road centre-lines, junction topology and scale are defined in the geographic database.</text>
+<text x="700" y="1080" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#536259">Schematic only. Road topology is defined in the geographic database: 51 roads, 118 junctions, 151 segments, including three river bridges.</text>
 </svg>
