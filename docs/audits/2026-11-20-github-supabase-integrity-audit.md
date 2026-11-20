@@ -790,3 +790,12 @@ Classification: **intentional forward consolidation; exact historical parser rev
 The remote migration `link_witness_statements_to_interviews` and the GitHub file are canonically identical after normalising comments, whitespace and declaration formatting. The complete statement includes the witness-statement/interview link and the corresponding command integration; no substantive SQL difference was found.
 
 Classification: **exact canonical SQL match**. Retain both records unchanged.
+
+
+## 48. Content-led review of version 20261120145111 — arrest case/person variable disambiguation
+
+The remote migration replaces `game.execute_arrest_custody_command(...)` to correct ambiguous case/person references in the arrest authorization checks. The GitHub file at this version is comment-only and explicitly points to the consolidated 20261120144932 workflow migration as the clean-replay source.
+
+The consolidated GitHub executor uses the explicit `v_case_id` variable in the case-assignment and lead checks and does not retain the ambiguous `case_id=case_id` comparisons present in the earlier remote implementation.
+
+Classification: **bug-fix migration consolidated into the earlier GitHub workflow source**. The exact intermediate correction is not retained as a standalone patch, but its disambiguated logic is present in the earlier consolidated file. Preserve the current chronology; later arrest/custody fixes still require review.
