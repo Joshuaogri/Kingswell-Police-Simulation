@@ -42,7 +42,7 @@ begin
  ) into v_result;
  return v_result;
 end
-$function$
+$function$;
 
 revoke all on function game.get_case_review_dossier(text) from public,anon,authenticated;
 grant execute on function game.get_case_review_dossier(text) to service_role;
