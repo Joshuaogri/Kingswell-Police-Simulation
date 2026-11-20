@@ -51,3 +51,15 @@ Search is read-only. Links are separate immutable associations; they do not alte
 Reviews require an active officer attribution and initialized fictional clock. Each review is a separate append-only assessment with originating command and fictional time. A review does not rewrite the patrol record or prove that its contents are true. Review-history lookup does not advance fictional time.
 
 Regression: `database/tests/kingswell_patrol_intelligence_reviews.sql` and `database/tests/kingswell_patrol_intelligence_review_commands.sql`.
+
+
+## Case investigative leads and enquiries
+
+- `case lead create CASE_REF "TITLE" "DESCRIPTION" source SOURCE_TYPE by ACTOR_REF`
+- `case lead assign LEAD_REF to PERSONNEL_REF by ACTOR_REF`
+- `case lead assess LEAD_REF status STATUS priority PRIORITY confidence CONFIDENCE because "REASON" by ACTOR_REF`
+- `case enquiry record LEAD_REF by PERSONNEL_REF method METHOD action "ACTION" result "RESULT" outcome OUTCOME recorded_by ACTOR_REF`
+- `case leads CASE_REF`
+- `case enquiries LEAD_REF`
+
+Lead and enquiry records are linked to existing cases and personnel. Assignment, assessment and enquiry history is retained; enquiry records and history are append-only. These commands use the current fictional clock without advancing it. See `docs/operations/CASE-INVESTIGATIVE-LEADS.md` and `database/tests/kingswell_case_investigative_leads.sql`.
