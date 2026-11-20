@@ -910,3 +910,31 @@ Migrations:
 Operations guide: `docs/operations/TRIAL-PROCEEDINGS.md`.
 
 Current database total: **162 `game` tables**. The fictional clock remains uninitialized; no trial NPCs or records have been seeded.
+
+
+## Per-charge verdicts and sentencing — 2026-11-20
+
+**Deployed and regression-tested.** Added three private, RLS-enabled tables: `game.trial_verdicts`, `game.trial_sentences` and `game.trial_outcome_events`. Verdict, sentence and outcome history records are append-only.
+
+- A judge records a separate `guilty` or `not_guilty` verdict for each filed charge, with written reasons.
+- Verdicts require a matching active court case, scheduled trial hearing, assigned active judge, an already recorded plea, and no unresolved evidence tenders.
+- One first-instance verdict is permitted per charge. Later appeal decisions will be separate appellate records, not edits to the original.
+- Sentencing requires a guilty verdict, a concluded trial hearing, and a due sentencing hearing under the assigned active judge.
+- Sentence types: custodial, fine, community service, probation, conditional discharge, absolute discharge, other.
+- Custodial terms require positive fictional game days; fine sentences require a positive fictional currency amount.
+- Trial record retrieval now includes case-wide verdicts and sentences.
+
+Commands: `court verdict record` and `court sentence impose`. Both are registered in game help, routed through the shared idempotency ledger, and do not advance fictional time.
+
+**PASS:** rollback-only parser tests for guilty/not-guilty verdicts and custodial/fine sentences; regression checks for existing plea, court and prosecution parsers; help registration; command routing reaches the trial executor; no test ledger rows remain. Full seeded end-to-end NPC outcome tests are deferred because the game clock and NPC/court population are still uninitialized.
+
+Current database total: **165 `game` tables**, all **165/165 RLS-enabled**. Fictional clock remains NULL. No verdicts, sentences or outcome events were seeded.
+
+Migrations:
+- `20261120155709_charge_verdicts_and_sentencing.sql`
+
+Test:
+- `database/tests/kingswell_charge_verdicts_sentencing.sql`
+
+Guide:
+- `docs/operations/CHARGE-VERDICTS-SENTENCING.md`
