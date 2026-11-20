@@ -13,7 +13,7 @@ begin
  r:=game.execute_text_command('case review TEST-REVIEW-CASE by TEST-REVIEW-OFFICER','test-review-dossier-001',null,officer);
  if not coalesce((r->>'ok')::boolean,false) then raise exception 'dossier command failed: %',r; end if;
  if r#>>'{case,case_ref}'<>'TEST-REVIEW-CASE' then raise exception 'case identity absent'; end if;
- if jsonb_typeof(r->'leads') is null or jsonb_typeof(r->'evidence') is null or jsonb_typeof(r->'forensic_requests') is null or jsonb_typeof(r->'interviews') is null then raise exception 'dossier sections absent: %',r; end if;
+ if jsonb_typeof(r->'leads') is null or jsonb_typeof(r->'evidence') is null or jsonb_typeof(r->'forensic_requests') is null or jsonb_typeof(r->'interviews') is null or jsonb_typeof(r->'tasks') is null then raise exception 'dossier sections absent: %',r; end if;
  if not coalesce((game.execute_text_command('case review TEST-REVIEW-CASE by TEST-REVIEW-OFFICER','test-review-dossier-001',null,officer)->>'duplicate')::boolean,false) then raise exception 'idempotency replay failed'; end if;
  r:=game.execute_text_command('case review TEST-REVIEW-CASE by TEST-REVIEW-OUTSIDER','test-review-outsider-001',null,outsider);
  if coalesce((r->>'ok')::boolean,true) or r->>'code'<>'case_access_denied' then raise exception 'unassigned officer access should be rejected: %',r; end if;
