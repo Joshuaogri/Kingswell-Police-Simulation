@@ -1001,3 +1001,18 @@ Migrations:
 Test: `database/tests/kingswell_correctional_runtime.sql`
 
 Guide: `docs/operations/CORRECTIONAL-RUNTIME.md`
+
+
+### Correctional read-only access before game start — 2026-11-20
+
+**Implemented and regression-tested.** Corrected the correctional executor's blanket clock guard. The `prison record` and `prison facilities` commands are read-only and can now be used while the fictional clock remains uninitialized. Facility creation, admission, sentence-term changes and prisoner placement still require the initialized game clock.
+
+This allows inspection and preparation without choosing a start date or starting the simulation. The change does not initialize, reset or advance the clock.
+
+**PASS:** rollback-only test verifies both parser routes, the executor's narrow read-only exemption and that `game.simulation_state.current_game_time` remains NULL. No game records were created or changed. End-to-end record retrieval remains untested because there are no seeded correctional facility/admission/personnel records.
+
+Migration: `database/migrations/20261120161200_correctional_read_only_queries_without_clock.sql`
+
+Test: `database/tests/correctional_read_only_without_clock.sql`
+
+Guide: `docs/operations/CORRECTIONAL-RUNTIME.md`
