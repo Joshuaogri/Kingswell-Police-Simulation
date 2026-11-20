@@ -1444,3 +1444,20 @@ The 82 same-version/different-content pairs from run #6 have now been reviewed a
 - The read-only audit workflow remains manual-only and must stay free of deploy, repair, reset or write operations.
 
 Status: **same-version collision review complete; unmatched-version and cross-version content reconciliation remains open. Live Supabase remains unchanged.**
+
+
+## 91. Comparator correction — empty/comment-only migrations are not content matches
+
+A review of cross-version matches exposed a flaw in the run #6 comparator: comment-only migrations canonicalise to an empty string, and every empty string has the same SHA-256 digest. The previous comparator therefore treated unrelated empty/comment-only migration records as exact cross-version SQL matches. For example, the remote 20261120110246 record contains only two SQL comments (174 source characters; zero canonical SQL characters) and had been paired with unrelated comment-only repository migrations.
+
+The comparator is corrected in commit `6cb4c43d5569c97cdb7e93f950e5390e431c2603`:
+- Empty canonical SQL is excluded from content-hash matching.
+- Remote and repository empty/comment-only migrations are reported in separate arrays and counts.
+- Non-empty content matches and unmatched lists now exclude empty SQL.
+- Same-version comparisons still flag an empty-versus-non-empty collision and record both canonical character counts.
+
+Four unit tests were added in `tests/test_audit_supabase_migrations.py` (commit `cdfcd83e026ca033d25df9fb6768204f271964ec`) for comment-only records, cross-version matching, empty/non-empty same-version collisions and empty canonicalisation. The manual audit workflow now runs these tests before producing the reconciliation artifact (commit `1a33691579f171f92c255be4b2d0778c720fba55`).
+
+**Run #6 cross-version content-match counts are superseded for reconciliation purposes.** The 82 same-version collision investigations remain useful because they compare the actual same-version SQL statements, but the cross-version exact-content match totals and unmatched-version classifications must be regenerated with the corrected comparator.
+
+Next action: manually run the read-only workflow and review the new artifact before continuing cross-version reconciliation. The workflow remains manual-only and still contains no deploy, repair, reset or write operation. Live Supabase remains unchanged.
