@@ -34,7 +34,7 @@ INSERT INTO game.person_life_events(person_id,event_type,effective_on,details)
 SELECT id,'birth',date_of_birth,'{"source":"rollback integration test"}'::jsonb
 FROM game.persons WHERE person_ref LIKE 'KW-BP03-INT-%';
 DO $$
-DECLARE v_rejected boolean; v_household uuid; v_donor1 uuid; v_donor2 uuid; v_unit uuid; v_property uuid;
+DECLARE v_rejected boolean; v_household uuid; v_donor1 uuid; v_donor2 uuid; v_unit uuid; v_property uuid; v_person uuid;
 BEGIN
  IF (SELECT count(*) FROM game.person_addresses WHERE person_id IN
      (SELECT id FROM game.persons WHERE person_ref LIKE 'KW-BP03-INT-%')
@@ -70,5 +70,41 @@ BEGIN
   IF SQLERRM LIKE 'Household primary unit must be classified as a dwelling%' THEN v_rejected:=true; ELSE RAISE; END IF;
  END;
  IF NOT v_rejected THEN RAISE EXCEPTION 'Non-dwelling unit was accepted'; END IF;
-END $$;
+
+ -- A unit reference must not be paired with a different property.
+ SELECT a.person_id,a.building_unit_id,p.id INTO v_person,v_unit,v_property
+ FROM game.person_addresses a CROSS JOIN game.properties p
+ WHERE a.person_id IN (SELECT id FROM game.persons WHERE person_ref LIKE 'KW-BP03-INT-%')
+   AND a.is_current AND a.building_unit_id IS NOT NULL AND p.id<>a.property_id
+ LIMIT 1;
+ v_rejected:=false;
+ BEGIN
+  INSERT INTO game.person_addresses(person_id,property_id,building_unit_id,address_role,valid_from,is_current,is_primary)
+  VALUES(v_person,v_property,v_unit,'mailing','2020-01-01',false,false);
+ EXCEPTION WHEN raise_exception THEN
+  IF SQLERRM LIKE 'Person address property does not match its building unit%' THEN v_rejected:=true; ELSE RAISE; END IF;
+ END;
+ IF NOT v_rejected THEN RAISE EXCEPTION 'Mismatched property/unit address was accepted'; END IF;
+
+ -- One active household may occupy a dwelling unit; another cannot duplicate it.
+ SELECT primary_building_unit_id,primary_property_id INTO v_unit,v_property
+ FROM game.households WHERE household_ref LIKE 'KW-BP03-INT-HH-%' LIMIT 1;
+ v_rejected:=false;
+ BEGIN
+  INSERT INTO game.households(household_ref,household_type,primary_property_id,primary_building_unit_id,formed_on)
+  VALUES('KW-BP03-INT-DUP','family',v_property,v_unit,'2020-01-01');
+ EXCEPTION WHEN unique_violation THEN v_rejected:=true;
+ END;
+ IF NOT v_rejected THEN RAISE EXCEPTION 'Duplicate active household for a dwelling was accepted'; END IF;
+
+ -- Supplying only a unit reference must derive the canonical property.
+ SELECT unit_id INTO v_unit FROM bp03_u WHERE unit_no=26;
+ INSERT INTO game.households(household_ref,household_type,primary_building_unit_id,formed_on)
+ VALUES('KW-BP03-INT-AUTOPROP','family',v_unit,'2020-01-01');
+ IF NOT EXISTS(
+   SELECT 1 FROM game.households h JOIN game.building_units bu ON bu.id=h.primary_building_unit_id
+   JOIN game.buildings b ON b.id=bu.building_id
+   WHERE h.household_ref='KW-BP03-INT-AUTOPROP' AND h.primary_property_id=b.property_id
+ ) THEN RAISE EXCEPTION 'Household property was not derived from its unit'; END IF;
+END $;
 ROLLBACK;
