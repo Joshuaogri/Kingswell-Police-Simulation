@@ -17,7 +17,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Runtime foundation and multiple police/justice/correctional/population/property/business systems implemented | Private `game` schema; live audit snapshot: 185 tables, 627 foreign keys, 912 indexes; RLS enabled on all 185 tables; Kingswell BP-02 geography and BP-04 property/business layer seeded; BP-03 life/household/routine foundation deployed; no persistent persons, households, cases, incidents, evidence, dispatch calls or route records; fictional clock remains uninitialized |
+| Database schema | Runtime foundation and multiple police/justice/correctional/population/property/business systems implemented | Private `game` schema; live audit snapshot: 185 tables, 629 foreign keys, 915 indexes; RLS enabled on all 185 tables; Kingswell BP-02 geography and BP-04 property/business layer seeded; BP-03 life/household/routine foundation deployed; no persistent persons, households, cases, incidents, evidence, dispatch calls or route records; fictional clock remains uninitialized |
 | Application/gameplay code | In progress | Database-backed text command interpreter, controlled clock, emergency-call/dispatch/arrival, scene-control, field-report and resource-request workflows implemented; full domain handlers remain outstanding |
 | Runtime regression tests | Implemented; transaction smoke-tested | Runtime, dispatch, scene, evidence, forensic laboratory, geography and police-facility/patrol-geography SQL regression scripts cover implemented slices; test fixtures roll back |
 
@@ -1111,19 +1111,26 @@ Resolved the open processing-model choice: every person has one persistent canon
 - Case, incident-party, dispatch-caller and incident-property resident links automatically promote relevant people to full simulation.
 
 ### Regression
-`database/tests/kingswell_population_life_foundation.sql` passed as a rollback-only live Supabase test. It verifies identity, addresses, households, overlapping categories, distinct population counts, relationships, routines, birth/death life events, death-related membership closure, append-only history, monotonic promotions, police-relevance auto-promotion, activity clock guards, RLS and the uninitialised clock. Post-test counts remain zero for persons, households, memberships, routines, life events, activity events and promotions.
+The following live Supabase regression scripts passed and rolled back all fixtures:
+- `database/tests/kingswell_population_life_foundation.sql` — identity, addresses, households, overlapping categories, distinct population counts, relationships, routines, birth/death events, death-related membership closure, append-only history, monotonic promotions, automatic police-relevance promotion, activity clock guards, RLS and uninitialised clock.
+- `database/tests/kingswell_bp03_dwelling_unit_allocation.sql` — exact unit/property links, household-to-unit consistency, household capacity enforcement, rejection of non-dwelling allocation and rollback.
+- `database/tests/kingswell_bp03_population_identity_scale.sql` — 100,000 unique canonical person identities inserted and verified in one rollback-only scale test.
+The existing BP-02 geography, property/address, police/patrol geography, weighted-routing, dispatch-route and BP-04 property/business regression suites also passed after the BP-03 schema change. A 100-person integrated household/address/relationship/routine/life-event regression passed. A complete 100,000-person linked-record end-to-end load was not confirmed: the database execution window timed out during that larger test. Do not mark the full population seed acceptance as passed on the basis of identity-only scale testing.
 
 ### Applied migrations
 - `20261120162714_bp03_persistent_population_households_routines_and_life`
 - `20261120162748_bp03_population_summary_and_person_provenance_hardening`
 - `20261120162835_bp03_population_summary_requires_current_household_members`
 - `20261120163022_bp03_end_current_memberships_on_person_death`
+- `20261120171701_bp03_exact_dwelling_unit_allocation_and_capacity_reconciliation`
 
-### Deliberate dependency; no premature population seed
-BP-04 now provides 24,512 units classified as residential across the 656-property city inventory. This supports the 100,000-person baseline at approximately 4.08 residents per dwelling. The former housing-capacity blocker is cleared; the next BP-03 task is the 100,000-person seed and household/address allocation using only canonical BP-04 property, building, unit and address references. No duplicate properties, buildings, units or addresses will be created under BP-03. Routine execution is owned by the runtime scheduling work in BP-35; this foundation does not advance fictional time.
+### Housing capacity and population seed state
+The 24,512 dwelling profiles previously recorded only four occupants each, giving 98,048 places. The BP-03 reconciliation now sets five-person planning capacity in 244 dwellings in each of the eight residential neighbourhoods: 1,952 dwellings at five occupants and 22,560 at four, for exactly 100,000 places. Households and person address history now store exact canonical building-unit IDs. Triggers enforce dwelling classification, property/unit agreement, one active primary household per dwelling and maximum household occupancy.
+
+The full population seed was tested only in rollback-only slices; no persistent persons, households, employment links, routines or life events were left in the live database. The live 100,000-person seed remains uncommitted, and its complete linked-record end-to-end load test remains open. No duplicate properties, buildings, units or addresses are created under BP-03. Routine execution remains owned by BP-35; this foundation does not advance fictional time.
 
 ### Live structural/health snapshot
-180 private `game` tables; 619 foreign keys; 889 indexes; RLS enabled on all 180 tables; Supabase health advisors returned no findings. No persistent test population was created. Fictional clock remains NULL/uninitialised.
+185 private `game` tables; 629 foreign keys; 915 indexes; RLS enabled on all 185 tables; Supabase health advisor returned no findings. No persistent test population was created. Fictional clock remains NULL/uninitialised.
 
 
 ## BP-04 — Primate-city properties, businesses and neighbourhood maps — delivered 2026-11-20
