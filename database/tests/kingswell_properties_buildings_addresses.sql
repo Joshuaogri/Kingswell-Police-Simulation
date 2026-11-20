@@ -7,14 +7,14 @@ begin
  if v_city is null then raise exception 'Kingswell city missing'; end if;
  select count(*) into v_n from game.properties where city_id=v_city and property_ref not like 'KNG-P-RH%' and property_ref not like 'KNG-P-CM%';
  if v_n<>480 then raise exception 'Expected 480 properties; found %',v_n; end if;
- select count(*) into v_n from game.buildings b join game.properties p on p.id=b.property_id where p.city_id=v_city;
- if v_n<>480 then raise exception 'Expected 480 buildings; found %',v_n; end if;
- select count(*) into v_n from game.building_units u join game.buildings b on b.id=u.building_id join game.properties p on p.id=b.property_id where p.city_id=v_city;
- if v_n<>712 then raise exception 'Expected 712 building units; found %',v_n; end if;
- select count(*) into v_n from game.property_addresses a join game.properties p on p.id=a.property_id where p.city_id=v_city;
- if v_n<>480 then raise exception 'Expected 480 addresses; found %',v_n; end if;
- select count(*) into v_n from game.property_access_points a join game.properties p on p.id=a.property_id where p.city_id=v_city;
- if v_n<>480 then raise exception 'Expected 480 access points; found %',v_n; end if;
+ select count(*) into v_n from game.buildings b join game.properties p on p.id=b.property_id where p.city_id=v_city and p.property_ref not like 'KNG-P-RH%' and p.property_ref not like 'KNG-P-CM%';
+ if v_n<>480 then raise exception 'Expected 480 baseline buildings; found %',v_n; end if;
+ select count(*) into v_n from game.building_units u join game.buildings b on b.id=u.building_id join game.properties p on p.id=b.property_id where p.city_id=v_city and p.property_ref not like 'KNG-P-RH%' and p.property_ref not like 'KNG-P-CM%';
+ if v_n<>712 then raise exception 'Expected 712 baseline building units; found %',v_n; end if;
+ select count(*) into v_n from game.property_addresses a join game.properties p on p.id=a.property_id where p.city_id=v_city and p.property_ref not like 'KNG-P-RH%' and p.property_ref not like 'KNG-P-CM%';
+ if v_n<>480 then raise exception 'Expected 480 baseline addresses; found %',v_n; end if;
+ select count(*) into v_n from game.property_access_points a join game.properties p on p.id=a.property_id where p.city_id=v_city and p.property_ref not like 'KNG-P-RH%' and p.property_ref not like 'KNG-P-CM%';
+ if v_n<>480 then raise exception 'Expected 480 baseline access points; found %',v_n; end if;
  select count(*) into v_bad from game.properties where city_id=v_city
  and (x_m<0 or x_m>20000 or y_m<0 or y_m>16000);
  if v_bad<>0 then raise exception 'Properties outside the canonical Kingswell local grid: %',v_bad; end if;
