@@ -374,27 +374,137 @@ BP-03 is complete when all of the following are verified:
 
 ## BP-04 — Buildings, Properties, Businesses and Organisations
 
-### Physical places
-The property model may include land parcels, properties, buildings, building sections, units, rooms and internal spaces, external areas and access points. The level of detail depends on its use in play.
+### City role and development character
+Kingswell is Asterfell's primate city: the country's dominant political, financial, commercial, cultural, entertainment, logistics and transport centre. It concentrates national headquarters and high-order services, not merely a larger version of an ordinary town. Its property stock must visibly reflect that role while retaining neighbourhood life, housing and ordinary services.
 
-### Businesses
-Business types include finance, logistics, transport, manufacturing, retail, wholesale, hospitality, professional services, construction and technology, with room for additional types when justified.
+The city is the principal seat of national government and finance; a major centre for banking, insurance, investment, corporate services, media, hospitality, shopping and entertainment; and the national gateway for maritime trade, import/export, container freight, warehousing, rail, road, bus and air transport. Foundry Park and East Logistics support manufacturing, distribution and freight. South Harbour and Aerodrome connect the city to maritime and air networks. The city contains both public/institutional estates and privately held property; a primate city is not assumed to be wholly privately owned.
 
-### Distinct roles
-The game must distinguish property owner, landlord, tenant, business owner, director, manager, employee, contractor, security provider, supplier and customer. These are different relationships and must not be collapsed into one generic ownership field.
+### Canonical identity and no-duplication rules
+- The existing `game.properties`, `game.buildings`, `game.building_units`, `game.property_addresses`, `game.property_access_points`, `game.organisations` and `game.organisation_locations` remain the canonical records.
+- New data extends those identities. One property is not recreated as a second parcel, one building is not recreated as a second building, and one business is not recreated as a duplicate organisation.
+- Property owners, landlords, tenants, property managers, operating businesses and public institutions are distinct relationships. They must not be collapsed into one generic ownership field.
+- A business may operate at multiple sites. A property may contain many business premises. A business site must resolve to its property and, where applicable, its exact building unit.
+- Addresses, roads, districts, neighbourhoods and access points reuse the BP-02 geographic identities. No second road/address/neighbourhood system is permitted.
 
-### Flexible occupancy
-One business may operate at multiple properties. One property may contain multiple businesses or organisations. Occupancy, tenancy, ownership, employment and service relationships must be traceable over time.
+### Current seeded inventory
+The original BP-02 baseline of 480 properties, 480 buildings, 712 units, 480 addresses and 480 access points is preserved. BP-04 expands that baseline to:
 
-### Public institutions
-The wider world includes government offices, parliament, ministries, departments, police facilities, courts, prosecution, corrections, customs/immigration, hospitals, fire/rescue, education, transport authorities and regulators. These bodies are represented deeply enough to support policing, without turning the project into a full government or society simulator.
+| Inventory | Current total |
+|---|---:|
+| Properties | 656 |
+| Buildings | 656 |
+| Building units/premises | 26,888 |
+| Structured primary addresses | 656 |
+| Primary road-linked access points | 656 |
+| Detailed property profiles | 656 |
+| Detailed building profiles | 656 |
+| Detailed unit profiles | 26,888 |
+| Businesses | 1,452 |
+| Public institutional site records | 25 |
+| Current organisation locations | 1,477 |
+| Property interest/title/management records | 1,608 |
 
-### Police uses
-Locations and organisations support incident recording, occupancy enquiries, employee identification, ownership checks, CCTV and security enquiries, access records, commercial relationships, lawful in-game records requests and property-related processes.
+The expansion adds 96 residential towers (12 in each of eight residential neighbourhoods) and 80 multi-tenant commercial centres (five in each of sixteen commercial, civic, industrial, logistics, transport and gateway neighbourhoods). Each residential tower has 32 floors and 256 canonical unit records: six apartments and two retail premises on its ground floor, then eight apartments on each upper floor. This produces 24,384 tower apartments. Together with the original residential units, Kingswell now has 24,512 units classified as residential. At an average of about 4.08 residents per dwelling, this provides a credible planning capacity for the 100,000-person city baseline; actual household allocation remains BP-03 work.
 
-### Acceptance conditions
-The game can establish who owns, occupies, operates, manages and works at a place, including historical dates; it can represent shared premises and multi-site organisations; and it can connect relevant people and places to incidents and cases.
+The 80 commercial centres each contain 20 individually addressable business units (1,600 total). The 192 tower podium shops and 160 existing Riverside mixed-use premises are also occupied by neighbourhood-scale businesses. These are extensions to existing buildings and units, not duplicate premises.
 
+### Detailed property dossiers
+Every canonical property has a one-to-one `property_profiles` record, extending the base parcel record with:
+- cadastral parcel number, title number and cadastral block;
+- zoning code, permitted uses and development intensity;
+- tenure type, heritage status, flood exposure and contamination status;
+- assessed land and improvement values, fictional currency, annual property charge and insurance value;
+- electricity, water, sewerage, telecommunications and other utility connection profile;
+- perimeter/security, access control, CCTV and alarm profile;
+- fire-service access, detection, suppression and hydrant profile;
+- accessibility information and public/customer access classification;
+- local-grid parcel outline, map label, site description, planning notes and assessment date.
+
+Property ownership and control history is held in `property_interest_records`. It distinguishes registered owner, beneficial owner, freeholder, leaseholder, landlord, mortgagee, property manager, receiver and other recorded interests. Each property currently has one registered-owner entry. The owner may be a person or organisation, never both in the same interest record. The current seed uses 12 private property-holding groups and the appropriate public authorities for civic, health/education, port and aviation estates. Separate landlord and property-manager records are maintained where applicable.
+
+### Detailed building dossiers
+Every canonical building has a one-to-one `building_profiles` record covering architectural style, structural system, roof form, exterior materials, basement levels, gross floor area, estimated height, construction/renovation years, condition, lifts, stairwells, fire compartments, sprinklers, alarms, backup generation, CCTV, access control, loading bays, dock doors, parking, service yard, floor directory, footprint outline and building systems.
+
+The building record retains its own name, building type, floor count, position, footprint dimensions/area, construction type and occupancy state. Tower, office, market, industrial, logistics, port, aviation and transport buildings receive distinct types and descriptions.
+
+### Detailed unit and premises dossiers
+Every canonical unit has a one-to-one `building_unit_profiles` record linked to its existing `building_units` identity. It includes floor number, suite code, use class, internal area, occupancy capacity, bedrooms/bathrooms where relevant, utility-meter references, access notes, security zone, condition and description.
+
+A unit may be a dwelling, office suite, warehouse bay, industrial unit, retail unit, transport service unit, whole premises or mixed-use premises. The tower podium shops are represented by converting two existing ground-floor unit records per tower to retail use; no new duplicate unit identities are created. Riverside's 160 original mixed-use unit records now support neighbourhood businesses while retaining their mixed-use classification.
+
+### Business and organisation register
+The canonical business identity is an existing `game.organisations` record with a one-to-one `business_profiles` extension. Each profile includes a unique business number, trading name, sector/subsector, size, ownership form, incorporation date, estimated employee count, turnover band, import/export activity, principal goods, service description, trading hours, cash-handling profile, security arrangements, trade profile, fictional website domain and notes.
+
+The 1,452-business register covers:
+- finance, banking, insurance, investment and capital markets (150);
+- import/export and international trading (130);
+- logistics, freight forwarding, warehousing and distribution (170);
+- transport, passenger services, fleet and mobility (100);
+- manufacturing and industrial production (100);
+- wholesale trade (100);
+- retail (100);
+- hospitality, hotels, nightlife, entertainment and events (80);
+- professional and corporate services (60);
+- technology and media (50);
+- construction and property development (40);
+- property management (20);
+- neighbourhood services (352), including groceries, pharmacies, cafés, restaurants, personal care, laundries, repair shops, fitness, childcare, books/stationery, hardware, clinics and Riverside mixed-use businesses.
+
+The business register has an estimated 43,412 employee positions. These are workforce estimates on business profiles, not yet 43,412 individual NPC identities. BP-03 creates and manages the actual people, employment links, households and daily lives. No employee NPCs are silently duplicated or created by BP-04.
+
+### Public institutions and city infrastructure
+The institutional register includes Parliament, the Presidency, Cabinet Secretariat, national ministries, Central Bank, Securities and Exchange Commission, Revenue Authority, Customs Service, Kingswell City Authority, Port Authority, Airport Authority, National Rail Authority, Metropolitan Transit Corporation, Metropolitan Hospital, National University, Fire and Rescue, National Archives, Export Promotion Agency, Maritime and Trade Commission and Public Broadcasting Service. Twenty-five public/institutional headquarters have current site records. Twelve property-holding organisations provide the private estate ownership/management layer.
+
+The city has a substantial port/airport/rail/road freight and passenger economy. Port and customs support, cargo handling, distribution parks, manufacturing estates, central finance, civic administration and entertainment are reflected in both land-use records and business placement. These are fictional game organisations and properties.
+
+### Geographic and neighbourhood map records
+The city grid remains 20 km east–west by 16 km north–south, in fictional local metres, north-up. The coordinate system remains `KNG-MAP-0.1`; the city property-map layer is now `KNG-MAP-0.2`. All 656 properties have district/neighbourhood membership, road/frontage-segment references, parcel coordinates, a structured primary address and a primary access point connected to an existing road segment and nearest junction.
+
+Property and building outlines are stored as local-grid JSON coordinate rings/footprints. They are planning-level schematic geometry, not surveyed cadastral boundaries. New property centres are inside the 20,000 m × 16,000 m city grid; the regression test confirms no new parcel centre lies within 60 m of another property centre. The city map does not introduce new districts, neighbourhoods, roads or junctions.
+
+The neighbourhood distribution is deliberately mixed:
+- Westhaven and Northgate are high-density residential districts with tower podium shops and daily services.
+- University Heights combines campus and hospital institutions with high-density student, staff and residential accommodation and local shops.
+- Riverside combines high-rise housing, 160 existing mixed-use premises, riverfront hospitality and a substantial neighbourhood service economy.
+- Civic Quarter and Central Exchange contain ministries, public institutions, financial services, corporate offices and professional firms.
+- Market Ward is a wholesale, retail and food-trade centre.
+- Foundry Park is manufacturing and industrial business property.
+- East Logistics and South Harbour concentrate warehousing, freight, import/export, customs and port-support operators.
+- Central Terminal and Aerodrome serve national passenger, fleet, rail, bus and aviation activity.
+
+The detailed 24-neighbourhood atlas is maintained in `docs/geography/KINGSWELL-NEIGHBOURHOOD-ATLAS.md`. Read-only map data is available through `game.get_neighbourhood_property_map(neighbourhood_code)`.
+
+### Property, map and business game commands
+The text-first game interface exposes these read-only commands (each requires an active fictional police personnel reference):
+- `property record PROPERTY_REF by PERSONNEL_REF` — full parcel, address, access, ownership, building, unit and occupier dossier.
+- `property map NEIGHBOURHOOD_CODE by PERSONNEL_REF` — neighbourhood map data, all property outlines, addresses, access points, buildings, unit counts and occupiers.
+- `property summary by PERSONNEL_REF` — citywide and district-level property/business summary.
+- `business record BUSINESS_NUMBER by PERSONNEL_REF` — full business profile and linked operating sites.
+- `business directory by PERSONNEL_REF` — business directory, up to 500 entries.
+- `business directory sector SECTOR by PERSONNEL_REF` — filtered sector directory.
+- `business directory district DISTRICT_CODE by PERSONNEL_REF` — district directory.
+- `business directory search "TEXT" by PERSONNEL_REF` — name/number search.
+
+These are read-only, idempotent game commands. They do not initialise or advance fictional time. Existing correctional, police, case and dispatch command fallbacks remain intact.
+
+### Acceptance and test conditions
+BP-04 is complete when:
+1. The original BP-02 480-property/480-building/712-unit/480-address/480-access baseline remains intact and every added record extends the same canonical entities.
+2. The city contains 656 properties/buildings, 26,888 units, 656 primary addresses and 656 primary access points.
+3. Every property, building and unit has exactly one detailed profile.
+4. All properties have a current registered owner; owner, landlord, tenant and property-manager relationships are distinct and traceable.
+5. All 1,452 businesses have a canonical organisation identity, business profile and current site linked to a specific property/unit.
+6. Public institutions have current premises records; business premises do not collide with each other.
+7. Every address and access point resolves to the correct property, and every access point resolves to a road segment and nearest endpoint junction.
+8. New property centres lie within the city grid and do not collide with existing property centres.
+9. Property, neighbourhood-map, business-record, directory and city-summary query functions return complete linked data.
+10. Text command parsing, active-officer access, help registration, idempotency and existing command fallback chains pass regression.
+11. RLS remains enabled on every private game table; no new table is exposed to anonymous/authenticated roles.
+12. All tests are rollback-only and leave no test NPCs, officers, command records, route calculations or clock changes.
+
+**BP-04 status:** Implemented and regression-tested.  
+**Population dependency:** The residential capacity required for the 100,000-person BP-03 baseline is now available. BP-03 can proceed with household/address allocation and individual population seeding before BP-05.  
+**Fictional setting:** All people, properties, organisations, businesses, values, title records, dates, trade activity and map geometry are fictional game data.
 ## BP-05 — Police Architecture
 
 ### Confirmed organisational model
