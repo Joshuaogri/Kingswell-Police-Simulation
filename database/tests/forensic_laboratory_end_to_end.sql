@@ -6,8 +6,8 @@ declare
  p1 uuid; p2 uuid; p3 uuid; p4 uuid;
  pp1 uuid; pp2 uuid; pp3 uuid; pp4 uuid; unit_id uuid;
  case_id uuid; evidence_id uuid;
- r jsonb; method_ref text := 'KW-TEST-METHOD-DNA'; request_ref text;
- submission_ref text; examination_ref text; finding_ref text; report_ref text;
+ r jsonb; method_ref text := 'KW-TEST-METHOD-DNA'; v_request_ref text;
+ v_submission_ref text; v_examination_ref text; v_finding_ref text; v_report_ref text;
 begin
  r:=game.submit_command('Initialize forensic laboratory test clock','initialize_clock',
    '{"start_at":"2036-05-12T09:00:00Z"}'::jsonb,'forensic-lab-clock-test-0001',null,null);
@@ -67,70 +67,70 @@ begin
    'scope','Examine the submitted swab only.','legal_basis','Fictional test authority',
    'priority',2,'context','Synthetic regression evidence.'),pp1);
  if r->>'ok'<>'true' then raise exception 'Forensic request failed: %',r; end if;
- request_ref:=r->>'request_ref';
+ v_request_ref:=r->>'v_request_ref';
 
  r:=game.execute_forensic_action(null,'triage_forensic_request',
-   jsonb_build_object('personnel_ref','FL-PP-001','request_ref',request_ref,
+   jsonb_build_object('personnel_ref','FL-PP-001','v_request_ref',v_request_ref,
    'decision','accept','notes','Accepted for test workflow.'),pp1);
  if r->>'ok'<>'true' then raise exception 'Request triage failed: %',r; end if;
 
  r:=game.execute_forensic_action(null,'receive_forensic_submission',
-   jsonb_build_object('personnel_ref','FL-PP-001','request_ref',request_ref,
+   jsonb_build_object('personnel_ref','FL-PP-001','v_request_ref',v_request_ref,
    'evidence_ref','KW-EVID-FL-TEST','receiver_ref','FL-PP-002',
    'from_location','Evidence locker A','lab_location','Test laboratory intake',
    'condition','Packaging intact','seal_condition','intact','discrepancy','none'),pp1);
  if r->>'ok'<>'true' then raise exception 'Laboratory receipt failed: %',r; end if;
- submission_ref:=r->>'submission_ref';
+ v_submission_ref:=r->>'v_submission_ref';
 
  r:=game.execute_forensic_action(null,'assign_forensic_examiner',
-   jsonb_build_object('personnel_ref','FL-PP-001','request_ref',request_ref,
-   'submission_ref',submission_ref,'method_ref',method_ref,'examiner_ref','FL-PP-003',
+   jsonb_build_object('personnel_ref','FL-PP-001','v_request_ref',v_request_ref,
+   'v_submission_ref',v_submission_ref,'method_ref',method_ref,'examiner_ref','FL-PP-003',
    'propositions','The material may or may not yield a usable profile.'),pp1);
  if r->>'ok'<>'true' then raise exception 'Examiner assignment failed: %',r; end if;
- examination_ref:=r->>'examination_ref';
+ v_examination_ref:=r->>'v_examination_ref';
 
  r:=game.execute_forensic_action(null,'start_forensic_examination',
-   jsonb_build_object('personnel_ref','FL-PP-003','examination_ref',examination_ref),pp3);
+   jsonb_build_object('personnel_ref','FL-PP-003','v_examination_ref',v_examination_ref),pp3);
  if r->>'ok'<>'true' then raise exception 'Examination start failed: %',r; end if;
 
  r:=game.execute_forensic_action(null,'record_forensic_findings',
-   jsonb_build_object('personnel_ref','FL-PP-003','examination_ref',examination_ref,
+   jsonb_build_object('personnel_ref','FL-PP-003','v_examination_ref',v_examination_ref,
    'observations','A synthetic test profile was detected.',
    'interpretation','The test material yielded a profile suitable for the exercise.',
    'propositions','Profile recovery is possible from this synthetic material.',
    'limitations','No comparison sample is supplied; no source attribution is possible.',
    'outcome','inconclusive'),pp3);
  if r->>'ok'<>'true' then raise exception 'Finding record failed: %',r; end if;
- finding_ref:=r->>'finding_ref';
+ v_finding_ref:=r->>'v_finding_ref';
 
  r:=game.execute_forensic_action(null,'review_forensic_findings',
-   jsonb_build_object('personnel_ref','FL-PP-003','finding_ref',finding_ref,
+   jsonb_build_object('personnel_ref','FL-PP-003','v_finding_ref',v_finding_ref,
    'review_type','technical','decision','approved','notes','Self-review must not be permitted.'),pp3);
  if r->>'code'<>'review_invalid' then raise exception 'Examiner self-review was not rejected: %',r; end if;
 
  r:=game.execute_forensic_action(null,'review_forensic_findings',
-   jsonb_build_object('personnel_ref','FL-PP-004','finding_ref',finding_ref,
+   jsonb_build_object('personnel_ref','FL-PP-004','v_finding_ref',v_finding_ref,
    'review_type','independent','decision','approved',
    'notes','Independent qualified review completed; limitations retained.'),pp4);
  if r->>'ok'<>'true' then raise exception 'Independent review failed: %',r; end if;
 
  r:=game.execute_forensic_action(null,'issue_forensic_report',
-   jsonb_build_object('personnel_ref','FL-PP-001','request_ref',request_ref,
+   jsonb_build_object('personnel_ref','FL-PP-001','v_request_ref',v_request_ref,
    'summary','Synthetic test report issued.',
    'report_body','Findings are inconclusive and limited to the synthetic material; no legal conclusion is drawn.'),pp1);
  if r->>'ok'<>'true' then raise exception 'Report issue failed: %',r; end if;
- report_ref:=r->>'report_ref';
+ v_report_ref:=r->>'v_report_ref';
 
- if (select fr.status from game.forensic_requests fr where fr.request_ref=request_ref)<>'reported' then
+ if (select fr.status from game.forensic_requests fr where fr.v_request_ref=v_request_ref)<>'reported' then
    raise exception 'Request did not reach reported state';
  end if;
- if (select fs.status from game.forensic_lab_submissions fs where fs.submission_ref=submission_ref)<>'received' then
+ if (select fs.status from game.forensic_lab_submissions fs where fs.v_submission_ref=v_submission_ref)<>'received' then
    raise exception 'Submission did not reach received state';
  end if;
- if (select fe.status from game.forensic_examinations fe where fe.examination_ref=examination_ref)<>'completed' then
+ if (select fe.status from game.forensic_examinations fe where fe.v_examination_ref=v_examination_ref)<>'completed' then
    raise exception 'Examination did not reach completed state';
  end if;
- if (select frp.status from game.forensic_reports frp where frp.report_ref=report_ref)<>'issued' then
+ if (select frp.status from game.forensic_reports frp where frp.v_report_ref=v_report_ref)<>'issued' then
    raise exception 'Report was not issued';
  end if;
  if not exists(select 1 from game.evidence_transfers et where et.evidence_id=evidence_id
