@@ -1369,3 +1369,10 @@ Classification: **matching evidence-recovery handler; command routing/help mater
 The remote and repository migration define the same eight forensic-laboratory tables. All eight tables have matching column counts and names. Both define the same seven indexes and enable row-level security on the same eight tables. The remote expresses more constraints inline, while the repository reconstruction emits explicit named constraints and uses a different column/DDL ordering.
 
 Classification: **reconstructed forensic DDL with matching table/column/index/RLS inventory**. Constraint-expression parity remains part of the final schema comparison; no application function is introduced by this migration. Retain the existing file and remote history.
+
+
+## 85. Content-led review of version 20261120104208
+
+The complete remote and GitHub SQL for `forensic_laboratory_commands_and_review_workflow` is canonically identical after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults, `search_path` declarations and concatenation-operator spacing.
+
+Classification: **canonical SQL match after formatting normalisation**. No substantive forensic command, examination/review workflow, event, permission or command-routing difference was identified. Retain the existing file and remote history.
