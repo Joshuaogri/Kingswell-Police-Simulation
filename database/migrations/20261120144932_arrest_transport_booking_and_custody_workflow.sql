@@ -216,7 +216,7 @@ begin
  elsif p_type='transport_arrest' then
   select * into v_arrest from game.arrests where arrest_ref=p->>'arrest_ref' for update;
   if v_arrest.id is null or v_arrest.status<>'arrested' then return jsonb_build_object('ok',false,'code','arrest_not_transportable');end if;
-  if v_arrest.arresting_personnel_id<>p_actor_id and not exists(select 1 from game.case_assignments ca where ca.case_id=v_arrest.case_id and ca.personnel_id=p_actor_id and ca.status='active' and ca.released_at is null) then return jsonb_build_object('ok',false,'code','case_access_denied');end if;
+  if v_arrest.arresting_personnel_id<>p_actor_id and not exists(select 1 from game.case_assignments ca where ca.case_id=v_arrest.case_id and ca.personnel_id=p_actor_id and ca.status='active' and ca.released_at is null) and not exists(select 1 from game.cases c where c.id=v_arrest.case_id and c.lead_personnel_id=p_actor_id) then return jsonb_build_object('ok',false,'code','case_access_denied');end if;
   v_minutes:=coalesce((p->>'duration_minutes')::integer,0);
   if nullif(btrim(p->>'destination'),'') is null or nullif(btrim(p->>'vehicle'),'') is null or nullif(btrim(p->>'handover'),'') is null or v_minutes not between 1 and 240 then return jsonb_build_object('ok',false,'code','transport_details_incomplete','message','Destination, vehicle, handover and a 1–240 minute duration are required.');end if;
   v_arrival:=n+make_interval(mins=>v_minutes);
@@ -229,6 +229,7 @@ begin
  elsif p_type='book_custody' then
   select * into v_arrest from game.arrests where arrest_ref=p->>'arrest_ref' for update;
   if v_arrest.id is null or v_arrest.status<>'transporting' then return jsonb_build_object('ok',false,'code','transport_arrival_required');end if;
+  if v_arrest.arresting_personnel_id<>p_actor_id and not exists(select 1 from game.case_assignments ca where ca.case_id=v_arrest.case_id and ca.personnel_id=p_actor_id and ca.status='active' and ca.released_at is null) and not exists(select 1 from game.cases c where c.id=v_arrest.case_id and c.lead_personnel_id=p_actor_id) then return jsonb_build_object('ok',false,'code','case_access_denied');end if;
   if nullif(btrim(p->>'identity_check'),'') is null or nullif(btrim(p->>'risk'),'') is null or nullif(btrim(p->>'health'),'') is null or nullif(btrim(p->>'cell'),'') is null then return jsonb_build_object('ok',false,'code','booking_details_incomplete');end if;
   insert into game.custody_episodes(arrest_id,case_id,person_id,booking_officer_id,booked_at_game_time,identity_check,risk_assessment,health_welfare_screen,medication_disclosure,safeguarding_notes,cell_location,source_command_id)
   values(v_arrest.id,v_arrest.case_id,v_arrest.person_id,p_actor_id,n,p->>'identity_check',p->>'risk',p->>'health',nullif(p->>'medication',''),nullif(p->>'safeguarding',''),p->>'cell',p_command_id) returning * into ce;
@@ -238,6 +239,7 @@ begin
  elsif p_type='record_custody_property' then
   select * into ce from game.custody_episodes where custody_ref=p->>'custody_ref' for update;
   if ce.id is null or ce.status<>'in_custody' then return jsonb_build_object('ok',false,'code','custody_not_active');end if;
+  if ce.booking_officer_id<>p_actor_id and not exists(select 1 from game.case_assignments ca where ca.case_id=ce.case_id and ca.personnel_id=p_actor_id and ca.status='active' and ca.released_at is null) and not exists(select 1 from game.cases c where c.id=ce.case_id and c.lead_personnel_id=p_actor_id) then return jsonb_build_object('ok',false,'code','case_access_denied');end if;
   if nullif(btrim(p->>'item'),'') is null or nullif(btrim(p->>'condition'),'') is null or p->>'disposition' not in ('stored','retained_as_evidence','returned','transferred') then return jsonb_build_object('ok',false,'code','property_details_invalid');end if;
   if p->>'disposition'='retained_as_evidence' then
    insert into game.evidence_items(evidence_ref,case_id,collected_by_personnel_id,evidence_type,description,collected_at,collection_location,current_status,storage_location,metadata)
@@ -249,18 +251,21 @@ begin
  elsif p_type='custody_check' then
   select * into ce from game.custody_episodes where custody_ref=p->>'custody_ref';
   if ce.id is null or ce.status<>'in_custody' then return jsonb_build_object('ok',false,'code','custody_not_active');end if;
+  if ce.booking_officer_id<>p_actor_id and not exists(select 1 from game.case_assignments ca where ca.case_id=ce.case_id and ca.personnel_id=p_actor_id and ca.status='active' and ca.released_at is null) and not exists(select 1 from game.cases c where c.id=ce.case_id and c.lead_personnel_id=p_actor_id) then return jsonb_build_object('ok',false,'code','case_access_denied');end if;
   if p->>'check_type' not in ('welfare','health','risk','observation') or nullif(btrim(p->>'observation'),'') is null then return jsonb_build_object('ok',false,'code','check_details_invalid');end if;
   insert into game.custody_welfare_checks(custody_episode_id,check_type,officer_personnel_id,checked_at_game_time,observation,escalation,source_command_id) values(ce.id,p->>'check_type',p_actor_id,n,p->>'observation',nullif(p->>'escalation',''),p_command_id);
   return jsonb_build_object('ok',true,'custody_ref',ce.custody_ref,'check_type',p->>'check_type');
  elsif p_type='custody_event' then
   select * into ce from game.custody_episodes where custody_ref=p->>'custody_ref';
   if ce.id is null or ce.status<>'in_custody' then return jsonb_build_object('ok',false,'code','custody_not_active');end if;
+  if ce.booking_officer_id<>p_actor_id and not exists(select 1 from game.case_assignments ca where ca.case_id=ce.case_id and ca.personnel_id=p_actor_id and ca.status='active' and ca.released_at is null) and not exists(select 1 from game.cases c where c.id=ce.case_id and c.lead_personnel_id=p_actor_id) then return jsonb_build_object('ok',false,'code','case_access_denied');end if;
   if nullif(btrim(p->>'details'),'') is null then return jsonb_build_object('ok',false,'code','event_details_required');end if;
   insert into game.custody_events(custody_episode_id,event_type,actor_personnel_id,event_at_game_time,details,source_command_id) values(ce.id,p->>'event_type',p_actor_id,n,p->>'details',p_command_id);
   return jsonb_build_object('ok',true,'custody_ref',ce.custody_ref,'event_type',p->>'event_type');
  elsif p_type in ('release_custody','transfer_custody') then
   select * into ce from game.custody_episodes where custody_ref=p->>'custody_ref' for update;
   if ce.id is null or ce.status<>'in_custody' then return jsonb_build_object('ok',false,'code','custody_not_active');end if;
+  if ce.booking_officer_id<>p_actor_id and not exists(select 1 from game.case_assignments ca where ca.case_id=ce.case_id and ca.personnel_id=p_actor_id and ca.status='active' and ca.released_at is null) and not exists(select 1 from game.cases c where c.id=ce.case_id and c.lead_personnel_id=p_actor_id) then return jsonb_build_object('ok',false,'code','case_access_denied');end if;
   if nullif(btrim(p->>'reason'),'') is null then return jsonb_build_object('ok',false,'code','final_reason_required');end if;
   if p_type='transfer_custody' and nullif(btrim(p->>'destination'),'') is null then return jsonb_build_object('ok',false,'code','transfer_destination_required');end if;
   update game.custody_episodes set status=case when p_type='release_custody' then 'released' else 'transferred' end,release_or_transfer_at_game_time=n,final_outcome=case when p_type='release_custody' then coalesce(p->>'outcome','released') else 'transferred' end,final_reason=p->>'reason' where id=ce.id;
