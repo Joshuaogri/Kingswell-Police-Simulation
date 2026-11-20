@@ -1,6 +1,6 @@
 # Patrol command interface and beat coverage
 
-Patrol operations are now available through the same natural-language command path as dispatch and scene operations. Commands are submitted through `game.execute_text_command` and retain the existing command ledger/idempotency behavior.
+Patrol operations are available through the natural-language command path. Commands use the command ledger and idempotency behavior.
 
 ## Commands
 
@@ -10,79 +10,44 @@ Patrol operations are now available through the same natural-language command pa
 - `end patrol UNIT_REF because REASON`
 - `patrol status` (also `patrol coverage` or `beat coverage`)
 
-Schedule timestamps must be ISO-8601 timestamps with timezone offsets. The current command grammar schedules a unit/beat time window; an optional roster reference remains available through the underlying database function but is not yet accepted by this concise command form.
-
-The coverage report lists every active beat, active on-patrol units and schedule window, and covered/uncovered totals. A beat is counted covered only while a unit is actively on patrol on that beat; a scheduled but not commenced patrol does not count as coverage.
-
-All commands use the established command ledger and idempotency keys. Patrol operations do not advance fictional time. The regression test uses temporary fixtures in a transaction ending in ROLLBACK.
-
-Regression: `database/tests/kingswell_patrol_command_interface.sql`.
-
+Schedule timestamps require ISO-8601 timezone offsets. Patrol coverage counts only active on-patrol units.
 
 ## Road movement
 
 - `patrol move UNIT_REF to ACCESS_REF because REASON`
 
-This command routes the on-patrol unit to a registered access point on its assigned beat, records every road segment traversed, updates its current location and advances fictional time by the route's estimated duration. Transit legs outside the beat are recorded but excluded from beat coverage. See `PATROL-ROAD-MOVEMENT.md` for the detailed movement model.
+Records every road segment, updates unit location and advances fictional time by estimated route duration. Transit legs outside the assigned beat do not count toward beat coverage.
 
+## Patrol intelligence and activity
 
-## Patrol intelligence
-
-- `patrol intelligence` — reports road-segment coverage, patrol movement minutes, beat gaps, least-visited roads and unit activity through current fictional time.
-- Aliases: `patrol gaps`, `patrol analysis`.
-- Optional timestamp-window reporting is available through the database reporting function; the standard player command reports all recorded history.
-
-
-## Foot patrol and officer activity
-
-- `start patrol activity UNIT_REF by PERSONNEL_REF at ACCESS_REF type TYPE because REASON` starts a logged activity at the unit's current recorded location.
-- `end patrol activity SESSION_REF after N minutes because REASON` completes the activity and advances fictional time by the explicitly stated duration.
+- `patrol intelligence` — road-segment coverage, coverage gaps, least-visited roads and unit activity.
+- `start patrol activity UNIT_REF by PERSONNEL_REF at ACCESS_REF type TYPE because REASON`
+- `end patrol activity SESSION_REF after N minutes because REASON`
 - Activity types: `foot_patrol`, `stationary_observation`, `community_engagement`, `business_visit`, `area_check`, `vehicle_patrol_stop`, `other`.
-- The unit must be active and on patrol with an active schedule; the officer must be active and assigned to that unit; the location must be the unit's recorded location inside its assigned beat.
-- One activity at a time is allowed per unit/officer. Movement and patrol termination are blocked until the activity is completed.
-- `patrol intelligence` now includes activity totals by type and unit separately from road movement. Open sessions do not accumulate elapsed minutes until completed with an explicit duration.
 
-See `PATROL-ACTIVITY-SESSIONS.md` for the record model and constraints. Regression: `database/tests/kingswell_patrol_activity.sql`.
-
-
-
-## Patrol observations and contacts
+## Observations and contacts
 
 - `record patrol observation SESSION_REF category CATEGORY [at ACCESS_REF] because DESCRIPTION`
 - `record patrol contact SESSION_REF type TYPE [person PERSON_REF] [organisation ORG_REF] [property PROPERTY_REF] [incident INCIDENT_REF] outcome OUTCOME [notes NOTES]`
-- Observation categories: `suspicious_activity`, `traffic`, `property_condition`, `vulnerable_person`, `public_order`, `environmental_hazard`, `community_concern`, `wanted_vehicle`, `other`.
-- Contact types: `person_spoken_to`, `business_visit`, `community_contact`, `welfare_check`, `witness_contact`, `other`.
-- Both require an active patrol activity session and its assigned officer. Any supplied access point must match the session's registered location.
-- Contact references resolve to existing person, organisation, property and/or incident records. Person/business/welfare/witness contacts require at least one linked entity; community_contact and other may be unlinked.
-- Entries are append-only and immutable. Logging does not advance fictional time.
-- `patrol intelligence` includes observation counts by category and contact counts by type, including linked people/organisations/properties/incidents.
 
-See `PATROL-ACTIVITY-SESSIONS.md`. Regression: `database/tests/kingswell_patrol_observations_contacts.sql`.
+Both require an active patrol activity session and assigned officer. Source records are append-only and do not advance fictional time.
 
+## Search and investigation links
 
-## Searchable patrol intelligence
-
-- `search patrol intelligence` — searches all recorded patrol observations and civilian contacts.
-- `search patrol intelligence for WORDS` — matches words against observation category/description and contact type/outcome/notes.
-- Results include the original source reference, time, record type, category/contact type, narrative/outcome, location, beat and linked entity references.
-- Repeated reports at the same access point are summarised by source type and category/contact type, with count and first/last recorded time.
-- The search is read-only. Original observations and contacts remain immutable, and search does not advance fictional time.
-- The underlying secured function additionally supports filters for beat, access point, person, organisation, incident, selected fictional-time range and result limit.
-- Repeated-record counts are not proof of a crime, corroboration, risk or guilt.
-
-Regression: `database/tests/kingswell_searchable_patrol_intelligence.sql`.
-
-
-## Patrol intelligence links to investigations
-
+- `search patrol intelligence [for WORDS]`
 - `link patrol record RECORD_REF to incident INCIDENT_REF because REASON`
 - `link patrol record RECORD_REF to case CASE_REF because REASON`
-- `patrol intelligence links` — lists all recorded patrol-intelligence links.
-- `patrol intelligence links for RECORD_REF` — retrieves links for an observation, contact, incident, case or link reference.
-- A link requires an existing patrol observation/contact, an existing incident/case, a non-empty reason and an active officer attribution.
-- Each link is a separate immutable record with a unique link reference, fictional link time, officer attribution, originating command and permanent game-event history. Link references and all linkage foreign keys are indexed.
-- One patrol record can be linked to multiple targets; the same source-target pair cannot be duplicated.
-- Original patrol records and incident/case records are not modified. Linking does not create a new incident or case.
-- Linking and history lookup do not advance fictional time. Link history records an investigative association, not proof or corroboration.
+- `patrol intelligence links [for RECORD_REF]`
 
-Regression: `database/tests/kingswell_patrol_intelligence_links.sql`.
+Search is read-only. Links are separate immutable associations; they do not alter source records or create incidents/cases.
+
+## Officer review commands
+
+- `review patrol intelligence LINK_REF disposition relevant because REASON`
+- Replace `relevant` with `further_enquiries`, `insufficient_information` or `not_relevant` as appropriate.
+- `patrol intelligence reviews` — latest review history.
+- `patrol intelligence reviews for REFERENCE` — history for a review, link, source record or target.
+
+Reviews require an active officer attribution and initialized fictional clock. Each review is a separate append-only assessment with originating command and fictional time. A review does not rewrite the patrol record or prove that its contents are true. Review-history lookup does not advance fictional time.
+
+Regression: `database/tests/kingswell_patrol_intelligence_reviews.sql` and `database/tests/kingswell_patrol_intelligence_review_commands.sql`.
