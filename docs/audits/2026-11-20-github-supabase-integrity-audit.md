@@ -369,8 +369,47 @@ The 17 remote-only names and three repository-only names are listed in section 1
 **No production migration, schema, data or permission changes were made during this direct inspection.**
 
 
-### Statement-level comparison run #5 (provisional)
+### Statement-level comparison runs #5 and #6
 
 GitHub Actions run `44830241692` completed successfully and exported all 225 remote migration statement arrays. Its first canonical-text comparison reported 94 remote records with exact text matches, 131 without an exact match, and 82 same-version/different-text pairs. Inspection of a representative pair showed that Supabase's stored function definitions can use different dollar-quote tags (for example, `$scene$` rather than `$function$`) even where the function body and SQL behaviour are the same. The initial digest therefore over-reported mismatches.
 
-The comparison script was corrected in commit `82a8d70d89cd534e4aafa27bafb0e59d24243c40` to normalise PostgreSQL dollar-quote tags before hashing. The run #5 mismatch counts are **superseded and must not be used as a final discrepancy count**. A fresh manual run against the corrected script is required before interpreting content-mismatch totals. Even after normalisation, a canonical text difference is an investigation lead, not proof of semantic SQL difference.
+The comparison script was corrected in commit `82a8d70d89cd534e4aafa27bafb0e59d24243c40` to normalise PostgreSQL dollar-quote tags before hashing. Manual workflow run #6 (`44830544686`) checked out commit `d0659c910f0c39099c43ebaf350023865e595771`, completed successfully, and reproduced the same counts after that correction: 94 remote records with exact canonical-text matches, 131 without an exact match, and 82 same-version/different-content pairs. The dollar-quote normalisation did not reduce the reported totals. These figures are now the current canonical-text comparison results, not semantic-equivalence findings. A canonical text difference remains an investigation lead, not proof of a behavioural SQL difference.
+
+
+## 14. Corrected statement-level comparison run #6
+
+GitHub Actions run [44830544686](https://github.com/Joshuaogri/Kingswell-Police-Simulation/actions/runs/44830544686) completed successfully on 2026-11-20. It checked out commit d0659c910f0c39099c43ebaf350023865e595771, read the remote migration history in a read-only transaction, ran the corrected comparator, and uploaded artifact 14675758444. The raw remote statement export was removed before artifact upload.
+
+| Measure | Run #6 result |
+|---|---:|
+| Repository migration files | 212 |
+| Applied Supabase records | 225 |
+| Exact version identifiers | 138 |
+| Repository-only versions | 74 |
+| Supabase-only versions | 87 |
+| Shared normalised names | 207 |
+| Remote names without repository match | 17 |
+| Repository names without remote match | 3 |
+| Remote records with exact canonical SQL match | 94 |
+| Remote records without exact canonical SQL match | 131 |
+| Repository files without exact canonical SQL match | 99 |
+| Same-version/different-content pairs | 82 |
+
+The totals are unchanged from run #5 despite the dollar-quote-tag normalisation. The corrected run therefore does not support the earlier hypothesis that dollar-quote labels alone explain the broad mismatch count. The 131 remote records and 99 repository files without an exact canonical match require direct mapping and inspection; do not automatically classify all of them as missing or behaviourally different migrations.
+
+### Confirmed example: version 20261120121100
+
+A direct read-only query of the live migration-history row returned:
+
+- Version: 20261120121100
+- Stored name: record_transit_and_on_beat_patrol_segments
+- One stored SQL statement, 5,485 characters
+- SQL begins by adding within_assigned_beat to game.patrol_movement_events and defining game.move_patrol_unit(...).
+
+The repository file at that same version is 20261120121100_index_patrol_schedule_coverage_foreign_keys.sql, which is an index migration. This is a genuine same-version/content collision, not merely a timestamp or stored-name difference. The later candidate 20261120121600_record_transit_and_on_beat_patrol_segments.sql must still be compared in full with the stored SQL before being treated as a recovered historical copy.
+
+### Safety and next action
+
+The workflow did not run db push, migration repair, reset, or any SQL write. The direct row inspection was a SELECT. No migration-history rows, schema objects, game records or permissions were changed.
+
+The next work is content-led reconciliation: group remote and repository entries by canonical digest, then inspect unmatched migrations in chronological clusters, beginning with exact-version collisions and the duplicated case_review_dossier_and_player_command history entry. Compare complete SQL and current live object definitions; record each mapping as exact copy, renamed/retimestamped copy, equivalent-but-text-different, genuinely divergent, or unrecovered. Keep deployment and migration-history repair disabled until that register is complete.
