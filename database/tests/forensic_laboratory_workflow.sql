@@ -3,7 +3,7 @@ do $$
 declare r jsonb;
 begin
  r:=game.submit_command('help','help','{}'::jsonb,'forensic-workflow-help-01',null,null);
- if not coalesce((r->>'ok')::boolean,false) then raise exception 'help command failed'; end if;
+ if not coalesce((r->>'ok')::boolean,false) or not (r->'available_commands' ? 'validate_forensic_method') or not (r->'available_commands' ? 'issue_forensic_report') then raise exception 'forensic help catalogue failed'; end if;
  foreach r in array array[
    game.interpret_text_command('forensic method OFF-01 DNA-01: DNA | STR profiling | 1.0 | verification_pending | casework samples | stated limits'),
    game.interpret_text_command('validate forensic method OFF-02 DNA-01: validated | independent method review'),
@@ -20,6 +20,10 @@ begin
  end loop;
  r:=game.execute_text_command('forensic request OFF-01 CASE-01 EVD-01: DNA | assess sample | full scope | recorded authority | 2','forensic-workflow-clock-guard-01',null,null);
  if r->>'code'<>'clock_not_initialized' then raise exception 'runtime routing or clock guard failed: %',r; end if;
+ if position('method_must_be_pending' in pg_get_functiondef('game.execute_forensic_action(uuid,text,jsonb,uuid)'::regprocedure))=0 then raise exception 'method self-validation guard missing'; end if;
+ if position('method_reviewer_not_qualified' in pg_get_functiondef('game.execute_forensic_action(uuid,text,jsonb,uuid)'::regprocedure))=0 then raise exception 'method reviewer qualification guard missing'; end if;
+ if position('reviewer_not_qualified' in pg_get_functiondef('game.execute_forensic_action(uuid,text,jsonb,uuid)'::regprocedure))=0 then raise exception 'finding reviewer qualification guard missing'; end if;
+ if position('reported')=0 then null; end if;
  if (select count(*) from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='game' and c.relname in ('forensic_methods','forensic_method_reviews','forensic_requests','forensic_request_items','forensic_lab_submissions','forensic_examinations','forensic_findings','forensic_reviews','forensic_reports') and c.relrowsecurity)<>9 then raise exception 'forensic RLS assertion failed'; end if;
  if (select count(*) from game.game_commands where idempotency_key='forensic-workflow-clock-guard-01')<>1 then raise exception 'command ledger entry missing inside test transaction'; end if;
 end $$;
