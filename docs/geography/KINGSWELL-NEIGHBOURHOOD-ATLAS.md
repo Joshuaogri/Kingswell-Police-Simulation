@@ -63,7 +63,6 @@ The diagram communicates the city's functional relationships only. The river cor
 ## District and neighbourhood guide
 
 ### KDW — Westhaven
-<text></text>
 
 **District role:** Established residential district expanded into high-density urban housing with everyday neighbourhood services.
 
