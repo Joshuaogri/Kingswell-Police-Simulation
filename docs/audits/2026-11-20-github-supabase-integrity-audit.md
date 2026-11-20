@@ -740,3 +740,14 @@ The repository source adds a `game.get_search_operations(uuid)` read helper and 
 The command interpreter and append-only trigger function match. The search executor differs by this inline-versus-helper refactor; no missing runtime capability was identified in the repository version.
 
 Classification: **matching search/seizure schema inventory; equivalent read-model refactor from inline query to a dedicated helper**. Retain the existing file and remote history. Full constraint/privilege parity remains part of the final schema review.
+
+
+## 45. Content-led review of version 20261120143546 — search retrieval refactor chronology
+
+The remote migration defines `game.get_search_operations(uuid)`, then dynamically rewrites `game.execute_search_command(...)` to replace its inline operations response with a call to that helper, and applies service-role-only execution privileges.
+
+The GitHub migration file contains the helper function and its privilege statements, but omits the dynamic executor rewrite. The preceding GitHub migration `20261120143344_case_search_warrants_and_seizure_workflow.sql` already defines the helper and has `execute_search_command` call it. The remote 20261120143344 version instead inlines the response query.
+
+Therefore the repository history has moved the refactor into the earlier migration: applying the remote 20261120143546 patch after the repository's 20261120143344 version would not find the expected inline query anchor and would raise its explicit “Could not locate search retrieval block” exception.
+
+Classification: **historical change moved earlier in the GitHub reconstruction; the later remote patch is absent and would fail if replayed after the already-refactored repository version**. The helper itself is present. Preserve the current files and record this as a migration-order/replay blocker; do not execute the dynamic patch or alter history during this audit.
