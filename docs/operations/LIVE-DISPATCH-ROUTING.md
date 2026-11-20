@@ -60,3 +60,22 @@ It then verifies:
 All temporary persons, personnel, units, rosters, assignments, incidents, deployments, command-ledger rows, route calculations and route-history records are rolled back. The test leaves no fixture data in the live game.
 
 Source: `database/tests/kingswell_dispatch_route_end_to_end.sql`.
+
+
+## ETA-ranked candidates and unit movement
+
+Candidate query: `game.get_dispatch_candidates_ranked(INCIDENT_REF)`. It applies existing eligibility checks and sorts by ETA ascending, placing unresolved ETAs last.
+
+Player-facing position command:
+
+`position unit UNIT_REF at ACCESS_POINT_UUID because REASON`
+
+The access point must be registered and connected to a routable road. The fictional clock must be initialized. A successful position update records the unit's location/time, emits a game event and recalculates routes for its active deployments.
+
+Road availability is controlled by `game.road_segments.is_routable`. Any change to that flag automatically recalculates routes for all active deployments against the changed graph. Recalculation updates the current deployment snapshot and appends a permanent route-history event; the prior history is never overwritten.
+
+Verification:
+- `database/tests/kingswell_eta_ranked_dispatch_candidates.sql`
+- `database/tests/kingswell_unit_position_and_road_recalculation.sql`
+
+Both are rollback-only and passed on the live Supabase project. Neither test leaves fixture records or changes the live fictional clock.
