@@ -72,7 +72,7 @@ begin
     order by (j.x_m-s.bx)::bigint*(j.x_m-s.bx)::bigint+(j.y_m-n.y)::bigint*(j.y_m-n.y)::bigint limit 1;
    select greatest(1,round(sqrt((ja.x_m-jb.x_m)::numeric^2+(ja.y_m-jb.y_m)::numeric^2))::integer)
     into v_len from game.road_junctions ja,game.road_junctions jb where ja.id=v_a and jb.id=v_nearest;
-   if not exists(select 1 from game.road_segments where city_id=v_city and segment_code='RIVER-'||n.code||'-'||s.side) then
+   if not exists(select 1 from game.road_segments where city_id=v_city and segment_code='RIVER-'||n.code||'-'||case when s.side='W' then 'WEST' else 'EAST' end) then
     insert into game.road_segments(city_id,road_id,segment_code,from_junction_id,to_junction_id,segment_length_m,
      road_class,lanes_each_direction,speed_limit_kph,directionality,surface_type,crossing_type,access_profile)
     values(v_city,v_road,'RIVER-'||n.code||'-'||s.side,v_a,v_nearest,v_len,'primary',2,50,'two_way','sealed','at_grade','public');
@@ -86,4 +86,7 @@ begin
    values(v_city,v_road,'RIVER-'||n.code||'-BRIDGE',v_a,v_b,n.ex-n.wx,'primary',2,50,'two_way','sealed','bridge','public');
   end if;
  end loop;
-end $$;
+end $;
+
+update game.road_segments s set access_profile='public_emergency_freight'
+from game.roads r where r.id=s.road_id and r.code in ('KNG-R008','KNG-R009');
