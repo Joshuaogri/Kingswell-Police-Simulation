@@ -720,3 +720,12 @@ The remote and GitHub migrations both attempt to insert the case-activity collec
 - The GitHub script explicitly raises an exception when its anchor is absent. Therefore, replaying the repository migration after the preceding repository dossier migration would stop at this point instead of adding the `activities` field. The remote migration's broader prefix anchor is present and permits the replacement.
 
 Classification: **confirmed migration replay blocker in the GitHub source**. The local anchor is incompatible with the immediately preceding dossier definition. Preserve the applied remote history and do not execute the faulty repository migration. Record the precise anchor correction as a required source-recovery item for the controlled reconciliation phase; do not edit or push it during this read-only audit.
+
+
+## 43. Content-led review of version 20261120141620 — missing dossier integration block
+
+The remote and GitHub migration sources contain the same five surveillance tables with matching column sets, the same five indexes, the same five RLS-enabled tables, the same four append-only triggers, and the same ten function bodies after normalising `search_path` and dollar-quote formatting.
+
+The remote statement also ends with a dynamic dossier patch that inserts `surveillance_operations` into the case-review dossier immediately after the investigative `activities` collection. The GitHub migration file contains no such patch block. A repository-wide search found no alternate migration containing that dossier insertion. A read-only live function-chain check confirms that the current `get_case_review_dossier_before_disclosure` definition includes both `activities` and `surveillance_operations`.
+
+Classification: **confirmed missing dossier-integration block in the GitHub migration source**. The surveillance runtime functions are present in the repository, but the applied dossier integration is not represented in this migration or another matching repository file. Preserve the live database; recover the exact dynamic patch or an equivalent deterministic dossier migration before any future clean replay.
