@@ -66,7 +66,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-39 | Persistence and Recovery | Approved; design only; no backup or restore process implemented |
 | BP-40 | Interface | Approved; ChatGPT remains the intended text interface; limited explicit text command grammar exists; live ChatGPT-to-runtime connection remains outstanding |
 | BP-41 | Notifications and Reporting | Approved; design only; no notification or reporting service implemented |
-| BP-42 | Security and Permissions | Approved; RLS enabled on all 55 tables; private schema remains unexposed; player authentication and fictional authority enforcement outstanding |
+| BP-42 | Security and Permissions | Approved; RLS enabled on all 73 tables; private schema remains unexposed; player authentication and fictional authority enforcement outstanding |
 | BP-43 | Testing and Quality Assurance | Approved; seeded scene-specialist-examination-to-contamination/recovery/custody and forensic request-to-report SQL end-to-end regression tests pass inside rolled-back transactions, alongside parser/help/RLS/clock guards; CI and broader domain tests outstanding |
 | BP-44 | Configuration and Expansion | Approved; design only; no configuration or expansion framework implemented |
 
@@ -332,4 +332,9 @@ Implemented and live in Supabase. The existing property/building/unit foundation
 
 Seeded city inventory: 480 properties (20 in each of 24 neighbourhoods; 40 in each district), 480 buildings, 712 building units/premises, 480 structured postal addresses, 480 primary access points and 24 named landmarks. Every property resolves to its district, neighbourhood, named street, frontage road segment, building, postal address and access point. Every access point resolves to a routable road segment and junction. Each landmark resolves to an actual property, building and access point. Coordinates use the fictional local metric grid; they are planning points, not surveyed cadastral geometry.
 
-Applied migration: `20261120111654_kingswell_bp02_properties_buildings_addresses_landmarks.sql`. Regression test: `database/tests/kingswell_properties_buildings_addresses.sql` (transactional assertions; rollback only). Test passed on the live project. BP-02 next work: police facilities, patrol sectors and network-based routing/response calculations; detailed cadastral geometry, floor plans, additional entrances and traffic calibration remain future refinements.
+Applied migration: `20261120111654_kingswell_bp02_properties_buildings_addresses_landmarks.sql`. Follow-up correction migration: `20261120111935_correct_property_access_nearest_junctions.sql`, ensuring each access point selects the nearer endpoint of its frontage segment. Regression test: `database/tests/kingswell_properties_buildings_addresses.sql` (transactional assertions; rollback only). Test passed on the live project, and the committed seed migration source replayed successfully inside a rolled-back transaction. BP-02 next work: police facilities, patrol sectors and network-based routing/response calculations; detailed cadastral geometry, floor plans, additional entrances and traffic calibration remain future refinements.
+
+
+### Current live database baseline — 2026-11-20
+
+The current private `game` schema contains 73 tables, 200 foreign keys and 327 indexes. RLS is enabled on all 73 tables. Supabase records 41 applied migrations. These are the current live counts; older database snapshots elsewhere in this register are retained as historical audit observations, not current totals.
