@@ -23,7 +23,7 @@ begin
  if position('method_must_be_pending' in pg_get_functiondef('game.execute_forensic_action(uuid,text,jsonb,uuid)'::regprocedure))=0 then raise exception 'method self-validation guard missing'; end if;
  if position('method_reviewer_not_qualified' in pg_get_functiondef('game.execute_forensic_action(uuid,text,jsonb,uuid)'::regprocedure))=0 then raise exception 'method reviewer qualification guard missing'; end if;
  if position('reviewer_not_qualified' in pg_get_functiondef('game.execute_forensic_action(uuid,text,jsonb,uuid)'::regprocedure))=0 then raise exception 'finding reviewer qualification guard missing'; end if;
- if position('reported')=0 then null; end if;
+ if position('status in (''accepted'',''in_progress'',''reported'')' in pg_get_functiondef('game.execute_forensic_action(uuid,text,jsonb,uuid)'::regprocedure))=0 then raise exception 'versioned report reissue guard missing'; end if;
  if (select count(*) from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='game' and c.relname in ('forensic_methods','forensic_method_reviews','forensic_requests','forensic_request_items','forensic_lab_submissions','forensic_examinations','forensic_findings','forensic_reviews','forensic_reports') and c.relrowsecurity)<>9 then raise exception 'forensic RLS assertion failed'; end if;
  if (select count(*) from game.game_commands where idempotency_key='forensic-workflow-clock-guard-01')<>1 then raise exception 'command ledger entry missing inside test transaction'; end if;
 end $$;
