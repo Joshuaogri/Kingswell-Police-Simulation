@@ -938,3 +938,30 @@ Test:
 
 Guide:
 - `docs/operations/CHARGE-VERDICTS-SENTENCING.md`
+
+
+## Correctional foundation and sentence administration — 2026-11-20
+
+**Database foundation implemented and schema regression passed; player commands are not yet wired.**
+
+Applied the correctional foundation migration to the live private `game` schema and mirrored it to GitHub `main`.
+
+Six new RLS-enabled tables:
+- `game.correctional_facilities`: fictional facility register and capacity/status metadata.
+- `game.prisoner_admissions`: persistent admissions linked to existing NPC person identities and facilities; one active admission per person.
+- `game.prisoner_sentence_terms`: links existing imposed custodial sentences to an admission, with sequence and first/concurrent/consecutive commencement mode.
+- `game.sentence_credit_events`: append-only pre-sentence custody, appeal and administrative credit records.
+- `game.correctional_events`: append-only prisoner and facility event history.
+- `game.prisoner_placements`: unit/cell placement history with one current placement per admission.
+
+Added `game.get_correctional_record(admission_ref)`, a read projection of admission, person, facility, placement history, sentence terms, credits, remaining days per term and correctional events. No duplicate person or sentence identities are created.
+
+**PASS:** live rollback-only schema test confirmed all six tables, RLS on all six, both append-only triggers and the read projection. Live database now has **171 tables, all 171 RLS-enabled**. No fictional correctional facilities, prisoners, admissions, placements or sentence terms have been seeded.
+
+**Not yet implemented:** runtime parser/executor commands for admissions, sentence commencement, credit entry, transfer, release and record retrieval; cumulative release-date calculation for consecutive/concurrent terms; prison staffing/capacity enforcement; daily routines, visits, communications, work/education, welfare, incidents, discipline, rehabilitation, parole and autonomous NPC processing. The fictional clock remains uninitialized.
+
+Migration: `database/migrations/20261120161000_correctional_foundation_and_sentence_administration.sql`
+
+Test: `database/tests/kingswell_correctional_foundation.sql`
+
+Guide: `docs/operations/CORRECTIONAL-FOUNDATION.md`
