@@ -105,3 +105,12 @@ See `docs/operations/CASE-ACCOUNT-COMPARISONS.md` for comparing witness statemen
 
 
 The dossier also includes case task assignments and evidence linked to the case through comparison, lead or forensic-request relationships, not only evidence whose primary case_id is set.
+
+
+## Supervisory case governance
+
+- `case supervisory review CASE_REF outcome OUTCOME because "REASON" by SUPERVISOR_REF`
+- `case status CASE_REF set STATUS because "REASON" by SUPERVISOR_REF`
+- `case governance CASE_REF by SUPERVISOR_REF`
+
+See `docs/operations/CASE-GOVERNANCE.md` for permitted outcomes and transitions.
