@@ -55,4 +55,4 @@ surveillance operations CASE_REF by PERSONNEL_REF
 - Linked entities must already exist in the same case; observations do not create people, vehicles, incidents or evidence.
 
 ## Verification
-All seven command patterns were tested through the parser. Help registration, RLS, service-role access and dossier integration were verified. The live world has no seeded police personnel and the fictional clock is uninitialized, so personnel-backed deployment has not yet been exercised end to end.
+All seven command patterns were tested through the parser. A rollback-only personnel-backed end-to-end test now creates two temporary officers, assigns them to a temporary case, initializes a temporary fictional clock, creates and staffs an operation, verifies deployment is blocked without a team lead, deploys with a designated lead, records and retrieves an observation, closes the operation and confirms fictional time did not advance. All fixtures and clock changes are rolled back; the live world remains unseeded and its clock remains uninitialized. Help registration, RLS, service-role access and dossier integration are also verified.
