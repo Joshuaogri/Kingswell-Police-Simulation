@@ -1,0 +1,31 @@
+begin;
+do $$
+declare person_id uuid; personnel_id uuid; case_id uuid; r jsonb; cmd text; t timestamptz;
+begin
+ update game.simulation_state set current_game_time='2026-02-05 09:00:00+00',time_paused=true where id=1;
+ select current_game_time into t from game.simulation_state where id=1;
+ insert into game.persons(person_ref,given_name,family_name) values('TEST-GOVERNANCE-PERSON','Governance','Officer') returning id into person_id;
+ insert into game.police_personnel(personnel_ref,person_id,service_number,employment_status) values('TEST-GOVERNANCE-OFFICER',person_id,'TEST-GOV-SVC','active') returning id into personnel_id;
+ insert into game.cases(case_ref,case_title,case_type,status,opened_at,summary,case_data) values('TEST-GOVERNANCE-CASE','Governance lifecycle test','burglary','open',t,'Temporary test case','{}') returning id into case_id;
+ insert into game.case_assignments(case_id,personnel_id,assignment_role,assigned_at,status) values(case_id,personnel_id,'supervisor',t,'active');
+ cmd:='case supervisory review TEST-GOVERNANCE-CASE outcome further_enquiries because "Check the remaining witness accounts" by TEST-GOVERNANCE-OFFICER';
+ r:=game.interpret_text_command(cmd); if r->>'command_type'<>'record_case_supervisory_review' then raise exception 'review parser failed: %',r; end if;
+ r:=game.execute_text_command(cmd,'test-gov-review-001',null,personnel_id);
+ if not coalesce((r->>'ok')::boolean,false) then raise exception 'review command failed: %',r; end if;
+ r:=game.execute_text_command(cmd,'test-gov-review-001',null,personnel_id); if not coalesce((r->>'duplicate')::boolean,false) then raise exception 'review idempotency failed: %',r; end if;
+ cmd:='case status TEST-GOVERNANCE-CASE set under_investigation because "Investigation formally commenced" by TEST-GOVERNANCE-OFFICER';
+ r:=game.execute_text_command(cmd,'test-gov-status-001',null,personnel_id); if not coalesce((r->>'ok')::boolean,false) or r->>'status'<>'completed' or r->>'new_status'<>'under_investigation' then raise exception 'status transition failed: %',r; end if;
+ r:=game.execute_text_command('case status TEST-GOVERNANCE-CASE set open because "Invalid backwards transition" by TEST-GOVERNANCE-OFFICER','test-gov-invalid-001',null,personnel_id);
+ if coalesce((r->>'ok')::boolean,false) then raise exception 'invalid transition unexpectedly succeeded: %',r; end if;
+ r:=game.execute_text_command('case status TEST-GOVERNANCE-CASE set closed because "Case completed" by TEST-GOVERNANCE-OFFICER','test-gov-close-001',null,personnel_id);
+ if not coalesce((r->>'ok')::boolean,false) then raise exception 'case close failed: %',r; end if;
+ r:=game.execute_text_command('case status TEST-GOVERNANCE-CASE set reopened because "New evidence received" by TEST-GOVERNANCE-OFFICER','test-gov-reopen-001',null,personnel_id);
+ if not coalesce((r->>'ok')::boolean,false) then raise exception 'case reopen failed: %',r; end if;
+ r:=game.execute_text_command('case governance TEST-GOVERNANCE-CASE by TEST-GOVERNANCE-OFFICER','test-gov-history-001',null,personnel_id);
+ if not coalesce((r->>'ok')::boolean,false) or jsonb_array_length(r->'supervisory_reviews')<>1 or jsonb_array_length(r->'status_history')<>3 then raise exception 'history retrieval failed: %',r; end if;
+ r:=game.execute_text_command('help','test-gov-help-001',null,personnel_id);
+ if not (r->'available_commands' @> '["record_case_supervisory_review","transition_case_status","get_case_governance_history"]'::jsonb) then raise exception 'help missing commands: %',r; end if;
+ if (select current_game_time from game.simulation_state where id=1)<>t then raise exception 'governance commands advanced fictional time'; end if;
+ raise notice 'PASS: supervisory review, status lifecycle, invalid transition rejection, reopening, history, idempotency, help and clock preservation';
+end $$;
+rollback;
