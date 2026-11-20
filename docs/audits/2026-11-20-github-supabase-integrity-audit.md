@@ -506,3 +506,10 @@ The remote migration is 7,007 characters; the GitHub file is a 11,972-character 
 - The GitHub file is explicitly reconstructed from the applied live migration. This comparison establishes structural inventory parity, not byte-for-byte recovery of the original migration or a complete proof that every constraint expression is identical.
 
 Classification: **reconstructed DDL with matching table/column/index/RLS inventory; constraint-expression parity remains to be checked in the final schema comparison**. Retain the repository file and remote history without changes.
+
+
+## 21. Content-led review of version 20261120104208
+
+The complete remote statement and GitHub migration file for `forensic_laboratory_commands_and_review_workflow` produce identical canonical SQL after normalising comments, whitespace, dollar-quote tags, typed-NULL defaults, and equivalent `search_path` declaration formatting.
+
+Classification: **canonical SQL match after formatting/declaration normalisation**. No substantive divergence was identified in this pair. Retain the existing file and remote history.
