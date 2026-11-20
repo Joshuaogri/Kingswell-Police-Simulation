@@ -13,7 +13,7 @@ begin
  select count(*) into v_count from game.patrol_beats;
  if v_count <> 24 then raise exception 'Expected 24 neighbourhood beats, got %',v_count; end if;
  select count(*) into v_count from game.patrol_beat_road_segments;
- if v_count <> 151 then raise exception 'Expected 151 road-segment coverage links, got %',v_count; end if;
+ if v_count <> 229 then raise exception 'Expected 229 road-segment coverage links, got %',v_count; end if;
  if exists(select 1 from game.police_facilities f
    left join game.properties p on p.id=f.property_id
    left join game.buildings b on b.id=f.building_id and b.property_id=f.property_id
