@@ -69,11 +69,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python3 scripts/audit_supabase_migrations.py 
-            --remote remote-migration-history.json \\
-            --migrations-dir database/migrations \\
-            --markdown migration-reconciliation.md \\
-            --json migration-reconciliation.json
+          python3 scripts/audit_supabase_migrations.py --remote remote-migration-history.json --migrations-dir database/migrations --markdown migration-reconciliation.md --json migration-reconciliation.json
           rm remote-migration-history.json
 
       - name: Upload migration inventory
