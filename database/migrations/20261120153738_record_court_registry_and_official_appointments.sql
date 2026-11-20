@@ -1,0 +1,1 @@
+-- Compatibility migration: court creation and official appointment events are included in the canonical bootstrap migration 20261120153604.
