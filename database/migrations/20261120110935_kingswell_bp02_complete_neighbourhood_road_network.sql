@@ -1,7 +1,7 @@
 -- Kingswell BP-02 complete neighbourhood road network seed.
 -- Applied Supabase migration version: 20261120110935.
 -- Fictional local-grid metres; additive network extension; no real-world geodata.
-do $$
+do $body$
 declare
  n record; s record; v_city uuid; v_district uuid; v_neighbourhood uuid;
  v_road uuid; v_a uuid; v_b uuid; v_nearest uuid; v_road_code text;
@@ -86,7 +86,7 @@ begin
    values(v_city,v_road,'RIVER-'||n.code||'-BRIDGE',v_a,v_b,n.ex-n.wx,'primary',2,50,'two_way','sealed','bridge','public');
   end if;
  end loop;
-end $;
+end $body$;
 
 update game.road_segments s set access_profile='public_emergency_freight'
 from game.roads r where r.id=s.road_id and r.code in ('KNG-R008','KNG-R009');
