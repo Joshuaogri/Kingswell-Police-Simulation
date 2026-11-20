@@ -1,6 +1,7 @@
 -- BP-03 100,000 canonical-person identity scale regression.
 -- Test-only fictional NPCs; the transaction is rolled back and the clock is untouched.
 BEGIN;
+SET LOCAL ROLE service_role;
 INSERT INTO game.persons(person_ref,given_name,family_name,date_of_birth,nationality,person_status,birth_city_id,occupation,preferred_language,personality_profile,behaviour_profile)
 SELECT 'KW-BP03-IDLOAD-'||lpad(g::text,6,'0'),
        (ARRAY['Ari','Mara','Jon','Iris','Noah','Talia','Eli','Nia'])[((g-1)%8)+1],
