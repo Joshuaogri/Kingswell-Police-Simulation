@@ -17,7 +17,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Runtime foundation and multiple police/justice/correctional systems implemented | Private `game` schema; live audit snapshot: 173 tables, 595 foreign keys, 846 indexes; RLS enabled on all 173 tables; Kingswell geography, property/access, police facilities and patrol geography seeded; no persistent test persons, police personnel, units, cases, incidents, evidence, dispatch calls or route records; fictional clock remains uninitialized |
+| Database schema | Runtime foundation and multiple police/justice/correctional/population systems implemented | Private `game` schema; live audit snapshot: 180 tables, 619 foreign keys, 889 indexes; RLS enabled on all 180 tables; Kingswell geography, property/access, police facilities and patrol geography seeded; BP-03 life/household/routine foundation deployed; no persistent persons, households, cases, incidents, evidence, dispatch calls or route records; fictional clock remains uninitialized |
 | Application/gameplay code | In progress | Database-backed text command interpreter, controlled clock, emergency-call/dispatch/arrival, scene-control, field-report and resource-request workflows implemented; full domain handlers remain outstanding |
 | Runtime regression tests | Implemented; transaction smoke-tested | Runtime, dispatch, scene, evidence, forensic laboratory, geography and police-facility/patrol-geography SQL regression scripts cover implemented slices; test fixtures roll back |
 
@@ -27,7 +27,7 @@ This register tracks actual progress. A design being written does not mean it ha
 |---|---|---|
 | BP-01 | Game Identity, Foundations and Governing Rules | Approved |
 | BP-02 | Country, City and Geographical Architecture | Complete and verified; Asterfell's eight regions, Kingswell's 20 km × 16 km grid, 12 districts/24 neighbourhoods, 51 roads/118 junctions/151 segments/3 bridges/24 landmarks; corrected all 12 map envelopes; route and dispatch integration regression suites pass |
-| BP-03 | Population and Individual Simulation Architecture | Approved; processing model open |
+| BP-03 | Population and Individual Simulation Architecture | Foundation implemented and tested; persistent identities, households, overlapping population memberships, life events, routines and monotonic relevance promotion; full 100,000-person seed awaits BP-04 housing capacity and BP-35 routine execution |
 | BP-04 | Buildings, Properties, Businesses and Organisations | Approved |
 | BP-05 | Police Architecture | Approved; initial headquarters, 12 district stations, five specialist facilities and 12 district patrol sectors geographically seeded; command/personnel structure remains outstanding |
 | BP-06 | Police Personnel | Approved |
@@ -1086,3 +1086,41 @@ All five suites executed successfully against the live Supabase project and roll
 
 ### Remaining deliberate limits
 National regions are jurisdictional references, not surveyed polygons. Kingswell district extents are planning envelopes, not exact exclusive polygons. Outside Kingswell there is no detailed street/property map. Live traffic, calibrated response-time simulation, exact cadastral boundaries and detailed building interiors remain later refinements under their owning divisions.
+
+
+## BP-03 — Population and Individual Simulation — foundation delivered 2026-11-20
+
+### Design decision
+Resolved the open processing-model choice: every person has one persistent canonical identity; simulation effort varies by activity and police relevance. The levels are background, active, police_relevant and full. Promotion is monotonic and cannot be reversed.
+
+### Existing records extended
+- `game.persons` remains the sole person identity store; it was extended with birth location, death date, preferred language, personality/behaviour profiles and simulation-level metadata.
+- Existing `person_addresses` now has current-primary address integrity and requires explicit effective dates rather than a real database date default.
+- Existing `person_relationships` has date-order and duplicate-current-link protection.
+- Existing `organisation_personnel` employment links have valid-date checks.
+- Existing police personnel continue to reference the same person identity.
+
+### New life/population records
+- `households` and `household_memberships`.
+- `person_population_memberships` for overlapping dated categories and city association.
+- `person_life_events` for append-only life milestones; death closes current addresses, household/population memberships, employment and routines.
+- `person_routines` for recurring weekly schedules, including overnight schedules.
+- `person_activity_events` for append-only actual activity, guarded by fictional game time.
+- `person_simulation_promotions` for append-only promotion provenance.
+- `game.get_population_summary(city_code)` counts distinct people and distinct category memberships without double-counting overlapping groups.
+- Case, incident-party, dispatch-caller and incident-property resident links automatically promote relevant people to full simulation.
+
+### Regression
+`database/tests/kingswell_population_life_foundation.sql` passed as a rollback-only live Supabase test. It verifies identity, addresses, households, overlapping categories, distinct population counts, relationships, routines, birth/death life events, death-related membership closure, append-only history, monotonic promotions, police-relevance auto-promotion, activity clock guards, RLS and the uninitialised clock. Post-test counts remain zero for persons, households, memberships, routines, life events, activity events and promotions.
+
+### Applied migrations
+- `20261120162714_bp03_persistent_population_households_routines_and_life`
+- `20261120162748_bp03_population_summary_and_person_provenance_hardening`
+- `20261120162835_bp03_population_summary_requires_current_household_members`
+- `20261120163022_bp03_end_current_memberships_on_person_death`
+
+### Deliberate dependency; no premature population seed
+The existing BP-04 inventory currently has 80 residential properties, 64 detached houses, 16 apartment blocks, 128 units marked residential and 160 mixed-use units. This cannot credibly house 100,000 permanent residents at ordinary household densities. The 100,000-person seed and household/address allocation are therefore deferred until BP-04 expands the existing residential inventory. No duplicate properties, buildings, units or addresses will be created under BP-03. Routine execution is owned by the runtime scheduling work in BP-35; this foundation does not advance fictional time.
+
+### Live structural/health snapshot
+180 private `game` tables; 619 foreign keys; 889 indexes; RLS enabled on all 180 tables; Supabase health advisors returned no findings. No persistent test population was created. Fictional clock remains NULL/uninitialised.
