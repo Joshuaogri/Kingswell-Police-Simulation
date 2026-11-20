@@ -927,3 +927,12 @@ Classification: **genuine unrecovered historical SQL at version 20261120133944**
 The GitHub file `20261120134000_patrol_intelligence_review_history.sql` is stored remotely at version `20261120124452`, under the same migration name. The complete SQL is canonically identical. Both define the append-only patrol-intelligence review table, its indexes, and matching record/retrieval function bodies.
 
 Classification: **exact canonical SQL match with remote version/timestamp discrepancy**. Preserve the records pending final history mapping; no repair now.
+
+
+## 54. Content-led review of version 20261120150044 — persist transport duration
+
+The remote 150044 migration corrects the 145803 executor by adding `duration_minutes` to the `arrest_transport_legs` INSERT column/value list. The 145803 version calculated the duration and advanced the clock, but did not persist the duration on the transport-leg row.
+
+The consolidated GitHub 144932 workflow migration already includes `duration_minutes` in the transport-leg INSERT, alongside the arrival time and clock-history record.
+
+Classification: **duration persistence correction consolidated into the earlier GitHub workflow source**. The final executor records the duration in both the transport leg and game-clock history. The standalone 150044 file is present as a comment-only chronology note.
