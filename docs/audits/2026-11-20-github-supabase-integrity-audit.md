@@ -729,3 +729,14 @@ The remote and GitHub migration sources contain the same five surveillance table
 The remote statement also ends with a dynamic dossier patch that inserts `surveillance_operations` into the case-review dossier immediately after the investigative `activities` collection. The GitHub migration file contains no such patch block. A repository-wide search found no alternate migration containing that dossier insertion. A read-only live function-chain check confirms that the current `get_case_review_dossier_before_disclosure` definition includes both `activities` and `surveillance_operations`.
 
 Classification: **confirmed missing dossier-integration block in the GitHub migration source**. The surveillance runtime functions are present in the repository, but the applied dossier integration is not represented in this migration or another matching repository file. Preserve the live database; recover the exact dynamic patch or an equivalent deterministic dossier migration before any future clean replay.
+
+
+## 44. Content-led review of version 20261120143344
+
+The remote and repository sources define the same eight search/seizure tables. Every table has matching column counts and names, and both define the same 13 indexes.
+
+The repository source adds a `game.get_search_operations(uuid)` read helper and has `game.execute_search_command(...)` call that helper. The remote migration inlines the same search-operation response construction directly in `execute_search_command`. Both response shapes include warrants, operations, team members, premises, search logs, recovered property/seizures/evidence, and operation events. The repository helper orders team members and events deterministically by creation time as well as game time.
+
+The command interpreter and append-only trigger function match. The search executor differs by this inline-versus-helper refactor; no missing runtime capability was identified in the repository version.
+
+Classification: **matching search/seizure schema inventory; equivalent read-model refactor from inline query to a dedicated helper**. Retain the existing file and remote history. Full constraint/privilege parity remains part of the final schema review.
