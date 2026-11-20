@@ -13,7 +13,7 @@ Each division is designed with its purpose, scope, responsibilities, components,
 | BP-05 | Police Architecture | Approved; detailed structure open |
 | BP-06 | Police Personnel | Approved |
 | BP-07 | Career System | Approved; detailed rules remain open for refinement |
-| BP-08 | Units and Deployment | Approved; detailed rules remain open for refinement |
+| BP-08 | Units and Deployment | Approved; initial roster-validated incident deployment implemented, including temporary cross-unit roster attachments; resource, qualification, command and full deployment lifecycle remain outstanding |
 | BP-09 | Police Resources | Approved; details to refine with later operational divisions |
 | BP-10 | Patrol Operations | Approved; initial roster-validated patrol-unit dispatch implemented; patrol and field-response workflows remain outstanding |
 | BP-11 | Emergency Communications | Approved; text call intake, linked incident creation and roster-validated unit dispatch implemented; communications and live dispatch-console workflows remain outstanding |
