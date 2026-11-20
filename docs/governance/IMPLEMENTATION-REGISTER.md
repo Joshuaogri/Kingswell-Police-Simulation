@@ -34,7 +34,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-07 | Career System | Approved; detailed rules remain open for refinement |
 | BP-08 | Units and Deployment | Approved; roster-validated deployment, individual dispatch acknowledgement and on-scene arrival implemented; resource, qualification, command and remaining deployment lifecycle rules remain outstanding |
 | BP-09 | Police Resources | Approved; details to refine with later operational divisions |
-| BP-10 | Patrol Operations | Approved; roster-validated patrol-unit dispatch, individual acknowledgement and arrival state implemented; patrol presence and wider field-status workflows remain outstanding |
+| BP-10 | Patrol Operations | Approved; roster-validated patrol dispatch, road movement, segment-level beat coverage, coverage-gap intelligence, foot-patrol/stationary-observation/community/business activity sessions and officer activity logging implemented and rollback-tested; wider field-status workflows remain outstanding |
 | BP-11 | Emergency Communications | Approved; text call intake, linked incident creation, roster-validated dispatch and individual officer acknowledgement/arrival events implemented; radio integration and live dispatch-console workflows remain outstanding |
 | BP-12 | Incident Management | Approved; incident intake, dispatch, attendance, linked scene records, field reports and resource requests implemented; ownership transfer, full progression, resolution and closure remain outstanding |
 | BP-13 | Crime Architecture | Approved; detailed fictional offence catalogue to populate |
@@ -59,7 +59,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-32 | Training and Development | Approved; police training-centre location seeded; training programmes, courses, attendance and competence workflows remain outstanding |
 | BP-33 | Human Resources | Approved; design only; no HR or workforce software implemented |
 | BP-34 | Finance and Procurement | Approved; design only; no finance or procurement software implemented |
-| BP-35 | Simulation Engine | Approved; typed command intake, limited text interpreter, idempotency, dispatch, scene control, safety, boundary, resource response, specialist examination, contamination, evidence recovery/custody and forensic laboratory command handlers implemented; seeded end-to-end scene-to-custody and lab-to-report regression fixtures pass in rollback transactions; broader domain handlers, scheduler and NPC processing outstanding |
+| BP-35 | Simulation Engine | Approved; typed command intake, limited text interpreter, idempotency, dispatch, scene control, patrol movement/activity/intelligence, safety, boundary, resource response, specialist examination, contamination, evidence recovery/custody and forensic laboratory command handlers implemented; seeded end-to-end regression fixtures pass in rollback transactions; broader domain handlers, scheduler and NPC processing outstanding |
 | BP-36 | Relationships and Social Context | Approved; design only; no relationship or social-context system implemented |
 | BP-37 | Time and Scheduling | Approved; paused singleton clock, explicit initialization/advancement and clock history implemented; fictional calendar configuration and scheduler outstanding |
 | BP-38 | Records and Databases | Approved; 77-table private schema and 42 migrations implemented; command/clock, dispatch, scene, evidence custody, specialist examination, forensic laboratory and police-geography records integrated; full domain coverage incomplete |
@@ -601,3 +601,20 @@ Documentation: `docs/operations/PATROL-ROAD-MOVEMENT.md`.
 
 Migration: `database/migrations/20261120122000_patrol_intelligence_and_coverage_gap_reporting.sql`.
 Documentation: `docs/operations/PATROL-INTELLIGENCE.md`.
+
+
+## Patrol activity sessions and officer activity intelligence — 2026-11-20
+
+**Implemented and rollback-only end-to-end tested.** Migration: `database/migrations/20261120123000_patrol_activity_sessions_and_intelligence.sql`.
+
+- Added private RLS-enabled `game.patrol_activity_sessions` and append-only `game.patrol_activity_events`.
+- Player commands: `start patrol activity UNIT_REF by PERSONNEL_REF at ACCESS_REF type TYPE because REASON` and `end patrol activity SESSION_REF after N minutes because REASON`.
+- Supports foot patrol, stationary observation, community engagement, business visits, area checks, vehicle patrol stops and other logged activity.
+- Validates active/on-patrol unit, active schedule and beat, active officer assigned to that unit, and an access point matching the unit's recorded location inside its beat. One active activity per unit/officer.
+- A unit cannot move or end patrol while an activity remains open. Activity events are append-only.
+- Starting an activity does not advance fictional time. Completing it advances time only by the explicitly supplied 1–720 minute duration and cannot exceed the active schedule.
+- `patrol intelligence` now reports sessions/minutes by activity type and unit, separately from vehicle movement. Open sessions do not accrue assumed time.
+
+**PASS:** `database/tests/kingswell_patrol_activity.sql` exercised both commands through `game.execute_text_command`, checked the explicit 15-minute clock advancement, activity intelligence, append-only event history and help registration. The SQL test completed successfully inside a transaction ending in ROLLBACK. No fixtures persist.
+
+Documentation: `docs/operations/PATROL-ACTIVITY-SESSIONS.md` and updated `docs/operations/PATROL-COMMAND-INTERFACE.md`.
