@@ -26,7 +26,7 @@ Sentence terms must be sequential. The first uses `first`; later terms use `conc
 - Sentenced admissions require an existing custodial sentence, guilty verdict and matching accused NPC identity.
 - Additional sentence terms require an active admission, matching accused identity, guilty verdict, sequential numbering and valid commencement mode.
 - Cell occupancy is unique within a facility/unit/cell while a placement remains active.
-- Correctional staff profiles link to existing NPC person identities; no duplicate person identities are created. One staff profile per NPC is currently supported.\n- Staff roles are explicit: facility governor, deputy governor, custody supervisor, correctional officer, escort officer, healthcare professional, psychologist, educator, probation officer, social worker, administrator and specialist. A role is not an automatic grant of police authority.\n- Staff appointments create append-only staff event history. Staff profile status is stored separately for future lifecycle commands.\n- Existing court, police, custody and other command parsers remain on the fallback chain.
+- Correctional staff profiles link to existing NPC person identities; no duplicate person identities are created. One staff profile per NPC is currently supported.\n- Staff roles are explicit: facility governor, deputy governor, custody supervisor, correctional officer, escort officer, healthcare professional, psychologist, educator, probation officer, social worker, administrator and specialist. A role is not an automatic grant of police authority.\n- Staff appointments and personnel lifecycle changes are reserved for correctional NPC command authority; the police player cannot appoint or manage prison staff. Staff event history is append-only.\n- Existing court, police, custody and other command parsers remain on the fallback chain.
 
 ## Verification and limits
 
@@ -34,7 +34,7 @@ Sentence terms must be sequential. The first uses `first`; later terms use `conc
 
 No end-to-end facility/prisoner query was run because there are no seeded correctional facilities, admissions or personnel records to use as a live fixture.
 
-**Not yet implemented:** staff rosters/shifts and lifecycle commands, sentence-credit command, cumulative concurrent/consecutive release calculation, sentence completion and release, prison transfers, daily routines, visits, communications, work/education, welfare, incidents, discipline, rehabilitation, parole and autonomous NPC activity. Correctional staff profiles and appointment/list commands now exist, but no staff or facilities have been seeded.
+**Not yet implemented:** NPC correctional command authority and autonomous staff appointments, staff rosters/shifts and lifecycle commands, sentence-credit command, cumulative concurrent/consecutive release calculation, sentence completion and release, prison transfers, daily routines, visits, communications, work/education, welfare, incidents, discipline, rehabilitation, parole and autonomous NPC activity. Correctional staff profiles and a read-only staff directory now exist, but no staff or facilities have been seeded.
 
 Migration: `database/migrations/20261120161200_correctional_read_only_queries_without_clock.sql`
 
