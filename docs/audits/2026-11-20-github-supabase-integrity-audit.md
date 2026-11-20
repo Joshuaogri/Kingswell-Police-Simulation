@@ -1050,3 +1050,10 @@ Classification: **repository hardening is moved earlier and retained through the
 The GitHub file `20261120140000_case_investigative_task_management.sql` is stored remotely at version `20261120125144`, under the same migration name. Both define the same two task tables, three indexes and the same three task-management functions. The read/list and update functions match exactly. The create function differs only by an unused local declaration `v_event text` in the remote source; removing that unused declaration makes the complete SQL canonically identical.
 
 Classification: **equivalent SQL with one unused-variable difference and a remote version/timestamp discrepancy**. Preserve both records.
+
+
+## 58. Content-led review of version 20261120152854
+
+The remote and GitHub versions of the disclosure-history dossier wrapper are functionally identical. Both rename the previous dossier function, wrap it, and add defence-counsel assignments, disclosure packages, disclosure items, service receipts and acknowledgements. Both revoke execution from public/anon/authenticated and grant it to `service_role`.
+
+Classification: **same dossier wrapper and privilege boundary; formatting difference only**. Retain the existing file and remote history.
