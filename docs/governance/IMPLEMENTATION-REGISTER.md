@@ -260,3 +260,6 @@ Regression script: `database/tests/scene_contamination_evidence_custody.sql`. Pa
 ### Migration source reconciliation — 2026-11-20
 
 Resolved the source-control gap for the scene contamination/evidence recovery/custody slice. Committed the source for the two applied migration versions `20261120103202` and `20261120103219`. The files include the three table definitions and constraints, indexes, RLS enablement, evidence action handler, command routing, text parser and help catalogue. Source was reconstructed from the live database definitions and checked against the applied migration history. No live migration was rerun and no operational/test records were added.
+
+
+The evidence-action handler's execute ACL was separately hardened in applied migration `20261120103649_restrict_evidence_action_execution.sql`: execution is granted to `service_role` only; `PUBLIC`, `anon` and `authenticated` are explicitly revoked. A live privilege check confirms `anon` and `authenticated` cannot execute it, while `service_role` can.
