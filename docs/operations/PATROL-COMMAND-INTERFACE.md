@@ -82,3 +82,8 @@ See `docs/operations/CASE-INTERVIEWS-WITNESS-STATEMENTS.md` for interview, trans
 ## Case interviews and witness statements
 
 See `docs/operations/CASE-INTERVIEWS-WITNESS-STATEMENTS.md` for interview, transcript, witness statement, adoption and retrieval commands.
+
+
+## Suspect interviews
+
+See `docs/operations/SUSPECT-INTERVIEWS.md` for suspect classification, per-turn response assessments and review commands.
