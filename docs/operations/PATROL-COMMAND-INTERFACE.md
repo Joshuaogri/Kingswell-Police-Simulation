@@ -43,3 +43,18 @@ This command routes the on-patrol unit to a registered access point on its assig
 - `patrol intelligence` now includes activity totals by type and unit separately from road movement. Open sessions do not accumulate elapsed minutes until completed with an explicit duration.
 
 See `PATROL-ACTIVITY-SESSIONS.md` for the record model and constraints. Regression: `database/tests/kingswell_patrol_activity.sql`.
+
+
+
+## Patrol observations and contacts
+
+- `record patrol observation SESSION_REF category CATEGORY [at ACCESS_REF] because DESCRIPTION`
+- `record patrol contact SESSION_REF type TYPE [person PERSON_REF] [organisation ORG_REF] [property PROPERTY_REF] [incident INCIDENT_REF] outcome OUTCOME [notes NOTES]`
+- Observation categories: `suspicious_activity`, `traffic`, `property_condition`, `vulnerable_person`, `public_order`, `environmental_hazard`, `community_concern`, `wanted_vehicle`, `other`.
+- Contact types: `person_spoken_to`, `business_visit`, `community_contact`, `welfare_check`, `witness_contact`, `other`.
+- Both require an active patrol activity session and its assigned officer. Any supplied access point must match the session's registered location.
+- Contact references resolve to existing person, organisation, property and/or incident records. Person/business/welfare/witness contacts require at least one linked entity; community_contact and other may be unlinked.
+- Entries are append-only and immutable. Logging does not advance fictional time.
+- `patrol intelligence` includes observation counts by category and contact counts by type, including linked people/organisations/properties/incidents.
+
+See `PATROL-ACTIVITY-SESSIONS.md`. Regression: `database/tests/kingswell_patrol_observations_contacts.sql`.
