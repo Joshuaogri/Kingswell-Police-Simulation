@@ -152,3 +152,14 @@ Regression script: `database/tests/forensic_laboratory_workflow.sql`. Parser, he
 
 
 Forensic source migrations are committed under `database/migrations/`: `20261120103941_forensic_laboratory_workflow_records.sql`, `20261120104208_forensic_laboratory_commands_and_review_workflow.sql`, `20261120104229_correct_forensic_request_command_spacing.sql`, `20261120104301_index_forensic_and_scene_foreign_keys.sql`, `20261120104349_treat_no_discrepancy_as_normal_lab_receipt.sql`, `20261120104502_independent_forensic_method_validation_and_review_qualification.sql`, `20261120104523_index_forensic_method_review_command_reference.sql` and `20261120104643_allow_versioned_forensic_report_reissue.sql`. These files match the applied Supabase migration versions; no already-applied migration was rerun.
+
+
+## Route-aware dispatch — 2026-11-20
+
+The first live dispatch routing integration is implemented. On creation of each incident deployment, a database trigger resolves the incident's structured property location to its primary routable access point and resolves the unit's origin from its current access point, falling back to its base facility. It invokes the weighted police route engine and stores the route calculation, endpoints, route status, baseline distance and duration, ETA, calculation timestamp and estimate basis on the deployment. An append-only route-history record captures the initial result.
+
+The trusted runtime can call game.get_dispatch_candidates(incident_ref) to list active units with at least one eligible on-duty officer, excluding personnel already committed to another active deployment. The function returns eligible personnel refs/count, base facility, route status, route reference, distance, posted-speed duration and estimated arrival. Candidate route computations are persisted in the route-calculation ledger.
+
+The existing dispatch command's validation and idempotency remain authoritative. A deployment route snapshot is additive; it does not dispatch a unit, acknowledge an officer, record arrival or advance the clock. Missing structured incident location or origin produces location_unresolved; a disconnected graph produces unreachable. ETA is a baseline posted-speed estimate only, without live traffic, siren uplift or turn-delay modelling.
+
+Regression source: database/tests/kingswell_live_dispatch_route_integration.sql. Structural/security/clock and incident-guard checks pass. Full seeded end-to-end route/ETA testing awaits rollback-only personnel/unit/roster/incident fixtures; the live world remains intentionally unseeded.
