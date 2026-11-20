@@ -675,3 +675,10 @@ Two function bodies match: `game.enforce_case_task_dependencies(...)` and `game.
 - The remote `game.add_case_task_dependency(...)` performs recursive cycle detection only when the prerequisite task is not already completed or cancelled. The repository version performs the cycle check unconditionally. This changes whether a dependency involving a completed/cancelled prerequisite can be recorded when it would otherwise form a cycle in the historical graph.
 
 Classification: **one message-only difference and one behavioural difference in dependency-cycle validation**. Preserve both versions. The cycle-check policy must be reviewed against the intended case-task model before any migration reconciliation; no live changes were made.
+
+
+## 38. Content-led review of version 20261120140513
+
+The complete remote statement and GitHub migration file for `case_task_completion_submissions_evidence_and_supervisor_review` produce identical canonical SQL after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults and equivalent declaration formatting.
+
+Classification: **canonical SQL match after formatting/declaration normalisation**. No substantive divergence was identified in this pair. Retain the existing file and remote history.
