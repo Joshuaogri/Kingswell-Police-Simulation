@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#12251e">
+<title>Kingswell | Geography Test Interface</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1512;--panel:#12231c;--panel2:#182d24;--line:#294437;--ink:#edf4ee;--muted:#a8b9ad;--accent:#80d5a6;--gold:#e5bd73}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:22px clamp(16px,3vw,38px);border-bottom:1px solid var(--line);background:linear-gradient(110deg,#142b21,#0d1a15);display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:750}h1{margin:4px 0 0;font-size:clamp(24px,3vw,36px);letter-spacing:-.04em}header p{margin:4px 0 0;color:var(--muted)}.version{border:1px solid #42664f;border-radius:999px;padding:7px 12px;color:var(--accent);font-size:12px;font-weight:700}
+main{padding:22px clamp(12px,2.5vw,32px) 32px;max-width:1800px;margin:auto}
+.stats{display:grid;grid-template-columns:repeat(6,minmax(110px,1fr));gap:10px;margin-bottom:16px}.stat,.panel{background:var(--panel);border:1px solid var(--line);border-radius:13px}.stat{padding:13px 15px}.stat strong{display:block;font-size:25px;letter-spacing:-.04em}.stat span{color:var(--muted);font-size:12px}
+.workspace{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:14px;align-items:stretch}.map-panel{overflow:hidden;min-width:0}.map-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 15px;border-bottom:1px solid var(--line);flex-wrap:wrap}.map-head strong{font-size:14px}.map-actions{display:flex;gap:7px;flex-wrap:wrap}button{font:inherit;color:var(--ink);background:var(--panel2);border:1px solid #385544;border-radius:8px;padding:7px 10px;cursor:pointer}button:hover,button:focus-visible{border-color:var(--accent);outline:none}.map-wrap{height:min(72vh,850px);min-height:480px;background:#e9eee6;position:relative;overflow:hidden;touch-action:none}.map-wrap svg{width:100%;height:100%;display:block;user-select:none}.map-wrap svg polyline{cursor:pointer;transition:opacity .15s}.map-wrap svg polyline:hover{filter:drop-shadow(0 0 45px #e0a64d);opacity:1!important}.map-wrap svg polyline.selected{stroke:#df8a2d!important;stroke-width:310!important;opacity:1!important}
+.side{display:flex;flex-direction:column;gap:12px}.side .panel{padding:15px}.side h2{font-size:14px;margin:0 0 12px}.muted{color:var(--muted)}.filters{display:grid;gap:10px}.filters label{display:flex;align-items:center;gap:9px;color:#d6e2d8;font-size:13px}.filters input{accent-color:#70c995;width:16px;height:16px}.detail-id{font:12px ui-monospace,monospace;color:var(--accent);overflow-wrap:anywhere}.detail-name{font-size:18px;font-weight:700;margin:6px 0}.detail-hint{font-size:13px;color:var(--muted)}.key{display:grid;gap:8px;font-size:12px;color:var(--muted)}.key span{display:flex;align-items:center;gap:9px}.swatch{height:5px;width:26px;border-radius:4px;background:#fff;border:1px solid #7a8b80}.swatch.service{background:repeating-linear-gradient(90deg,#fff 0 6px,transparent 6px 10px)}.swatch.bridge{background:#5b8795}
+footer{padding:18px 4px;color:var(--muted);font-size:12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}a{color:var(--accent)}.status{color:var(--accent)}@media(max-width:1000px){.stats{grid-template-columns:repeat(3,1fr)}.workspace{grid-template-columns:1fr}.side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.map-wrap{height:65vh}}@media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}.side{grid-template-columns:1fr}.map-wrap{min-height:400px;height:58vh}}
+</style>
+</head>
+<body>
+<header><div><div class="eyebrow">Asterfell · Kingswell · Police Simulation</div><h1>Geography & City Map</h1><p>Interactive street atlas · road network KNG-MAP-0.3</p></div><div class="version">MAP VERSION&nbsp; KNG-MAP-0.3</div></header>
+<main>
+<section class="stats" aria-label="Map statistics">
+<div class="stat"><strong>75</strong><span>Named roads</span></div><div class="stat"><strong>157</strong><span>Junctions</span></div><div class="stat"><strong>229</strong><span>Road segments</span></div><div class="stat"><strong>24</strong><span>Rear service lanes</span></div><div class="stat"><strong>1,136</strong><span>Property entrances</span></div><div class="stat"><strong>458</strong><span>Traffic profiles</span></div>
+</section>
+<div class="workspace">
+<section class="panel map-panel"><div class="map-head"><strong>Street atlas <span class="muted">· select a road segment for details</span></strong><div class="map-actions"><button id="zoomIn" type="button" aria-label="Zoom in">＋</button><button id="zoomOut" type="button" aria-label="Zoom out">−</button><button id="reset" type="button">Reset view</button></div></div><div class="map-wrap" id="mapWrap"><div id="mapStatus" style="padding:22px;color:#33483b">Loading Kingswell map…</div></div></section>
+<aside class="side">
+<section class="panel"><h2>Map layers</h2><div class="filters">
+<label><input type="checkbox" data-layer="primary" checked> Primary roads</label>
+<label><input type="checkbox" data-layer="collector" checked> Collector roads</label>
+<label><input type="checkbox" data-layer="local" checked> Local streets</label>
+<label><input type="checkbox" data-layer="service" checked> Rear service lanes</label>
+<label><input type="checkbox" data-layer="accessPrimary" checked> Primary property entrances</label>
+<label><input type="checkbox" data-layer="accessSecondary" checked> Secondary entrances</label>
+<label><input type="checkbox" data-layer="junction" checked> Junctions</label>
+<label><input type="checkbox" data-layer="landmark" checked> Landmarks</label>
+</div></section>
+<section class="panel"><h2>Selected road segment</h2><div id="selection"><div class="detail-hint">Choose a road line on the map. Its segment ID and road details will appear here.</div></div></section>
+<section class="panel"><h2>Map key</h2><div class="key"><span><i class="swatch"></i> Road carriageway</span><span><i class="swatch service"></i> Service lane</span><span><i class="swatch bridge"></i> River bridge</span><span>🟠 &nbsp; Landmark / signal junction</span><span>🟢 &nbsp; Primary property entrance</span><span>🔵 &nbsp; Secondary entrance</span></div></section>
+<section class="panel"><h2>Data and updates</h2><div class="detail-hint">This public map is a published view of the authored Kingswell road-network snapshot. Every update committed to the repository is automatically republished by GitHub Pages. Supabase remains the authoritative live simulation database.</div><p class="detail-hint"><span class="status">●</span> Static map snapshot · KNG-MAP-0.3</p><a href="https://github.com/Joshuaogri/Kingswell-Police-Simulation/tree/main/docs/geography" target="_blank" rel="noreferrer">Open source geography records ↗</a></section>
+</aside>
+</div>
+<footer><span>Fictional city geography · 20 km × 16 km local coordinate grid · north at top</span><span>Source: <a href="https://github.com/Joshuaogri/Kingswell-Police-Simulation">Kingswell Police Simulation on GitHub</a></span></footer>
+</main>
+<script>
+const wrap=document.getElementById('mapWrap'),status=document.getElementById('mapStatus'),selection=document.getElementById('selection');let svg,view,baseView,drag=null,selected=null;
+const parseTitle=node=>{const t=node.querySelector('title');return t?t.textContent.trim():'Road segment';};
+function selectSegment(node){if(selected)selected.classList.remove('selected');selected=node;node.classList.add('selected');const title=parseTitle(node),id=node.getAttribute('data-segment')||'Unlabelled segment';const parts=title.split(' — ');selection.innerHTML='<div class="detail-id"></div><div class="detail-name"></div><div class="detail-hint"></div>';selection.querySelector('.detail-id').textContent=id;selection.querySelector('.detail-name').textContent=parts[0]||'Road segment';selection.querySelector('.detail-hint').textContent=parts.slice(1).join(' · ')||title;}
+function applyLayers(){document.querySelectorAll('[data-layer]').forEach(input=>{const cls=input.dataset.layer;svg?.querySelectorAll('.'+cls).forEach(el=>el.style.display=input.checked?'':'none');});}
+function setView(v){view=v;svg.setAttribute('viewBox',v.map(n=>Number(n.toFixed(2))).join(' '));}
+function zoom(f,cx,cy){const [x,y,w,h]=view,nw=w/f,nh=h/f;const px=cx??x+w/2,py=cy??y+h/2;setView([px-(px-x)*nw/w,py-(py-y)*nh/h,nw,nh]);}
+function pointerToSvg(e){const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(svg.getScreenCTM().inverse());}
+fetch('./map.svg').then(r=>{if(!r.ok)throw Error('Map file could not be loaded');return r.text()}).then(source=>{const doc=new DOMParser().parseFromString(source,'image/svg+xml');svg=document.importNode(doc.documentElement,true);wrap.replaceChildren(svg);view=svg.getAttribute('viewBox').split(/[ ,]+/).map(Number);baseView=[...view];svg.querySelectorAll('polyline[data-segment]').forEach(line=>{line.addEventListener('click',e=>{e.stopPropagation();selectSegment(line)});line.setAttribute('tabindex','0');line.setAttribute('role','button');line.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectSegment(line)}})});applyLayers();status.textContent='';}).catch(e=>{status.textContent='Unable to load map: '+e.message;});
+document.querySelectorAll('[data-layer]').forEach(i=>i.addEventListener('change',applyLayers));
+document.getElementById('zoomIn').onclick=()=>svg&&zoom(1.35);document.getElementById('zoomOut').onclick=()=>svg&&zoom(1/1.35);document.getElementById('reset').onclick=()=>{if(svg){setView([...baseView]);if(selected){selected.classList.remove('selected');selected=null;}selection.innerHTML='<div class="detail-hint">Choose a road line on the map. Its segment ID and road details will appear here.</div>';document.querySelectorAll('[data-layer]').forEach(i=>i.checked=true);applyLayers();}};
+wrap.addEventListener('wheel',e=>{if(!svg)return;e.preventDefault();const p=pointerToSvg(e);zoom(e.deltaY<0?1.15:1/1.15,p.x,p.y)},{passive:false});
+wrap.addEventListener('pointerdown',e=>{if(!svg||e.target.closest('polyline'))return;drag={x:e.clientX,y:e.clientY,view:[...view]};wrap.setPointerCapture(e.pointerId);});
+wrap.addEventListener('pointermove',e=>{if(!drag||!svg)return;const r=svg.getBoundingClientRect(),dx=(e.clientX-drag.x)*drag.view[2]/r.width,dy=(e.clientY-drag.y)*drag.view[3]/r.height;setView([drag.view[0]-dx,drag.view[1]-dy,drag.view[2],drag.view[3]]);});
+wrap.addEventListener('pointerup',()=>drag=null);wrap.addEventListener('pointercancel',()=>drag=null);
+</script>
+</body></html>
