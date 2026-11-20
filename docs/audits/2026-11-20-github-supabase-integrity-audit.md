@@ -1192,3 +1192,10 @@ The remote and repository SQL are otherwise canonically identical. The only cont
 The city-grid dimensions, north-up orientation, southern coastal edge, major-waterway description, national-region codes and all other seed/update statements match.
 
 Classification: **one descriptive seed-text difference; no schema, coordinate or city-grid difference identified**. Preserve the more complete remote wording in the reconciliation register; do not alter live geography during this audit.
+
+
+## 64. Content-led review of version 20261120162714 — persistent population foundation
+
+The complete remote and GitHub migration SQL for `bp03_persistent_population_households_routines_and_life` is canonically identical after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults and equivalent `search_path` declarations.
+
+Classification: **canonical SQL match after formatting/declaration normalisation**. No substantive source difference was identified. Retain the existing file and remote history.
