@@ -1,6 +1,6 @@
 -- BP-04 rollback-only primate-city property, building, business, map and game-command regression.
 begin;
-do $$
+do $bp04$
 declare
  v_person uuid;
  v_officer uuid;
@@ -183,7 +183,7 @@ begin
  if has_schema_privilege('anon','game','USAGE') or has_schema_privilege('authenticated','game','USAGE') then
   raise exception 'The private game schema is exposed to API roles';
  end if;
-end $;
+end $bp04$;
 set local role service_role;
 do $
 declare v_officer uuid:=current_setting('bp04.test_officer_id')::uuid; v_result jsonb;
@@ -198,6 +198,6 @@ begin
  end if;
  v_result:=game.execute_text_command('property map KMX-01 by KW-TEST-OFFICER-BP04','bp04-service-property-map-0001',null,v_officer);
  if coalesce((v_result->>'ok')::boolean,false) is not true then raise exception 'Service-role property map command failed'; end if;
-end $;
+end $bp04$;
 reset role;
 rollback;
