@@ -758,3 +758,19 @@ Classification: **historical change moved earlier in the GitHub reconstruction; 
 The remote and repository dynamic dossier patch use the same anchor, replacement, and failure guard. The only difference is statement formatting: the repository places `execute d;` on the same line as the preceding replacement; the remote places it on the next line.
 
 Classification: **same dossier integration patch; formatting difference only**. The patch adds `search_operations` after `surveillance_operations` in the case dossier. Retain the existing file and remote history.
+
+
+## 32. Content-led review of version 20261120131748
+
+The remote migration and GitHub reconstruction for `case_interviews_and_witness_statements` have matching structural inventories:
+
+- Five tables, with the same column names and counts in each table.
+- Three sequences.
+- Ten indexes.
+- Five append-only triggers.
+- Row-level security enabled on all five tables.
+- Matching counts of primary keys (5), unique constraints (5), foreign keys (22), and check constraints (10).
+- All ten function bodies match after canonical formatting and dollar-quote normalisation, including the interview/witness commands, read functions, interpreter and command executor.
+- Table, sequence and function grants/revokes match.
+
+Classification: **canonical structural and function-body parity; only reconstruction formatting/declaration differences**. No substantive discrepancy was identified. Retain both records unchanged.
