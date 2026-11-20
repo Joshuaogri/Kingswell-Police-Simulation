@@ -1,0 +1,19 @@
+
+CREATE INDEX correctional_admissions_facility_idx ON game.prisoner_admissions(facility_id);
+CREATE INDEX correctional_admissions_person_idx ON game.prisoner_admissions(person_id);
+CREATE INDEX correctional_admissions_court_case_idx ON game.prisoner_admissions(source_court_case_id);
+CREATE INDEX correctional_admissions_official_idx ON game.prisoner_admissions(receiving_officer_id);
+CREATE INDEX correctional_admissions_command_idx ON game.prisoner_admissions(source_command_id);
+CREATE INDEX prisoner_terms_admission_idx ON game.prisoner_sentence_terms(admission_id);
+CREATE INDEX prisoner_terms_sentence_idx ON game.prisoner_sentence_terms(sentence_id);
+CREATE INDEX prisoner_terms_command_idx ON game.prisoner_sentence_terms(source_command_id);
+CREATE INDEX sentence_credits_term_idx ON game.sentence_credit_events(term_id);
+CREATE INDEX sentence_credits_official_idx ON game.sentence_credit_events(recorded_by_official_id);
+CREATE INDEX sentence_credits_command_idx ON game.sentence_credit_events(source_command_id);
+CREATE INDEX correctional_events_admission_time_idx ON game.correctional_events(admission_id,event_at_game_time);
+CREATE INDEX correctional_events_person_actor_idx ON game.correctional_events(actor_person_id);
+CREATE INDEX correctional_events_official_actor_idx ON game.correctional_events(actor_official_id);
+CREATE INDEX correctional_events_command_idx ON game.correctional_events(source_command_id);
+CREATE INDEX prisoner_placements_admission_idx ON game.prisoner_placements(admission_id);
+CREATE INDEX prisoner_placements_facility_idx ON game.prisoner_placements(facility_id);
+CREATE INDEX prisoner_placements_command_idx ON game.prisoner_placements(source_command_id);
