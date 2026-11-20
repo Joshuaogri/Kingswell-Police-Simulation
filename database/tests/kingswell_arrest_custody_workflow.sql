@@ -27,6 +27,7 @@ begin
  r:=game.execute_text_command('arrest transport '||a||' by KWP-TAR-902 to "Kingswell Custody Suite" vehicle "Marked police vehicle KW-12" handover "No incident; condition unchanged" duration 12 minutes','kng-tar-902',null,n2);
  if not coalesce((r->>'ok')::boolean,false) then raise exception 'Transport failed: %',r; end if;
  if (select current_game_time from game.simulation_state where id=1)<>'2026-11-20 10:12:00+00'::timestamptz then raise exception 'Transport duration did not advance fictional clock'; end if;
+ if (select status from game.arrests where arrest_ref=a)<>'transported' then raise exception 'Transport arrival state was not recorded'; end if;
  if (select duration_minutes from game.arrest_transport_legs where arrest_id=(select id from game.arrests where arrest_ref=a))<>12 then raise exception 'Transport duration not retained'; end if;
 
  r:=game.execute_text_command('custody book '||a||' by KWP-TAR-902 identity "Identity checked against existing person record" risk "Routine monitoring; no immediate escalation recorded" health "No immediate health concern reported" cell "Cell A-03" medication "No medication disclosed" safeguarding "No additional concern recorded"','kng-tar-903',null,n2);
