@@ -566,3 +566,15 @@ Classification: **canonical SQL match after formatting/declaration normalisation
 The remote and repository definitions of `game.calculate_road_route(...)` differ by one redundant assignment in the remote SQL: `v_duration := v_duration;`. Removing that no-op statement makes the complete canonical SQL identical after formatting/declaration normalisation.
 
 Classification: **equivalent routing function; remote contains a redundant self-assignment only**. No functional difference was identified. Retain the existing file and remote history.
+
+
+## 28. Content-led review of version 20261120125918
+
+Three of the four function definitions match after normalisation: the append-only event trigger function, `game.release_case_investigator(...)`, and `game.get_case_assignments(...)`. The `game.assign_case_investigator(...)` function differs in assignment replacement rules.
+
+- Remote SQL selects the active assignment for the same case and requested role, then releases that assignment before inserting the replacement. This applies to any requested role, not only `lead_investigator`.
+- The GitHub file first checks whether the same person already holds that role. It replaces an existing assignment only when the requested role is `lead_investigator`; other investigator, supervisor and specialist assignments can coexist for different personnel.
+- This changes gameplay behaviour: the remote historical function effectively permits only one active person per case/role, while the repository reconstruction allows multiple active non-lead personnel in the same role.
+- Both sources still maintain the unique active lead constraint and the unique active case/person/role constraint.
+
+Classification: **genuine function-level behavioural divergence; assignment multiplicity policy unresolved**. Preserve the remote history and repository file. Do not silently choose one policy or alter the live database; this needs an explicit design decision during the final runtime/schema reconciliation.
