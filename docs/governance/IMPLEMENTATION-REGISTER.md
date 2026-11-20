@@ -32,7 +32,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-05 | Police Architecture | Approved; initial proposal; detailed structure remains open |
 | BP-06 | Police Personnel | Approved |
 | BP-07 | Career System | Approved; detailed rules remain open for refinement |
-| BP-08 | Units and Deployment | Approved; detailed rules remain open for refinement |
+| BP-08 | Units and Deployment | Approved; initial roster-validated incident deployment implemented, including temporary cross-unit roster attachments; resource, qualification, command and full deployment lifecycle rules remain outstanding |
 | BP-09 | Police Resources | Approved; details to refine with later operational divisions |
 | BP-10 | Patrol Operations | Approved; initial roster-validated patrol-unit dispatch implemented; patrol presence, field status, response and attendance workflows remain outstanding |
 | BP-11 | Emergency Communications | Approved; text call intake, linked incident creation and roster-validated unit dispatch implemented; communications, acknowledgement and live dispatch-console workflows remain outstanding |
@@ -59,10 +59,10 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-32 | Training and Development | Approved; design only; no training or competence software implemented |
 | BP-33 | Human Resources | Approved; design only; no HR or workforce software implemented |
 | BP-34 | Finance and Procurement | Approved; design only; no finance or procurement software implemented |
-| BP-35 | Simulation Engine | Approved; typed command intake, limited text interpreter, idempotency and transactional event emission implemented; broader domain handlers, scheduler and NPC processing outstanding |
+| BP-35 | Simulation Engine | Approved; typed command intake, limited text interpreter, idempotency, roster-validated dispatch and transactional event processing implemented; broader domain handlers, scheduler and NPC processing outstanding |
 | BP-36 | Relationships and Social Context | Approved; design only; no relationship or social-context system implemented |
 | BP-37 | Time and Scheduling | Approved; paused singleton clock, explicit initialization/advancement and clock history implemented; fictional calendar configuration and scheduler outstanding |
-| BP-38 | Records and Databases | Approved; 42-table private schema and ten migrations implemented; command and clock-history records added; full domain coverage incomplete |
+| BP-38 | Records and Databases | Approved; 42-table private schema and ten migrations implemented; command, clock-history and dispatch workflow records integrated; full domain coverage incomplete |
 | BP-39 | Persistence and Recovery | Approved; design only; no backup or restore process implemented |
 | BP-40 | Interface | Approved; ChatGPT remains the intended text interface; limited explicit text command grammar exists; live ChatGPT-to-runtime connection remains outstanding |
 | BP-41 | Notifications and Reporting | Approved; design only; no notification or reporting service implemented |
@@ -179,11 +179,11 @@ The runtime is a foundation, not a playable police simulation. Natural-language 
 
 ## Text interpreter and initial dispatch workflow — 2026-11-20
 
-Implemented a limited explicit text grammar through `game.interpret_text_command` and `game.execute_text_command`. Initial BP-11/BP-12 call intake creates a linked incident, dispatch call, `call_received` dispatch event and game event using the configured fictional clock. It does not dispatch a unit. Invalid or unrecognised commands are rejected; retries remain idempotent.
+Implemented a limited explicit text grammar through `game.interpret_text_command` and `game.execute_text_command`. Initial BP-11/BP-12 call intake creates a linked incident, dispatch call, `call_received` dispatch event and game event using the configured fictional clock. The separate `dispatch UNIT_REF to INCIDENT_REF` command deploys eligible personnel from the selected unit's active roster and records the dispatch. Invalid or unrecognised commands are rejected; retries remain idempotent.
 
 Supported forms include `help`, `status`, `advance time N minutes`, and `911/call/report/radio [report] at [location]`. The parser does not turn questions into actions.
 
-Regression test: `database/tests/text_interpreter_dispatch.sql`; passed in a transaction with rollback. Live verification: 42 tables, 80 foreign keys, 147 indexes, all 42 tables with RLS, ten migration records, three runtime functions; zero command, call, incident or dispatch-event records; fictional clock still unset.
+Regression tests: `database/tests/text_interpreter_dispatch.sql` and `database/tests/unit_dispatch.sql`; both passed in transactions with rollback. Live verification: 42 tables, 80 foreign keys, 147 indexes, all 42 tables with RLS, ten migration records, three runtime functions; zero command, call, incident, deployment or dispatch-event records; fictional clock still unset.
 
 
 ## Roster-validated unit dispatch — 2026-11-20
