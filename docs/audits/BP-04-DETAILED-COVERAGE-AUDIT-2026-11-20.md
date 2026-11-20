@@ -164,3 +164,13 @@ Audited the existing 1,477 organisation locations. Every location already has a 
 Added a canonical internal-structure framework: organisation departments with parent-department and base-site links; department positions with reporting-position links; and employment assignments connecting existing employment records to departments, positions, site dossiers and supervisors. These three structure tables intentionally remain empty: no verified department names, reporting lines, managerial appointments or staff-to-site assignments existed to populate them. No employee is assumed to work at the employer's primary premises.
 
 Added `game.get_organisation_site_record(site_ref)` and `game.get_organisation_structure_record(organisation_ref)`. Regression tests passed for 1,477/1,477 site dossier coverage, canonical location/property/unit consistency, empty unsubstantiated structure tables, access control and both query functions.
+
+## 10. Property interests and occupancy-agreement review dossiers
+
+Created 1,608 property-interest dossiers, one for each existing registered-owner, landlord and property-manager interest. Each dossier resolves the existing holder's canonical organisation/person identity and links the property address, parcel, land use, interest type, share, dates and title reference. No beneficial owners, mortgagees, new ownership shares, title instruments or additional interest holders were invented.
+
+Created 1,232 occupancy-agreement review dossiers, one per existing site agreement. Each records the tenant, any already-linked counterparty, linked properties/sites, occupancy dates kept distinct from contractual dates, lifecycle-event count, and a field-by-field list of missing contract terms. The 152 agreements without a linked counterparty remain unresolved; registered ownership is not automatically treated as landlord status. No rent, deposit, contract dates, permitted-use clauses, repair terms or renewal events were fabricated.
+
+Added `game.get_property_interest_record(property_ref)` and `game.get_site_agreement_review(agreement_ref)`. Regression tests passed for 1,608/1,608 interest dossier coverage, 1,232/1,232 agreement review coverage, the existing 656 registered owners and 476 landlords, 152 unresolved counterparties, missing-field completeness, private access and both query functions.
+
+BP-04 remains in progress. Remaining property work includes source-backed title/transfer history, beneficial ownership or mortgage records where established, landlord/counterparty resolution, actual contract details and property asset/inspection event capture.
