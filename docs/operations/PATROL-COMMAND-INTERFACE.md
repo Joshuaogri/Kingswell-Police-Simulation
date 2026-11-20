@@ -31,3 +31,15 @@ This command routes the on-patrol unit to a registered access point on its assig
 - `patrol intelligence` — reports road-segment coverage, patrol movement minutes, beat gaps, least-visited roads and unit activity through current fictional time.
 - Aliases: `patrol gaps`, `patrol analysis`.
 - Optional timestamp-window reporting is available through the database reporting function; the standard player command reports all recorded history.
+
+
+## Foot patrol and officer activity
+
+- `start patrol activity UNIT_REF by PERSONNEL_REF at ACCESS_REF type TYPE because REASON` starts a logged activity at the unit's current recorded location.
+- `end patrol activity SESSION_REF after N minutes because REASON` completes the activity and advances fictional time by the explicitly stated duration.
+- Activity types: `foot_patrol`, `stationary_observation`, `community_engagement`, `business_visit`, `area_check`, `vehicle_patrol_stop`, `other`.
+- The unit must be active and on patrol with an active schedule; the officer must be active and assigned to that unit; the location must be the unit's recorded location inside its assigned beat.
+- One activity at a time is allowed per unit/officer. Movement and patrol termination are blocked until the activity is completed.
+- `patrol intelligence` now includes activity totals by type and unit separately from road movement. Open sessions do not accumulate elapsed minutes until completed with an explicit duration.
+
+See `PATROL-ACTIVITY-SESSIONS.md` for the record model and constraints. Regression: `database/tests/kingswell_patrol_activity.sql`.
