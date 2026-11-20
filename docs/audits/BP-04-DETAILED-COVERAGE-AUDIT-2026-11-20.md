@@ -134,3 +134,13 @@ The register is intentionally empty at migration time. No renewal, expiry, termi
 A new `game.get_site_agreement_record(agreement_ref)` dossier returns the agreement, tenant, counterparty, linked sites/properties/buildings/units, lifecycle event timeline, clause-coverage register and provenance. It explicitly distinguishes occupancy dates from contractual dates and retains unrecorded contract terms as unknown.
 
 Regression coverage verifies dossier completeness, unknown-date provenance, empty initial history, event immutability, rollback of transient test data and private access. The migration and regression script both applied/executed successfully.
+
+## 7. Organisation and institution dossier refinement
+
+Added `game.organisation_profiles`, one dossier for each of the 1,490 existing canonical organisations (1,452 businesses and 38 institutions). Dossiers classify operating model, remit, service/market scope, branch/site coverage, staffing summary, premises summary, public-contact data status and dependencies on existing canonical records. Business dossiers link to the existing business profile; institutions receive institution-specific remit summaries.
+
+The new `game.get_organisation_record(organisation_ref)` query assembles the canonical organisation, profile, linked business profile, parent/child hierarchy, locations and premises, property interests, control interests, and tenant/counterparty site agreements.
+
+No organisations, parent/subsidiary links, directors, beneficial owners, legal forms, registration numbers, regulators, contact details or staffing identities were invented. Those fields remain explicitly not recorded until supported by in-game records. Existing parent hierarchy remains authoritative in `organisations.parent_organisation_id`.
+
+Regression checks passed: 1,490/1,490 dossier coverage, 1,452 businesses and 38 institutions preserved, parent-link consistency, provenance/unknown-field controls, private access and complete dossier query output.
