@@ -39,7 +39,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-12 | Incident Management | Approved; incident intake, dispatch, attendance, linked scene records, field reports and resource requests implemented; ownership transfer, full progression, resolution and closure remain outstanding |
 | BP-13 | Crime Architecture | Approved; detailed fictional offence catalogue to populate |
 | BP-14 | Crime Generation | Approved; frequency and behaviour tuning to follow |
-| BP-15 | Case Management | Approved; case task management, investigator ownership/assignment history, investigative lead register and enquiry records implemented and rollback-tested; wider case progression, disclosure and legal review remain outstanding |
+| BP-15 | Case Management | Approved; case task management, investigator ownership/assignment history, investigative lead register, enquiry records, interview transcripts and witness statements implemented and rollback-tested; wider case progression, disclosure and legal review remain outstanding |
 | BP-16 | Investigation | Approved; lead creation, source classification, investigator allocation, priority/confidence assessment, immutable enquiry actions/results and history implemented; investigative methods and specialist procedures remain outstanding; typed lead links and case interview/witness statement workflows are implemented |
 | BP-17 | Victims and Witnesses | Approved; specialist safeguarding and legal procedures to refine |
 | BP-18 | Suspects and Offenders | Approved; legal-status interfaces and specialist procedures to refine |
@@ -66,7 +66,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-39 | Persistence and Recovery | Approved; design only; no backup or restore process implemented |
 | BP-40 | Interface | Approved; ChatGPT remains the intended text interface; limited explicit text command grammar exists; live ChatGPT-to-runtime connection remains outstanding |
 | BP-41 | Notifications and Reporting | Approved; design only; no notification or reporting service implemented |
-| BP-42 | Security and Permissions | Approved; RLS enabled on all 99 tables; private schema remains unexposed; service-role-only runtime execution; player authentication and fictional authority enforcement outstanding |
+| BP-42 | Security and Permissions | Approved; RLS enabled on all 104 tables; private schema remains unexposed; service-role-only runtime execution; player authentication and fictional authority enforcement outstanding |
 | BP-43 | Testing and Quality Assurance | Approved; seeded scene-specialist-examination-to-contamination/recovery/custody and forensic request-to-report SQL end-to-end regression tests pass inside rolled-back transactions, alongside parser/help/RLS/clock guards; CI and broader domain tests outstanding |
 | BP-44 | Configuration and Expansion | Approved; design only; no configuration or expansion framework implemented |
 
@@ -717,8 +717,8 @@ Documentation: `docs/operations/CASE-INVESTIGATIVE-LEADS.md` and updated `docs/o
 ## Case interviews and witness statements — 2026-11-20
 
 **Implemented and rollback-only end-to-end tested.** Migrations:
-- `database/migrations/20261120131800_case_interviews_and_witness_statements.sql`
-- `database/migrations/20261120131900_link_witness_statements_to_interviews.sql`
+- `database/migrations/20261120131748_case_interviews_and_witness_statements.sql`
+- `database/migrations/20261120131811_link_witness_statements_to_interviews.sql`
 
 - Added immutable interview records, interview event history, numbered question-and-answer turns, witness statement records and statement adoption/signature event history.
 - Player commands open interviews, record each Q&A turn, attach a witness statement to the same witness and case, record adoption/non-adoption/refusal to sign, conclude or interrupt interviews, and retrieve case interview lists, transcripts and statements.
