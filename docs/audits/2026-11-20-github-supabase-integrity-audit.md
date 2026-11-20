@@ -1165,3 +1165,12 @@ The migration's intended operation is to inject an `activities` field into the e
 The remote SQL uses the anchor prefix ending at `'request_ref',fr.request_ref`. The GitHub reconstruction extends that anchor to `'request_ref',fr.request_ref)`. In the preceding dossier definition from version `20261120134455`, the request-reference value is followed by additional JSON fields (including `discipline`), not a closing parenthesis at that position. The repository anchor therefore does not match the preceding dossier definition and would raise its explicit `Dossier top-level forensic section anchor not found` exception rather than apply the intended change.
 
 Classification: **genuine broken migration patch anchor in the repository reconstruction**. The remote version has the compatible anchor prefix. Preserve both sources; do not deploy the local migration as written. Recover the exact expected preceding function version and correct the patch anchor in a separately reviewed migration-source repair.
+
+
+## 61. Content-led review of trial proceedings migrations 20261120155118, 20261120155132 and 20261120155244
+
+The remote 155118 migration establishes trial pleas, proceedings, evidence tenders, append-only event records, trial commands and dossier retrieval. The repository 155118 source contains the same four tables, five indexes, three append-only triggers and five functions.
+
+The repository's 155118 command functions already include the later runtime corrections from remote 155132 and the trial-command help registration from remote 155244. The remote 155132 interpreter/executor changes match the consolidated repository functions after normalising equivalent `search_path` declaration syntax. The 155244 help command list is also already present in the repository's earlier 155118 `execute_text_command` wrapper.
+
+Classification: **trial runtime fixes and help registration consolidated into the earlier GitHub trial foundation**. The final trial command path is present in the repository, but the intermediate historical patches are not retained as separate SQL statements. Preserve the existing source chronology.
