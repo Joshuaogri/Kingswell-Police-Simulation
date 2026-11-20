@@ -1319,3 +1319,12 @@ Classification: **canonical SQL match after formatting normalisation**. No subst
 The complete remote and GitHub SQL for `bp03_exact_dwelling_unit_allocation_and_capacity_reconciliation` is canonically identical after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults, `search_path` declarations and concatenation-operator spacing.
 
 Classification: **canonical SQL match after formatting normalisation**. No substantive dwelling allocation, capacity or validation difference was identified. Retain the existing file and remote history.
+
+
+## 79. Content-led review of version 20261120180521 — business employment seed result
+
+The remote `game.seed_kingswell_business_employment_batch(integer,integer)` captures the row count from the employment-link insert and includes an `employment_links` count in its returned JSON. The GitHub migration omits that row-count capture and omits the `employment_links` result field; its returned JSON contains only `job_start`, `job_end`, `employees` and `work_routines`.
+
+A read-only check of the current live function confirms that its result includes `employment_links`. This is an observable function-response mismatch, not merely formatting.
+
+Classification: **repository function output is incomplete relative to the applied remote/live definition**. Preserve the live function and add the missing result field to the source-recovery register; no live changes were made.
