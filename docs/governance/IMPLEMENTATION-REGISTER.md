@@ -489,3 +489,18 @@ The command is idempotent through the existing command ledger. No fictional time
 **PASS:** `database/tests/kingswell_player_dispatch_options_and_reassignment.sql` verifies parser/help registration, two ranked candidates with named officers, read-only options, initial dispatch, reassignment, preserved old deployment and route history, replacement deployment and route snapshot, outgoing/incoming dispatch events, game-event audit and unchanged fictional clock. The test is transaction-wrapped and ends in ROLLBACK.
 
 The test was rerun from the committed GitHub file. Live game remains unseeded: zero units, incidents, deployments, route calculations and route-history records; fictional clock remains uninitialized. All 80 game tables remain RLS-enabled. New dispatch helper functions are executable by service_role and not by anon/authenticated.
+
+
+## Arrival-driven patrol unit position history — 2026-11-20
+
+**Implemented and rollback-only integration-tested.** Applied migration: `database/migrations/20261120115821_unit_location_history_and_arrival_position_sync.sql`.
+
+- Added private RLS-enabled `game.unit_location_history` with unit, access point, fictional timestamp, source, deployment, officer, reason and contextual details.
+- The deployment arrival transition now updates the patrol unit's current map access point to the incident's registered primary routable property access point.
+- Each arrival appends a permanent location-history record. Runtime service_role can SELECT/INSERT but cannot UPDATE/DELETE the history.
+- Other active, not-yet-arrived deployments assigned to the same unit have their routes recalculated from the new position; the deployment that just arrived is excluded.
+- The trigger requires an initialized fictional clock, exact agreement between arrival time and current game time, and a registered routable incident access point. It does not advance the clock.
+
+**PASS:** `database/tests/kingswell_unit_arrival_position_sync.sql` ran against live Supabase in a transaction ending in ROLLBACK. It verified unit position synchronization, exactly one arrival-history entry and unchanged fictional time. No fixture records or clock changes remain.
+
+Documentation: `docs/operations/PATROL-UNIT-LOCATION-HISTORY.md` and the updated `docs/operations/LIVE-DISPATCH-ROUTING.md`.
