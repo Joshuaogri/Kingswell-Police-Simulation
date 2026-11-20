@@ -905,7 +905,7 @@ Plea records are per individual filed charge. Trial proceedings can record openi
 Migrations:
 - `20261120155118_trial_proceedings_foundation.sql`
 - `20261120155132_trial_runtime_fixes.sql`
-- `20261120155210_trial_help_registration.sql`
+- `20261120155244_trial_help_registration.sql`
 
 Operations guide: `docs/operations/TRIAL-PROCEEDINGS.md`.
 
