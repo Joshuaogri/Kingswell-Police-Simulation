@@ -3,10 +3,34 @@
 BEGIN;
 SET LOCAL ROLE service_role;
 CREATE TEMP TABLE bp03_u ON COMMIT DROP AS
-SELECT row_number() over(order by n.code,bu.unit_ref)::integer unit_no,bu.id unit_id,b.property_id,up.occupancy_capacity
-FROM game.building_units bu JOIN game.buildings b ON b.id=bu.building_id
-JOIN game.properties p ON p.id=b.property_id JOIN game.neighbourhoods n ON n.id=p.neighbourhood_id
-JOIN game.building_unit_profiles up ON up.building_unit_id=bu.id WHERE up.use_class='dwelling';
+WITH target_building AS (
+  SELECT b.id building_id,b.property_id
+  FROM game.buildings b
+  JOIN game.building_units bu ON bu.building_id=b.id
+  JOIN game.building_unit_profiles up ON up.building_unit_id=bu.id
+  WHERE up.use_class='dwelling'
+  GROUP BY b.id,b.property_id
+  HAVING count(*)>=2
+  ORDER BY b.property_id,b.id
+  LIMIT 1
+),
+inserted_units AS (
+  INSERT INTO game.building_units(unit_ref,building_id,unit_name,unit_type,floor_label)
+  SELECT 'KW-BP03-INT-UNIT-'||lpad(g::text,3,'0'),tb.building_id,
+         'BP-03 Integration Test Dwelling '||g,'residential','Test'
+  FROM target_building tb CROSS JOIN generate_series(1,26) g
+  RETURNING id,unit_ref,building_id
+)
+SELECT row_number() OVER (ORDER BY iu.unit_ref)::integer unit_no,
+       iu.id unit_id,b.property_id,
+       CASE WHEN iu.unit_ref LIKE '%001' THEN 5 ELSE 4 END occupancy_capacity
+FROM inserted_units iu JOIN game.buildings b ON b.id=iu.building_id;
+
+INSERT INTO game.building_unit_profiles(
+  building_unit_id,use_class,occupancy_capacity,condition_grade,unit_description
+)
+SELECT unit_id,'dwelling',occupancy_capacity,'good','Rollback-only BP-03 integration test dwelling'
+FROM bp03_u;
 CREATE TEMP TABLE bp03_a ON COMMIT DROP AS
 SELECT g::integer person_no,ceil(g::numeric/4)::integer unit_no FROM generate_series(1,100) g;
 INSERT INTO game.persons(person_ref,given_name,family_name,date_of_birth,nationality,person_status,birth_city_id)
