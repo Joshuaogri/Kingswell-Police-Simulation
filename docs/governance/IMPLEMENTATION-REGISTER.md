@@ -1016,3 +1016,24 @@ Migration: `database/migrations/20261120161200_correctional_read_only_queries_wi
 Test: `database/tests/correctional_read_only_without_clock.sql`
 
 Guide: `docs/operations/CORRECTIONAL-RUNTIME.md`
+
+
+## Correctional NPC staff profiles and directory — 2026-11-20
+
+**Implemented and regression-tested.** Added a persistent correctional staff profile linked to existing NPC person identities, with facility assignment, role, employment status, appointment game time and appointing actor. A person can have one correctional staff profile. Appointment history is stored in a separate append-only event table.
+
+Initial role catalogue: facility governor, deputy governor, custody supervisor, correctional officer, escort officer, healthcare professional, psychologist, educator, probation officer, social worker, administrator and specialist. These roles do not confer police authority.
+
+Commands:
+- `prison staff appoint PERSON_REF to FACILITY_REF role ROLE by PERSONNEL_REF`
+- `prison staff list FACILITY_REF by PERSONNEL_REF`
+
+Appointments require the initialized manual game clock, an existing NPC and an active facility. Staff directory queries are read-only and available before game start. Commands use the shared idempotency ledger. No time advances automatically.
+
+**PASS:** rollback-only parser tests for both new commands; regression tests for existing correctional facility and court-verdict parsers; runtime actor-dispatch rejection; RLS enabled on both new tables; staff event history append-only. Fictional clock remains NULL. No staff, facilities or NPC records were seeded.
+
+Migration: `database/migrations/20261120173500_correctional_staff_profiles_and_commands.sql`
+
+Test: `database/tests/kingswell_correctional_staff.sql`
+
+Guide: `docs/operations/CORRECTIONAL-RUNTIME.md`
