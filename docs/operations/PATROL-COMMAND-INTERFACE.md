@@ -80,7 +80,7 @@ Regression: `database/tests/kingswell_searchable_patrol_intelligence.sql`.
 - `patrol intelligence links` — lists all recorded patrol-intelligence links.
 - `patrol intelligence links for RECORD_REF` — retrieves links for an observation, contact, incident, case or link reference.
 - A link requires an existing patrol observation/contact, an existing incident/case, a non-empty reason and an active officer attribution.
-- Each link is a separate immutable record with a unique link reference, fictional link time, officer attribution, originating command and permanent game-event history.
+- Each link is a separate immutable record with a unique link reference, fictional link time, officer attribution, originating command and permanent game-event history. Link references and all linkage foreign keys are indexed.
 - One patrol record can be linked to multiple targets; the same source-target pair cannot be duplicated.
 - Original patrol records and incident/case records are not modified. Linking does not create a new incident or case.
 - Linking and history lookup do not advance fictional time. Link history records an investigative association, not proof or corroboration.
