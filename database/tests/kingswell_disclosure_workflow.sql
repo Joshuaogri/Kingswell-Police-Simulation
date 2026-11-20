@@ -37,6 +37,8 @@ begin
  if not coalesce((r->>'ok')::boolean,false) then raise exception 'Withholding failed: %',r;end if;
  r:=game.execute_text_command('disclosure serve '||pro_pkg||' to P-DISC-T004 by KWP-DISC-T001','kng-disclosure-serve-pro-001',null,null);
  if not coalesce((r->>'ok')::boolean,false) then raise exception 'Prosecution service failed: %',r;end if;
+ r:=game.execute_text_command('disclosure acknowledge '||pro_pkg||' by KWDC-NOT-RECIPIENT','kng-disclosure-wrong-recipient-001',null,null);
+ if coalesce((r->>'ok')::boolean,true) or r->>'code'<>'intended_defence_recipient_required' then raise exception 'Wrong recipient was not rejected: %',r;end if;
  r:=game.execute_text_command('disclosure acknowledge '||pro_pkg||' by '||counsel_ref,'kng-disclosure-ack-pro-001',null,null);
  if not coalesce((r->>'ok')::boolean,false) then raise exception 'Prosecution receipt failed: %',r;end if;
  r:=game.execute_text_command('disclosure serve '||def_pkg||' to P-DISC-T003 by '||counsel_ref,'kng-disclosure-serve-def-001',null,null);
@@ -45,6 +47,10 @@ begin
  if not coalesce((r->>'ok')::boolean,false) then raise exception 'Defence receipt failed: %',r;end if;
  r:=game.execute_text_command('disclosure packages CASE-DISC-T001 by '||counsel_ref,'kng-disclosure-list-001',null,null);
  if not coalesce((r->>'ok')::boolean,false) or jsonb_array_length(r->'packages')<>2 then raise exception 'Package listing failed: %',r;end if;
+ r:=game.execute_text_command('disclosure packages CASE-DISC-T001 by KWP-DISC-T001','kng-disclosure-list-prosecutor-001',null,null);
+ if not coalesce((r->>'ok')::boolean,false) or jsonb_array_length(r->'packages')<>2 then raise exception 'Case-linked prosecutor listing failed: %',r;end if;
+ r:=game.execute_text_command('disclosure package '||pro_pkg||' by KWP-DISC-T001','kng-disclosure-view-prosecutor-001',null,null);
+ if not coalesce((r->>'ok')::boolean,false) then raise exception 'Case-linked prosecutor package view failed: %',r;end if;
  r:=game.execute_text_command('disclosure package '||pro_pkg||' by '||counsel_ref,'kng-disclosure-view-001',null,null);
  if not coalesce((r->>'ok')::boolean,false) or jsonb_array_length(r#>'{package,items}')<>1 then raise exception 'Package view failed: %',r;end if;
  dossier_result:=game.get_case_review_dossier('CASE-DISC-T001');
