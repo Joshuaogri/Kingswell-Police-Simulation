@@ -47,7 +47,7 @@ surveillance operations CASE_REF by PERSONNEL_REF
 - The planner and assigned team members must be active/seconded and assigned to the case or be its recorded lead.
 - Team assignment is frozen once deployment begins.
 - Only assigned team members may deploy, record observations or link records.
-- At least one team member is required before deployment.
+- At least one team member and exactly one designated team lead are required before deployment.
 - Observation, team, link and event history is append-only.
 - Actions use the explicit fictional clock but do not advance it.
 - Commands use the game command idempotency ledger.
