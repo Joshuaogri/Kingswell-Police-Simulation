@@ -1376,3 +1376,10 @@ Classification: **reconstructed forensic DDL with matching table/column/index/RL
 The complete remote and GitHub SQL for `forensic_laboratory_commands_and_review_workflow` is canonically identical after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults, `search_path` declarations and concatenation-operator spacing.
 
 Classification: **canonical SQL match after formatting normalisation**. No substantive forensic command, examination/review workflow, event, permission or command-routing difference was identified. Retain the existing file and remote history.
+
+
+## 86. Content-led review of version 20261120104301
+
+The remote and GitHub migration create the same 29 forensic/scene foreign-key indexes; their index names and target columns match exactly. The repository explicitly writes `USING btree`, while the remote relies on PostgreSQL's default B-tree index method. Removing that explicit default makes the complete SQL identical.
+
+Classification: **same 29 indexes; explicit default index-method notation only**. Retain the existing file and remote history.
