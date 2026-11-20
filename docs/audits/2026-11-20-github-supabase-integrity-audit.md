@@ -29,7 +29,7 @@ No database migrations, schema changes, permission changes, record updates or de
 | Migration directory | `database/migrations/` |
 | Test directory | `database/tests/` |
 
-The Pages workflow does not use `SUPABASE_ACCESS_TOKEN` or `SUPABASE_DB_PASSWORD`. Their presence in repository Actions secrets was confirmed by the user, but their values were never accessed or displayed.
+A repository-wide search found no references to `SUPABASE_ACCESS_TOKEN` or `SUPABASE_DB_PASSWORD`; no current workflow uses them. Their presence in repository Actions secrets was confirmed by the user, but their values were never accessed or displayed. The latest observed Pages workflow run (ID `44808455988`) completed successfully in both build and deploy jobs. This verifies the static GitHub Pages test-centre deployment only; it does not verify Supabase authentication, database connectivity or migration deployment.
 
 ## 3. Migration reconciliation
 
