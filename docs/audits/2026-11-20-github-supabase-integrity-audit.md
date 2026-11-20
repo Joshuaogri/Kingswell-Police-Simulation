@@ -1344,3 +1344,12 @@ The remote and GitHub `game.execute_scene_action(...)` bodies differ only in the
 The remote migration also explicitly revokes execution of `game.execute_scene_action(...)` from public/anon/authenticated and grants it to `service_role`. Those statements are absent from the GitHub file. A read-only live privilege check confirms the current function is not executable by anon or authenticated and is executable by service_role.
 
 Classification: **matching scene-control runtime; explicit function ACL declarations missing from the GitHub migration source, while the live privilege boundary is correct**. Keep the permission statements in the source-recovery register; no live permission change was made.
+
+
+## 82. Content-led review of specialist attendance migrations 20261120102135 and 20261120102257
+
+The remote 102135 migration already replaces `game.execute_scene_action(...)` with specialist attendance and scene-examination actions. The GitHub 102135 file contains the command interpreter and submission changes but not that executor. The GitHub 102257 migration then supplies the full executor; the remote 102257 migration replaces the executor again.
+
+The final remote and GitHub 102257 executor bodies match apart from one user-facing error message: the repository asks for “a scene reference or a valid examination plan reference”, while the remote says only “a scene reference”. The interpreter and command-submission functions are present in the repository sequence.
+
+Classification: **specialist scene/examination handler introduced one migration later in GitHub; final handler is present, with a clearer missing-reference message**. This is a chronology shift plus message-only difference, not a missing final capability.
