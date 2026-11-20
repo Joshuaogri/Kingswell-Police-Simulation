@@ -451,3 +451,23 @@ The remote and repository SQL for `scene_control_field_reports_and_resource_requ
 - Classification: **equivalent SQL with statement-order/formatting differences; no missing function or schema definition identified in this pair**. Retain the existing migration file and remote history. Do not rewrite history merely to force a text hash match.
 
 This is a confirmed example where the raw canonical hash mismatch is not evidence of a substantive implementation divergence. The reconciliation process must distinguish this class from genuine content collisions.
+
+
+## 17. Content-led review of specialist attendance migration versions 20261120102135 and 20261120102257
+
+### 17.1 Version 20261120102135
+
+- The remote row is one 77,336-character statement. The GitHub file at the same version is 43,505 characters.
+- The `game.interpret_text_command` and `game.submit_command` function definitions in the remote statement match the two functions in the GitHub file after declaration/format normalisation.
+- The remote statement additionally replaces `game.execute_scene_action` with a 33,060-character function. This is not present in the GitHub file. It includes scene-management/resource operations and the scene-specialist/examination command routing. The remote function's routing includes the specialist command names, although the detailed specialist attendance/examination branches are introduced in the following version.
+- The next migration, `20261120102257_implement_specialist_attendance_and_scene_examination`, contains a later and substantially expanded `execute_scene_action` implementation. It is not an exact copy of the 20261120102135 function and cannot be used as an exact historical recovery.
+- Classification: **same-version remote-only function replacement; parser and command-submission functions match; exact earlier handler revision not recovered**. The later 20261120102257 implementation is a related successor, not a substitute for the missing historical statement.
+
+### 17.2 Version 20261120102257
+
+- Remote and GitHub both contain the `game.execute_scene_action` specialist attendance and scene examination implementation.
+- Remote SQL is 48,919 characters; GitHub SQL is 48,957 characters. The full normalised comparison differs only in the missing-scene-reference error message: the repository version additionally says that a valid examination plan reference is acceptable.
+- All remaining normalised function text matches.
+- Classification: **same implementation with one user-facing validation-message difference**. This is a minor source difference, not evidence of a missing handler or schema capability. Preserve both records pending the overall reconciliation; do not rewrite history.
+
+These two adjacent versions demonstrate why a version collision must be assessed at function level: one migration has an extra historical function replacement absent from the repository, while the next migration's implementation is substantially present in both sources.
