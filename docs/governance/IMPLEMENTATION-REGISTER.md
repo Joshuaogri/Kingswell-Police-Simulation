@@ -519,3 +519,21 @@ The service-role function `game.set_unit_operational_state(unit_ref,state,reason
 Every change is recorded in private RLS-enabled append-only `game.unit_operational_state_history`; service_role cannot update/delete its history. This is an authoritative state layer, not yet a complete patrol scheduler: patrol beat assignment, scheduled patrol tasks, player-facing state commands and automatic patrol commencement/return workflows remain outstanding.
 
 **PASS:** `database/tests/kingswell_patrol_operational_state_lifecycle.sql` verified initial station state, patrol, dispatch, arrival, clearing, return to station, out-of-service status, rejection of a deployment to an out-of-service unit, history entries and unchanged fictional clock. Transaction rolled back. Post-test checks confirm zero persistent test units, zero state/location history rows, uninitialized fictional clock, RLS enabled and no service_role UPDATE/DELETE grants on state history.
+
+
+## Patrol beat assignment, scheduling and coverage — 2026-11-20
+
+**Implemented and rollback-only regression-tested.** Migration: `database/migrations/20261120121000_patrol_beat_assignment_scheduling_and_coverage.sql`.
+
+- Added `game.patrol_schedules` for unit/beat/roster-linked patrol windows, overlap prevention and schedule lifecycle.
+- Added append-only `game.patrol_coverage_events` to record beat changes and patrol starts/ends.
+- Added `game.assign_unit_patrol_beat`, `game.schedule_unit_patrol`, `game.start_unit_patrol` and `game.end_unit_patrol` service-role functions.
+- Patrol start requires an initialized game clock, active duty roster covering current game time, active assigned beat, matching current schedule and no active incident deployment.
+- Patrol end completes the schedule and returns the unit to its registered base location when available; otherwise it transitions to returning without inventing a position.
+- Beat reassignment is blocked during responding, on-scene, returning and out-of-service states. Overlapping schedules for the same unit are rejected.
+
+**PASS:** `database/tests/kingswell_patrol_beat_scheduling_coverage.sql` verified scheduling, start/end transitions, coverage events and unchanged fictional time in a transaction ending in ROLLBACK. No fixtures persist.
+
+Player-facing parser integration and automatic schedule commencement are not yet implemented; these functions are currently callable through the secured runtime database interface.
+
+Documentation: `docs/operations/PATROL-BEAT-SCHEDULING-COVERAGE.md`.
