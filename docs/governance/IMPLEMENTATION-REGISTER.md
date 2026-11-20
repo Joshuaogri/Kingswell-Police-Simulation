@@ -17,7 +17,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Runtime foundation, forensic laboratory and police-geography layers implemented | Private `game` schema; 77 tables, 215 foreign keys and 356 indexes; 43 migrations applied; RLS enabled on all 77 tables; city geography and police facility/beat data seeded; no persons, police personnel, units or incidents seeded; fictional clock remains uninitialized |
+| Database schema | Runtime foundation, forensic laboratory and police-geography layers implemented | Private `game` schema; 80 tables, 231 foreign keys and 376 indexes; 49 migrations applied; RLS enabled on all 77 tables; city geography and police facility/beat data seeded; no persons, police personnel, units or incidents seeded; fictional clock remains uninitialized |
 | Application/gameplay code | In progress | Database-backed text command interpreter, controlled clock, emergency-call/dispatch/arrival, scene-control, field-report and resource-request workflows implemented; full domain handlers remain outstanding |
 | Runtime regression tests | Implemented; transaction smoke-tested | Runtime, dispatch, scene, evidence, forensic laboratory, geography and police-facility/patrol-geography SQL regression scripts cover implemented slices; test fixtures roll back |
 
@@ -383,3 +383,35 @@ Regression: database/tests/kingswell_weighted_road_routing.sql; rollback-only li
 ### Current live database baseline — 2026-11-20
 
 The current private `game` schema contains 79 tables, 223 foreign keys and 367 indexes. RLS is enabled on all 79 tables. Supabase records 45 applied migrations. The post-build performance advisor reports no unindexed foreign keys; unused-index notices are expected while the fictional gameplay workload is still empty. These are the current live counts; older database snapshots elsewhere in this register are retained as historical audit observations, not current totals.
+
+
+## Live dispatch routing integration — 2026-11-20
+
+Implemented the first route-aware dispatch integration across BP-08, BP-10, BP-11, BP-12, BP-35, BP-37, BP-38 and BP-43.
+
+- Police units now support an optional current map access point. Dispatch route origin prefers that position and falls back to the unit's base-facility access point.
+- Each new incident deployment now receives a route snapshot and ETA using the existing weighted road-routing engine.
+- Incident destinations resolve only through the structured incident property link and its primary routable access point. A free-text location is never converted into a guessed map point.
+- Deployment records retain route ID, origin/destination access points, status, distance, baseline duration, estimated arrival, basis and computation time.
+- New private RLS-enabled table deployment_route_history retains the initial route outcome and origin source for every deployment.
+- game.get_dispatch_candidates(incident_ref) lists only active units with at least one currently rostered, duty-assigned, active employee who has no conflicting active deployment. It returns the eligible personnel and route/ETA snapshot.
+- The existing dispatch command and its command-ledger idempotency and eligibility checks are unchanged; the new insert trigger adds route snapshotting after eligible deployment records are created.
+- Route estimates use posted speed limits only. No live traffic, siren uplift, turn delays, guaranteed arrival or fictional-clock advancement is implied.
+- Unresolved locations and unreachable routes are explicitly represented without fabricated distances or ETAs.
+- All new foreign keys have covering indexes. Security advisor retains the existing private-schema RLS-enabled/no-policy informational findings (80 tables); performance advisor has no remaining unindexed-FK finding after five additional indexes; health advisor returned no findings.
+
+Migrations applied to Supabase and committed on main:
+- database/migrations/20261120114500_kingswell_live_dispatch_route_integration.sql
+- database/migrations/20261120114600_index_dispatch_route_foreign_keys.sql
+
+Regression source:
+- database/tests/kingswell_live_dispatch_route_integration.sql
+
+Verification:
+- Migration applied successfully.
+- Regression guard transaction passed: route-history RLS, service-role-only candidate function ACL, deployment snapshot trigger, uninitialized-clock guard, missing/non-dispatchable incident guard, five route-FK indexes, and no unexpected persistent route/history writes.
+- Current live baseline: 80 game tables, 231 foreign keys, 376 indexes, 49 applied migrations.
+- No personnel, police units, incidents, deployments or route calculations have been seeded. Full seeded deployment-to-route/ETA end-to-end verification is therefore still pending; no fictional clock was initialized.
+- The candidate function currently creates persisted route-calculation records when it evaluates eligible units. This is an auditable route computation, not a state/time advancement.
+
+Remaining: rollback-only seeded dispatch integration, ETA-ranked dispatch presentation, explicit unit-position updates and auditable route recalculation on reassignment or road changes.
