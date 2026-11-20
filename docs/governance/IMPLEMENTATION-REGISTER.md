@@ -17,8 +17,8 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Runtime foundation implemented | Private `game` schema; 47 tables, 100 foreign keys and 165 indexes; fourteen migrations applied; one paused, unconfigured clock row; RLS enabled on all 47 tables; no fictional world/personnel data seeded |
-| Application/gameplay code | In progress | Database-backed text command interpreter, controlled clock and initial emergency-call/incident intake implemented; full domain handlers remain outstanding |
+| Database schema | Runtime foundation implemented | Private `game` schema; 47 tables, 100 foreign keys and 177 indexes; sixteen migrations applied; one paused, unconfigured clock row; RLS enabled on all 47 tables; no fictional world/personnel data seeded |
+| Application/gameplay code | In progress | Database-backed text command interpreter, controlled clock, emergency-call/dispatch/arrival, scene-control, field-report and resource-request workflows implemented; full domain handlers remain outstanding |
 | Runtime regression tests | Implemented; transaction smoke-tested | `database/tests/runtime_foundation.sql`, `database/tests/text_interpreter_dispatch.sql`, `database/tests/unit_dispatch.sql`, `database/tests/dispatch_acknowledgement_arrival.sql` and `database/tests/scene_control_field_reports.sql` cover the implemented runtime and operational slices; all test data rolls back |
 
 ## Master blueprint divisions
@@ -62,11 +62,11 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-35 | Simulation Engine | Approved; typed command intake, limited text interpreter, idempotency, roster-validated dispatch, individual acknowledgement/arrival, scene-control and field-report handlers with transactional event processing implemented; broader domain handlers, scheduler and NPC processing outstanding |
 | BP-36 | Relationships and Social Context | Approved; design only; no relationship or social-context system implemented |
 | BP-37 | Time and Scheduling | Approved; paused singleton clock, explicit initialization/advancement and clock history implemented; fictional calendar configuration and scheduler outstanding |
-| BP-38 | Records and Databases | Approved; 47-table private schema and fourteen migrations implemented; command, clock-history, dispatch, scene, access, field-report and resource-request records integrated; full domain coverage incomplete |
+| BP-38 | Records and Databases | Approved; 47-table private schema and sixteen migrations implemented; command, clock-history, dispatch, scene, access, field-report and resource-request records integrated; full domain coverage incomplete |
 | BP-39 | Persistence and Recovery | Approved; design only; no backup or restore process implemented |
 | BP-40 | Interface | Approved; ChatGPT remains the intended text interface; limited explicit text command grammar exists; live ChatGPT-to-runtime connection remains outstanding |
 | BP-41 | Notifications and Reporting | Approved; design only; no notification or reporting service implemented |
-| BP-42 | Security and Permissions | Approved; RLS enabled on all 42 tables; private schema remains unexposed; player authentication and fictional authority enforcement outstanding |
+| BP-42 | Security and Permissions | Approved; RLS enabled on all 47 tables; private schema remains unexposed; player authentication and fictional authority enforcement outstanding |
 | BP-43 | Testing and Quality Assurance | Approved; five runtime, dispatch, acknowledgement/arrival and scene/field SQL regression scripts passed inside rolled-back transactions; CI and broader domain tests outstanding |
 | BP-44 | Configuration and Expansion | Approved; design only; no configuration or expansion framework implemented |
 
@@ -97,10 +97,10 @@ This register tracks actual progress. A design being written does not mean it ha
 
 The first live Supabase database foundation is implemented in the private `game` schema.
 
-- 40 tables covering world geography, organisations, properties/buildings, people and relationships, police commands/stations/ranks/units/positions/personnel, personnel history and qualifications, duty rosters/assignments/resources, simulation clock state, incident types, incidents, dispatch calls/events/deployments, cases, case people/assignments, evidence items/transfers and game event history.
-- 78 foreign-key relationships connect the records.
+- At the audit snapshot, the initial schema contained 40 tables covering world geography, organisations, properties/buildings, people and relationships, police structure/personnel, rosters/resources, clock state, incidents/dispatch, cases, evidence and game event history. The live schema has since expanded to 47 tables.
+- At the audit snapshot, 78 foreign-key relationships connected those initial records; the live schema now has 100.
 - Supporting indexes are present, including indexes for foreign-key lookups.
-- Row-level security is enabled on all 40 tables. The schema is not exposed to the public API; access is reserved for the server-side service role while the game access layer is built.
+- At the audit snapshot, RLS was enabled on all 40 tables. It is now enabled on all 47 tables. The schema remains private and unexposed to the public API.
 - No fictional game content has been seeded yet. The database foundation is structure only.
 
 Migration files in `database/migrations/`:
@@ -116,8 +116,12 @@ Migration files in `database/migrations/`:
 - `20261120080000_honour_rostered_cross_unit_attachments.sql`
 - `20261120094953_officer_dispatch_acknowledgement_and_scene_arrival.sql`
 - `20261120095028_correct_dispatch_acknowledgement_event_columns.sql`
+- `20261120095728_scene_control_field_reports_and_resource_requests.sql`
+- `20261120095856_harden_scene_access_order_and_input_validation.sql`
+- `20261120095948_enable_rls_for_scene_and_field_records.sql`
+- `20261120100100_index_scene_workflow_foreign_keys.sql`
 
-The original two migrations established the base schema. The current live schema has 47 tables, 100 foreign keys, 165 indexes and RLS enabled on all 47 tables. Fourteen migrations are recorded in Supabase; four runtime functions are present.
+The original two migrations established the base schema. The current live schema has 47 tables, 100 foreign keys, 177 indexes and RLS enabled on all 47 tables. Sixteen migrations are recorded in Supabase; four runtime functions are present. The latest advisor run found no unindexed foreign keys. Unused-index notices remain expected while the database is empty.
 
 Update this register when work actually changes. Do not mark design as implemented or implemented as verified without evidence.
 
@@ -184,7 +188,7 @@ Implemented a limited explicit text grammar through `game.interpret_text_command
 
 Supported forms include `help`, `status`, `advance time N minutes`, `911/call/report/radio [report] at [location]`, `dispatch UNIT_REF to INCIDENT_REF`, `acknowledge PERSONNEL_REF for INCIDENT_REF`, `arrive PERSONNEL_REF at INCIDENT_REF`, `establish scene SCENE_REF at INCIDENT_REF by PERSONNEL_REF because REASON`, `take command PERSONNEL_REF of SCENE_REF`, `scene update PERSONNEL_REF for SCENE_REF: TEXT`, `field report PERSONNEL_REF for INCIDENT_REF [at SCENE_REF]: TEXT`, `request resource PERSONNEL_REF for SCENE_REF: RESOURCE_TYPE | REASON`, `scene entry PERSONNEL_REF into SCENE_REF for PURPOSE` and `scene exit PERSONNEL_REF from SCENE_REF for PURPOSE`. The parser does not turn questions into actions.
 
-Regression tests: `database/tests/runtime_foundation.sql`, `database/tests/text_interpreter_dispatch.sql`, `database/tests/unit_dispatch.sql`, `database/tests/dispatch_acknowledgement_arrival.sql` and `database/tests/scene_control_field_reports.sql`; all passed in transactions with rollback. Live verification: 47 tables, 100 foreign keys, 165 indexes, all 47 tables with RLS, fourteen migration records and four runtime functions. All regression fixtures rolled back.
+Regression tests: `database/tests/runtime_foundation.sql`, `database/tests/text_interpreter_dispatch.sql`, `database/tests/unit_dispatch.sql`, `database/tests/dispatch_acknowledgement_arrival.sql` and `database/tests/scene_control_field_reports.sql`; all passed in transactions with rollback. Live verification: 47 tables, 100 foreign keys, 177 indexes, all 47 tables with RLS, sixteen migration records and four runtime functions. All regression fixtures rolled back.
 
 
 ## Roster-validated unit dispatch — 2026-11-20
@@ -217,4 +221,4 @@ Implemented BP-12/BP-22 initial operational slice:
 - Resource requests record type, quantity, priority and reason, and remain requested until a later response workflow exists. They are not automatically approved or deployed.
 - All five new tables have RLS enabled in the private `game` schema. No test data persists.
 
-Five SQL regression suites passed, including `database/tests/scene_control_field_reports.sql`. Remaining BP-22 work includes safety and hazard assessments, boundaries/zones, multi-agency attendance, specialist examination coordination, formal material/evidence handover, contamination records, release/reopening and review. Remaining BP-12 work includes accountable ownership transfer, referrals, full incident progression and closure.
+Five SQL regression suites passed, including `database/tests/scene_control_field_reports.sql`. The performance advisor reports no unindexed foreign keys; unused-index notices are expected because the database contains no persistent workload data. Remaining BP-22 work includes safety and hazard assessments, boundaries/zones, multi-agency attendance, specialist examination coordination, formal material/evidence handover, contamination records, release/reopening and review. Remaining BP-12 work includes accountable ownership transfer, referrals, full incident progression and closure.
