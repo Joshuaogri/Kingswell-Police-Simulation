@@ -782,3 +782,12 @@ Operations guide: `docs/operations/CASE-ACCOUNT-COMPARISONS.md`.
 **PASS:** `database/tests/kingswell_case_review_dossier.sql` verifies parser/executor, complete empty-case section shape, idempotent replay, missing-case rejection and help registration. Transaction rolls back without persistent fixtures.
 
 Operations guide: `docs/operations/CASE-REVIEW-DOSSIER.md`.
+
+
+### Case review dossier access-control refinement — 2026-11-20
+
+Follow-up migration: `database/migrations/20261120133944_case_review_dossier_and_player_command.sql`.
+
+The player command now requires `case review CASE_REF by OFFICER_REF`. The named officer must match the command actor and be the recorded case lead or have an active case assignment. This prevents unassigned personnel from retrieving a case dossier through the player command. The underlying dossier function remains private/service-role-only.
+
+The rollback-only regression now verifies actor attribution and case access alongside dossier aggregation, idempotent replay, missing-case rejection and help registration.
