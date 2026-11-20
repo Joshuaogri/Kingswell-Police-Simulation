@@ -22,6 +22,13 @@ Supported player text:
 - `dispatch UNIT_REF to INCIDENT_REF`
 - `acknowledge PERSONNEL_REF for INCIDENT_REF`
 - `arrive PERSONNEL_REF at INCIDENT_REF`
+- `establish scene SCENE_REF at INCIDENT_REF by PERSONNEL_REF because REASON`
+- `take command PERSONNEL_REF of SCENE_REF`
+- `scene update PERSONNEL_REF for SCENE_REF: TEXT`
+- `field report PERSONNEL_REF for INCIDENT_REF [at SCENE_REF]: TEXT`
+- `request resource PERSONNEL_REF for SCENE_REF: RESOURCE_TYPE | REASON`
+- `scene entry PERSONNEL_REF into SCENE_REF for PURPOSE`
+- `scene exit PERSONNEL_REF from SCENE_REF for PURPOSE`
 
 The call grammar is intentionally narrow. It does not guess missing locations, turn questions into actions, invent caller identities or dispatch officers automatically. Unrecognised text is logged as a rejected command. Idempotency keys prevent duplicate execution on retries.
 
@@ -51,3 +58,12 @@ The command functions use invoker rights, are in the private `game` schema, and 
 - `database/tests/dispatch_acknowledgement_arrival.sql` — acknowledgement/arrival parsing, required state order, fictional timestamps, incident attendance, event history and idempotent retries.
 
 All three scripts run in a transaction and roll back all generated test records.
+
+
+## Scene control and field reporting
+
+Initial BP-12/BP-22 scene and field workflows are now implemented through the explicit command parser and the `game.execute_scene_action` handler. An officer must be actively employed and have an on-scene deployment at the incident to establish scene control, take scene command, submit a field report, add a scene update or request resources. Scene creation records a unique scene reference, originating incident, location, designation reason, confidence, initial controlled status, scene manager and fictional control timestamps. Scene command transfers are recorded as separate activity and game events.
+
+Scene activity entries and officer field reports are separately stored and linked to the originating incident/scene. Scene entry and exit events record personnel, zone, purpose and fictional time; unmatched exits and duplicate entries are rejected. A resource request is recorded with type, quantity, priority and reason as `requested`; this does not falsely imply approval, allocation or deployment. All command retries are idempotent. The new tables have RLS enabled and remain inside the private `game` schema.
+
+Supported scene/field commands are listed above. The regression suite is `database/tests/scene_control_field_reports.sql`; it covers scene creation, command transfer, field updates/reports, resource requests, access-log pairing and invalid resource quantities. Scene safety assessments, boundary/zone management, multi-agency attendance, specialist examination plans, formal evidence handover, release/reopening and resource approval/deployment remain future work.
