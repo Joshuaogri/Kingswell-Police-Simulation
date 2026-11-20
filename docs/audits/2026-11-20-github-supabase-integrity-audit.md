@@ -367,3 +367,10 @@ The 17 remote-only names and three repository-only names are listed in section 1
 5. Keep automatic migration deployment disabled. Do not run \`db push\`, \`migration repair\`, reset or replay during this work.
 
 **No production migration, schema, data or permission changes were made during this direct inspection.**
+
+
+### Statement-level comparison run #5 (provisional)
+
+GitHub Actions run `44830241692` completed successfully and exported all 225 remote migration statement arrays. Its first canonical-text comparison reported 94 remote records with exact text matches, 131 without an exact match, and 82 same-version/different-text pairs. Inspection of a representative pair showed that Supabase's stored function definitions can use different dollar-quote tags (for example, `$scene$` rather than `$function$`) even where the function body and SQL behaviour are the same. The initial digest therefore over-reported mismatches.
+
+The comparison script was corrected in commit `82a8d70d89cd534e4aafa27bafb0e59d24243c40` to normalise PostgreSQL dollar-quote tags before hashing. The run #5 mismatch counts are **superseded and must not be used as a final discrepancy count**. A fresh manual run against the corrected script is required before interpreting content-mismatch totals. Even after normalisation, a canonical text difference is an investigation lead, not proof of semantic SQL difference.
