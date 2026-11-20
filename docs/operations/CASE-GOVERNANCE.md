@@ -32,6 +32,8 @@ Allowed transitions:
 - closed -> reopened
 - reopened -> under_investigation, suspended, submitted, closed
 
+The consolidated `case review CASE_REF by OFFICER_REF` dossier also includes the complete supervisory review list and case status transition history.
+
 Retrieve review and status history:
 ```text
 case governance CASE_REF by SUPERVISOR_REF
