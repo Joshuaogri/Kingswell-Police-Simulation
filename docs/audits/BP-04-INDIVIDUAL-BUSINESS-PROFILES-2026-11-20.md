@@ -56,3 +56,18 @@ No owners or directors were assigned from the existing workforce because the cur
 The updated `database/tests/bp04_detailed_refinement_regression.sql` was executed successfully after the enrichment and returned no exceptions.
 
 The source migration files and regression coverage must remain version-controlled with the repository. BP-04 is not complete.
+
+## Current business site dossier alignment tranche
+
+A further additive migration synchronised all 1,452 current business-site records with their linked canonical business profile:
+
+- Site-level operating hours now match the individual business schedule rather than the previous repeated weekday template.
+- Site dossiers now expose the linked operating model, customer-access model, stock/asset handling, delivery/visitor pattern, access-control profile, CCTV coverage profile, intrusion-detection profile and out-of-hours arrangement.
+- Existing site references, organisation links, property/unit links, occupancy roles, lease references and lease details were preserved.
+- Every enriched site carries provenance stating that these are derived fictional profile characteristics, not proof of actual attendance, deliveries, CCTV events or named providers.
+
+Verification: 1,452/1,452 current business sites have aligned hours, complete site operational detail and provenance. The expanded BP-04 regression SQL executed successfully with no exceptions.
+
+Migration source: `database/migrations/20261120203410_bp04_sync_business_profiles_to_current_site_dossiers.sql`.
+
+This improves the existing business-site dossiers but does not yet provide a player-facing write workflow or real-time business activity simulation.
