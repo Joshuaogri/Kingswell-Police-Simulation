@@ -357,6 +357,29 @@ Follow-up index migration: `database/migrations/20261120112545_index_police_geog
 
 This does not yet implement road routing, turn-by-turn paths, route optimisation, travel-time estimates, traffic, patrol schedules, active unit deployment bases or beat-level staffing. The local-grid property/facility coordinates remain planning-level fictional coordinates, not surveyed geometry.
 
+## BP-02 — Weighted road-routing engine — 2026-11-20
+
+Implemented and live in Supabase. Added a Dijkstra shortest-path engine over the existing 118-junction, 151-segment road graph. It calculates and persists ordered route legs between property access points (including police facilities and, later, incident addresses).
+
+Capabilities:
+- Fastest-route optimisation weights each segment by posted speed limit and segment length.
+- Shortest-route optimisation weights by distance.
+- Respects segment routability, one-way directionality and access profiles.
+- Public profile is limited to public roads and public property access points.
+- Police/emergency profiles can also use the two public_emergency_freight road segments and controlled service/public access points.
+- Route output stores ordered segment legs, direction of travel, distance per leg, estimated seconds per leg, total distance and total estimated duration.
+- Route calculation records include profile, optimisation, endpoint access points/junctions, algorithm version and calculation timestamp.
+- Unreachable paths are recorded as unreachable rather than returning fabricated travel metrics.
+- Function is SECURITY INVOKER in private schema game; execution is restricted to service_role. Route tables have RLS and no anon/authenticated grants.
+
+The duration is a baseline estimate derived from posted segment speeds, rounded up per segment. It is not live traffic, dispatch-priority driving, siren/emergency speed uplift, turn-delay modelling or calibrated real-world travel time. The existing map is planning-level fictional geometry. No route calculations are left seeded in live data.
+
+Migrations:
+- database/migrations/20261120112929_kingswell_weighted_road_routing_engine.sql
+- database/migrations/20261120113000_index_road_route_junction_foreign_keys.sql
+
+Regression: database/tests/kingswell_weighted_road_routing.sql; rollback-only live test passed for police fastest/shortest routes, public route restrictions, ordered route legs, distance/time reconciliation, one-way validation and RLS/function security. The test leaves no route fixtures in the live database.
+
 ### Current live database baseline — 2026-11-20
 
-The current private `game` schema contains 77 tables, 215 foreign keys and 356 indexes. RLS is enabled on all 77 tables. Supabase records 43 applied migrations. The post-build performance advisor reports no unindexed foreign keys; unused-index notices are expected while the fictional gameplay workload is still empty. These are the current live counts; older database snapshots elsewhere in this register are retained as historical audit observations, not current totals.
+The current private `game` schema contains 79 tables, 223 foreign keys and 367 indexes. RLS is enabled on all 79 tables. Supabase records 45 applied migrations. The post-build performance advisor reports no unindexed foreign keys; unused-index notices are expected while the fictional gameplay workload is still empty. These are the current live counts; older database snapshots elsewhere in this register are retained as historical audit observations, not current totals.
