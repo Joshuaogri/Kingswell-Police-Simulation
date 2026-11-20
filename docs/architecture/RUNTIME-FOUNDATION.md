@@ -104,3 +104,17 @@ Commands:
 - `cancel examination PERSONNEL_REF PLAN_REF because REASON`
 
 Regression script: `database/tests/scene_specialist_examination.sql`.
+
+
+## Contamination recording, evidence recovery and custody — 2026-11-20
+
+Added three private-schema records: `scene_contamination_events` records a potential contaminant/source, affected zone and control action without automatically declaring an exhibit contaminated; `scene_evidence_recoveries` links a recovered exhibit to its scene and examination plan and preserves recovery location/method, packaging, unique seal identifier and condition; `scene_evidence_transfer_events` links each custody transfer to the canonical `evidence_transfers` row and preserves both custodians, locations, reason, time and command provenance.
+
+Only an actively deployed officer can record potential contamination at an active scene. Evidence recovery is restricted to the assigned examiner on an active/completed examination plan, with an attending specialist record and current matching qualification. Recovery creates the canonical `evidence_items` record as well as a scene recovery record. Seal identifiers are unique. Evidence transfer requires the current recorded custodian, a different active receiving officer, both locations and a reason; the canonical evidence transfer and scene-linked event are written together. These operations use the fictional clock and command idempotency.
+
+Commands:
+- `record contamination PERSONNEL_REF at SCENE_REF: ZONE | MATERIAL_OR_SOURCE | CONTROL_ACTION`
+- `recover evidence PERSONNEL_REF from SCENE_REF under PLAN_REF: TYPE | DESCRIPTION | LOCATION | METHOD | PACKAGING | SEAL | CONDITION`
+- `transfer evidence PERSONNEL_REF EVIDENCE_REF to RECIPIENT_REF: FROM_LOCATION | TO_LOCATION | REASON`
+
+Regression script: `database/tests/scene_contamination_evidence_custody.sql`. Parser, help-catalogue, private-table RLS and uninitialized-clock guard checks pass in a rolled-back transaction. The database has no seeded operational records, so full end-to-end scene/examiner/recovery/custody scenarios still require the integrated seeded-world regression fixture. No public policies or Data API exposure were added.
