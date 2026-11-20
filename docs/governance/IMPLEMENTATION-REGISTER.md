@@ -1037,3 +1037,18 @@ Migration: `database/migrations/20261120173500_correctional_staff_profiles_and_c
 Test: `database/tests/kingswell_correctional_staff.sql`
 
 Guide: `docs/operations/CORRECTIONAL-RUNTIME.md`
+
+
+### Correctional staff authority boundary refinement — 2026-11-20
+
+The initial staff-profile migration briefly exposed an appointment command attributed to a police personnel actor. That conflicted with BP-29's separation between police and correctional authority. The player-facing appointment command has therefore been removed. Correctional NPC appointments and staff lifecycle decisions must be made by the correctional institution's own NPC command structure when that system is implemented. Police can inspect the read-only staff directory but cannot appoint, supervise or manage correctional staff through police authority.
+
+The staff profile/event tables remain as the persistent foundation. The supported command is:
+
+- `prison staff list FACILITY_REF by PERSONNEL_REF`
+
+**PASS:** rollback-only test confirms staff listing remains parsed, the appointment command is no longer accepted or included in runtime help/allow-lists, existing facilities and court commands still parse, RLS remains enabled, and the fictional clock remains uninitialized.
+
+Migration: `database/migrations/20261120174500_correctional_staff_directory_authority_boundary.sql`
+
+Test: `database/tests/kingswell_correctional_staff_authority.sql`
