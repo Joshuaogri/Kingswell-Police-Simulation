@@ -17,6 +17,10 @@ begin
  if v_total<>151 then raise exception 'Expected 151 road segments; found %',v_total; end if;
  select count(*) into v_total from game.road_segments where city_id=v_city and crossing_type='bridge';
  if v_total<>3 then raise exception 'Expected 3 explicit river bridge segments; found %',v_total; end if;
+ select count(*) into v_bad from game.road_junctions where city_id=v_city and junction_code in ('RB01-W','RB02-W','RB03-W') and x_m<>16400;
+ if v_bad<>0 then raise exception 'West bridge bank coordinates do not span the mapped river corridor'; end if;
+ select count(*) into v_bad from game.road_junctions where city_id=v_city and junction_code in ('RB01-E','RB02-E','RB03-E') and x_m<>17400;
+ if v_bad<>0 then raise exception 'East bridge bank coordinates do not span the mapped river corridor'; end if;
  select count(*) into v_bad from game.road_segments s
  left join game.road_junctions f on f.id=s.from_junction_id
  left join game.road_junctions t on t.id=s.to_junction_id
