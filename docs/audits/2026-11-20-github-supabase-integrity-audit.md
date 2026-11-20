@@ -1256,3 +1256,10 @@ Classification: **canonical SQL match; whitespace around `||` only**. No substan
 The complete remote and GitHub SQL for `bp04_expand_primate_city_properties_buildings_and_units` is canonically identical after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults, `search_path` declarations and concatenation-operator spacing.
 
 Classification: **canonical SQL match after formatting normalisation**. No substantive source difference was identified. Retain the existing file and remote history.
+
+
+## 70. Content-led review of version 20261120164325
+
+The complete remote and GitHub SQL for `bp04_populate_detailed_property_building_and_unit_dossiers` is canonically identical after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults, `search_path` declarations and concatenation-operator spacing.
+
+Classification: **canonical SQL match after formatting normalisation**. No substantive source difference was identified. Retain the existing file and remote history.
