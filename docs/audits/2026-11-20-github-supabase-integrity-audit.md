@@ -589,3 +589,10 @@ The migration's explicit design note states that supporting investigators are co
 This later applied migration therefore resolves the earlier historical divergence in the live migration sequence. The version `20261120125918` pair remains a genuine historical-source mismatch, but the subsequent remote migration restores the repository's role-specific assignment behaviour.
 
 Classification: **exact canonical match; later migration explicitly supersedes the earlier assignment-policy discrepancy**. No live change is required.
+
+
+## 30. Content-led review of version 20261120130042
+
+The `game.release_case_investigator(...)` function body, `game.interpret_text_command(...)`, and `game.execute_text_command(...)` match between remote and repository sources after normalisation. The only substantive source-file difference is an additional repository permission statement revoking `service_role` access to the legacy five-argument `release_case_investigator` overload. The remote migration revokes public/anon/authenticated access to the new six-argument role-specific function and grants that new function to `service_role`, but does not include the legacy-overload revoke.
+
+Classification: **matching runtime function bodies; repository adds a legacy-overload permission cleanup**. Treat the extra revoke as a separate permission delta for the final privilege audit, not as a function-body mismatch. Do not change live privileges during this reconciliation.
