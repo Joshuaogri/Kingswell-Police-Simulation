@@ -17,7 +17,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Runtime foundation, forensic laboratory and police-geography layers implemented | Private `game` schema; 77 tables, 215 foreign keys and 347 indexes; 42 migrations applied; RLS enabled on all 77 tables; city geography and police facility/beat data seeded; no persons, police personnel, units or incidents seeded; fictional clock remains uninitialized |
+| Database schema | Runtime foundation, forensic laboratory and police-geography layers implemented | Private `game` schema; 77 tables, 215 foreign keys and 356 indexes; 43 migrations applied; RLS enabled on all 77 tables; city geography and police facility/beat data seeded; no persons, police personnel, units or incidents seeded; fictional clock remains uninitialized |
 | Application/gameplay code | In progress | Database-backed text command interpreter, controlled clock, emergency-call/dispatch/arrival, scene-control, field-report and resource-request workflows implemented; full domain handlers remain outstanding |
 | Runtime regression tests | Implemented; transaction smoke-tested | Runtime, dispatch, scene, evidence, forensic laboratory, geography and police-facility/patrol-geography SQL regression scripts cover implemented slices; test fixtures roll back |
 
@@ -353,10 +353,10 @@ Patrol geography:
 
 New private RLS-enabled tables: `game.police_facilities`, `game.patrol_sectors`, `game.patrol_beats` and `game.patrol_beat_road_segments`. Sensitive access remains service_role-only. The existing police station and unit tables were extended with facility/base/beat references.
 
-Migration: `database/migrations/20261120112406_kingswell_police_facilities_patrol_sectors_and_beats.sql`. Regression: `database/tests/kingswell_police_facilities_patrol_geography.sql`; live rollback-only assertions passed for facility counts and physical links, station links, all 24 beats, all 12 sectors, complete 151-segment coverage and RLS.
+Follow-up index migration: `database/migrations/20261120112618_index_police_geography_and_landmark_foreign_keys.sql` (covers all nine FK-index findings from the performance advisor). Migration: `database/migrations/20261120112406_kingswell_police_facilities_patrol_sectors_and_beats.sql`. Regression: `database/tests/kingswell_police_facilities_patrol_geography.sql`; live rollback-only assertions passed for facility counts and physical links, station links, all 24 beats, all 12 sectors, complete 151-segment coverage and RLS.
 
 This does not yet implement road routing, turn-by-turn paths, route optimisation, travel-time estimates, traffic, patrol schedules, active unit deployment bases or beat-level staffing. The local-grid property/facility coordinates remain planning-level fictional coordinates, not surveyed geometry.
 
 ### Current live database baseline — 2026-11-20
 
-The current private `game` schema contains 77 tables, 215 foreign keys and 347 indexes. RLS is enabled on all 77 tables. Supabase records 42 applied migrations. These are the current live counts; older database snapshots elsewhere in this register are retained as historical audit observations, not current totals.
+The current private `game` schema contains 77 tables, 215 foreign keys and 356 indexes. RLS is enabled on all 77 tables. Supabase records 43 applied migrations. The post-build performance advisor reports no unindexed foreign keys; unused-index notices are expected while the fictional gameplay workload is still empty. These are the current live counts; older database snapshots elsewhere in this register are retained as historical audit observations, not current totals.
