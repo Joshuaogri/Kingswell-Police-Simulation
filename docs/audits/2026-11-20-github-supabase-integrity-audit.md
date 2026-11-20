@@ -656,3 +656,12 @@ Classification: **reconstructed DDL with matching table/column/index/RLS invento
 The remote and repository definitions of `game.interpret_text_command(...)` and `game.execute_text_command(...)` match exactly after normalising formatting, dollar-quote delimiters and typed-NULL defaults. The migration introduces no table or index definitions.
 
 Classification: **matching command interpreter and executor bodies; no substantive divergence identified**. Retain the existing file and remote history.
+
+
+## 36. Content-led review of version 20261120134455
+
+The remote and repository `game.get_case_review_dossier(text)` function bodies are canonically identical. The repository file additionally includes explicit privilege statements revoking execution from `public`, `anon`, and `authenticated`, and granting execution to `service_role`.
+
+A read-only live privilege check confirms the current function is not executable by `anon` or `authenticated` and is executable by `service_role`.
+
+Classification: **matching dossier function; repository includes explicit permission declarations that match the current live privilege boundary**. No live change is required.
