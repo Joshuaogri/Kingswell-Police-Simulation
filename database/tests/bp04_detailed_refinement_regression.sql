@@ -187,6 +187,19 @@ begin
       and agreement_details#>>'{contract_term_coverage,counterparty}'='not_identified')<>152
  then raise exception 'BP04: unresolved lease counterparties were silently assigned'; end if;
 
+ -- Control-interest register protects against duplicate current control relationships
+ -- while retaining historical rows for the same holder and control type.
+ if not exists(select 1 from pg_indexes where schemaname='game'
+  and indexname='organisation_control_current_person_uq')
+  or not exists(select 1 from pg_indexes where schemaname='game'
+  and indexname='organisation_control_current_organisation_uq')
+  or not exists(select 1 from pg_indexes where schemaname='game'
+  and indexname='organisation_control_subject_timeline_idx')
+ then raise exception 'BP04: control register uniqueness/timeline indexes missing'; end if;
+ if exists(select 1 from game.organisation_control_interests
+  where (holder_person_id is null)=(holder_organisation_id is null))
+ then raise exception 'BP04: control register holder identity must be exactly one person or organisation'; end if;
+
  -- Confirm the event-location trigger rejects a building from another property.
  select id into v_property_id from game.properties order by property_ref limit 1;
  begin
