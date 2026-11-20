@@ -1,0 +1,2 @@
+-- Index the new resource-request responder foreign key.
+create index incident_resource_requests_responded_by_fk_idx on game.incident_resource_requests(responded_by_personnel_id);
