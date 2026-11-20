@@ -977,3 +977,14 @@ The command-executor function differs materially in its fallback path:
 The patrol-review-specific command handling is otherwise aligned in the compared function tail, but the fallback architecture and help behaviour are not the same.
 
 Classification: **genuine command-executor architecture divergence plus remote version/timestamp discrepancy**. Preserve both sources. Check the final live executor/delegate chain and command-help behaviour before deciding which implementation is authoritative; do not rewrite migration history.
+
+
+## 56. Content-led review of prosecution migrations 20261120151654 and 20261120151723
+
+The remote 151654 migration creates the prosecutor profiles, prosecution review/event records, formal charges and associated command functions. It also includes an initial `interpret_text_command` wrapper and `execute_text_command` integration.
+
+The GitHub 151654 file contains the justice-specific schema and functions but does not include those two shared-runtime wrappers. The GitHub 151723 migration then supplies `interpret_text_command` and `execute_text_command` together with prosecution command routing and help registration. In the remote history, 151723 updates the existing executor and interpreter integration created at 151654.
+
+The justice-specific function bodies match after normalising equivalent `search_path` quote syntax. The remote and repository 151723 executor bodies also match after that normalisation; the repository includes the interpreter wrapper in this migration because it was not included in its 151654 file.
+
+Classification: **shared command-runtime integration shifted from the first GitHub migration into the follow-up integration migration; final prosecution command path is present**. This is a chronology/consolidation difference, not a missing final runtime handler. Preserve both files and their current ordering.
