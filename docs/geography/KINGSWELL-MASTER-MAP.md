@@ -27,7 +27,7 @@ The regional descriptions establish national orientation and jurisdictional cont
 - Coordinates are integer metres, with north at the top and east to the right. They are fictional local-grid coordinates, not latitude/longitude.
 - The city is coastal on its southern edge. A navigable river enters from the north-east and reaches the harbour basin in the south-east.
 - The city map is version KNG-MAP-0.1. The same metre grid is used by district envelopes, road junctions, landmarks, properties and access points.
-- District map records are rectangular planning envelopes. They may overlap and must not be treated as exact exclusive polygons or used to override a property's recorded district/neighbourhood assignment.
+- District map records are rectangular planning envelopes. They may overlap and must not be treated as exact exclusive polygons. Administrative membership is record-based: canonical district/neighbourhood references on properties and other relevant location records are authoritative. No system may infer or change jurisdiction from a planning envelope alone.
 - Primary roads connect the districts to the central network and the principal city gateways.
 - The city begins with the BP-02 baseline of 100,000 permanent residents and has no fixed population ceiling. Population growth, decline, movement and district population distribution belong to BP-03, not the geography layer.
 
