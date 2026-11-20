@@ -287,28 +287,90 @@ BP-02 implementation is complete when all of the following are verified:
 ## BP-03 — Population and Individual Simulation Architecture
 
 ### Purpose
-Create a believable population whose members can become relevant to police activity and whose lives persist over time.
+Create a believable, persistent population whose members live independent fictional lives, follow routines, form households and relationships, move through education and employment, and can become relevant to police activity without ever receiving duplicate identities.
 
-### Population groups
-Permanent residents, temporary residents, commuters, domestic visitors, international visitors, government personnel, commercial workers, transport workers and institutional workers. These are overlapping descriptions, not mutually exclusive headcounts. One person must never be counted twice merely because they fit several categories.
+The user is the only player. Every other person in Kingswell and Asterfell is an NPC.
 
-### Individual records
-The proposed person record includes a unique identity, legal name, date of birth, nationality, residence status, address, occupation, employer, qualifications, household, relationships, routines, relevant history, current status and dated historical changes. Access to sensitive details is restricted within the fictional game.
+### Canonical identity and population model
+- The existing `game.persons` table is the sole canonical identity for every person. Do not create a second civilian, resident, visitor, worker or NPC identity table.
+- Each person has one stable unique `person_ref`. Police personnel, organisational personnel, case parties, incident parties, callers, witnesses, victims and suspects all link to the same person row.
+- The population baseline is 100,000 permanent Kingswell residents, with no fixed city population ceiling. The baseline is not a maximum and is not an instruction to generate duplicate people.
+- Population categories are overlapping memberships, not mutually exclusive buckets. One person may simultaneously be a permanent resident, student and government worker. All headcounts must use distinct person identity.
+- Population groups include permanent and temporary residents, commuters, domestic and international visitors, government, commercial, transport and institutional workers, students, retired people, unemployed people and other relevant categories.
+- A person can have one or more current/historical addresses, relationships, household memberships, population memberships, employment links, life events and recurring routines. These are related records, not separate person identities.
 
-### Life and activity
-The world may model births and registration, childhood and education, adult life, employment, household changes, movement, migration, retirement and death. Historical records remain available where needed for continuity and cases.
+### Individual identity
+The canonical person record retains the existing legal/preferred name, date of birth, nationality, occupation, status and notes, and now supports:
+- birth city and region;
+- date of death and preferred language;
+- structured personality and behaviour profiles;
+- simulation detail level and the reason/time of promotion.
 
-### Everyday behaviour
-People may work, travel, attend appointments, visit businesses, take part in public events, change jobs, move home, form or end relationships, offend, report crimes, and become victims or witnesses. Behaviour should follow routines, circumstances and plausible probabilities rather than arbitrary randomness.
+Age is calculated from date of birth against fictional game time; it is not stored as a static age. While the fictional clock is uninitialised, age for living persons is unresolved. A deceased person's age can be calculated at the recorded date of death.
 
-### Processing intensity
-A complete identity record does not require every person to be calculated continuously. The proposed model varies how actively a person is simulated according to schedules, current activity and police relevance. A person connected to an incident or case can receive more detailed attention without creating a duplicate identity.
+### Households, addresses and relationships
+- Existing `person_addresses` remains the single address-history table. It now supports one current primary address and one current address per role. Effective dates must be explicit; they must not default to the real database date.
+- Existing `person_relationships` remains the single relationship-history table, with valid date ordering and duplicate-current-pair protection.
+- New `households` records represent social/domestic groups and can reference an existing property.
+- New `household_memberships` links people to households with roles, primary membership and valid dates. A person may participate in more than one household over time or have a secondary current membership, but may have only one current primary household.
+- A household is not the same thing as an address. Multiple households may share a property, and an address change does not silently rewrite family relationships.
 
-### Open design choice
-The preferred working direction is persistent individual records for everyone, with simulation effort varying by relevance and activity. This is a proposal, not yet a user-approved final rule. The alternatives are records only for active/police-relevant people, or continuous full-detail simulation of everyone.
+### Population memberships and counting
+`person_population_memberships` records dated group membership and may optionally reference a city. Membership categories intentionally overlap. The `game.get_population_summary(city_code)` function returns distinct person counts and distinct category counts; it must never sum overlapping category counts to derive the unique population.
 
-### Acceptance conditions
-People have unique identities; overlapping population categories do not cause double counting; changes are historically traceable; routines create believable activity; and police links attach to the correct person.
+### Life history
+`person_life_events` is an append-only dated history for birth, name changes, education, qualifications, employment, address and household changes, relationships, migration, retirement, death and other milestones. A death event updates the canonical person's status and date of death. Historical events remain available; they are not overwritten by a current-state change.
+
+Employment links use the existing `organisation_personnel` table. Police service history remains owned by the police-personnel system. Do not create a duplicate employment or police-career history table here.
+
+### Everyday routines and activity
+- `person_routines` stores recurring weekly patterns such as work, education, sleep, commuting, care, social activity, shopping, exercise, leisure and cultural activity. Schedules can cross midnight and can reference existing properties as locations/destinations.
+- `person_activity_events` stores actual dated activity with origin/destination and a link to the routine that generated it. Activity history is append-only.
+- A routine is a behavioural plan, not an automatic clock. It is executed only by the simulation runtime when fictional time is explicitly advanced. No NPC activity is processed while the game is paused or while the player is away.
+- Actual activity events are rejected until the fictional game clock has been initialised. BP-03 does not initialise or advance the clock.
+
+### Simulation intensity and police relevance
+Every person has a persistent identity. Processing intensity varies by activity and relevance:
+1. `background` — persistent identity and baseline profile;
+2. `active` — currently active in a scheduled or recorded activity;
+3. `police_relevant` — relevant to current police activity or a developing enquiry;
+4. `full` — detailed individual simulation and history.
+
+Promotion is monotonic: a person can move to a higher detail level but can never be downgraded. A person linked to a case, incident, dispatch call, or recorded as a current resident at an incident property is automatically promoted to full simulation. The promotion reason and source are retained in append-only history. Later runtime work may promote other people based on actual activity and proximity, without creating a duplicate identity.
+
+### Processing and scale
+Persistent identity does not require continuous full-detail processing for every person. The simulation stores the complete person identity and available life structure, while the runtime processes routines and activity only for the relevant time window and required level. Batch operations must be deterministic/idempotent, preserve stable person references, and avoid duplicate population memberships or activity events.
+
+### Housing dependency and population seeding
+The present BP-04 location inventory is not yet a credible residential base for 100,000 people: it contains 80 residential properties, 64 detached houses, 16 apartment blocks, 128 units marked residential and 160 mixed-use units. This must be expanded within BP-04's existing property/building/unit system before assigning the full permanent-resident population to homes.
+
+Therefore:
+- BP-03 must not pack implausible numbers of households into the current small residential inventory.
+- BP-03 schema, identity, household, life-event, routine and counting systems can be implemented and tested independently.
+- The 100,000-person seed and complete household/address allocation are deferred until BP-04 supplies realistic residential capacity.
+- This is a deliberate dependency, not permission to create duplicate buildings, properties, units or addresses under BP-03.
+
+### Implementation and acceptance conditions
+BP-03 is complete when all of the following are verified:
+
+1. One canonical person identity is used by every game subsystem; person references are unique and police personnel remain linked to the same person row.
+2. Individual records support birth/death dates, nationality, occupation, language, personality and behaviour profiles.
+3. Age calculation uses fictional time and returns unresolved for living people before clock initialisation.
+4. Household and membership history works without conflating households with addresses.
+5. Population memberships overlap safely and summary counts use distinct people.
+6. Existing address and relationship histories are extended, not duplicated; effective dates and relationship dates are validated.
+7. Life events are append-only and death events update the canonical person status.
+8. Recurring routines support weekly patterns, location references and overnight schedules.
+9. Actual activity history is append-only and cannot be recorded before fictional time is initialised or beyond current game time.
+10. Case, incident, dispatch-caller and incident-location links promote relevant people to full simulation automatically.
+11. Simulation promotion history is append-only and no person can be downgraded.
+12. All new tables are private, RLS-enabled and unavailable to anon/authenticated roles.
+13. Rollback-only tests cover people, households, categories, relationships, routines, life events, promotion triggers, clock guards and distinct population summaries.
+14. Tests leave no persistent person, household, case, incident, dispatch call, activity or promotion fixtures and do not initialise or advance the fictional clock.
+15. Full 100,000-person seeding is completed only after BP-04 residential capacity is sufficient and the population/address allocation tests pass.
+
+**Design decision:** Persistent identities for everyone, with variable simulation processing intensity.  
+**Implementation status:** Individual-life foundation implemented and rollback-tested; full population seeding remains dependent on BP-04 residential capacity and the later runtime activity scheduler.
 
 ## BP-04 — Buildings, Properties, Businesses and Organisations
 
