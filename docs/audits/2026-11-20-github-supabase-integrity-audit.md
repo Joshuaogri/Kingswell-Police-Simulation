@@ -689,3 +689,16 @@ Classification: **canonical SQL match after formatting/declaration normalisation
 The remote and repository command interpreters are identical after normalisation. Their `game.execute_text_command(...)` definitions also match in behaviour; the remote declaration contains one additional local variable, `v_case_id uuid`, which is never referenced in the function body. The event-type constraint update is the same in both sources.
 
 Classification: **equivalent command integration; remote has one unused variable declaration only**. No runtime difference was identified. Retain the existing file and remote history.
+
+
+## 40. Content-led review of version 20261120140938 — missing investigative activity handlers
+
+The remote migration contains the full investigative-activity implementation. The GitHub file `20261120140938_case_investigative_activity_records_and_entity_links.sql` contains the two table definitions, three indexes, RLS configuration, permissions, append-only trigger function and triggers, but omits all three application functions present in the remote migration:
+
+- `game.record_case_activity(...)`
+- `game.link_case_activity(...)`
+- `game.get_case_activity(...)`
+
+A repository-wide GitHub code search for all three function names returned no matching file. A read-only live database check confirms all three functions exist and are executable by `service_role`, but not by `anon` or `authenticated`.
+
+Classification: **confirmed source-code omission: three live investigative-activity functions are absent from the repository migration file and no alternate repository definition was found**. This is a substantive GitHub source-recovery gap, not a formatting difference. Preserve the current file and live database; recover the exact function definitions into the reconciliation register before any future source repair or migration-history action.
