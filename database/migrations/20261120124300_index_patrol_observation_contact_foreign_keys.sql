@@ -1,0 +1,9 @@
+create index if not exists patrol_observations_unit_idx on game.patrol_observations(unit_id);
+create index if not exists patrol_observations_personnel_idx on game.patrol_observations(personnel_id);
+create index if not exists patrol_observations_location_idx on game.patrol_observations(location_access_point_id);
+create index if not exists patrol_observations_command_idx on game.patrol_observations(source_command_id);
+create index if not exists patrol_contacts_unit_idx on game.patrol_contacts(unit_id);
+create index if not exists patrol_contacts_personnel_idx on game.patrol_contacts(personnel_id);
+create index if not exists patrol_contacts_beat_idx on game.patrol_contacts(beat_id);
+create index if not exists patrol_contacts_location_idx on game.patrol_contacts(location_access_point_id);
+create index if not exists patrol_contacts_command_idx on game.patrol_contacts(source_command_id);
