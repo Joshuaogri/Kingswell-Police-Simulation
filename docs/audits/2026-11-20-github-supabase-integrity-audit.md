@@ -957,3 +957,10 @@ Classification: **exact canonical SQL match**. Retain both records unchanged.
 The complete remote and repository prosecution-referral migration differs only by an unused local variable declaration, `v_ref text`, in the remote executor. The referral insert uses the table's generated `referral_ref` in both versions; the variable is never referenced. The remaining canonical SQL is identical after formatting/declaration normalisation.
 
 Classification: **equivalent prosecution-referral and decision workflow; unused variable only**. Retain the existing file and remote history.
+
+
+## 45. Content-led review of version 20261120134455 — dossier tasks and linked evidence
+
+The remote migration and GitHub reconstruction replace `game.get_case_review_dossier(text)` with the same canonical function body. The updated dossier includes case tasks, linked evidence and forensic-request/report material. The repository file additionally repeats an explicit revoke of public/anon/authenticated execution and grant to `service_role`; the remote history already applied those same permissions in version `20261120133944`.
+
+Classification: **exact dossier function-body match; repository repeats an already-applied permission declaration**. No functional or effective permission divergence was identified. Retain both records unchanged.
