@@ -1,0 +1,13 @@
+-- Cover foreign keys introduced by the initial scene and field workflow.
+create index incident_field_reports_scene_fk_idx on game.incident_field_reports(scene_id);
+create index incident_field_reports_source_command_fk_idx on game.incident_field_reports(source_command_id);
+create index incident_resource_requests_fulfilled_by_fk_idx on game.incident_resource_requests(fulfilled_by_personnel_id);
+create index incident_resource_requests_requested_by_fk_idx on game.incident_resource_requests(requested_by_personnel_id);
+create index incident_resource_requests_source_command_fk_idx on game.incident_resource_requests(source_command_id);
+create index incident_scenes_case_fk_idx on game.incident_scenes(case_id);
+create index incident_scenes_created_by_fk_idx on game.incident_scenes(created_by_personnel_id);
+create index scene_access_events_personnel_fk_idx on game.scene_access_events(personnel_id);
+create index scene_access_events_recorded_by_fk_idx on game.scene_access_events(recorded_by_personnel_id);
+create index scene_access_events_source_command_fk_idx on game.scene_access_events(source_command_id);
+create index scene_activity_logs_personnel_fk_idx on game.scene_activity_logs(personnel_id);
+create index scene_activity_logs_source_command_fk_idx on game.scene_activity_logs(source_command_id);
