@@ -12,6 +12,16 @@ begin
    begin perform * from game.get_dispatch_candidates('KNG-TEST-NO-INCIDENT'); raise exception 'Expected clock guard';
    exception when others then if sqlerrm not like '%fictional game clock is not initialized%' then raise; end if; end;
  end if;
+ update game.simulation_state set current_game_time=coalesce(current_game_time,'2026-11-20 12:00:00+00') where id=1;
+ begin perform * from game.get_dispatch_candidates('KNG-TEST-NO-INCIDENT'); raise exception 'Expected missing incident guard';
+ exception when others then if sqlerrm not like '%Incident not found or not dispatchable%' then raise; end if; end;
+ if to_regclass('game.deployment_route_history_route_calculation_fk_idx') is null
+    or to_regclass('game.deployment_route_history_origin_access_point_fk_idx') is null
+    or to_regclass('game.deployment_route_history_destination_access_point_fk_idx') is null
+    or to_regclass('game.incident_deployments_route_origin_access_point_fk_idx') is null
+    or to_regclass('game.incident_deployments_route_destination_access_point_fk_idx') is null then
+   raise exception 'Dispatch-route foreign-key indexes are incomplete';
+ end if;
  if exists(select 1 from game.police_units) then raise exception 'Expected no persistent unit seed in baseline regression'; end if;
  select count(*) into v_after_routes from game.road_route_calculations;
  select count(*) into v_after_history from game.deployment_route_history;
