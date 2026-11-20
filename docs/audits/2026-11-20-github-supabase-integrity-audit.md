@@ -1124,3 +1124,12 @@ Classification: **court workflow fixes consolidated into the earlier GitHub boot
 The GitHub file `20261120140610_fix_case_task_submission_retrieval_task_reference.sql` is stored remotely at version `20261120140743`, under the same migration name. The complete SQL is byte-for-byte identical. It corrects task retrieval to resolve the task directly by `task_ref` rather than incorrectly joining through the submission reference.
 
 Classification: **exact source-file match with remote version/timestamp discrepancy**. Preserve both records.
+
+
+## 60. Content-led review of version 20261120153836 — court event subject constraint
+
+The remote migration adds `court_hearing_event_subject_check`, requiring court-creation events to carry a court ID and no case ID, official-appointment events to carry an official ID and no case ID, and all other court events to carry a case ID.
+
+The GitHub 153604 court bootstrap already includes the identical check expression inline in the `court_hearing_events` table definition. The remote-only 153836 migration is therefore represented in the repository as part of the earlier consolidated DDL.
+
+Classification: **constraint consolidated into the earlier GitHub court bootstrap; identical condition**. No source or live change is required.
