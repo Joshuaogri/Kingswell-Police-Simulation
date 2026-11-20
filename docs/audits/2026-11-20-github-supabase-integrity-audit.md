@@ -858,3 +858,18 @@ The remote and repository versions contain matching bodies for both `game.record
 The full files differ in formatting and declaration packaging, but no behavioural difference was found in the reviewed function bodies or permissions.
 
 Classification: **function-body and permission parity; this applied follow-up resolves the earlier 20261120132555 and 20261120132622 historical differences**. Retain both records unchanged.
+
+
+## 52. Content-led review of arrest/custody retrieval and event fixes 20261120145500–20261120145636
+
+The remote sequence contains five successive replacements of `game.execute_arrest_custody_command(...)`:
+
+- 145500 introduces a retrieval/alias rewrite but contains an invalid `cv_arrest.case_id` reference in the case-assignment check.
+- 145517 repairs the case-assignment and retrieval aliases.
+- 145547 corrects the arrest-event snapshot to use the stored arrest row.
+- 145614 corrects response-row aliases in the arrest retrieval projection.
+- 145636 corrects final custody-event text composition.
+
+The GitHub files for all five versions are comment-only, each pointing to the consolidated 144932 workflow migration. That consolidated executor contains the corrected `ca.case_id=v_case_id` checks, `to_jsonb(v_arrest)` event snapshot, consistent `ar`/person retrieval aliases, and the corrected parenthesised release/transfer text composition.
+
+Classification: **five successive remote bug fixes consolidated into the earlier GitHub workflow source**. The consolidated source includes the final corrected patterns, but the individual intermediate patches are not retained as SQL. Preserve the existing files and continue checking the later transport-duration changes.
