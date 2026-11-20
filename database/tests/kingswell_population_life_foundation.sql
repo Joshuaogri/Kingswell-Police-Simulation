@@ -115,7 +115,7 @@ begin
     raise exception 'Death life event did not update the canonical person status';
   end if;
   if game.calculate_person_age(v_person2)<>19 then
-    raise exception 'Deceased person's age-at-death calculation is incorrect';
+    raise exception 'Deceased person age-at-death calculation is incorrect';
   end if;
 
   v_rejected:=false;
