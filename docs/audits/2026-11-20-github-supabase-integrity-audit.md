@@ -1018,3 +1018,16 @@ The GitHub file `20261120135500_case_lead_handovers_and_continuity.sql` is store
 The only function-body text difference is in `game.get_case_handovers(...)`: local aliases `o/n/a` are named `oldp/newp/actor` in the remote SQL. The selected columns, joins, ordering and returned JSON fields are the same.
 
 Classification: **equivalent read function with alias-only differences; exact match for the remaining functions and structural inventory; remote version/timestamp discrepancy**. Preserve both records.
+
+
+## 51. Content-led review of version 20261120135951 — task dependencies and workload
+
+Both sources define the same dependency table, two indexes, two triggers and four function definitions. The dependency-gate trigger, workload read function and core enforcement function match. The mutation-rejection trigger differs only in its exception wording.
+
+A behavioural difference exists in `game.add_case_task_dependency(...)`:
+- Remote SQL runs the recursive cycle check only when the proposed prerequisite task is not already completed or cancelled.
+- The GitHub reconstruction runs the recursive cycle check regardless of the prerequisite task's status.
+
+This means the repository version rejects some cyclic historical links that the remote version would allow when the prerequisite is terminal. The remaining validation and actor checks match.
+
+Classification: **genuine task-dependency cycle-policy divergence**. Preserve both sources. Compare the later task-management migrations and final live function before selecting the intended policy; do not repair migration history yet.
