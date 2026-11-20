@@ -1,0 +1,2 @@
+-- Case/person local-variable disambiguation; final function definition is included in the consolidated workflow migration.
+-- The fully corrected definition is retained in 20261120144932_arrest_transport_booking_and_custody_workflow.sql for clean replay.
