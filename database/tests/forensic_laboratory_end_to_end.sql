@@ -133,8 +133,8 @@ begin
  if (select frp.status from game.forensic_reports frp where frp.report_ref=v_report_ref)<>'issued' then
    raise exception 'Report was not issued';
  end if;
- if not exists(select 1 from game.evidence_transfers et where et.evidence_id=evidence_id
-               and et.from_personnel_id=pp1 and to_personnel_id=pp2) then
+ if not exists(select 1 from game.evidence_transfers et where et.evidence_id=(select ei.id from game.evidence_items ei where ei.evidence_ref='KW-EVID-FL-TEST')
+               and et.from_personnel_id=pp1 and et.to_personnel_id=pp2) then
    raise exception 'Laboratory custody transfer missing';
  end if;
 end;
