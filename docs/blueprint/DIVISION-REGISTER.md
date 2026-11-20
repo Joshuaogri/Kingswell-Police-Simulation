@@ -13,11 +13,11 @@ Each division is designed with its purpose, scope, responsibilities, components,
 | BP-05 | Police Architecture | Approved; detailed structure open |
 | BP-06 | Police Personnel | Approved |
 | BP-07 | Career System | Approved; detailed rules remain open for refinement |
-| BP-08 | Units and Deployment | Approved; initial roster-validated incident deployment implemented, including temporary cross-unit roster attachments; resource, qualification, command and full deployment lifecycle remain outstanding |
+| BP-08 | Units and Deployment | Approved; roster-validated deployment, individual acknowledgement and on-scene arrival implemented; resource, qualification, command and remaining deployment lifecycle remain outstanding |
 | BP-09 | Police Resources | Approved; details to refine with later operational divisions |
-| BP-10 | Patrol Operations | Approved; initial roster-validated patrol-unit dispatch implemented; patrol and field-response workflows remain outstanding |
-| BP-11 | Emergency Communications | Approved; text call intake, linked incident creation and roster-validated unit dispatch implemented; communications and live dispatch-console workflows remain outstanding |
-| BP-12 | Incident Management | Approved; incident creation and transition to dispatched implemented; full incident lifecycle remains outstanding |
+| BP-10 | Patrol Operations | Approved; roster-validated patrol dispatch, individual acknowledgement and arrival state implemented; patrol presence and wider field-response workflows remain outstanding |
+| BP-11 | Emergency Communications | Approved; text call intake, linked incident creation, roster-validated dispatch and individual acknowledgement/arrival events implemented; radio integration and live dispatch-console workflows remain outstanding |
+| BP-12 | Incident Management | Approved; incident creation, dispatch and first-arrival transition to attending implemented; full incident lifecycle remains outstanding |
 | BP-13 | Crime Architecture | Approved; detailed fictional offence catalogue to populate |
 | BP-14 | Crime Generation | Approved; frequency and behaviour tuning to follow |
 | BP-15 | Case Management | Approved; investigative methods and legal review to refine |
@@ -40,7 +40,7 @@ Each division is designed with its purpose, scope, responsibilities, components,
 | BP-32 | Training and Development | Approved; competency catalogue, statutory requirements and qualification rules remain open |
 | BP-33 | Human Resources | Approved; employment law, terms, entitlements and workforce rules remain open |
 | BP-34 | Finance and Procurement | Approved; legal and financial framework remains open |
-| BP-35 | Simulation Engine | Approved; typed command intake, limited text interpreter, roster-validated dispatch and transactional event processing implemented; broader runtime and NPC processing remain outstanding |
+| BP-35 | Simulation Engine | Approved; typed command intake, limited text interpreter, idempotency, roster-validated dispatch, individual acknowledgement/arrival state transitions and transactional event processing implemented; broader runtime and NPC processing remain outstanding |
 | BP-36 | Relationships and Social Context | Approved; legal and social-context rules remain open |
 | BP-37 | Time and Scheduling | Approved; calendar and legal timing rules remain open |
 | BP-38 | Records and Databases | Approved; domain schemas and security design remain open |
