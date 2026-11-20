@@ -17,7 +17,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Runtime foundation implemented | Private `game` schema; 42 tables, 80 foreign keys and 147 indexes; ten migrations applied; one paused, unconfigured clock row; no fictional world/personnel data seeded |
+| Database schema | Runtime foundation implemented | Private `game` schema; 42 tables, 80 foreign keys and 147 indexes; twelve migrations applied; one paused, unconfigured clock row; no fictional world/personnel data seeded |
 | Application/gameplay code | In progress | Database-backed text command interpreter, controlled clock and initial emergency-call/incident intake implemented; full domain handlers remain outstanding |
 | Runtime regression tests | Implemented; transaction smoke-tested | `database/tests/runtime_foundation.sql` and `database/tests/text_interpreter_dispatch.sql` cover command parsing, idempotency, clock guards, emergency-call/incident creation and event history; test data rolls back |
 
@@ -32,11 +32,11 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-05 | Police Architecture | Approved; initial proposal; detailed structure remains open |
 | BP-06 | Police Personnel | Approved |
 | BP-07 | Career System | Approved; detailed rules remain open for refinement |
-| BP-08 | Units and Deployment | Approved; initial roster-validated incident deployment implemented, including temporary cross-unit roster attachments; resource, qualification, command and full deployment lifecycle rules remain outstanding |
+| BP-08 | Units and Deployment | Approved; roster-validated deployment, individual dispatch acknowledgement and on-scene arrival implemented; resource, qualification, command and remaining deployment lifecycle rules remain outstanding |
 | BP-09 | Police Resources | Approved; details to refine with later operational divisions |
-| BP-10 | Patrol Operations | Approved; initial roster-validated patrol-unit dispatch implemented; patrol presence, field status, response and attendance workflows remain outstanding |
-| BP-11 | Emergency Communications | Approved; text call intake, linked incident creation and roster-validated unit dispatch implemented; communications, acknowledgement and live dispatch-console workflows remain outstanding |
-| BP-12 | Incident Management | Approved; incident creation and transition to dispatched implemented; ownership, attendance, progression, resolution and closure remain outstanding |
+| BP-10 | Patrol Operations | Approved; roster-validated patrol-unit dispatch, individual acknowledgement and arrival state implemented; patrol presence and wider field-status workflows remain outstanding |
+| BP-11 | Emergency Communications | Approved; text call intake, linked incident creation, roster-validated dispatch and individual officer acknowledgement/arrival events implemented; radio integration and live dispatch-console workflows remain outstanding |
+| BP-12 | Incident Management | Approved; incident creation, dispatch and first-arrival transition to attending implemented; ownership, full progression, resolution and closure remain outstanding |
 | BP-13 | Crime Architecture | Approved; detailed fictional offence catalogue to populate |
 | BP-14 | Crime Generation | Approved; frequency and behaviour tuning to follow |
 | BP-15 | Case Management | Approved; investigative methods and legal review to refine |
@@ -62,12 +62,12 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-35 | Simulation Engine | Approved; typed command intake, limited text interpreter, idempotency, roster-validated dispatch and transactional event processing implemented; broader domain handlers, scheduler and NPC processing outstanding |
 | BP-36 | Relationships and Social Context | Approved; design only; no relationship or social-context system implemented |
 | BP-37 | Time and Scheduling | Approved; paused singleton clock, explicit initialization/advancement and clock history implemented; fictional calendar configuration and scheduler outstanding |
-| BP-38 | Records and Databases | Approved; 42-table private schema and ten migrations implemented; command, clock-history and dispatch workflow records integrated; full domain coverage incomplete |
+| BP-38 | Records and Databases | Approved; 42-table private schema and twelve migrations implemented; command, clock-history, dispatch, acknowledgement and arrival events integrated; full domain coverage incomplete |
 | BP-39 | Persistence and Recovery | Approved; design only; no backup or restore process implemented |
 | BP-40 | Interface | Approved; ChatGPT remains the intended text interface; limited explicit text command grammar exists; live ChatGPT-to-runtime connection remains outstanding |
 | BP-41 | Notifications and Reporting | Approved; design only; no notification or reporting service implemented |
 | BP-42 | Security and Permissions | Approved; RLS enabled on all 42 tables; private schema remains unexposed; player authentication and fictional authority enforcement outstanding |
-| BP-43 | Testing and Quality Assurance | Approved; runtime, text/dispatch and roster-validated unit-dispatch SQL regression scripts passed inside rolled-back transactions; CI and broader domain tests outstanding |
+| BP-43 | Testing and Quality Assurance | Approved; runtime, text/dispatch, roster-validated unit-dispatch and acknowledgement/arrival SQL regression scripts passed inside rolled-back transactions; CI and broader domain tests outstanding |
 | BP-44 | Configuration and Expansion | Approved; design only; no configuration or expansion framework implemented |
 
 ## Delivery stages
@@ -114,9 +114,10 @@ Migration files in `database/migrations/`:
 - `20261120060000_unit_dispatch_and_rostered_personnel.sql`
 - `20261120070000_register_dispatch_commands_in_help.sql`
 - `20261120080000_honour_rostered_cross_unit_attachments.sql`
-- `20261120070000_register_dispatch_commands_in_help.sql`
+- `20261120094953_officer_dispatch_acknowledgement_and_scene_arrival.sql`
+- `20261120095028_correct_dispatch_acknowledgement_event_columns.sql`
 
-The original two migrations established the base schema. The current live schema has 42 tables, 80 foreign keys, 147 indexes and RLS enabled on all 42 tables. Seven migrations are recorded in Supabase.
+The original two migrations established the base schema. The current live schema has 42 tables, 80 foreign keys, 147 indexes and RLS enabled on all 42 tables. Twelve migrations are recorded in Supabase.
 
 Update this register when work actually changes. Do not mark design as implemented or implemented as verified without evidence.
 
@@ -183,7 +184,7 @@ Implemented a limited explicit text grammar through `game.interpret_text_command
 
 Supported forms include `help`, `status`, `advance time N minutes`, and `911/call/report/radio [report] at [location]`. The parser does not turn questions into actions.
 
-Regression tests: `database/tests/text_interpreter_dispatch.sql` and `database/tests/unit_dispatch.sql`; both passed in transactions with rollback. Live verification: 42 tables, 80 foreign keys, 147 indexes, all 42 tables with RLS, ten migration records, three runtime functions; zero command, call, incident, deployment or dispatch-event records; fictional clock still unset.
+Regression tests: `database/tests/text_interpreter_dispatch.sql`, `database/tests/unit_dispatch.sql` and `database/tests/dispatch_acknowledgement_arrival.sql`; all passed in transactions with rollback. Live verification: 42 tables, 80 foreign keys, 147 indexes, all 42 tables with RLS, ten migration records, three runtime functions; zero command, call, incident, deployment or dispatch-event records; fictional clock still unset.
 
 
 ## Roster-validated unit dispatch — 2026-11-20
@@ -192,3 +193,13 @@ Implemented `dispatch UNIT_REF to INCIDENT_REF`. The command checks the active u
 
 
 The roster-validated dispatch test passed with temporary fictional home-unit and cross-unit attached personnel, unit, roster, incident and call records; the transaction rolled back. Help output was separately verified to include `receive_call` and `dispatch_unit`. Live state after tests: 42 tables, 80 foreign keys, 147 indexes, 10 migration records, 3 runtime functions, zero game commands/calls/incidents/deployments/events and an uninitialized fictional clock.
+
+
+## Officer acknowledgement and scene arrival — 2026-11-20
+
+Implemented two individual deployment commands:
+
+- `acknowledge PERSONNEL_REF for INCIDENT_REF` changes the officer's deployment from `dispatched` to `responding` and records a `dispatch_acknowledged` dispatch event plus a game event.
+- `arrive PERSONNEL_REF at INCIDENT_REF` requires the officer to have acknowledged, stores `arrived_at` from the fictional game clock, changes the deployment to `on_scene`, records an `officer_arrived` dispatch event plus a game event, and moves the incident from `dispatched` to `attending` on first arrival.
+
+Each officer progresses independently. Early arrival, missing deployments, invalid order and time reversal are rejected. Idempotency prevents repeated commands from duplicating state changes. Regression script: `database/tests/dispatch_acknowledgement_arrival.sql`; passed in a rolled-back transaction. Vehicle/resource checks, radio integration, scene command, incident progression and closure remain outstanding.
