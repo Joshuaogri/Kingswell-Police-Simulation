@@ -27,7 +27,7 @@ Each division is designed with its purpose, scope, responsibilities, components,
 | BP-19 | Interviews and Interrogations | Approved; legal safeguards and specialist procedures to refine |
 | BP-20 | Surveillance | Approved; statutory definitions, authorisations and oversight to refine |
 | BP-21 | Intelligence | Approved; statutory powers, source handling and governance to refine |
-| BP-22 | Crime Scenes | Approved; initial scene designation/control, manager transfer, activity chronology, personnel access log, field-report linkage and resource requests implemented; safety, boundaries, multi-agency work, examination, evidence handover, release and reopening remain outstanding |
+| BP-22 | Crime Scenes | Approved; initial scene designation/control, manager transfer, activity/access logs, field reports, resource requests, safety assessment history and manager-controlled versioned boundary revisions implemented; specialist hazard response, detailed zones, multi-agency work, examination, evidence handover, release and reopening remain outstanding |
 | BP-23 | Evidence Management | Approved; evidential rules, retention and professional standards to refine |
 | BP-24 | Forensics | Approved; legal framework, service scope and method catalogue remain open |
 | BP-25 | Arrests and Warrants | Approved; legal thresholds, warrant types and procedures remain open |
@@ -40,15 +40,15 @@ Each division is designed with its purpose, scope, responsibilities, components,
 | BP-32 | Training and Development | Approved; competency catalogue, statutory requirements and qualification rules remain open |
 | BP-33 | Human Resources | Approved; employment law, terms, entitlements and workforce rules remain open |
 | BP-34 | Finance and Procurement | Approved; legal and financial framework remains open |
-| BP-35 | Simulation Engine | Approved; typed command intake, limited text interpreter, idempotency, roster-validated dispatch, individual acknowledgement/arrival, scene control and field-report handlers implemented; broader runtime and NPC processing remain outstanding |
+| BP-35 | Simulation Engine | Approved; typed command intake, limited text interpreter, idempotency, roster-validated dispatch, individual acknowledgement/arrival, scene control, safety, boundary and field-report handlers implemented; broader runtime and NPC processing remain outstanding |
 | BP-36 | Relationships and Social Context | Approved; legal and social-context rules remain open |
 | BP-37 | Time and Scheduling | Approved; calendar and legal timing rules remain open |
-| BP-38 | Records and Databases | Approved; 47-table private schema, fourteen migrations, scene/access/field-report/resource-request records and RLS on all tables implemented; wider domain coverage remains open |
+| BP-38 | Records and Databases | Approved; 49-table private schema, nineteen migrations, scene/access/field-report/resource-request records and RLS on all tables implemented; wider domain coverage remains open |
 | BP-39 | Persistence and Recovery | Approved; recovery targets and backup controls remain open |
 | BP-40 | Interface | Approved; command and presentation specifications remain open |
 | BP-41 | Notifications and Reporting | Approved; alert and reporting catalogue remains open |
 | BP-42 | Security and Permissions | Approved; identity and access policies remain open |
-| BP-43 | Testing and Quality Assurance | Approved; five runtime, dispatch, acknowledgement/arrival and scene/field SQL regression suites pass in rolled-back transactions; CI and broader quality gates remain open |
+| BP-43 | Testing and Quality Assurance | Approved; six runtime, dispatch, acknowledgement/arrival, scene/field and safety/boundary SQL regression suites pass in rolled-back transactions; CI and broader quality gates remain open |
 | BP-44 | Configuration and Expansion | Approved; configuration and change-control details remain open |
 
 ## Design approval and implementation status
