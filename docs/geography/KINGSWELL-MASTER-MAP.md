@@ -54,7 +54,7 @@ Three explicit bridge crossings are recorded as bridge segments with separate we
 
 ## Neighbourhood framework
 
-Each district is subdivided into two neighbourhoods (24 total). Every neighbourhood has a dedicated named local street and a connected five-segment access pattern in the road graph. Individual property addresses and building frontage remain a later layer.
+Each district is subdivided into two neighbourhoods (24 total). Every neighbourhood has a dedicated named local street and a connected five-segment access pattern in the road graph. Each neighbourhood now contains 20 seeded property parcels, each with one building, a structured postal address and a road-linked access point. The initial city inventory therefore contains 480 properties, 480 buildings, 712 building units and 480 property entrances. Twenty-four named landmarks are linked to their actual property, building and access-point records.
 
 ## Network modelling rules
 
@@ -75,9 +75,18 @@ Each district is subdivided into two neighbourhoods (24 total). Every neighbourh
 3. Establish the city planning envelopes and named primary roads.
 4. Create junctions and road segments with connectivity tests.
 5. Add secondary/local roads and transport links.
-6. Add properties, buildings, addresses and landmarks.
+6. Add properties, buildings, addresses and landmarks — implemented and regression-tested.
 7. Add police stations, patrol sectors and response routing.
 
 ## Explicitly not yet represented
 
-Exact cadastral polygons, terrain elevation, building footprints, individual property addresses, detailed one-way turn restrictions, live traffic simulation and travel-time calibration. These remain later map layers, not silently assumed facts.
+Exact surveyed cadastral polygons, precise architectural building footprints and heights, secondary and service entrances for every building, detailed one-way turn restrictions, live traffic simulation and calibrated travel times remain later layers. The current property and building coordinates are deterministic fictional planning points tied to the connected road network, not survey-grade geometry.
+
+
+## Property, building, address and landmark foundation
+
+The initial city inventory is seeded across all 24 neighbourhoods, with 20 parcels per neighbourhood (40 per district): 480 property records and 480 associated buildings. Property records carry district/neighbourhood ownership, street and road references, fictional local-grid coordinates, parcel area, frontage width, land-use classification, frontage road segment and postal code. Buildings carry their own local-grid position, footprint dimensions/area, building type, floor count, construction type and occupancy state. The current building-unit register contains 712 units/premises.
+
+Every property has one structured primary postal address (480 total) and one primary access point (480 total). Access points resolve to an actual routable road segment and junction, providing a usable destination layer for future dispatch and navigation. The address format is: street number, named local street, neighbourhood, district, Kingswell, Asterfell and neighbourhood postal code. Twenty-four named landmarks—one per neighbourhood—resolve to their property, building and access point, rather than existing as unlinked map labels.
+
+These are fictional planning records, not real-world addresses or surveyed property boundaries. The initial inventory is intentionally comprehensive enough to support address lookup, incident location, business/institution placement and future population occupancy; detailed cadastral shapes, building floor plans, multiple entrances and dynamic occupancy are later refinements. Regression: `database/tests/kingswell_properties_buildings_addresses.sql`.
