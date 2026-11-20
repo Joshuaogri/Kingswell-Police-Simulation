@@ -17,7 +17,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Runtime foundation implemented | Private `game` schema; 55 tables, 133 foreign keys and 223 indexes; 26 migrations applied; one paused, unconfigured clock row; RLS enabled on all 55 tables; no fictional world/personnel data seeded |
+| Database schema | Runtime foundation and forensic laboratory workflow implemented | Private `game` schema; 67 tables, 182 foreign keys and 298 indexes; 36 migrations applied; six runtime functions; RLS enabled on all 67 tables; no fictional world/personnel data seeded; fictional clock remains uninitialized |
 | Application/gameplay code | In progress | Database-backed text command interpreter, controlled clock, emergency-call/dispatch/arrival, scene-control, field-report and resource-request workflows implemented; full domain handlers remain outstanding |
 | Runtime regression tests | Implemented; transaction smoke-tested | `database/tests/runtime_foundation.sql`, `database/tests/text_interpreter_dispatch.sql`, `database/tests/unit_dispatch.sql`, `database/tests/dispatch_acknowledgement_arrival.sql` and `database/tests/scene_control_field_reports.sql` cover the implemented runtime and operational slices; all test data rolls back |
 
@@ -48,7 +48,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-21 | Intelligence | Approved; statutory powers, source handling and governance to refine |
 | BP-22 | Crime Scenes | Approved; scene designation/control, manager transfer, activity/access/safety/boundary histories, resource request responses, release/reopening, qualified specialist attendance, manager-authorised examination plans, examiner start/completion/cancellation and examination result records implemented; detailed zones, multi-agency command, specialist hazard response, contamination, evidence handover and review remain outstanding |
 | BP-23 | Evidence Management | Approved; evidential rules, retention and professional standards to refine |
-| BP-24 | Forensics | Approved; initial scene-examination workflow uses current matching personnel qualifications and records examination plans, observations, findings and limitations; forensic service/laboratory capability, validated methods, triage, technical review and formal reports remain unimplemented |
+| BP-24 | Forensics | Approved; scene examination/recovery and first laboratory workflow implemented: case-linked requests and triage, lab intake through canonical custody transfer, methods with independent qualified validation review, qualified examiner assignment, structured findings, independent qualified technical review and versioned reports. Service capability catalogue, external-provider routing, full validation evidence, QA/proficiency, raw data/derivatives, disclosure/court interfaces and seeded end-to-end tests remain outstanding |
 | BP-25 | Arrests and Warrants | Approved; design only; no arrest or warrant software implemented |
 | BP-26 | Custody Management | Approved; design only; no custody software or facilities implemented |
 | BP-27 | Legal Processes | Approved; design only; no legal-process software implemented |
@@ -62,7 +62,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-35 | Simulation Engine | Approved; typed command intake, limited text interpreter, idempotency, roster-validated dispatch, individual acknowledgement/arrival, scene control, safety, boundary, resource response, specialist attendance and examination lifecycle handlers with transactional event processing implemented; broader domain handlers, scheduler and NPC processing outstanding |
 | BP-36 | Relationships and Social Context | Approved; design only; no relationship or social-context system implemented |
 | BP-37 | Time and Scheduling | Approved; paused singleton clock, explicit initialization/advancement and clock history implemented; fictional calendar configuration and scheduler outstanding |
-| BP-38 | Records and Databases | Approved; 55-table private schema and 26 migrations implemented; command, clock-history, dispatch, scene, access, field-report, resource, specialist-attendance and examination records integrated; full domain coverage incomplete |
+| BP-38 | Records and Databases | Approved; 67-table private schema and 36 migrations implemented; command/clock, dispatch, scene, evidence custody, specialist examination, forensic laboratory request/intake/finding/review/report records integrated; full domain coverage incomplete |
 | BP-39 | Persistence and Recovery | Approved; design only; no backup or restore process implemented |
 | BP-40 | Interface | Approved; ChatGPT remains the intended text interface; limited explicit text command grammar exists; live ChatGPT-to-runtime connection remains outstanding |
 | BP-41 | Notifications and Reporting | Approved; design only; no notification or reporting service implemented |
@@ -238,7 +238,7 @@ Added `scene_resource_request_events` and `scene_lifecycle_events`, plus resourc
 
 Formal scene release requires a recorded safety assessment, no outstanding resource requests and no unmatched scene-entry records. Only the current scene manager can release. An on-scene officer can reopen a released scene while the originating incident remains active; scene command transfers to that officer. Reopening after incident resolution, closure or cancellation is rejected. Release/reopening history is append-only. Regression suite: `database/tests/scene_resource_lifecycle.sql`.
 
-Current verified state after all eight rolled-back SQL regression suites: 55 tables, 133 foreign keys, 223 indexes, RLS enabled on all 55 tables, 26 migrations, four runtime functions, zero persistent game commands/incidents/deployments/scenes/resource requests/specialist attendances/examination plans/results, and an uninitialized fictional clock. Performance advisor reports unused-index notices while the database is empty; security advisor reports RLS-enabled/no-policy notices because the private `game` schema is not exposed and no public player access has been deployed. Health advisor reports no findings.
+Current verified state after the forensic workflow regression: 67 tables, 182 foreign keys, 298 indexes, RLS enabled on all 67 tables, 36 migrations and six runtime functions. Zero persistent forensic records or test commands; no world/personnel seed data; fictional clock remains uninitialized. The performance advisor reports no unindexed foreign keys. Unused-index notices are expected while the database is empty. The security advisor reports RLS-enabled/no-policy INFO notices because the private `game` schema is intentionally not exposed to the Data API and no public player access has been deployed.
 
 
 ## Specialist attendance and scene examination — 2026-11-20
@@ -263,3 +263,21 @@ Resolved the source-control gap for the scene contamination/evidence recovery/cu
 
 
 The evidence-action handler's execute ACL was separately hardened in applied migration `20261120103649_restrict_evidence_action_execution.sql`: execution is granted to `service_role` only; `PUBLIC`, `anon` and `authenticated` are explicitly revoked. A live privilege check confirms `anon` and `authenticated` cannot execute it, while `service_role` can.
+
+
+## Forensic laboratory workflow — 2026-11-20
+
+Implemented the first laboratory workflow across nine private, RLS-enabled records: forensic methods, method-validation reviews, requests, request/evidence links, laboratory submissions, examinations, findings, technical reviews and versioned reports.
+
+- Requests are tied to an open case and an evidence item already linked to that case. Request details preserve discipline, examination question, scope, recorded authority and priority; triage decisions and rationale are retained.
+- Laboratory intake uses the canonical `evidence_transfers` ledger. The submitting officer must be the recorded current custodian and the receiving officer must be a different active employee. Receipt condition and seal condition are recorded; discrepancies or non-intact seals quarantine the submission. “None”/“no discrepancy” values are treated as no discrepancy.
+- A method is registered as `verification_pending`. It cannot be self-certified: a different active officer with a current qualification matching the method discipline must record an independent validation decision. The method-validation review and rationale are retained.
+- Examiner assignment requires a received, non-quarantined submission, an active validated method matching the request discipline, and a current matching examiner qualification.
+- Findings separate observations, interpretation, propositions and limitations. Outcomes include supports, contradicts, inconclusive, no result and neutral; none constitutes an automatic legal conclusion.
+- Technical, peer or independent finding review requires a different reviewer with a current matching qualification. A report can be issued only after examinations are complete and the latest finding for each examination has a latest approved review. Reports are versioned and previous issued versions are superseded, not overwritten.
+
+Commands are registered in `help`: `forensic method`, `validate forensic method`, `forensic request`, `triage forensic`, `receive lab submission`, `assign forensic`, `start forensic`, `record forensic findings`, `review forensic` and `issue forensic report`. They use the existing idempotent command ledger and explicit fictional clock.
+
+Limitations: the in-game validation decision is not a full method-validation study. A service/capability catalogue, lab capacity and workload, external-provider routing, raw instrument data, sample derivatives/consumption, proficiency testing, detailed quality records, disclosure/court interfaces and seeded end-to-end operational tests remain outstanding. No suspects or offenders are inferred or revealed by these commands.
+
+Regression script: `database/tests/forensic_laboratory_workflow.sql`. Parser, help, runtime-routing, clock-guard and RLS checks pass in a rolled-back transaction. No forensic data is seeded or persisted; the fictional clock remains uninitialized.
