@@ -965,3 +965,10 @@ Migration: `database/migrations/20261120161000_correctional_foundation_and_sente
 Test: `database/tests/kingswell_correctional_foundation.sql`
 
 Guide: `docs/operations/CORRECTIONAL-FOUNDATION.md`
+
+
+### Correctional foreign-key index refinement — 2026-11-20
+
+Added 18 covering indexes for correctional admission, sentence-term, credit-event, correctional-event and placement foreign keys. The correctional foundation regression test now asserts these indexes exist.
+
+Migration: `database/migrations/20261120162000_correctional_foreign_key_indexes.sql`.
