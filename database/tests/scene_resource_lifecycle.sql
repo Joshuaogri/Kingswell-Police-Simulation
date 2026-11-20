@@ -2,7 +2,7 @@
 -- All fictional records are rolled back.
 begin;
 do $test$
-declare v_p1 uuid; v_p2 uuid; v_pp1 uuid; v_pp2 uuid; v_unit uuid; v_roster uuid; v_incident uuid; r jsonb; v_scene uuid; v_request1 text; v_request2 text;
+declare v_p1 uuid; v_p2 uuid; v_pp1 uuid; v_pp2 uuid; v_unit uuid; v_roster uuid; v_incident uuid; r jsonb; v_scene uuid; v_request1 text; v_request2 text; v_request3 text;
 begin
  r:=game.submit_command('Initialize scene lifecycle test clock','initialize_clock','{"start_at":"2036-04-20T10:00:00Z"}'::jsonb,'scene-lifecycle-clock-test-0001'); if r->>'ok'<>'true' then raise exception 'Clock init failed: %',r; end if;
  insert into game.persons(person_ref,given_name,family_name) values('LIFE-PERSON-001','Life','One') returning id into v_p1;
@@ -30,6 +30,8 @@ begin
  if (select count(*) from game.scene_resource_request_events where resource_request_id=(select id from game.incident_resource_requests where request_ref=v_request1))<>2 then raise exception 'Resource approval/fulfilment history incomplete'; end if;
  r:=game.execute_text_command('request resource LIFE-PP-002 for KW-SCENE-LIFE: scene lighting | supplementary lighting not required after daylight assessment','scene-lifecycle-resource2-test-0001'); if r->>'ok'<>'true' then raise exception 'Second request failed: %',r; end if; v_request2:=r->>'request_ref';
  r:=game.execute_text_command('resource cancel LIFE-PP-001 '||v_request2||': no longer required','scene-lifecycle-cancel-test-0001'); if r->>'ok'<>'true' or r->>'request_status'<>'cancelled' then raise exception 'Resource cancellation failed: %',r; end if;
+ r:=game.execute_text_command('request resource LIFE-PP-002 for KW-SCENE-LIFE: additional scene officer | request withdrawn after staffing review','scene-lifecycle-resource3-test-0001'); if r->>'ok'<>'true' then raise exception 'Third request failed: %',r; end if; v_request3:=r->>'request_ref';
+ r:=game.execute_text_command('resource decline LIFE-PP-001 '||v_request3||': staffing levels are sufficient','scene-lifecycle-decline-test-0001'); if r->>'ok'<>'true' or r->>'request_status'<>'declined' then raise exception 'Resource decline failed: %',r; end if;
  r:=game.execute_text_command('scene entry LIFE-PP-002 into KW-SCENE-LIFE for final controlled examination','scene-lifecycle-entry-test-0001'); if r->>'ok'<>'true' then raise exception 'Scene entry failed: %',r; end if;
  r:=game.execute_text_command('release scene LIFE-PP-001 KW-SCENE-LIFE because all examinations complete','scene-lifecycle-release-entry-test-0001'); if r->>'code'<>'personnel_still_inside_scene' then raise exception 'Release did not block unmatched entry: %',r; end if;
  r:=game.execute_text_command('scene exit LIFE-PP-002 from KW-SCENE-LIFE for final controlled examination complete','scene-lifecycle-exit-test-0001'); if r->>'ok'<>'true' then raise exception 'Scene exit failed: %',r; end if;
@@ -38,6 +40,11 @@ begin
  if (select status from game.incident_scenes where id=v_scene)<>'reopened' then raise exception 'Final scene status not reopened'; end if;
  if (select count(*) from game.scene_lifecycle_events where scene_id=v_scene)<>2 then raise exception 'Release/reopen lifecycle history incomplete'; end if;
  if exists(select 1 from game.incident_resource_requests where scene_id=v_scene and status in ('requested','acknowledged','approved')) then raise exception 'Outstanding resource request remains'; end if;
+ r:=game.execute_text_command('release scene LIFE-PP-002 KW-SCENE-LIFE because reopened examination has now been completed','scene-lifecycle-release2-test-0001'); if r->>'ok'<>'true' then raise exception 'Second release failed: %',r; end if;
+ update game.incidents set status='closed' where id=v_incident;
+ r:=game.execute_text_command('reopen scene LIFE-PP-001 KW-SCENE-LIFE because further examination requested after closure','scene-lifecycle-reopen-closed-test-0001');
+ if r->>'code'<>'incident_not_reopenable' then raise exception 'Scene reopened after incident closure: %',r; end if;
+ if (select count(*) from game.scene_lifecycle_events where scene_id=v_scene)<>3 then raise exception 'Lifecycle history should contain release, reopen and release'; end if;
 end;
 $test$;
 rollback;
