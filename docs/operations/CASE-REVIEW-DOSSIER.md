@@ -1,6 +1,6 @@
 # Investigative case review dossier
 
-The read-only `case review CASE_REF` command assembles the current authoritative case record into one structured review. It is a retrieval and synthesis surface, not an automated investigative conclusion.
+The read-only `case review CASE_REF by OFFICER_REF` command assembles the current authoritative case record into one structured review. It is a retrieval and synthesis surface, not an automated investigative conclusion.
 
 ## Included sections
 
@@ -17,15 +17,15 @@ The read-only `case review CASE_REF` command assembles the current authoritative
 - Forensic requests, requested evidence context, examinations, findings, limitations and issued report versions.
 - Linked incidents and their relationship to the case.
 
-The dossier references the existing records. It does not duplicate or rewrite them.
+The dossier references existing records. It does not duplicate or rewrite them.
 
 ## Player command
 
 ```text
-case review CASE_REF
+case review CASE_REF by OFFICER_REF
 ```
 
-The command is read-only, uses the normal command ledger/idempotency key, does not advance fictional time and returns a not-found response for an unknown case.
+The named officer must match the command actor and be the recorded case lead or hold an active assignment to that case. The command is read-only, uses the normal command ledger/idempotency key, does not advance fictional time and returns a not-found response for an unknown case.
 
 ## Investigative control and safeguards
 
@@ -37,4 +37,4 @@ The command is read-only, uses the normal command ledger/idempotency key, does n
 
 ## Verification
 
-`database/tests/kingswell_case_review_dossier.sql` runs a rollback-only test through the real command parser and executor. It verifies dossier sections, idempotency, missing-case handling and help registration.
+`database/tests/kingswell_case_review_dossier.sql` runs a rollback-only test through the real command parser and executor. It verifies dossier sections, actor and case-assignment access, idempotency, missing-case handling and help registration.
