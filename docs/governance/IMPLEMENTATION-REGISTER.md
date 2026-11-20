@@ -415,7 +415,7 @@ Verification:
 - No personnel, police units, incidents, deployments or route calculations have been seeded. Full seeded deployment-to-route/ETA end-to-end verification is therefore still pending; no fictional clock was initialized.
 - The candidate function currently creates persisted route-calculation records when it evaluates eligible units. This is an auditable route computation, not a state/time advancement.
 
-Remaining: rollback-only seeded dispatch integration, ETA-ranked dispatch presentation, explicit unit-position updates and auditable route recalculation on reassignment or road changes.
+Completed: rollback-only seeded dispatch integration, ETA-ranked dispatch candidates, explicit unit-position gameplay command and auditable route recalculation after unit movement or road availability changes.
 
 
 Route-history integrity hardening: deployment_route_history is now append-only for the runtime role. service_role has SELECT and INSERT only; UPDATE and DELETE are revoked. The regression test asserts this restriction. Applied migration and main source: database/migrations/20261120114700_enforce_deployment_route_history_append_only.sql. Current migration count: 50.
@@ -445,3 +445,24 @@ It then verifies:
 All temporary persons, personnel, units, rosters, assignments, incidents, deployments, command-ledger rows, route calculations and route-history records are rolled back. The test leaves no fixture data in the live game.
 
 Source: `database/tests/kingswell_dispatch_route_end_to_end.sql`.
+
+
+## ETA-ranked candidates, unit position and route recalculation — 2026-11-20
+
+**Implemented and verified.** Migration source:
+- database/migrations/20261120115000_dispatch_eta_ranking_unit_position_and_recalculation.sql
+- database/migrations/20261120115200_register_unit_position_as_gameplay_command.sql
+
+Runtime capabilities:
+- `game.get_dispatch_candidates_ranked(incident_ref)` wraps the eligibility and route-aware candidate resolver and orders units by earliest calculated ETA, with unresolved ETAs last, then duration, distance and unit reference as stable tie-breakers.
+- `game.record_unit_position(unit_ref, access_point_uuid, reason)` stores a unit's current registered access point and fictional game-time timestamp. It rejects inactive units, missing/unroutable access points, missing reasons and an uninitialized clock.
+- Text gameplay command: `position unit UNIT_REF at ACCESS_POINT_UUID because REASON`. The command is registered in the interpreter, help output and idempotent command ledger. It emits a game event.
+- Moving a unit recalculates each of its active deployment routes and appends a route-history entry.
+- Changing a road segment's `is_routable` state automatically recalculates routes for active deployments. Each result is retained in the append-only deployment route history; closed roads are excluded by the route engine.
+- No route action advances the fictional clock. ETA remains a baseline posted-speed estimate without traffic, siren uplift or turn-delay modelling.
+
+**PASS:** `database/tests/kingswell_eta_ranked_dispatch_candidates.sql` verifies two eligible units are ordered by ETA, with the unit already at the incident location first.
+
+**PASS:** `database/tests/kingswell_unit_position_and_road_recalculation.sql` verifies the player-facing text command, position persistence, recalculation on movement, route-history append on road closure and reopening, and no fictional-clock advancement. Both tests end in ROLLBACK.
+
+After verification, the live game remains unseeded: zero police units, incidents, deployments, route calculations and route-history records; the fictional clock remains uninitialized. Migration count is 52.
