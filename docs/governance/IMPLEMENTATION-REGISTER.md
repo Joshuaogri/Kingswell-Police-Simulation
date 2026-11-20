@@ -564,3 +564,21 @@ Parser and coverage function execution are restricted to service_role. Documenta
 **PASS:** `database/tests/kingswell_patrol_incident_interruption.sql` verifies schedule suspension, interruption event and unchanged fictional clock; transaction ends in ROLLBACK.
 
 Migration: `database/migrations/20261120121300_suspend_patrol_coverage_on_incident_deployment.sql`. Documentation: `docs/operations/PATROL-INCIDENT-INTERRUPTION.md`.
+
+
+## Patrol road movement and segment-level coverage — 2026-11-20
+
+**Implemented and rollback-only end-to-end regression-tested.** The player command `patrol move UNIT_REF to ACCESS_REF because REASON` uses the existing police-profile weighted road-routing engine to move an on-patrol unit from its current registered access point to a destination access point on its assigned beat.
+
+- Added append-only `game.patrol_movement_events`, one row per route leg, linked to the canonical route calculation, route leg, road segment and junction pair.
+- Each leg records distance, estimated duration, fictional departure/arrival time, reason and whether the road segment belongs to the assigned beat. Transit legs outside the beat remain in the movement history but do not count as beat coverage.
+- Unit current access point and location timestamp update to the destination.
+- The explicit movement command advances the fictional clock by the route's estimated duration and records the change in `game_clock_history` and `game_events`; no background progression occurs.
+- Movement is rejected if the unit is not actively on patrol, has no active schedule, the destination is not on its assigned beat, no route exists, or travel would exceed the patrol schedule.
+- `patrol status` now includes visited road segments, on-beat patrol distance and latest movement per beat, plus citywide movement totals.
+- Patrol commands are registered in `help` and dispatched through their own command handlers, not the forensic workflow.
+
+**PASS:** `database/tests/kingswell_patrol_road_movement.sql` exercises patrol start, movement through `game.execute_text_command`, per-leg records, current-position update, explicit clock advancement, beat movement coverage and help registration. It runs in a transaction ending in ROLLBACK; no fixture data persists.
+
+Migrations: `20261120121400_patrol_road_movement_and_segment_history.sql`, `20261120121500_fix_patrol_movement_route_variable_ambiguity.sql`, `20261120121600_record_transit_and_on_beat_patrol_segments.sql`, `20261120121700_include_road_movement_in_patrol_coverage.sql`, `20261120121800_register_patrol_commands_in_runtime_help.sql`, `20261120121900_remove_patrol_commands_from_forensic_dispatch.sql`.
+Documentation: `docs/operations/PATROL-ROAD-MOVEMENT.md`.
