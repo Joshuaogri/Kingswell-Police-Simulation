@@ -1328,3 +1328,10 @@ The remote `game.seed_kingswell_business_employment_batch(integer,integer)` capt
 A read-only check of the current live function confirms that its result includes `employment_links`. This is an observable function-response mismatch, not merely formatting.
 
 Classification: **repository function output is incomplete relative to the applied remote/live definition**. Preserve the live function and add the missing result field to the source-recovery register; no live changes were made.
+
+
+## 80. Content-led review of version 20261120202603
+
+The complete remote and GitHub SQL for `bp04_detailed_history_control_agreements_and_map_alignment` is canonically identical after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults, `search_path` declarations and concatenation-operator spacing.
+
+Classification: **canonical SQL match after formatting normalisation**. No substantive ownership-history, organisation-site agreement, map-alignment, table, function or privilege difference was identified. Retain the existing file and remote history.
