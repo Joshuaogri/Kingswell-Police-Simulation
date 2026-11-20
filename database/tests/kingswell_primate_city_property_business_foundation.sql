@@ -141,6 +141,7 @@ begin
  values('KW-TEST-PERSON-BP04','BP04','Test','active') returning id into v_person;
  insert into game.police_personnel(personnel_ref,person_id,service_number,employment_status)
  values('KW-TEST-OFFICER-BP04',v_person,'KW-TEST-SN-BP04','active') returning id into v_officer;
+ perform set_config('bp04.test_officer_id',v_officer::text,true);
 
  v_result:=game.execute_text_command('property record KNG-P-RH0001 by KW-TEST-OFFICER-BP04','bp04-property-record-test-0001',null,v_officer);
  if coalesce((v_result->>'ok')::boolean,false) is not true or v_result->'record'->'property'->>'property_ref'<>'KNG-P-RH0001' then
@@ -182,5 +183,21 @@ begin
  if has_schema_privilege('anon','game','USAGE') or has_schema_privilege('authenticated','game','USAGE') then
   raise exception 'The private game schema is exposed to API roles';
  end if;
-end $$;
+end $;
+set local role service_role;
+do $
+declare v_officer uuid:=current_setting('bp04.test_officer_id')::uuid; v_result jsonb;
+begin
+ v_result:=game.execute_text_command('property record KNG-P-RH0001 by KW-TEST-OFFICER-BP04','bp04-service-property-record-0001',null,v_officer);
+ if coalesce((v_result->>'ok')::boolean,false) is not true then raise exception 'Service-role property record command failed'; end if;
+ v_result:=game.execute_text_command('business record AF-BIZ-000281 by KW-TEST-OFFICER-BP04','bp04-service-business-record-0001',null,v_officer);
+ if coalesce((v_result->>'ok')::boolean,false) is not true then raise exception 'Service-role business record command failed'; end if;
+ v_result:=game.execute_text_command('business directory sector neighbourhood_services by KW-TEST-OFFICER-BP04','bp04-service-business-directory-0001',null,v_officer);
+ if coalesce((v_result->>'ok')::boolean,false) is not true or (v_result->>'count')::integer<>352 then
+  raise exception 'Service-role business directory command failed';
+ end if;
+ v_result:=game.execute_text_command('property map KMX-01 by KW-TEST-OFFICER-BP04','bp04-service-property-map-0001',null,v_officer);
+ if coalesce((v_result->>'ok')::boolean,false) is not true then raise exception 'Service-role property map command failed'; end if;
+end $;
+reset role;
 rollback;
