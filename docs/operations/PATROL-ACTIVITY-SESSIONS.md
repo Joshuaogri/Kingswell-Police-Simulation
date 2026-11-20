@@ -29,7 +29,7 @@ An officer must be active and assigned to the named unit. The unit must be activ
 ## Records and intelligence
 
 - `patrol_activity_sessions` stores the activity, officer, unit, beat, schedule, location, start/end game time and reasons.
-- `patrol_activity_events` is append-only and records the start/completion timeline.
+- `patrol_activity_events` is append-only and records the start/completion timeline. Completed activity sessions are immutable; an active session permits only one completion transition.
 - `patrol intelligence` now reports activity sessions and minutes by type and unit separately from vehicle movement.
 
 Open sessions are counted as zero elapsed activity minutes until an explicit completion duration is recorded. These records describe logged activity, not continuous GPS tracking or proof of every action performed.
