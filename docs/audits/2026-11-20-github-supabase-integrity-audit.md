@@ -709,3 +709,14 @@ Classification: **confirmed source-code omission: three live investigative-activ
 The complete remote and repository SQL for `case_investigative_activity_player_commands` is canonically identical after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults and equivalent declaration formatting.
 
 Classification: **canonical SQL match after formatting/declaration normalisation**. The command integration migration is present in GitHub; the preceding 20261120140938 omission is specifically the three investigative-activity application functions. Retain the existing file and remote history.
+
+
+## 42. Content-led review of version 20261120141007 — migration replay blocker
+
+The remote and GitHub migrations both attempt to insert the case-activity collection into `game.get_case_review_dossier(text)` by dynamically replacing a text anchor in the existing function definition. Their anchor strings are not equivalent:
+
+- The remote migration anchors on the prefix `'request_ref',fr.request_ref`, which is present in the preceding remote dossier function from version `20261120134455` (followed by additional forensic-request fields such as `discipline`).
+- The GitHub migration anchors on `'request_ref',fr.request_ref)`, requiring a closing parenthesis immediately after the reference. That text is absent from the preceding dossier function, which has a comma and more JSON fields after `fr.request_ref`.
+- The GitHub script explicitly raises an exception when its anchor is absent. Therefore, replaying the repository migration after the preceding repository dossier migration would stop at this point instead of adding the `activities` field. The remote migration's broader prefix anchor is present and permits the replacement.
+
+Classification: **confirmed migration replay blocker in the GitHub source**. The local anchor is incompatible with the immediately preceding dossier definition. Preserve the applied remote history and do not execute the faulty repository migration. Record the precise anchor correction as a required source-recovery item for the controlled reconciliation phase; do not edit or push it during this read-only audit.
