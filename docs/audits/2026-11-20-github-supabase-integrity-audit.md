@@ -1078,3 +1078,10 @@ Classification: **exact canonical SQL match with remote version/timestamp discre
 The GitHub file `20261120140300_case_task_help_command_registration.sql` is stored remotely at version `20261120125559`, under the same migration name. The complete SQL is canonically identical after normalising comments and whitespace. Both add the five case-task commands to the help response while retaining the task command executor and actor checks.
 
 Classification: **exact canonical SQL match with remote version/timestamp discrepancy**. Preserve both records.
+
+
+## 56. Content-led review of version 20261120140513 — task completion submissions and supervisor review
+
+The complete remote and repository migration SQL is canonically identical after normalising comments and whitespace. Both define the same three submission/evidence/review tables, three indexes, four triggers and six functions. This includes immutable submission history, evidence links, supervisor review, and the completion-review gate that controls task completion.
+
+Classification: **exact canonical SQL match**. Retain both records unchanged.
