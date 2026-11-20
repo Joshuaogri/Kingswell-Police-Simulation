@@ -2,7 +2,7 @@
 begin;
 do $test$
 declare c timestamptz:='2026-11-20 18:00:00+00'; b game.patrol_beats%rowtype; f uuid; access_id uuid; access_ref text;
- person_id uuid; officer_id uuid; roster_id uuid; unit_id uuid; unit_ref text; officer_ref text;
+ person_id uuid; officer_id uuid; roster_id uuid; unit_id uuid; v_unit_ref text; v_officer_ref text;
  start_result jsonb; obs1 jsonb; obs2 jsonb; search_result jsonb; help_result jsonb; parsed jsonb; after_time timestamptz;
 begin
  update game.simulation_state set current_game_time=c,time_paused=true where id=1;
@@ -18,16 +18,16 @@ begin
  returning id,person_ref into person_id,officer_ref;
  insert into game.police_units(unit_ref,unit_name,unit_type,status,base_facility_id,assigned_beat_id,current_access_point_id,current_location_updated_at)
  values('KNG-SEARCH-UNIT-'||substr(gen_random_uuid()::text,1,8),'Search test unit','patrol','active',f,b.id,access_id,c)
- returning id,unit_ref into unit_id,unit_ref;
+ returning id,game.police_units.unit_ref into unit_id,v_unit_ref;
  insert into game.police_personnel(personnel_ref,person_id,service_number,current_unit_id,employment_status,joined_on)
  values('KNG-SEARCH-OFFICER-'||substr(gen_random_uuid()::text,1,8),person_id,'KNG-SEARCH-SVC-'||substr(gen_random_uuid()::text,1,8),unit_id,'active',current_date)
- returning id,personnel_ref into officer_id,officer_ref;
+ returning id,game.police_personnel.personnel_ref into officer_id,v_officer_ref;
  insert into game.duty_rosters(roster_ref,unit_id,shift_name,starts_at,ends_at,status)
  values('KNG-SEARCH-ROSTER-'||substr(gen_random_uuid()::text,1,8),unit_id,'Search test shift',c-interval '1 hour',c+interval '8 hours','active') returning id into roster_id;
  insert into game.patrol_schedules(schedule_ref,unit_id,beat_id,roster_id,starts_at,ends_at,status)
  values('KNG-SEARCH-SCH-'||substr(gen_random_uuid()::text,1,8),unit_id,b.id,roster_id,c-interval '30 minutes',c+interval '7 hours','scheduled');
- perform game.start_unit_patrol(unit_ref,'Begin patrol intelligence search test');
- start_result:=game.execute_text_command('start patrol activity '||unit_ref||' by '||officer_ref||' at '||access_ref||' type foot_patrol because search regression','search-start-'||gen_random_uuid()::text,null,officer_id);
+ perform game.start_unit_patrol(v_unit_ref,'Begin patrol intelligence search test');
+ start_result:=game.execute_text_command('start patrol activity '||v_unit_ref||' by '||v_officer_ref||' at '||access_ref||' type foot_patrol because search regression','search-start-'||gen_random_uuid()::text,null,officer_id);
  if coalesce((start_result->>'ok')::boolean,false)=false then raise exception 'Start activity failed: %',start_result; end if;
  obs1:=game.execute_text_command('record patrol observation '||(start_result->>'session_ref')||' category traffic at '||access_ref||' because Repeated obstruction of the pedestrian crossing','search-obs1-'||gen_random_uuid()::text,null,officer_id);
  obs2:=game.execute_text_command('record patrol observation '||(start_result->>'session_ref')||' category traffic at '||access_ref||' because Another vehicle obstructed the pedestrian crossing','search-obs2-'||gen_random_uuid()::text,null,officer_id);
