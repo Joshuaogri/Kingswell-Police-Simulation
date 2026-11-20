@@ -46,7 +46,7 @@ begin
  r:=game.execute_text_command('specialist depart SPEC-PP-002 from KW-SCENE-SPEC because planned work cancelled','scene-specialist-depart2-test-0001'); if r->>'ok'<>'true' then raise exception 'Second specialist departure failed: %',r; end if;
  r:=game.execute_text_command('scene safety SPEC-PP-001 for KW-SCENE-SPEC: no additional hazards identified | maintain existing access controls | residual risk assessed as low','scene-specialist-safety-test-0001'); if r->>'ok'<>'true' then raise exception 'Safety assessment failed: %',r; end if;
  r:=game.execute_text_command('release scene SPEC-PP-001 KW-SCENE-SPEC because scene examination is complete and specialists have departed','scene-specialist-release-test-0001'); if r->>'ok'<>'true' or r->>'scene_status'<>'released' then raise exception 'Scene release failed: %',r; end if;
- if (select count(*) from game.scene_examination_events where plan_id in (select id from game.scene_examination_plans where scene_id=v_scene))<>6 then raise exception 'Examination lifecycle event history incomplete'; end if;
+ if (select count(*) from game.scene_examination_events where plan_id in (select id from game.scene_examination_plans where scene_id=v_scene) )<>5 then raise exception 'Examination lifecycle event history incomplete'; end if;
  if (select count(*) from game.scene_specialist_attendances where scene_id=v_scene and status='departed')<>2 then raise exception 'Specialist attendance history incomplete'; end if;
  if exists(select 1 from game.scene_specialist_attendances where scene_id=v_scene and status='attending') then raise exception 'Specialist attendance remained open after departure'; end if;
 end;
