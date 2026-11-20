@@ -1092,3 +1092,10 @@ Classification: **exact canonical SQL match**. Retain both records unchanged.
 The remote and repository command interpreters match exactly. Their command-executor bodies also match after removing one unused remote local-variable declaration (`v_case_id uuid`). Both expand the case-task event-type constraint to include submission, acceptance and return events, and register the same task-submission commands in help and execution.
 
 Classification: **equivalent SQL; one unused variable in the remote function declaration**. No behavioural difference was identified. Retain both records unchanged.
+
+
+## 58. Content-led review of version 20261120140546 — single final task-submission review
+
+The remote and GitHub migration files are byte-for-byte identical. Both create the unique index `case_task_submission_reviews_one_final_idx` on `submission_id`, enforcing one final review per submission.
+
+Classification: **exact source-file match**. Retain both records unchanged.
