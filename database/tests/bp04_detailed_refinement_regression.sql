@@ -7,7 +7,7 @@ declare
  v_property_ref text;
  v_business_number text;
  v_json jsonb;
- v_count bigint;
+ v_property_id uuid;
 begin
  if exists(
   select 1 from game.properties p
@@ -88,11 +88,11 @@ begin
  then raise exception 'BP04: business dossier missing refined sections'; end if;
 
  -- Confirm the event-location trigger rejects a building from another property.
- select id into v_count from game.properties order by property_ref limit 1;
+ select id into v_property_id from game.properties order by property_ref limit 1;
  begin
   insert into game.property_asset_events(property_id,building_id,event_type,subject,description)
-  select v_count,b.id,'inspection','BP04 regression validation','Must be rejected'
-  from game.buildings b where b.property_id<>v_count order by b.building_ref limit 1;
+  select v_property_id,b.id,'inspection','BP04 regression validation','Must be rejected'
+  from game.buildings b where b.property_id<>v_property_id order by b.building_ref limit 1;
   raise exception 'BP04: invalid cross-property event unexpectedly inserted';
  exception when others then
   if sqlerrm='BP04: invalid cross-property event unexpectedly inserted' then raise; end if;
