@@ -351,7 +351,13 @@ The population seed uses the existing BP-04 property, building, unit and address
 
 The fictional clock remains uninitialised. Population and household seeding is static setup data and must not advance fictional time. Daily routines and actual activity events remain controlled by the later runtime scheduler and explicit time-advance commands.
 
-**Implementation/test state:** Exact unit allocation and capacity enforcement are installed. The 100,000-person canonical-identity scale test, the rollback-only dwelling/household integration regression and the original BP-03 individual-life regression pass. The complete linked-record 100,000-person end-to-end load test was not confirmed because the database execution window timed out during that larger test; the successful scale test covers canonical identities, not the entire linked population. The full population has deliberately not been left in the live database because the requested seed test was to be rolled back; no persistent resident or household population is present. BP-03's live population-seed acceptance remains open until the complete linked-record test passes and the actual 100,000-person seed is intentionally committed.
+**Live implementation and seed state (2026-11-20):** BP-03's 100,000-person permanent-resident population is now live in Supabase. All 100,000 people have unique canonical identities, complete core identity/personality/behaviour profiles, one current primary household membership, one exact dwelling-unit residential address, a birth life-event record and seven weekly sleep routines. The 24,512 existing dwellings are fully allocated within their recorded capacity: 22,560 four-person households and 1,952 five-person households. There are 23,447 family households and 1,065 shared households. The population has 309,760 current relationship records.
+
+The existing BP-04 business workforce estimate is now represented by 43,412 actual employee NPCs linked through the existing organisation_personnel table, with 43,412 employment-start life events and 217,060 weekday work routines. Population categories include 100,000 permanent residents, 35,880 commercial workers, 7,532 transport workers, 41,249 students, 3,197 retired people and 18,742 unemployed working-age people. These categories overlap and must not be summed to derive unique population. The live city population summary returns 100,000 unique people and 24,512 current households.
+
+Live acceptance checks confirm 100,000 unique person references, complete core person profiles, exact address/household unit agreement, zero dwelling-capacity mismatches, exact business workforce headcounts, one current job per employed person, five weekday work routines per employee, 100,000 birth events, seven sleep routines for every resident and no missing primary household/address/population membership. The original 100,000-person linked-record load timeout was resolved by controlled unit batches and smaller employment batches. A 5,000-job batch initially exceeded the statement timeout; the batch was reduced to 1,000 jobs and the remaining workforce loaded successfully. All 43,412 employment links and 217,060 work routines are now present.
+
+The fictional clock remains uninitialised and no actual activity events have been generated. This is intentional: static NPC lives and weekly routines are present, while actual movement/activity is executed only by BP-35/BP-37 when the player explicitly advances fictional time. No duplicate people, properties, buildings, units or addresses were created.
 
 ### Implementation and acceptance conditions
 BP-03 is complete when all of the following are verified:
@@ -370,10 +376,10 @@ BP-03 is complete when all of the following are verified:
 12. All new tables are private, RLS-enabled and unavailable to anon/authenticated roles.
 13. Rollback-only tests cover people, households, categories, relationships, routines, life events, promotion triggers, clock guards and distinct population summaries.
 14. Tests leave no persistent person, household, case, incident, dispatch call, activity or promotion fixtures and do not initialise or advance the fictional clock.
-15. Full 100,000-person seeding is completed only after BP-04 residential capacity is sufficient and the population/address allocation tests pass.
+15. The complete 100,000-person seed is live; every person has a unique identity, exact household and residential-unit links, a permanent-resident city membership, a birth record and weekly routines; all dwelling capacities and business workforce totals reconcile exactly.
 
 **Design decision:** Persistent identities for everyone, with variable simulation processing intensity.  
-**Implementation status:** Individual-life foundation implemented and rollback-tested. BP-04 residential capacity is now available; the 100,000-person household/address seed is the next BP-03 completion task. Routine execution remains dependent on the BP-35 runtime scheduler.
+**Implementation status:** BP-03 static population and individual-life foundation is implemented, live-seeded and verified at the full 100,000-person scale. Routine execution and actual activity generation remain dependent on the BP-35/BP-37 runtime scheduler; the fictional clock remains uninitialised.
 
 ## BP-04 — Buildings, Properties, Businesses and Organisations
 
