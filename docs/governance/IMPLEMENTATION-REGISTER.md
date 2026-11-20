@@ -17,7 +17,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Runtime foundation implemented | Private `game` schema; 42 tables, 80 foreign keys and 147 indexes; six migrations applied; one paused, unconfigured clock row; no fictional world/personnel data seeded |
+| Database schema | Runtime foundation implemented | Private `game` schema; 42 tables, 80 foreign keys and 147 indexes; seven migrations applied; one paused, unconfigured clock row; no fictional world/personnel data seeded |
 | Application/gameplay code | In progress | Database-backed text command interpreter, controlled clock and initial emergency-call/incident intake implemented; full domain handlers remain outstanding |
 | Runtime regression tests | Implemented; transaction smoke-tested | `database/tests/runtime_foundation.sql` and `database/tests/text_interpreter_dispatch.sql` cover command parsing, idempotency, clock guards, emergency-call/incident creation and event history; test data rolls back |
 
@@ -59,10 +59,10 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-32 | Training and Development | Approved; design only; no training or competence software implemented |
 | BP-33 | Human Resources | Approved; design only; no HR or workforce software implemented |
 | BP-34 | Finance and Procurement | Approved; design only; no finance or procurement software implemented |
-| BP-35 | Simulation Engine | Approved; initial command intake, idempotency, state coordination and event emission implemented; parser, domain handlers, scheduler and NPC processing outstanding |
+| BP-35 | Simulation Engine | Approved; typed command intake, limited text interpreter, idempotency and transactional event emission implemented; broader domain handlers, scheduler and NPC processing outstanding |
 | BP-36 | Relationships and Social Context | Approved; design only; no relationship or social-context system implemented |
 | BP-37 | Time and Scheduling | Approved; paused singleton clock, explicit initialization/advancement and clock history implemented; fictional calendar configuration and scheduler outstanding |
-| BP-38 | Records and Databases | Approved; 42-table private schema and six migrations implemented; command and clock-history records added; full domain coverage incomplete |
+| BP-38 | Records and Databases | Approved; 42-table private schema and seven migrations implemented; command and clock-history records added; full domain coverage incomplete |
 | BP-39 | Persistence and Recovery | Approved; design only; no backup or restore process implemented |
 | BP-40 | Interface | Approved; ChatGPT remains the intended text interface; limited explicit text command grammar exists; live ChatGPT-to-runtime connection remains outstanding |
 | BP-41 | Notifications and Reporting | Approved; design only; no notification or reporting service implemented |
@@ -106,8 +106,13 @@ The first live Supabase database foundation is implemented in the private `game`
 Migration files in `database/migrations/`:
 - `20261119220423_kingswell_core_game_database.sql`
 - `20261119220538_index_game_foreign_keys.sql`
+- `20261120010000_runtime_foundation_commands_clock.sql`
+- `20261120020000_harden_runtime_command_validation.sql`
+- `20261120030000_text_interpreter_dispatch_intake.sql`
+- `20261120040000_fix_dispatch_call_event_type.sql`
+- `20261120050000_validate_optional_dispatch_call_fields.sql`
 
-Live Supabase migration history contains both migrations. Structural verification returned 40 tables, 78 foreign keys, 141 indexes and zero tables without RLS.
+The original two migrations established the base schema. The current live schema has 42 tables, 80 foreign keys, 147 indexes and RLS enabled on all 42 tables. Seven migrations are recorded in Supabase.
 
 Update this register when work actually changes. Do not mark design as implemented or implemented as verified without evidence.
 
@@ -116,11 +121,11 @@ Update this register when work actually changes. Do not mark design as implement
 
 The live repository, approved BP-01 to BP-44 baseline, migration history and Supabase project were inspected. The detailed findings are recorded in `docs/audits/2026-11-20-database-to-blueprint-audit.md`.
 
-### Verified live state
+### Audit-time baseline (before runtime additions)
 
-- Supabase project is `ACTIVE_HEALTHY`, PostgreSQL 17.12, region `eu-west-1`.
-- Private `game` schema: 40 base tables, 78 foreign keys, 141 indexes.
-- RLS is enabled on all 40 tables; zero RLS policies exist. There are zero public-schema tables, three invoker-rights runtime functions in `game`, and zero deployed Edge Functions.
+- Supabase project was `ACTIVE_HEALTHY`, PostgreSQL 17.12, region `eu-west-1`.
+- Private `game` schema at that audit point: 40 base tables, 78 foreign keys, 141 indexes.
+- RLS was enabled on all 40 base tables. This historical snapshot predates the command, clock-history and dispatch runtime migrations.
 - Both committed migrations are present in live migration history.
 - The singleton `simulation_state` row exists with the clock unset and paused. Command, clock-history and all fictional world/personnel/incident/case tables remain empty; no fictional world or police data has been seeded.
 - A prior temporary end-to-end relationship smoke test passed and rolled back cleanly; this is not an automated test suite.
@@ -146,7 +151,7 @@ The 42-table schema is a useful relational foundation, not a completed implement
 4. Add automated tests for the complete workflow, including time control, authority checks, event history and persistence.
 5. Expand the schema only where the approved divisions require missing records or behaviours; add migrations to GitHub `main` and apply the same migrations to Supabase.
 
-**Current verified completion:** infrastructure, initial relational schema, typed command intake, explicit clock controls, command idempotency, clock audit history and a rolled-back runtime regression test are in place. **The game is not yet playable:** no fictional world/personnel seed data, live ChatGPT-to-runtime connection, full domain command handlers, authenticated player mapping, deployed Edge Function, full automated test pipeline or backup/restore workflow exists.
+**Current verified completion:** infrastructure, initial relational schema, typed command intake, explicit clock controls, command idempotency, clock audit history, limited text interpretation and initial emergency-call/incident creation are implemented and transaction-tested. **The game is not yet fully playable:** no fictional world/personnel seed data, live ChatGPT-to-runtime connection, full dispatch/deployment workflow, full domain command handlers, authenticated player mapping, deployed Edge Function, complete automated test pipeline or backup/restore workflow exists.
 
 
 ## Runtime foundation — 2026-11-20
@@ -174,4 +179,4 @@ Implemented a limited explicit text grammar through `game.interpret_text_command
 
 Supported forms include `help`, `status`, `advance time N minutes`, and `911/call/report/radio [report] at [location]`. The parser does not turn questions into actions.
 
-Regression test: `database/tests/text_interpreter_dispatch.sql`; passed in a transaction with rollback. Live verification: 42 tables, 80 foreign keys, 147 indexes, all 42 tables with RLS, six migration records, three runtime functions; zero command, call, incident or dispatch-event records; fictional clock still unset.
+Regression test: `database/tests/text_interpreter_dispatch.sql`; passed in a transaction with rollback. Live verification: 42 tables, 80 foreign keys, 147 indexes, all 42 tables with RLS, seven migration records, three runtime functions; zero command, call, incident or dispatch-event records; fictional clock still unset.
