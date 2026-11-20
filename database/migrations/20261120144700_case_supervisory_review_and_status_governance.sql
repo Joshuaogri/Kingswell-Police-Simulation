@@ -50,7 +50,7 @@ begin
  if not exists(select 1 from game.case_assignments a where a.case_id=v_case.id and a.personnel_id=p_actor_personnel_id and a.assignment_role='supervisor' and a.status='active' and a.released_at is null) then raise exception 'An active supervisor assignment to this case is required'; end if;
  v_ref:='KSR-'||upper(substr(replace(gen_random_uuid()::text,'-',''),1,12));
  insert into game.case_supervisory_reviews(review_ref,case_id,outcome,review_reason,reviewed_by_personnel_id,reviewed_at_game_time,source_command_id)
- values(v_ref,v_case.id,p_outcome,btrim(p_reason),p_actor_personnel_id,p_source_command_id,v_now) returning id into v_id;
+ values(v_ref,v_case.id,p_outcome,btrim(p_reason),p_actor_personnel_id,v_now,p_source_command_id) returning id into v_id;
  return jsonb_build_object('ok',true,'review_ref',v_ref,'case_ref',v_case.case_ref,'outcome',p_outcome,'reason',btrim(p_reason),'reviewed_at_game_time',v_now);
 end $$;
 
@@ -78,7 +78,7 @@ begin
  insert into game.case_status_events(event_ref,case_id,previous_status,new_status,reason,changed_by_personnel_id,changed_at_game_time,source_command_id)
  values(v_ref,v_case.id,v_case.status,p_new_status,btrim(p_reason),p_actor_personnel_id,v_now,p_source_command_id);
  update game.cases set status=p_new_status,closed_at=case when p_new_status='closed' then v_now else null end,updated_at=now() where id=v_case.id;
- return jsonb_build_object('ok',true,'case_ref',v_case.case_ref,'previous_status',v_case.status,'status',p_new_status,'event_ref',v_ref,'reason',btrim(p_reason),'changed_at_game_time',v_now);
+ return jsonb_build_object('ok',true,'case_ref',v_case.case_ref,'previous_status',v_case.status,'new_status',p_new_status,'event_ref',v_ref,'reason',btrim(p_reason),'changed_at_game_time',v_now);
 end $$;
 
 create or replace function game.get_case_governance_history(p_case_ref text)
