@@ -91,15 +91,16 @@ begin
  if exists(select 1 from game.road_segments s cross join lateral jsonb_array_elements(s.geometry_local_m) p
   where s.city_id=v_city and ((p.value->>0)::integer<0 or (p.value->>0)::integer>20000 or (p.value->>1)::integer<0 or (p.value->>1)::integer>16000)) then
   raise exception 'A road geometry vertex falls outside the city grid';end if;
- with vertices as (
-  select s.id,(p.value->>0)::numeric x,(p.value->>1)::numeric y,
-   lag((p.value->>0)::numeric) over(partition by s.id order by p.ord) px,
-   lag((p.value->>1)::numeric) over(partition by s.id order by p.ord) py
-  from game.road_segments s cross join lateral jsonb_array_elements(s.geometry_local_m) with ordinality p(value,ord)
-  where s.city_id=v_city
- ), measured as(select id,sum(sqrt((x-px)^2+(y-py)^2)) metres from vertices where px is not null group by id)
- if exists(select 1 from measured m join game.road_segments s on s.id=m.id where abs(round(m.metres)::integer-s.segment_length_m)>1) then
-  raise exception 'Stored road-segment length does not reconcile to its line geometry';end if;
+ if exists(
+  with vertices as (
+   select s.id,(p.value->>0)::numeric x,(p.value->>1)::numeric y,
+    lag((p.value->>0)::numeric) over(partition by s.id order by p.ord) px,
+    lag((p.value->>1)::numeric) over(partition by s.id order by p.ord) py
+   from game.road_segments s cross join lateral jsonb_array_elements(s.geometry_local_m) with ordinality p(value,ord)
+   where s.city_id=v_city
+  ), measured as(select id,sum(sqrt((x-px)^2+(y-py)^2)) metres from vertices where px is not null group by id)
+  select 1 from measured m join game.road_segments s on s.id=m.id where abs(round(m.metres)::integer-s.segment_length_m)>1
+ ) then raise exception 'Stored road-segment length does not reconcile to its line geometry';end if;
 
  select current_game_time into v_clock from game.simulation_state where id=1;
  if v_clock is not null then raise exception 'Geography regression must not initialise the fictional clock';end if;
