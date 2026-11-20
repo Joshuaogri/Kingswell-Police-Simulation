@@ -783,3 +783,10 @@ The remote migration replaces `game.interpret_arrest_custody_command(text)` with
 The consolidated GitHub parser is already ahead of the remote 20261120145037 version: its transport command also parses a duration field, which belongs to later transport-duration work. Thus the repository does not preserve the exact intermediate parser revision at 145037; it carries a later parser state earlier in its migration sequence.
 
 Classification: **intentional forward consolidation; exact historical parser revision omitted, later parser implementation retained earlier**. The following duration-related migrations must be checked to establish that the consolidated parser and live final parser agree. Do not backdate or replace the consolidated definition during this audit.
+
+
+## 33. Content-led review of version 20261120131811
+
+The remote migration `link_witness_statements_to_interviews` and the GitHub file are canonically identical after normalising comments, whitespace and declaration formatting. The complete statement includes the witness-statement/interview link and the corresponding command integration; no substantive SQL difference was found.
+
+Classification: **exact canonical SQL match**. Retain both records unchanged.
