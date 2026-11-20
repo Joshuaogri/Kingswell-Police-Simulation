@@ -9,6 +9,12 @@ declare
  v_route_status text;
  v_route_distance integer;
 begin
+ for v_person in select id from game.neighbourhoods loop
+  v_result:=game.get_neighbourhood_property_map((select code from game.neighbourhoods where id=v_person));
+  if v_result is null or jsonb_array_length(v_result->'properties')<>(select count(*) from game.properties where neighbourhood_id=v_person) then
+   raise exception 'Neighbourhood map coverage failed for %',v_person;
+  end if;
+ end loop;
  if (select count(*) from game.properties where city_id=(select id from game.cities where code='KNG'))<>656 then
   raise exception 'Kingswell property count must be 656';
  end if;
@@ -96,6 +102,12 @@ begin
  end if;
  if (select count(*) from game.list_business_directory('logistics_warehousing','KLG',null,500))<>140 then
   raise exception 'Business directory sector/district filter returned the wrong result count';
+ end if;
+ if (select count(*) from game.list_business_directory('neighbourhood_services',null,null,500))<>352 then
+  raise exception 'Neighbourhood services directory does not return all local businesses';
+ end if;
+ if (select count(*) from game.list_business_directory(null,null,null,500))<>500 then
+  raise exception 'Business directory maximum result window is incorrect';
  end if;
  if game.get_business_record('AF-BIZ-000281')->'business'->>'business_number'<>'AF-BIZ-000281' then
   raise exception 'Business record query failed';
