@@ -1,0 +1,3 @@
+-- Intentional no-op migration marker.
+-- The first migration invocation registered this version without applying schema changes.
+-- The actual BP-02 schema and seed are in 20261120110252_kingswell_bp02_geographic_foundation.sql.
