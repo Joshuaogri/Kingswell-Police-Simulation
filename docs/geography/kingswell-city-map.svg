@@ -47,9 +47,9 @@
 <g class="minor"><path d="M170 350H390 M170 430H390 M170 510H390 M170 590H390 M520 390H790 M520 470H790 M520 550H790 M930 350H1080 M930 430H1080 M930 510H1080 M930 590H1080 M520 800H790 M520 880H790"/></g>
 <g class="minorEdge"><path d="M170 350H390 M170 430H390 M170 510H390 M170 590H390 M520 390H790 M520 470H790 M520 550H790 M930 350H1080 M930 430H1080 M930 510H1080 M930 590H1080 M520 800H790 M520 880H790"/></g>
 <!-- explicit river bridge crossings; bridge strokes are shown over the river -->
-<g fill="none" stroke="#fff" stroke-width="13" stroke-linecap="square"><path d="M1080 315H1205 M1080 560H1205 M1080 800H1205"/></g>
+<g fill="none" stroke="#fff" stroke-width="13" stroke-linecap="square"><path d="M1080 405H1205 M1080 637H1205 M1080 852H1205"/></g>
 <g fill="none" stroke="#59645d" stroke-width="2"><path d="M1080 315H1205 M1080 560H1205 M1080 800H1205"/></g>
-<g font-family="sans-serif" font-size="12" font-weight="700" fill="#244b5a"><text x="1080" y="300">NORTH BRIDGE</text><text x="1080" y="545">RIVERSIDE BRIDGE</text><text x="1080" y="785">HARBOUR BRIDGE</text></g>
+<g font-family="sans-serif" font-size="12" font-weight="700" fill="#244b5a"><text x="1080" y="390">NORTH BRIDGE</text><text x="1080" y="622">RIVERSIDE BRIDGE</text><text x="1080" y="837">HARBOUR BRIDGE</text></g>
 <!-- airport runway and port -->
 <rect x="130" y="800" width="240" height="35" rx="4" fill="#65737a" transform="rotate(-8 250 817)"/><path d="M145 817H355" stroke="#fff" stroke-width="2" stroke-dasharray="12 9"/>
 <g fill="#627c84" stroke="#36545f" stroke-width="2"><rect x="850" y="900" width="110" height="30"/><rect x="975" y="900" width="110" height="30"/><rect x="1100" y="900" width="110" height="30"/></g>
