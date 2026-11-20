@@ -806,3 +806,12 @@ Classification: **bug-fix migration consolidated into the earlier GitHub workflo
 The GitHub file `20261120132000_index_patrol_intelligence_link_foreign_keys.sql` is recorded remotely under version `20261120124058`, with the same migration name `20261120132000_index_patrol_intelligence_link_foreign_keys`. The complete SQL is identical: both define the same two indexes on `actor_personnel_id` and `source_command_id`.
 
 Classification: **exact canonical SQL match with a remote version/timestamp discrepancy**. This is a migration-history mapping issue, not a SQL-content divergence. Preserve both records pending the full chronology reconciliation; do not repair the history now.
+
+
+## 49. Content-led review of version 20261120145200 — arrest case-assignment variable disambiguation
+
+The remote migration replaces `game.execute_arrest_custody_command(...)` again, qualifying the case-assignment and lead checks with `v_case_id` rather than the ambiguous `case_id` identifier. The GitHub file at this version is comment-only and points to the consolidated 20261120144932 workflow migration.
+
+The consolidated GitHub executor already uses `v_case_id` in both checks, matching the corrected remote 145200 logic. The previous remote 145111 version corrected the case/person lookup but left the case-assignment references ambiguous; 145200 completes the correction.
+
+Classification: **second-stage bug fix consolidated into the earlier GitHub workflow source**. The final disambiguated logic is present in the consolidated file, but the intermediate historical fix is not retained as a standalone SQL patch. Preserve the current chronology.
