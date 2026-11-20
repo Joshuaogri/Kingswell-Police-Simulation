@@ -1405,3 +1405,10 @@ A read-only live inventory currently shows:
 The live counts match the remote three-bridge topology. The GitHub loop would attempt to establish 24 west/east pairs and 72 river segments (two approaches plus a bridge for each neighbourhood), rather than the live 3 pairs and 9 river segments. Since three pairs already exist, a clean execution of the repository algorithm would add 42 junctions and 63 river segments beyond the current live inventory.
 
 Classification: **genuine road-network seed/topology divergence with material geographic consequences**. The remote migration's three-bridge network is what is currently present in Supabase. Do not execute the GitHub reconstruction or alter the live road network; recover the applied set-based seed logic into the source before any clean replay.
+
+
+## 89. Content-led review of version 20261120153647 — court case rowtype correction
+
+The remote 153647 migration replaces `game.execute_justice_command(...)` to load `game.cases` into a dedicated `case_row game.cases%rowtype` variable, rather than reusing the `court_cases` row variable. The GitHub 153647 file is comment-only; the same dedicated `case_row` mapping is already present in the consolidated 153604 court bootstrap, whose executor matches the later remote 153802 version.
+
+This confirms the rowtype correction is represented in the repository's earlier consolidated function. The separate `cp.id` docket-access defect described in section 59 remains; this rowtype correction did not resolve those three access subqueries.
