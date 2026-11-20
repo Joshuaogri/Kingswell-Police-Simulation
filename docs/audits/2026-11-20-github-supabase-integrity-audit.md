@@ -1174,3 +1174,12 @@ The remote 155118 migration establishes trial pleas, proceedings, evidence tende
 The repository's 155118 command functions already include the later runtime corrections from remote 155132 and the trial-command help registration from remote 155244. The remote 155132 interpreter/executor changes match the consolidated repository functions after normalising equivalent `search_path` declaration syntax. The 155244 help command list is also already present in the repository's earlier 155118 `execute_text_command` wrapper.
 
 Classification: **trial runtime fixes and help registration consolidated into the earlier GitHub trial foundation**. The final trial command path is present in the repository, but the intermediate historical patches are not retained as separate SQL statements. Preserve the existing source chronology.
+
+
+## 62. Content-led review of version 20261120155709 — verdicts and sentencing
+
+The remote and repository sources define the same three tables (`trial_verdicts`, `trial_sentences`, and `trial_outcome_events)), five indexes, three append-only triggers and four command/read functions. The function bodies match after normalising the equivalent `SET search_path='pg_catalog','game'` versus unquoted declaration style.
+
+The only DDL difference identified is redundant parentheses around the non-custodial and non-fine branches of the sentence-type check constraints. The truth conditions are the same: custodial sentences require positive duration, fine sentences require a positive amount, and other sentence types do not require those fields.
+
+Classification: **same verdict/sentencing schema and runtime behaviour; constraint-parenthesis and declaration-format differences only**. Retain the existing file and remote history.
