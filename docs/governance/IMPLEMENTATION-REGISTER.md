@@ -767,3 +767,18 @@ Operations guide: `docs/operations/SUSPECT-INTERVIEWS.md`.
 **PASS:** `database/tests/kingswell_case_account_comparisons.sql` tests parser/executor, source resolution, idempotency, assessments, evidence links, retrieval, help, append-only protection and unchanged fictional time. Transaction rolls back without persistent fixtures.
 
 Operations guide: `docs/operations/CASE-ACCOUNT-COMPARISONS.md`.
+
+
+## Unified investigative case review dossier — 2026-11-20
+
+**Implemented and rollback-only tested.** Migration: `database/migrations/20261120133851_case_review_dossier_and_player_command.sql`.
+
+- Added read-only `game.get_case_review_dossier(case_ref)` and player command `case review CASE_REF`.
+- Consolidates case metadata, assignment history, leads, lead-entity links, enquiries, tasks, witness and suspect interviews, chronological turns, witness statements, suspect-turn assessments, account comparisons and assessments, evidence register and transfer history, forensic requests, examinations, findings, report versions, and linked incidents.
+- Dossier is a live projection over existing authoritative records; it creates no duplicate evidence, statements or investigative conclusions.
+- Does not infer credibility, deception, guilt, identify a culprit or auto-close leads. Existing case play secrecy rules remain unchanged.
+- Read-only, idempotent command; does not advance fictional time. Unknown case references are rejected. Private schema/service-role-only execution.
+
+**PASS:** `database/tests/kingswell_case_review_dossier.sql` verifies parser/executor, complete empty-case section shape, idempotent replay, missing-case rejection and help registration. Transaction rolls back without persistent fixtures.
+
+Operations guide: `docs/operations/CASE-REVIEW-DOSSIER.md`.
