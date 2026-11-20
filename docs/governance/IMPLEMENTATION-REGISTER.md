@@ -699,3 +699,16 @@ Live database verification: 90 tables, 281 foreign keys, 453 indexes, 81 migrati
 **PASS:** `database/tests/kingswell_case_investigative_leads.sql` passed through the actual parser/executor and verified creation, assignment, enquiry, assessment, list retrieval, idempotency, append-only protections, help and unchanged fictional time. Transaction ended in ROLLBACK.
 
 Documentation: `docs/operations/CASE-INVESTIGATIVE-LEADS.md` and updated `docs/operations/PATROL-COMMAND-INTERFACE.md`.
+
+
+## Typed links from investigative leads to existing entities — 2026-11-20
+
+**Implemented and rollback-only tested.** Migration: `database/migrations/20261120131153_case_lead_entity_links.sql`.
+
+- Added append-only `game.case_lead_entity_links` with a strict one-entity-type constraint and real foreign keys to existing persons, organisations, properties, evidence items and incidents.
+- Player commands: `case lead link LEAD_REF entity TYPE ENTITY_REF because "REASON" by ACTOR_REF` and `case lead links LEAD_REF`.
+- Links preserve reason, officer, command and fictional timestamp. Evidence links cannot cross-link evidence already attached to a different case.
+- Duplicate source-to-lead links are recognised without creating duplicates. Linking does not modify source entities or advance fictional time.
+- RLS, private schema, service-role-only access and append-only enforcement are retained.
+
+**PASS:** `database/tests/kingswell_case_lead_entity_links.sql` verifies typed person linking through parser/executor, retrieval, duplicate protection, append-only enforcement and unchanged fictional time in a rolled-back transaction.
