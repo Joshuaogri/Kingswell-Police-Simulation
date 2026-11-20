@@ -17,7 +17,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Runtime foundation implemented | Private `game` schema; 51 tables, 113 foreign keys and 195 indexes; 22 migrations applied; one paused, unconfigured clock row; RLS enabled on all 51 tables; no fictional world/personnel data seeded |
+| Database schema | Runtime foundation implemented | Private `game` schema; 55 tables, 133 foreign keys and 223 indexes; 26 migrations applied; one paused, unconfigured clock row; RLS enabled on all 55 tables; no fictional world/personnel data seeded |
 | Application/gameplay code | In progress | Database-backed text command interpreter, controlled clock, emergency-call/dispatch/arrival, scene-control, field-report and resource-request workflows implemented; full domain handlers remain outstanding |
 | Runtime regression tests | Implemented; transaction smoke-tested | `database/tests/runtime_foundation.sql`, `database/tests/text_interpreter_dispatch.sql`, `database/tests/unit_dispatch.sql`, `database/tests/dispatch_acknowledgement_arrival.sql` and `database/tests/scene_control_field_reports.sql` cover the implemented runtime and operational slices; all test data rolls back |
 
@@ -46,9 +46,9 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-19 | Interviews and Interrogations | Approved; legal safeguards and specialist procedures to refine |
 | BP-20 | Surveillance | Approved; statutory definitions, authorisations and oversight to refine |
 | BP-21 | Intelligence | Approved; statutory powers, source handling and governance to refine |
-| BP-22 | Crime Scenes | Approved; initial scene designation/control, manager transfer, activity/access logs, field reports, safety assessment history, manager-controlled versioned boundaries, resource request responses, formal release and reopening with lifecycle history implemented; specialist hazard response, detailed zones, multi-agency attendance, examination planning, evidence handover and review remain outstanding |
+| BP-22 | Crime Scenes | Approved; scene designation/control, manager transfer, activity/access/safety/boundary histories, resource request responses, release/reopening, qualified specialist attendance, manager-authorised examination plans, examiner start/completion/cancellation and examination result records implemented; detailed zones, multi-agency command, specialist hazard response, contamination, evidence handover and review remain outstanding |
 | BP-23 | Evidence Management | Approved; evidential rules, retention and professional standards to refine |
-| BP-24 | Forensics | Approved; design only; no forensic software or service implemented |
+| BP-24 | Forensics | Approved; initial scene-examination workflow uses current matching personnel qualifications and records examination plans, observations, findings and limitations; forensic service/laboratory capability, validated methods, triage, technical review and formal reports remain unimplemented |
 | BP-25 | Arrests and Warrants | Approved; design only; no arrest or warrant software implemented |
 | BP-26 | Custody Management | Approved; design only; no custody software or facilities implemented |
 | BP-27 | Legal Processes | Approved; design only; no legal-process software implemented |
@@ -59,15 +59,15 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-32 | Training and Development | Approved; design only; no training or competence software implemented |
 | BP-33 | Human Resources | Approved; design only; no HR or workforce software implemented |
 | BP-34 | Finance and Procurement | Approved; design only; no finance or procurement software implemented |
-| BP-35 | Simulation Engine | Approved; typed command intake, limited text interpreter, idempotency, roster-validated dispatch, individual acknowledgement/arrival, scene control, safety, boundary, resource response and scene lifecycle handlers with transactional event processing implemented; broader domain handlers, scheduler and NPC processing outstanding |
+| BP-35 | Simulation Engine | Approved; typed command intake, limited text interpreter, idempotency, roster-validated dispatch, individual acknowledgement/arrival, scene control, safety, boundary, resource response, specialist attendance and examination lifecycle handlers with transactional event processing implemented; broader domain handlers, scheduler and NPC processing outstanding |
 | BP-36 | Relationships and Social Context | Approved; design only; no relationship or social-context system implemented |
 | BP-37 | Time and Scheduling | Approved; paused singleton clock, explicit initialization/advancement and clock history implemented; fictional calendar configuration and scheduler outstanding |
-| BP-38 | Records and Databases | Approved; 51-table private schema and 22 migrations implemented; command, clock-history, dispatch, scene, access, field-report and resource-request records integrated; full domain coverage incomplete |
+| BP-38 | Records and Databases | Approved; 55-table private schema and 26 migrations implemented; command, clock-history, dispatch, scene, access, field-report and resource-request records integrated; full domain coverage incomplete |
 | BP-39 | Persistence and Recovery | Approved; design only; no backup or restore process implemented |
 | BP-40 | Interface | Approved; ChatGPT remains the intended text interface; limited explicit text command grammar exists; live ChatGPT-to-runtime connection remains outstanding |
 | BP-41 | Notifications and Reporting | Approved; design only; no notification or reporting service implemented |
-| BP-42 | Security and Permissions | Approved; RLS enabled on all 51 tables; private schema remains unexposed; player authentication and fictional authority enforcement outstanding |
-| BP-43 | Testing and Quality Assurance | Approved; seven runtime, dispatch, acknowledgement/arrival, scene/field, safety/boundary and resource/lifecycle SQL regression scripts passed inside rolled-back transactions; CI and broader domain tests outstanding |
+| BP-42 | Security and Permissions | Approved; RLS enabled on all 55 tables; private schema remains unexposed; player authentication and fictional authority enforcement outstanding |
+| BP-43 | Testing and Quality Assurance | Approved; eight runtime, dispatch, acknowledgement/arrival, scene/field, safety/boundary, resource/lifecycle and specialist/examination SQL regression scripts passed inside rolled-back transactions; CI and broader domain tests outstanding |
 | BP-44 | Configuration and Expansion | Approved; design only; no configuration or expansion framework implemented |
 
 ## Delivery stages
@@ -124,7 +124,7 @@ Migration files in `database/migrations/`:
 - `20261120100309_enable_rls_for_scene_safety_and_boundaries.sql`
 - `20261120100311_index_scene_safety_and_boundary_foreign_keys.sql`
 
-The original two migrations established the base schema. The current live schema has 51 tables, 113 foreign keys, 195 indexes and RLS enabled on all 51 tables. Twenty-two migrations are recorded in Supabase; four runtime functions are present. The latest advisor run found no unindexed foreign keys. Unused-index notices remain expected while the database is empty.
+The original two migrations established the base schema. The current live schema has 55 tables, 133 foreign keys, 223 indexes and RLS enabled on all 55 tables. Twenty-six migrations are recorded in Supabase; four runtime functions are present. The latest advisor run found no unindexed foreign keys. Unused-index notices remain expected while the database is empty.
 
 Update this register when work actually changes. Do not mark design as implemented or implemented as verified without evidence.
 
@@ -153,7 +153,7 @@ The live repository, approved BP-01 to BP-44 baseline, migration history and Sup
 
 ### Blueprint coverage assessment
 
-The 42-table schema is a useful relational foundation, not a completed implementation of the 44 divisions. Coverage is partial across BP-02 to BP-18, BP-23, BP-32 to BP-38 and BP-42 to BP-43. BP-19 to BP-21, BP-24 to BP-31, BP-34, BP-39, BP-41 and BP-44 have no substantive dedicated implementation yet; BP-22 now has an initial operational slice, not full scene lifecycle coverage. The detailed division-by-division mapping and gaps are in the audit report.
+The current relational schema is a useful foundation, not a completed implementation of the 44 divisions. Coverage is partial across BP-02 to BP-18, BP-23, BP-32 to BP-38 and BP-42 to BP-43. BP-19 to BP-21, BP-24 to BP-31, BP-34, BP-39, BP-41 and BP-44 have no substantive dedicated implementation yet; BP-22 now has an operational scene and examination slice, not full scene lifecycle coverage. The detailed division-by-division mapping and gaps are in the audit report.
 
 ### Immediate build sequence
 
@@ -191,7 +191,7 @@ Implemented a limited explicit text grammar through `game.interpret_text_command
 
 Supported forms include `help`, `status`, `advance time N minutes`, `911/call/report/radio [report] at [location]`, `dispatch UNIT_REF to INCIDENT_REF`, `acknowledge PERSONNEL_REF for INCIDENT_REF`, `arrive PERSONNEL_REF at INCIDENT_REF`, `establish scene SCENE_REF at INCIDENT_REF by PERSONNEL_REF because REASON`, `take command PERSONNEL_REF of SCENE_REF`, `scene update PERSONNEL_REF for SCENE_REF: TEXT`, `field report PERSONNEL_REF for INCIDENT_REF [at SCENE_REF]: TEXT`, `request resource PERSONNEL_REF for SCENE_REF: RESOURCE_TYPE | REASON`, `scene entry PERSONNEL_REF into SCENE_REF for PURPOSE` and `scene exit PERSONNEL_REF from SCENE_REF for PURPOSE`, `scene safety PERSONNEL_REF for SCENE_REF: HAZARDS | CONTROLS | RESIDUAL RISK` and `set boundary PERSONNEL_REF for SCENE_REF: DESCRIPTION | REASON`, `resource approve|decline|fulfil|cancel PERSONNEL_REF REQUEST_REF: NOTES`, `release scene PERSONNEL_REF SCENE_REF because REASON` and `reopen scene PERSONNEL_REF SCENE_REF because REASON`. The parser does not turn questions into actions.
 
-Regression tests: `database/tests/runtime_foundation.sql`, `database/tests/text_interpreter_dispatch.sql`, `database/tests/unit_dispatch.sql`, `database/tests/dispatch_acknowledgement_arrival.sql`, `database/tests/scene_control_field_reports.sql` and `database/tests/scene_safety_and_boundaries.sql`, and `database/tests/scene_resource_lifecycle.sql`; all seven passed in transactions with rollback. Live verification: 51 tables, 113 foreign keys, 195 indexes, all 51 tables with RLS, 22 migration records and four runtime functions. All regression fixtures rolled back.
+Regression tests: `database/tests/runtime_foundation.sql`, `database/tests/text_interpreter_dispatch.sql`, `database/tests/unit_dispatch.sql`, `database/tests/dispatch_acknowledgement_arrival.sql`, `database/tests/scene_control_field_reports.sql`, `database/tests/scene_safety_and_boundaries.sql`, `database/tests/scene_resource_lifecycle.sql` and `database/tests/scene_specialist_examination.sql`; all eight passed in transactions with rollback. Live verification: 55 tables, 133 foreign keys, 223 indexes, all 55 tables with RLS, 26 migration records and four runtime functions. All regression fixtures rolled back.
 
 
 ## Roster-validated unit dispatch — 2026-11-20
@@ -224,12 +224,12 @@ Implemented BP-12/BP-22 initial operational slice:
 - Resource requests record type, quantity, priority and reason, and remain requested until a later response workflow exists. They are not automatically approved or deployed.
 - All five new tables have RLS enabled in the private `game` schema. No test data persists.
 
-Six SQL regression suites passed, including `database/tests/scene_control_field_reports.sql` and `database/tests/scene_safety_and_boundaries.sql`. The performance advisor reports no unindexed foreign keys; unused-index notices are expected because the database contains no persistent workload data. Remaining BP-22 work includes safety and hazard assessments, boundaries/zones, multi-agency attendance, specialist examination coordination, formal material/evidence handover, contamination records, release/reopening and review. Remaining BP-12 work includes accountable ownership transfer, referrals, full incident progression and closure.
+Eight SQL regression suites pass, including `database/tests/scene_control_field_reports.sql`, `database/tests/scene_safety_and_boundaries.sql`, `database/tests/scene_resource_lifecycle.sql` and `database/tests/scene_specialist_examination.sql`. The performance advisor reports no unindexed foreign keys; unused-index notices are expected because the database contains no persistent workload data. Remaining BP-22 work includes detailed zones, multi-agency command, specialist hazard response, contamination records, formal evidence handover and review. Remaining BP-12 work includes accountable ownership transfer, referrals, full incident progression and closure.
 
 
 ## Scene safety and boundary control — 2026-11-20
 
-Added two scene-management records: `scene_safety_assessments` stores each assessment as a separate historical entry; `scene_boundary_revisions` retains each boundary version and identifies the active version. `incident_scenes` now stores the current safety status and boundary description. A deployed officer on scene can record hazards, people at risk, controls and residual risk. Only the current scene manager can revise the boundary, and every revision supersedes rather than overwrites the prior active boundary. New tables have RLS enabled and indexed foreign keys. The seven SQL regression suites pass in rolled-back transactions. Resource approval/decline/cancellation/fulfilment and formal scene release/reopening are now implemented; remaining work includes specialist hazard response, detailed zone geometry, multi-agency coordination, formal scene examination and evidence handover.
+Added two scene-management records: `scene_safety_assessments` stores each assessment as a separate historical entry; `scene_boundary_revisions` retains each boundary version and identifies the active version. `incident_scenes` now stores the current safety status and boundary description. A deployed officer on scene can record hazards, people at risk, controls and residual risk. Only the current scene manager can revise the boundary, and every revision supersedes rather than overwrites the prior active boundary. New tables have RLS enabled and indexed foreign keys. The eight SQL regression suites pass in rolled-back transactions. Resource response, formal scene release/reopening, qualified specialist attendance and scene examination planning/results are now implemented; remaining work includes specialist hazard response, detailed zone geometry, multi-agency coordination, forensic service governance and evidence handover.
 
 
 ## Resource response and scene lifecycle — 2026-11-20
@@ -238,4 +238,13 @@ Added `scene_resource_request_events` and `scene_lifecycle_events`, plus resourc
 
 Formal scene release requires a recorded safety assessment, no outstanding resource requests and no unmatched scene-entry records. Only the current scene manager can release. An on-scene officer can reopen a released scene while the originating incident remains active; scene command transfers to that officer. Reopening after incident resolution, closure or cancellation is rejected. Release/reopening history is append-only. Regression suite: `database/tests/scene_resource_lifecycle.sql`.
 
-Current verified state after all seven rolled-back SQL regression suites: 51 tables, 113 foreign keys, 195 indexes, RLS enabled on all 51 tables, 22 migrations, four runtime functions, zero persistent game commands/incidents/deployments/scenes/resource requests, and an uninitialized fictional clock. Performance advisor reports unused-index notices while the database is empty; security advisor reports RLS-enabled/no-policy notices because the private `game` schema is not exposed and no public player access has been deployed. Health advisor reports no findings.
+Current verified state after all eight rolled-back SQL regression suites: 55 tables, 133 foreign keys, 223 indexes, RLS enabled on all 55 tables, 26 migrations, four runtime functions, zero persistent game commands/incidents/deployments/scenes/resource requests/specialist attendances/examination plans/results, and an uninitialized fictional clock. Performance advisor reports unused-index notices while the database is empty; security advisor reports RLS-enabled/no-policy notices because the private `game` schema is not exposed and no public player access has been deployed. Health advisor reports no findings.
+
+
+## Specialist attendance and scene examination — 2026-11-20
+
+Added four tables: `scene_specialist_attendances`, `scene_examination_plans`, `scene_examination_events` and `scene_examination_records`. A specialist can sign in only while actively deployed on scene and only with a current, valid personnel qualification exactly matching the declared discipline. The attendance record links the deployment, unit and qualification. The scene manager alone can authorise a plan; the examiner must be the qualified attending specialist and remain deployed on scene. The examiner records start and completion; completion stores observations, reported findings and limitations. The assigned examiner or scene manager can cancel an open plan. Every transition is linked to scene activity, the command ledger and game event history.
+
+Scene release now also requires all specialist attendances to be closed and all examination plans to be completed or cancelled. Specialist departure is blocked while assigned plans remain open. Examination records are not automatically evidence items and do not replace BP-23 custody records or BP-24 laboratory method validation, technical review and formal report authorisation.
+
+Commands and full regression coverage are documented in `docs/architecture/RUNTIME-FOUNDATION.md` and `database/tests/scene_specialist_examination.sql`. Eight regression suites pass in rolled-back transactions. Verified live state: 55 tables, 133 foreign keys, 223 indexes, RLS on all 55 tables, 26 migrations and four runtime functions. The database remains unseeded; all test fixtures were rolled back.
