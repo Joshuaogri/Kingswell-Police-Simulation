@@ -24,3 +24,8 @@ The explicit dispatch UNIT_REF to INCIDENT_REF command remains unchanged. Its id
 - Add an explicit unit-position update workflow and route-recalculation event for reassignment or road closures.
 - Rank candidate units by ETA in the dispatch presentation while retaining dispatcher/player choice.
 - Recalculate only on explicit operational events; no automatic rerouting or clock advancement is enabled.
+
+
+## Source-control and index follow-up
+
+The deployment route history and dispatch route foreign-key index migrations are tracked in database/migrations. Five additional indexes cover route calculation and access-point references in route history and deployment snapshots. The follow-up migration is 20261120114600_index_dispatch_route_foreign_keys.sql. The regression script now asserts those five indexes and the candidate function's post-clock missing-incident guard.
