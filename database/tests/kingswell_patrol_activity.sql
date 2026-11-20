@@ -2,7 +2,7 @@
 begin;
 do $test$
 declare c timestamptz:='2026-11-20 16:00:00+00'; b game.patrol_beats%rowtype; ap record;
- f uuid; access_id uuid; access_ref text; u uuid; person_id uuid; officer_id uuid; roster_id uuid; start_result jsonb; end_result jsonb; intel jsonb; help_result jsonb; session_ref text; after_time timestamptz; event_id uuid; rejected boolean:=false;
+ f uuid; access_id uuid; access_ref text; u uuid; person_id uuid; officer_id uuid; roster_id uuid; start_result jsonb; end_result jsonb; intel jsonb; help_result jsonb; session_ref text; after_time timestamptz; event_id uuid; rejected boolean:=false; session_rejected boolean:=false;
 begin
  update game.simulation_state set current_game_time=c,time_paused=true where id=1;
  select * into b from game.patrol_beats where status='active' order by beat_ref limit 1;
@@ -44,6 +44,11 @@ begin
  intel:=game.get_patrol_intelligence(c-interval '1 second',after_time);
  if (intel->'totals'->>'patrol_activity_sessions')::integer<>1 then raise exception 'Activity session missing from intelligence: %',intel; end if;
  if (intel->'totals'->>'patrol_activity_minutes')::numeric<>15 then raise exception 'Activity minutes missing from intelligence: %',intel; end if;
+ begin
+  update game.patrol_activity_sessions set reason='tampered' where session_ref=start_result->>'session_ref';
+ exception when others then session_rejected:=true;
+ end;
+ if not session_rejected then raise exception 'Completed patrol activity session accepted mutation'; end if;
  if not exists(select 1 from jsonb_array_elements(intel->'activity_by_type') x where x->>'activity_type'='foot_patrol' and (x->>'activity_minutes')::numeric=15) then raise exception 'Foot patrol type not included in intelligence'; end if;
  help_result:=game.execute_text_command('help','activity-help-'||gen_random_uuid()::text,null,officer_id);
  if not (help_result->'available_commands' ? 'start_patrol_activity') or not (help_result->'available_commands' ? 'end_patrol_activity') then raise exception 'Activity commands missing from help: %',help_result; end if;
