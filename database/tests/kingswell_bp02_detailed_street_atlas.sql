@@ -25,6 +25,8 @@ begin
  if (select count(*) from game.property_access_points ap join game.properties p on p.id=ap.property_id where p.city_id=v_city)<>1136 then raise exception 'Expected 1,136 primary and secondary entrances';end if;
  if (select count(*) from game.road_segment_traffic_profiles where road_segment_id in(select id from game.road_segments where city_id=v_city))<>458 then raise exception 'Traffic profiles missing from road segments';end if;
  if (select count(*) from game.road_turn_restrictions where restriction_ref like 'KNG-NOUTURN-%')<>266 then raise exception 'No-U-turn controls incomplete';end if;
+ if (select count(*) from game.road_turn_restrictions where restriction_ref like 'KNG-TURN-%')<>16 then raise exception 'Signalised no-left/no-right movement bans incomplete';end if;
+ if (select count(*) from game.road_turn_restrictions where restriction_ref like 'KNG-TURN-%' and turn_type in ('no_left','no_right') and vehicle_profiles=array['public']::text[])<>16 then raise exception 'Signalised turn-ban profiles are invalid';end if;
  if exists(select 1 from game.road_segments s where s.city_id=v_city and not exists(select 1 from game.patrol_beat_road_segments b where b.road_segment_id=s.id)) then raise exception 'Road segment omitted from patrol beat coverage';end if;
  if exists(select 1 from game.road_segments where city_id=v_city and not is_routable) then raise exception 'Unexpected non-routable segment in baseline street atlas';end if;
  with recursive reachable(id) as (
