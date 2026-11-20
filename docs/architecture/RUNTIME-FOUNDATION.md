@@ -131,3 +131,21 @@ The SQL was reconstructed from the live PostgreSQL definitions and schema metada
 
 
 The evidence-action handler's execute ACL was separately hardened in applied migration `20261120103649_restrict_evidence_action_execution.sql`: execution is granted to `service_role` only; `PUBLIC`, `anon` and `authenticated` are explicitly revoked. A live privilege check confirms `anon` and `authenticated` cannot execute it, while `service_role` can.
+
+
+## Forensic laboratory workflow — 2026-11-20
+
+Implemented the first laboratory workflow across nine private, RLS-enabled records: forensic methods, method-validation reviews, requests, request/evidence links, laboratory submissions, examinations, findings, technical reviews and versioned reports.
+
+- Requests are tied to an open case and an evidence item already linked to that case. Request details preserve discipline, examination question, scope, recorded authority and priority; triage decisions and rationale are retained.
+- Laboratory intake uses the canonical `evidence_transfers` ledger. The submitting officer must be the recorded current custodian and the receiving officer must be a different active employee. Receipt condition and seal condition are recorded; discrepancies or non-intact seals quarantine the submission. “None”/“no discrepancy” values are treated as no discrepancy.
+- A method is registered as `verification_pending`. It cannot be self-certified: a different active officer with a current qualification matching the method discipline must record an independent validation decision. The method-validation review and rationale are retained.
+- Examiner assignment requires a received, non-quarantined submission, an active validated method matching the request discipline, and a current matching examiner qualification.
+- Findings separate observations, interpretation, propositions and limitations. Outcomes include supports, contradicts, inconclusive, no result and neutral; none constitutes an automatic legal conclusion.
+- Technical, peer or independent finding review requires a different reviewer with a current matching qualification. A report can be issued only after examinations are complete and the latest finding for each examination has a latest approved review. Reports are versioned and previous issued versions are superseded, not overwritten.
+
+Commands are registered in `help`: `forensic method`, `validate forensic method`, `forensic request`, `triage forensic`, `receive lab submission`, `assign forensic`, `start forensic`, `record forensic findings`, `review forensic` and `issue forensic report`. They use the existing idempotent command ledger and explicit fictional clock.
+
+Limitations: the in-game validation decision is not a full method-validation study. A service/capability catalogue, lab capacity and workload, external-provider routing, raw instrument data, sample derivatives/consumption, proficiency testing, detailed quality records, disclosure/court interfaces and seeded end-to-end operational tests remain outstanding. No suspects or offenders are inferred or revealed by these commands.
+
+Regression script: `database/tests/forensic_laboratory_workflow.sql`. Parser, help, runtime-routing, clock-guard and RLS checks pass in a rolled-back transaction. No forensic data is seeded or persisted; the fictional clock remains uninitialized.
