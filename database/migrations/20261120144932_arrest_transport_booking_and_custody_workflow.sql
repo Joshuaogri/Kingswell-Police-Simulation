@@ -133,7 +133,7 @@ alter table game.arrests add constraint arrests_incident_id_fkey FOREIGN KEY (in
 alter table game.arrests add constraint arrests_person_id_fkey FOREIGN KEY (person_id) REFERENCES game.persons(id);
 alter table game.arrests add constraint arrests_pkey PRIMARY KEY (id);
 alter table game.arrests add constraint arrests_source_command_id_fkey FOREIGN KEY (source_command_id) REFERENCES game.game_commands(id);
-alter table game.arrests add constraint arrests_status_check CHECK ((status = ANY (ARRAY['arrested'::text, 'transporting'::text, 'booked'::text, 'released'::text, 'transferred'::text])));
+alter table game.arrests add constraint arrests_status_check CHECK ((status = ANY (ARRAY['arrested'::text, 'transported'::text, 'booked'::text, 'released'::text, 'transferred'::text])));
 alter table game.custody_episodes add constraint custody_episodes_arrest_id_fkey FOREIGN KEY (arrest_id) REFERENCES game.arrests(id);
 alter table game.custody_episodes add constraint custody_episodes_arrest_id_key UNIQUE (arrest_id);
 alter table game.custody_episodes add constraint custody_episodes_booking_officer_id_fkey FOREIGN KEY (booking_officer_id) REFERENCES game.police_personnel(id);
@@ -208,7 +208,7 @@ begin
   if not exists(select 1 from game.case_assignments ca where ca.case_id=v_case_id and ca.personnel_id=p_actor_id and ca.status='active' and ca.released_at is null) and not exists(select 1 from game.cases c where c.id=v_case_id and c.lead_personnel_id=p_actor_id) then return jsonb_build_object('ok',false,'code','case_access_denied');end if;
   if nullif(btrim(p->>'grounds'),'') is null or nullif(btrim(p->>'location'),'') is null or nullif(btrim(p->>'warnings'),'') is null then return jsonb_build_object('ok',false,'code','arrest_record_incomplete');end if;
   if p->>'basis' not in ('warrant','grounds','other') or (p->>'basis'='warrant' and nullif(btrim(p->>'authority_reference'),'') is null) then return jsonb_build_object('ok',false,'code','arrest_basis_invalid');end if;
-  if exists(select 1 from game.arrests where game.arrests.case_id=v_case_id and game.arrests.person_id=v_person_id and status in ('arrested','transporting','booked')) then return jsonb_build_object('ok',false,'code','active_arrest_exists');end if;
+  if exists(select 1 from game.arrests where game.arrests.case_id=v_case_id and game.arrests.person_id=v_person_id and status in ('arrested','transported','booked')) then return jsonb_build_object('ok',false,'code','active_arrest_exists');end if;
   insert into game.arrests(case_id,person_id,incident_id,arresting_personnel_id,arrest_basis,authority_reference,grounds_description,arrest_location,arrested_at_game_time,force_used,injury_or_complaint,warnings_or_rights_record,witness_details,body_camera_reference,source_command_id)
   values(v_case_id,v_person_id,(select id from game.incidents where incident_ref=p->>'incident_ref'),p_actor_id,p->>'basis',nullif(p->>'authority_reference',''),p->>'grounds',p->>'location',n,coalesce(nullif(p->>'force',''),'none'),coalesce(nullif(p->>'injuries',''),'none_recorded'),p->>'warnings',nullif(p->>'witnesses',''),nullif(p->>'body_camera',''),p_command_id) returning * into v_arrest;
   insert into game.arrest_events(arrest_id,event_type,actor_personnel_id,event_at_game_time,event_data,source_command_id) values(v_arrest.id,'arrest_executed',p_actor_id,n,to_jsonb(v_arrest)-'id'-'source_command_id',p_command_id);
@@ -221,14 +221,14 @@ begin
   if nullif(btrim(p->>'destination'),'') is null or nullif(btrim(p->>'vehicle'),'') is null or nullif(btrim(p->>'handover'),'') is null or v_minutes not between 1 and 240 then return jsonb_build_object('ok',false,'code','transport_details_incomplete','message','Destination, vehicle, handover and a 1–240 minute duration are required.');end if;
   v_arrival:=n+make_interval(mins=>v_minutes);
   insert into game.arrest_transport_legs(arrest_id,transporting_personnel_id,departure_location,destination_location,vehicle_description,departed_at_game_time,arrived_at_game_time,duration_minutes,handover_notes,source_command_id) values(v_arrest.id,p_actor_id,v_arrest.arrest_location,p->>'destination',p->>'vehicle',n,v_arrival,v_minutes,p->>'handover',p_command_id);
-  update game.arrests set status='transporting' where id=v_arrest.id;
+  update game.arrests set status='transported' where id=v_arrest.id;
   update game.simulation_state set current_game_time=v_arrival,updated_at=now() where id=1;
   insert into game.game_clock_history(command_id,previous_game_time,resulting_game_time,advancement_minutes,reason) values(p_command_id,n,v_arrival,v_minutes,'Arrest transport: '||btrim(p->>'handover'));
   insert into game.arrest_events(arrest_id,event_type,actor_personnel_id,event_at_game_time,event_data,source_command_id) values(v_arrest.id,'transport_arrived',p_actor_id,v_arrival,jsonb_build_object('destination',p->>'destination','vehicle',p->>'vehicle','handover',p->>'handover','duration_minutes',v_minutes),p_command_id);
-  return jsonb_build_object('ok',true,'arrest_ref',v_arrest.arrest_ref,'status','transporting','departed_at',n,'arrived_at',v_arrival,'duration_minutes',v_minutes);
+  return jsonb_build_object('ok',true,'arrest_ref',v_arrest.arrest_ref,'status','transported','departed_at',n,'arrived_at',v_arrival,'duration_minutes',v_minutes);
  elsif p_type='book_custody' then
   select * into v_arrest from game.arrests where arrest_ref=p->>'arrest_ref' for update;
-  if v_arrest.id is null or v_arrest.status<>'transporting' then return jsonb_build_object('ok',false,'code','transport_arrival_required');end if;
+  if v_arrest.id is null or v_arrest.status<>'transported' then return jsonb_build_object('ok',false,'code','transport_arrival_required');end if;
   if v_arrest.arresting_personnel_id<>p_actor_id and not exists(select 1 from game.case_assignments ca where ca.case_id=v_arrest.case_id and ca.personnel_id=p_actor_id and ca.status='active' and ca.released_at is null) and not exists(select 1 from game.cases c where c.id=v_arrest.case_id and c.lead_personnel_id=p_actor_id) then return jsonb_build_object('ok',false,'code','case_access_denied');end if;
   if nullif(btrim(p->>'identity_check'),'') is null or nullif(btrim(p->>'risk'),'') is null or nullif(btrim(p->>'health'),'') is null or nullif(btrim(p->>'cell'),'') is null then return jsonb_build_object('ok',false,'code','booking_details_incomplete');end if;
   insert into game.custody_episodes(arrest_id,case_id,person_id,booking_officer_id,booked_at_game_time,identity_check,risk_assessment,health_welfare_screen,medication_disclosure,safeguarding_notes,cell_location,source_command_id)
