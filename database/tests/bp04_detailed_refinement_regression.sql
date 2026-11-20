@@ -170,6 +170,23 @@ begin
    or up.access_notes not ilike '%not recorded in this profile%'
  ) then raise exception 'BP04: unit access/metering provenance validation failed'; end if;
 
+ -- Agreement clause coverage must reflect actual column presence and preserve unknowns.
+ if (select count(*) from game.organisation_site_agreements
+     where agreement_details?'contract_term_coverage')<>1232
+ then raise exception 'BP04: agreement clause coverage register incomplete'; end if;
+ if exists(select 1 from game.organisation_site_agreements a
+  where a.agreement_details#>>'{contract_term_coverage,occupancy_dates_are_contract_dates}'<>'false'
+   or a.agreement_details#>>'{term_coverage_provenance,method}'<>'field-presence audit only')
+ then raise exception 'BP04: agreement term provenance invalid'; end if;
+ if exists(select 1 from game.organisation_site_agreements a
+  where a.execution_date is null and a.agreement_details#>>'{contract_term_coverage,execution_date}'<>'not_recorded'
+   or a.rent_amount is null and a.agreement_details#>>'{contract_term_coverage,rent_amount}'<>'not_recorded')
+ then raise exception 'BP04: missing agreement terms not represented as unknown'; end if;
+ if (select count(*) from game.organisation_site_agreements
+     where counterparty_organisation_id is null and counterparty_person_id is null
+      and agreement_details#>>'{contract_term_coverage,counterparty}'='not_identified')<>152
+ then raise exception 'BP04: unresolved lease counterparties were silently assigned'; end if;
+
  -- Confirm the event-location trigger rejects a building from another property.
  select id into v_property_id from game.properties order by property_ref limit 1;
  begin
