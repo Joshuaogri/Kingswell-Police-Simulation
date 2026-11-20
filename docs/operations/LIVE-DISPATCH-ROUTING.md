@@ -29,3 +29,8 @@ The explicit dispatch UNIT_REF to INCIDENT_REF command remains unchanged. Its id
 ## Source-control and index follow-up
 
 The deployment route history and dispatch route foreign-key index migrations are tracked in database/migrations. Five additional indexes cover route calculation and access-point references in route history and deployment snapshots. The follow-up migration is 20261120114600_index_dispatch_route_foreign_keys.sql. The regression script now asserts those five indexes and the candidate function's post-clock missing-incident guard.
+
+
+## Route-history integrity
+
+The deployment route history ledger is append-only for the runtime role. service_role may read and insert history records but cannot update or delete them. This is enforced by migration 20261120114700_enforce_deployment_route_history_append_only.sql and asserted by the regression script.
