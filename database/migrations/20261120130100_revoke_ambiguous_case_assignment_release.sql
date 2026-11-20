@@ -1,0 +1,1 @@
+revoke all on function game.release_case_investigator(text,text,text,text,uuid) from public,anon,authenticated,service_role;
