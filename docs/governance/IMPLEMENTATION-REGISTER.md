@@ -555,3 +555,12 @@ The coverage report returns all active beats, on-patrol unit details and schedul
 **PASS:** `database/tests/kingswell_patrol_command_interface.sql` exercises assignment, scheduling, patrol start, live coverage query and patrol end through the real text-command dispatcher. It verifies the unit returns to station and the fictional clock remains unchanged. Transaction ends in ROLLBACK; no fixtures persist.
 
 Parser and coverage function execution are restricted to service_role. Documentation: `docs/operations/PATROL-COMMAND-INTERFACE.md`.
+
+
+## Automatic patrol interruption on incident deployment — 2026-11-20
+
+**Implemented and rollback-only regression-tested.** When a patrol unit leaves `on_patrol` for `responding`, `on_scene`, `returning` or `out_of_service`, its active patrol schedule is automatically marked `suspended`. An append-only `coverage_interrupted` event records the game time and before/after operational states. Suspended units immediately stop counting toward beat coverage. Patrols are not silently resumed after an incident; an explicit new patrol start workflow is required.
+
+**PASS:** `database/tests/kingswell_patrol_incident_interruption.sql` verifies schedule suspension, interruption event and unchanged fictional clock; transaction ends in ROLLBACK.
+
+Migration: `database/migrations/20261120121300_suspend_patrol_coverage_on_incident_deployment.sql`. Documentation: `docs/operations/PATROL-INCIDENT-INTERRUPTION.md`.
