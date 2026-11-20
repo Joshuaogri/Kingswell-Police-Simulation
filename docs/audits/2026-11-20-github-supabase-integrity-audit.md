@@ -540,3 +540,15 @@ A read-only check of the live Kingswell city records returned:
 - 2 target freight-access segments on `KNG-R008` and `KNG-R009`
 
 Classification: **different SQL implementation styles with matching intended network structure and live record counts**. The reconstruction is consistent with the applied network inventory; retain both records. This does not replace the later route-connectivity and reachability tests.
+
+
+## 25. Content-led review of version 20261120111654
+
+The remote migration and GitHub reconstruction use different procedural seed implementations, but the structural and seed-input inventories align.
+
+- Both define `city_landmarks`, `property_addresses`, and `property_access_points`.
+- Both define the same nine indexes.
+- Both use the same 24 neighbourhood centre codes and a 1-to-20 lot loop.
+- The live Kingswell city inventory currently contains 656 properties, 656 buildings, 26,888 building units, 656 addresses, 1,136 property access points, and 24 city landmarks.
+
+Classification: **reconstructed seed implementation with matching table/index/centre/loop inventory and live object counts**. The two SQL implementations are not text-equivalent; retain both. Detailed row-by-row seed-value comparison remains part of the final data parity review.
