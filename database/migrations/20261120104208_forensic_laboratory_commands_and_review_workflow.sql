@@ -36,6 +36,7 @@ begin
   return jsonb_build_object('ok',true,'request_ref',rr,'status',case dec when 'accept' then 'accepted' when 'defer' then 'deferred' else 'declined' end);
  elsif p_command_type='receive_forensic_submission' then
   rr:=nullif(btrim(p_payload->>'request_ref'),''); er:=nullif(btrim(p_payload->>'evidence_ref'),''); fl:=nullif(btrim(p_payload->>'from_location'),''); ll:=nullif(btrim(p_payload->>'lab_location'),''); cond:=nullif(btrim(p_payload->>'condition'),''); seal:=nullif(btrim(p_payload->>'seal_condition'),''); discrepancy:=nullif(btrim(p_payload->>'discrepancy'),'');
+  if lower(coalesce(discrepancy,'')) in ('none','no discrepancy','no discrepancy reported') then discrepancy:=null; end if;
   select id into receiver from game.police_personnel where personnel_ref=nullif(btrim(p_payload->>'receiver_ref'),'') and employment_status='active';
   select r.id,r.status,e.id into req,st,ev from game.forensic_requests r join game.forensic_request_items i on i.request_id=r.id join game.evidence_items e on e.id=i.evidence_id where r.request_ref=rr and e.evidence_ref=er for update of r,e;
   if req is null or st<>'accepted' or receiver is null or receiver=a or fl is null or ll is null or cond is null or seal is null then return jsonb_build_object('ok',false,'code','submission_invalid','message','Accepted request, linked evidence, receiving officer, locations, condition and seal condition required.'); end if;
