@@ -140,7 +140,7 @@ begin
  then raise exception 'BP04: property planning summaries are not individually differentiated'; end if;
  if exists(
   select 1 from game.property_profiles
-  where planning_notes not ilike '%not a planning application%'
+  where planning_notes not ilike '%no planning application%'
      or planning_notes not ilike '%remain unrecorded%'
  ) then raise exception 'BP04: planning summary does not clearly distinguish missing planning history'; end if;
 
