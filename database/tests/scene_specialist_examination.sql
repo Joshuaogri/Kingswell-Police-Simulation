@@ -2,7 +2,7 @@
 -- All fictional records are rolled back.
 begin;
 do $test$
-declare v_p1 uuid; v_p2 uuid; v_pp1 uuid; v_pp2 uuid; v_unit uuid; v_roster uuid; v_incident uuid; v_scene uuid; v_qual uuid; r jsonb; v_plan1 text; v_plan2 text; v_attendance text;
+declare v_p1 uuid; v_p2 uuid; v_pp1 uuid; v_pp2 uuid; v_unit uuid; v_roster uuid; v_incident uuid; v_scene uuid; v_qual uuid; r jsonb; v_plan1 text; v_plan2 text; v_attendance text; v_evidence_ref text;
 begin
  r:=game.submit_command('Initialize specialist examination test clock','initialize_clock','{"start_at":"2036-04-21T10:00:00Z"}'::jsonb,'scene-specialist-clock-test-0001');
  if r->>'ok'<>'true' then raise exception 'Clock init failed: %',r; end if;
@@ -38,6 +38,17 @@ begin
  r:=game.execute_text_command('specialist attend SPEC-PP-002 at KW-SCENE-SPEC as DNA: duplicate sign-in','scene-specialist-duplicate-attend-test-0001'); if r->>'code'<>'specialist_already_attending' then raise exception 'Duplicate specialist attendance was accepted: %',r; end if;
  r:=game.execute_text_command('plan examination SPEC-PP-002 for KW-SCENE-SPEC by SPEC-PP-002 in DNA: determine whether submitted material contains a relevant biological profile | examine only the submitted reference material under the stated request | no comparison sample supplied and interpretation scope remains limited','scene-specialist-unauthorised-plan-test-0001'); if r->>'code'<>'scene_command_required' then raise exception 'Non-manager examination plan was accepted: %',r; end if;
  r:=game.execute_text_command('plan examination SPEC-PP-001 for KW-SCENE-SPEC by SPEC-PP-002 in DNA: determine whether submitted material contains a relevant biological profile | examine only the submitted reference material under the stated request | no comparison sample supplied and interpretation scope remains limited','scene-specialist-plan-test-0001'); if r->>'ok'<>'true' or r->>'plan_status'<>'planned' then raise exception 'Examination plan failed: %',r; end if; v_plan1:=r->>'plan_ref';
+ r:=game.execute_text_command('record contamination SPEC-PP-001 at KW-SCENE-SPEC: Zone A | unknown residue | possible scene transfer | isolate and mark zone','scene-specialist-contamination-e2e-test-0001');
+ if r->>'ok'<>'true' then raise exception 'Contamination record failed: %',r; end if;
+ r:=game.execute_text_command('recover evidence SPEC-PP-002 from KW-SCENE-SPEC under '||v_plan1||': trace | synthetic glass fragment | window sill | sterile forceps | rigid evidence box | SPEC-SEAL-001 | intact','scene-specialist-recovery-e2e-test-0001');
+ if r->>'ok'<>'true' then raise exception 'Evidence recovery failed: %',r; end if;
+ v_evidence_ref:=r->>'evidence_ref';
+ r:=game.execute_text_command('transfer evidence SPEC-PP-002 '||v_evidence_ref||' to SPEC-PP-001: specialist collection kit | secure evidence locker | documented scene-to-custody transfer','scene-specialist-transfer-e2e-test-0001');
+ if r->>'ok'<>'true' then raise exception 'Evidence custody transfer failed: %',r; end if;
+ if (select count(*) from game.scene_contamination_events where scene_id=v_scene)<>1 then raise exception 'Contamination event not persisted'; end if;
+ if (select count(*) from game.scene_evidence_recoveries where scene_id=v_scene and evidence_id=(select id from game.evidence_items where evidence_ref=v_evidence_ref))<>1 then raise exception 'Scene evidence recovery record missing'; end if;
+ if (select count(*) from game.scene_evidence_transfer_events where scene_id=v_scene and evidence_id=(select id from game.evidence_items where evidence_ref=v_evidence_ref))<>1 then raise exception 'Scene evidence transfer event missing'; end if;
+ if (select current_status from game.evidence_items where evidence_ref=v_evidence_ref)<>'transferred' then raise exception 'Evidence status not updated after custody transfer'; end if;
  r:=game.execute_text_command('specialist depart SPEC-PP-002 from KW-SCENE-SPEC because departure attempted before examination completion','scene-specialist-early-depart-test-0001'); if r->>'code'<>'specialist_examinations_outstanding' then raise exception 'Departure with outstanding examination was accepted: %',r; end if;
  r:=game.execute_text_command('start examination SPEC-PP-002 '||v_plan1||' because assigned examination commenced','scene-specialist-start-test-0001'); if r->>'ok'<>'true' or r->>'plan_status'<>'in_progress' then raise exception 'Examination start failed: %',r; end if;
  r:=game.execute_text_command('complete examination SPEC-PP-001 '||v_plan1||': manager attempting examiner action | unauthorised completion | none','scene-specialist-wrong-examiner-test-0001'); if r->>'code'<>'assigned_examiner_required' then raise exception 'Unassigned examiner completed examination: %',r; end if;
