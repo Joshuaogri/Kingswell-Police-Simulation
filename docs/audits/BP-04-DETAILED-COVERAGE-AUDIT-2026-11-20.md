@@ -156,3 +156,11 @@ Added `game.get_organisation_workforce_record(organisation_ref)` for employer wo
 Departments, named supervisors, physical work sites, shift schedules, delegated authority and system access remain explicitly not recorded. These were not inferred from job titles, employer premises, or home addresses. No reporting hierarchy or department was fabricated.
 
 Regression tests passed for 13 role catalogue entries, 43,412/43,412 dossier coverage, canonical title matching, unknown assignment preservation, private access and both workforce query functions.
+
+## 9. Organisation site dossiers and internal structure framework
+
+Audited the existing 1,477 organisation locations. Every location already has a canonical property and building-unit link, site reference and site name. The existing roles comprise 1,232 tenant sites, 220 owner-occupier sites and 25 head-office sites. The refinement created exactly 1,477 site dossiers, one per existing location, carrying the linked property, building, unit, address, use-class, capacity, operating hours, premises operating profile and any already-linked occupancy agreement reference.
+
+Added a canonical internal-structure framework: organisation departments with parent-department and base-site links; department positions with reporting-position links; and employment assignments connecting existing employment records to departments, positions, site dossiers and supervisors. These three structure tables intentionally remain empty: no verified department names, reporting lines, managerial appointments or staff-to-site assignments existed to populate them. No employee is assumed to work at the employer's primary premises.
+
+Added `game.get_organisation_site_record(site_ref)` and `game.get_organisation_structure_record(organisation_ref)`. Regression tests passed for 1,477/1,477 site dossier coverage, canonical location/property/unit consistency, empty unsubstantiated structure tables, access control and both query functions.
