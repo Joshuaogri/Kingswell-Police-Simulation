@@ -17,9 +17,9 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Runtime foundation and forensic laboratory workflow implemented | Private `game` schema; 67 tables, 182 foreign keys and 298 indexes; 37 migrations applied; six runtime functions; RLS enabled on all 67 tables; no fictional world/personnel data seeded; fictional clock remains uninitialized |
+| Database schema | Runtime foundation, forensic laboratory and police-geography layers implemented | Private `game` schema; 77 tables, 215 foreign keys and 347 indexes; 42 migrations applied; RLS enabled on all 77 tables; city geography and police facility/beat data seeded; no persons, police personnel, units or incidents seeded; fictional clock remains uninitialized |
 | Application/gameplay code | In progress | Database-backed text command interpreter, controlled clock, emergency-call/dispatch/arrival, scene-control, field-report and resource-request workflows implemented; full domain handlers remain outstanding |
-| Runtime regression tests | Implemented; transaction smoke-tested | `database/tests/runtime_foundation.sql`, `database/tests/text_interpreter_dispatch.sql`, `database/tests/unit_dispatch.sql`, `database/tests/dispatch_acknowledgement_arrival.sql` and `database/tests/scene_control_field_reports.sql` cover the implemented runtime and operational slices; all test data rolls back |
+| Runtime regression tests | Implemented; transaction smoke-tested | Runtime, dispatch, scene, evidence, forensic laboratory, geography and police-facility/patrol-geography SQL regression scripts cover implemented slices; test fixtures roll back |
 
 ## Master blueprint divisions
 
@@ -29,7 +29,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-02 | Country, City and Geographical Architecture | Approved; several details open |
 | BP-03 | Population and Individual Simulation Architecture | Approved; processing model open |
 | BP-04 | Buildings, Properties, Businesses and Organisations | Approved |
-| BP-05 | Police Architecture | Approved; initial proposal; detailed structure remains open |
+| BP-05 | Police Architecture | Approved; initial headquarters, 12 district stations, five specialist facilities and 12 district patrol sectors geographically seeded; command/personnel structure remains outstanding |
 | BP-06 | Police Personnel | Approved |
 | BP-07 | Career System | Approved; detailed rules remain open for refinement |
 | BP-08 | Units and Deployment | Approved; roster-validated deployment, individual dispatch acknowledgement and on-scene arrival implemented; resource, qualification, command and remaining deployment lifecycle rules remain outstanding |
@@ -50,23 +50,23 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-23 | Evidence Management | Approved; evidential rules, retention and professional standards to refine |
 | BP-24 | Forensics | Approved; scene recovery and laboratory workflow implemented and seeded end-to-end transaction-tested: case-linked requests and triage, canonical custody transfer, independently qualified method validation, qualified examiner assignment, structured findings, independent qualified review and report issuance. Service capability catalogue, external-provider routing, full validation evidence, QA/proficiency, raw data/derivatives and disclosure/court interfaces remain outstanding |
 | BP-25 | Arrests and Warrants | Approved; design only; no arrest or warrant software implemented |
-| BP-26 | Custody Management | Approved; design only; no custody software or facilities implemented |
+| BP-26 | Custody Management | Approved; central custody facility location and property/access linkage seeded; custody workflow, staffing, cells and processing remain outstanding |
 | BP-27 | Legal Processes | Approved; design only; no legal-process software implemented |
 | BP-28 | Courts and Outcomes | Approved; design only; no court software implemented |
 | BP-29 | Corrections | Approved; design only; no correctional software implemented |
 | BP-30 | Department Governance | Approved; design only; no governance software implemented |
 | BP-31 | Professional Standards | Approved; design only; no professional standards software implemented |
-| BP-32 | Training and Development | Approved; design only; no training or competence software implemented |
+| BP-32 | Training and Development | Approved; police training-centre location seeded; training programmes, courses, attendance and competence workflows remain outstanding |
 | BP-33 | Human Resources | Approved; design only; no HR or workforce software implemented |
 | BP-34 | Finance and Procurement | Approved; design only; no finance or procurement software implemented |
 | BP-35 | Simulation Engine | Approved; typed command intake, limited text interpreter, idempotency, dispatch, scene control, safety, boundary, resource response, specialist examination, contamination, evidence recovery/custody and forensic laboratory command handlers implemented; seeded end-to-end scene-to-custody and lab-to-report regression fixtures pass in rollback transactions; broader domain handlers, scheduler and NPC processing outstanding |
 | BP-36 | Relationships and Social Context | Approved; design only; no relationship or social-context system implemented |
 | BP-37 | Time and Scheduling | Approved; paused singleton clock, explicit initialization/advancement and clock history implemented; fictional calendar configuration and scheduler outstanding |
-| BP-38 | Records and Databases | Approved; 67-table private schema and 37 migrations implemented; command/clock, dispatch, scene, evidence custody, specialist examination, forensic laboratory request/intake/finding/review/report records integrated; full domain coverage incomplete |
+| BP-38 | Records and Databases | Approved; 77-table private schema and 42 migrations implemented; command/clock, dispatch, scene, evidence custody, specialist examination, forensic laboratory and police-geography records integrated; full domain coverage incomplete |
 | BP-39 | Persistence and Recovery | Approved; design only; no backup or restore process implemented |
 | BP-40 | Interface | Approved; ChatGPT remains the intended text interface; limited explicit text command grammar exists; live ChatGPT-to-runtime connection remains outstanding |
 | BP-41 | Notifications and Reporting | Approved; design only; no notification or reporting service implemented |
-| BP-42 | Security and Permissions | Approved; RLS enabled on all 73 tables; private schema remains unexposed; player authentication and fictional authority enforcement outstanding |
+| BP-42 | Security and Permissions | Approved; RLS enabled on all 77 tables; private schema remains unexposed; player authentication and fictional authority enforcement outstanding |
 | BP-43 | Testing and Quality Assurance | Approved; seeded scene-specialist-examination-to-contamination/recovery/custody and forensic request-to-report SQL end-to-end regression tests pass inside rolled-back transactions, alongside parser/help/RLS/clock guards; CI and broader domain tests outstanding |
 | BP-44 | Configuration and Expansion | Approved; design only; no configuration or expansion framework implemented |
 
@@ -335,6 +335,28 @@ Seeded city inventory: 480 properties (20 in each of 24 neighbourhoods; 40 in ea
 Applied migration: `20261120111654_kingswell_bp02_properties_buildings_addresses_landmarks.sql`. Follow-up correction migration: `20261120111935_correct_property_access_nearest_junctions.sql`, ensuring each access point selects the nearer endpoint of its frontage segment. Regression test: `database/tests/kingswell_properties_buildings_addresses.sql` (transactional assertions; rollback only). Test passed on the live project, and the committed seed migration source replayed successfully inside a rolled-back transaction. BP-02 next work: police facilities, patrol sectors and network-based routing/response calculations; detailed cadastral geometry, floor plans, additional entrances and traffic calibration remain future refinements.
 
 
+## BP-02 — Police facilities, patrol sectors and beat geography — 2026-11-20
+
+Implemented and live in Supabase. The police geography layer is built on the existing property, building, postal-address, access-point and road-segment records; it does not create duplicate map locations.
+
+Seeded facilities:
+- 18 operational facility records: Kingswell Police Headquarters; 12 district police stations; Central Custody Facility; Police Operations and Communications Centre; Forensic Services Centre; Police Training Centre; and Police Fleet and Workshop.
+- The headquarters and all 12 district stations are represented in the existing `game.police_stations` register (13 stations total).
+- Every facility resolves to a real seeded property, building, structured address and primary road access point, with district/neighbourhood and local-grid coordinates.
+- Facility records carry stable refs, type, status and operating profile.
+
+Patrol geography:
+- 12 district patrol sectors, one per district.
+- 24 neighbourhood beats, one per neighbourhood, each linked to its parent district sector.
+- 151 road-segment-to-beat coverage links, assigning every currently routable road segment to one geographic beat. This is geographic coverage attribution, not a sequenced navigation route.
+- Existing `game.police_units` now has nullable base-facility and assigned-beat links, ready for later unit creation and basing. No police units or personnel have been seeded.
+
+New private RLS-enabled tables: `game.police_facilities`, `game.patrol_sectors`, `game.patrol_beats` and `game.patrol_beat_road_segments`. Sensitive access remains service_role-only. The existing police station and unit tables were extended with facility/base/beat references.
+
+Migration: `database/migrations/20261120112406_kingswell_police_facilities_patrol_sectors_and_beats.sql`. Regression: `database/tests/kingswell_police_facilities_patrol_geography.sql`; live rollback-only assertions passed for facility counts and physical links, station links, all 24 beats, all 12 sectors, complete 151-segment coverage and RLS.
+
+This does not yet implement road routing, turn-by-turn paths, route optimisation, travel-time estimates, traffic, patrol schedules, active unit deployment bases or beat-level staffing. The local-grid property/facility coordinates remain planning-level fictional coordinates, not surveyed geometry.
+
 ### Current live database baseline — 2026-11-20
 
-The current private `game` schema contains 73 tables, 200 foreign keys and 327 indexes. RLS is enabled on all 73 tables. Supabase records 41 applied migrations. These are the current live counts; older database snapshots elsewhere in this register are retained as historical audit observations, not current totals.
+The current private `game` schema contains 77 tables, 215 foreign keys and 347 indexes. RLS is enabled on all 77 tables. Supabase records 42 applied migrations. These are the current live counts; older database snapshots elsewhere in this register are retained as historical audit observations, not current totals.
