@@ -398,11 +398,12 @@ Implemented the first route-aware dispatch integration across BP-08, BP-10, BP-1
 - The existing dispatch command and its command-ledger idempotency and eligibility checks are unchanged; the new insert trigger adds route snapshotting after eligible deployment records are created.
 - Route estimates use posted speed limits only. No live traffic, siren uplift, turn delays, guaranteed arrival or fictional-clock advancement is implied.
 - Unresolved locations and unreachable routes are explicitly represented without fabricated distances or ETAs.
-- All new foreign keys have covering indexes. Security advisor retains the existing private-schema RLS-enabled/no-policy informational findings (80 tables); performance advisor has no remaining unindexed-FK finding after five additional indexes; health advisor returned no findings.
+- All new foreign keys have covering indexes. Deployment route history is append-only for service_role: SELECT/INSERT only, with UPDATE/DELETE revoked. Security advisor retains the existing private-schema RLS-enabled/no-policy informational findings (80 tables); performance advisor has no remaining unindexed-FK finding after five additional indexes; health advisor returned no findings.
 
 Migrations applied to Supabase and committed on main:
 - database/migrations/20261120114500_kingswell_live_dispatch_route_integration.sql
 - database/migrations/20261120114600_index_dispatch_route_foreign_keys.sql
+- database/migrations/20261120114700_enforce_deployment_route_history_append_only.sql
 
 Regression source:
 - database/tests/kingswell_live_dispatch_route_integration.sql
@@ -410,7 +411,7 @@ Regression source:
 Verification:
 - Migration applied successfully.
 - Regression guard transaction passed: route-history RLS, service-role-only candidate function ACL, deployment snapshot trigger, uninitialized-clock guard, missing/non-dispatchable incident guard, five route-FK indexes, and no unexpected persistent route/history writes.
-- Current live baseline: 80 game tables, 231 foreign keys, 376 indexes, 49 applied migrations.
+- Current live baseline: 80 game tables, 231 foreign keys, 376 indexes, 50 applied migrations.
 - No personnel, police units, incidents, deployments or route calculations have been seeded. Full seeded deployment-to-route/ETA end-to-end verification is therefore still pending; no fictional clock was initialized.
 - The candidate function currently creates persisted route-calculation records when it evaluates eligible units. This is an auditable route computation, not a state/time advancement.
 
