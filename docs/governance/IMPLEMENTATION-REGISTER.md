@@ -465,4 +465,27 @@ Runtime capabilities:
 
 **PASS:** `database/tests/kingswell_unit_position_and_road_recalculation.sql` verifies the player-facing text command, position persistence, recalculation on movement, route-history append on road closure and reopening, and no fictional-clock advancement. Both tests end in ROLLBACK.
 
-After verification, the live game remains unseeded: zero police units, incidents, deployments, route calculations and route-history records; the fictional clock remains uninitialized. Migration count is 52.
+After verification, the live game remains unseeded: zero police units, incidents, deployments, route calculations and route-history records; the fictional clock remains uninitialized. Migration count is 53.
+
+
+## Player-facing dispatch options and unit reassignment — 2026-11-20
+
+**Implemented and verified.** Migration source: `database/migrations/20261120115500_player_dispatch_options_and_unit_reassignment.sql`.
+
+Player commands:
+- `dispatch options for INCIDENT_REF` returns incident context and ETA-ranked candidate units, each with available officer names, personnel references, service numbers, base facility, route status, route distance, baseline duration and estimated arrival. It does not dispatch anyone.
+- `reassign UNIT_REF to INCIDENT_REF because REASON` transfers an active response to a different eligible unit.
+
+Reassignment preserves the previous deployment rows, marking them cancelled with the fictional reassignment time rather than deleting them. It writes outgoing/incoming dispatch events and a game event with the reason, creates new deployment rows for the replacement unit's eligible on-duty officers, and relies on the deployment route-snapshot trigger to create each replacement route snapshot and history entry.
+
+Whole-unit reassignment is deliberately blocked if:
+- the incident has no active deployment;
+- multiple different units are currently deployed to the incident;
+- any officer has already arrived at the scene;
+- the replacement unit is inactive, the same as the current unit, or has no eligible on-duty personnel.
+
+The command is idempotent through the existing command ledger. No fictional time is advanced.
+
+**PASS:** `database/tests/kingswell_player_dispatch_options_and_reassignment.sql` verifies parser/help registration, two ranked candidates with named officers, read-only options, initial dispatch, reassignment, preserved old deployment and route history, replacement deployment and route snapshot, outgoing/incoming dispatch events, game-event audit and unchanged fictional clock. The test is transaction-wrapped and ends in ROLLBACK.
+
+The test was rerun from the committed GitHub file. Live game remains unseeded: zero units, incidents, deployments, route calculations and route-history records; fictional clock remains uninitialized. All 80 game tables remain RLS-enabled. New dispatch helper functions are executable by service_role and not by anon/authenticated.
