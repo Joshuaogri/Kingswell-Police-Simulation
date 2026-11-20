@@ -1,0 +1,32 @@
+-- Rollback-only end-to-end case interview and witness statement regression.
+begin;
+do $$
+declare p1 uuid;p2 uuid;pp1 uuid;c uuid;r jsonb;iref text;sref text;before_time timestamptz;cmd text;
+begin
+ update game.simulation_state set current_game_time='2026-02-03 10:00:00+00',time_paused=true where id=1;
+ select current_game_time into before_time from game.simulation_state where id=1;
+ insert into game.persons(person_ref,given_name,family_name) values('TEST-INT-P1','Interview','Officer') returning id into p1;
+ insert into game.persons(person_ref,given_name,family_name) values('TEST-INT-P2','Witness','Person') returning id into p2;
+ insert into game.police_personnel(personnel_ref,person_id,service_number,employment_status) values('TEST-INT-O1',p1,'TEST-INT-S1','active') returning id into pp1;
+ insert into game.cases(case_ref,case_title,status,opened_at,case_data,lead_personnel_id) values('TEST-INT-CASE','Interview workflow test','under_investigation',before_time,'{}',pp1) returning id into c;
+ cmd:='case interview record TEST-INT-CASE with TEST-INT-P2 by TEST-INT-O1 method face_to_face purpose "Obtain the witness account of the reported event." location "Interview Room 2" notes "Test fixture only"';
+ r:=game.interpret_text_command(cmd); if r->>'command_type'<>'start_case_interview' then raise exception 'interview parser: %',r; end if;
+ r:=game.execute_text_command(cmd,'test-int-start-001',null,pp1); if not coalesce((r->>'ok')::boolean,false) then raise exception 'interview start: %',r; end if; iref:=r->>'interview_ref';
+ cmd:='case interview turn '||iref||' by TEST-INT-O1 question "Where were you at the relevant time?" answer "I was at the east entrance and saw a delivery vehicle arrive."';
+ r:=game.execute_text_command(cmd,'test-int-turn-001',null,pp1); if not coalesce((r->>'ok')::boolean,false) or (r->>'turn_number')::int<>1 then raise exception 'turn record: %',r; end if;
+ cmd:='case witness statement record TEST-INT-CASE for TEST-INT-P2 form written_signed text "I was at the east entrance and saw a delivery vehicle arrive." from '||iref||' by TEST-INT-O1';
+ r:=game.interpret_text_command(cmd); if r->>'command_type'<>'record_case_witness_statement_from_interview' then raise exception 'statement parser: %',r; end if;
+ r:=game.execute_text_command(cmd,'test-int-statement-001',null,pp1); if not coalesce((r->>'ok')::boolean,false) then raise exception 'statement record: %',r; end if; sref:=r->>'statement_ref';
+ cmd:='case witness statement status '||sref||' set adopted because "Witness reviewed the written account and confirmed it as accurate." by TEST-INT-O1';
+ r:=game.execute_text_command(cmd,'test-int-adopt-001',null,pp1); if not coalesce((r->>'ok')::boolean,false) then raise exception 'statement adoption: %',r; end if;
+ cmd:='case interview status '||iref||' set concluded because "All planned questions were completed." by TEST-INT-O1';
+ r:=game.execute_text_command(cmd,'test-int-close-001',null,pp1); if not coalesce((r->>'ok')::boolean,false) then raise exception 'interview close: %',r; end if;
+ r:=game.execute_text_command('case interviews TEST-INT-CASE','test-int-list-001',null,pp1); if not coalesce((r->>'ok')::boolean,false) or (r->>'count')::int<>1 then raise exception 'interview list: %',r; end if;
+ r:=game.execute_text_command('case interview transcript '||iref,'test-int-transcript-001',null,pp1); if not coalesce((r->>'ok')::boolean,false) or (r->>'turn_count')::int<>1 then raise exception 'transcript: %',r; end if;
+ r:=game.execute_text_command('case witness statements TEST-INT-CASE','test-int-statements-001',null,pp1); if not coalesce((r->>'ok')::boolean,false) or (r->>'count')::int<>1 then raise exception 'statement list: %',r; end if;
+ r:=game.execute_text_command('case interview turn '||iref||' by TEST-INT-O1 question "Another question?" answer "Not allowed after closure."','test-int-after-close',null,pp1);
+ if coalesce((r->>'ok')::boolean,true) then raise exception 'post-close turn unexpectedly accepted'; end if;
+ if (select current_game_time from game.simulation_state where id=1)<>before_time then raise exception 'interview actions advanced fictional time'; end if;
+ raise notice 'PASS: interview creation, Q&A chronology, linked witness statement, adoption event, conclusion, retrieval, post-close rejection and fixed fictional clock';
+end $$;
+rollback;
