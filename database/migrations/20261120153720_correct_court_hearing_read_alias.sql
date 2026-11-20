@@ -1,0 +1,1 @@
+-- Compatibility migration: hearing read query alias correction is included in the canonical bootstrap migration 20261120153604.
