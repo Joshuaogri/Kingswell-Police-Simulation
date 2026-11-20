@@ -1,0 +1,1 @@
+create unique index case_task_submission_reviews_one_final_idx on game.case_task_submission_reviews(submission_id);
