@@ -320,7 +320,7 @@ The following table maps each of the 72 normalised-name matches whose repository
 | `20261120110252` | `kingswell_bp02_geographic_foundation_schema_and_seed` | `20261120110252_kingswell_bp02_geographic_foundation.sql` |
 | `20261120121100` | `record_transit_and_on_beat_patrol_segments` | `20261120121100_index_patrol_schedule_coverage_foreign_keys.sql` |
 
-The version `20261120121100` is the confirmed patrol collision described in section 10. The other exact-version/name differences also require inspection; a matching timestamp alone does not prove matching SQL.
+The `20261120121100` record is the confirmed patrol version/content collision described in sections 10 and 13. The `20261120110252` stored name differs, but its statement content matches the repository file after comment/whitespace normalisation. See section 13 for the direct SQL comparisons.
 
 
 ## 12. GitHub Actions connectivity verification
