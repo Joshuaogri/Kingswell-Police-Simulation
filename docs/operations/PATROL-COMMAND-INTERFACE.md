@@ -114,3 +114,6 @@ The dossier also includes case task assignments and evidence linked to the case 
 - `case governance CASE_REF by SUPERVISOR_REF`
 
 See `docs/operations/CASE-GOVERNANCE.md` for permitted outcomes and transitions.
+
+
+The case review dossier now returns the supervisory review and case status history alongside the other case records.
