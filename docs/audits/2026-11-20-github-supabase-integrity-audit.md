@@ -189,3 +189,122 @@ The live database does contain `game.move_patrol_unit` and the patrol movement e
 **Why this matters:** migration tools reconcile by version identifiers. A file whose timestamp collides with a different applied migration can be treated as already applied even though its SQL is different. A retimestamped migration may instead appear pending and be replayed. The migration chain must therefore be reconciled by version, recorded name, repository path, SQL purpose and current live object state—not by filenames or names alone.
 
 **Required treatment:** preserve both the live schema and all existing migration records. Do not rename files, repair migration history, push migrations or replay the patrol sequence until each migration has an explicit one-to-one reconciliation decision.
+
+
+## 11. Full migration-name and version reconciliation inventory
+
+The following table maps each of the 74 normalised-name matches whose repository filename timestamp differs from the applied Supabase version. The pairing is by normalised migration name; it is an inventory aid, not proof that the historical SQL bytes are identical.
+
+| Supabase version | Supabase name | GitHub file timestamp | GitHub filename |
+|---|---|---|---|
+| `20261119234957` | `runtime_foundation_commands_clock` | `20261120010000` | `20261120010000_runtime_foundation_commands_clock.sql` |
+| `20261119235103` | `harden_runtime_command_validation` | `20261120020000` | `20261120020000_harden_runtime_command_validation.sql` |
+| `20261120000129` | `validate_optional_dispatch_call_fields` | `20261120050000` | `20261120050000_validate_optional_dispatch_call_fields.sql` |
+| `20261120000935` | `unit_dispatch_and_rostered_personnel` | `20261120060000` | `20261120060000_unit_dispatch_and_rostered_personnel.sql` |
+| `20261120001047` | `register_dispatch_commands_in_help` | `20261120070000` | `20261120070000_register_dispatch_commands_in_help.sql` |
+| `20261120001259` | `honour_rostered_cross_unit_attachments` | `20261120080000` | `20261120080000_honour_rostered_cross_unit_attachments.sql` |
+| `20261120100148` | `index_scene_workflow_foreign_keys` | `20261120100100` | `20261120100100_index_scene_workflow_foreign_keys.sql` |
+| `20261120113533` | `kingswell_live_dispatch_route_integration` | `20261120114500` | `20261120114500_kingswell_live_dispatch_route_integration.sql` |
+| `20261120113738` | `index_dispatch_route_foreign_keys` | `20261120114600` | `20261120114600_index_dispatch_route_foreign_keys.sql` |
+| `20261120113841` | `enforce_deployment_route_history_append_only` | `20261120114700` | `20261120114700_enforce_deployment_route_history_append_only.sql` |
+| `20261120115032` | `register_unit_position_as_gameplay_command` | `20261120115200` | `20261120115200_register_unit_position_as_gameplay_command.sql` |
+| `20261120115508` | `player_dispatch_options_and_unit_reassignment` | `20261120115500` | `20261120115500_player_dispatch_options_and_unit_reassignment.sql` |
+| `20261120120105` | `patrol_unit_operational_state_lifecycle` | `20261120120000` | `20261120120000_patrol_unit_operational_state_lifecycle.sql` |
+| `20261120120139` | `block_dispatch_to_out_of_service_units` | `20261120120100` | `20261120120100_block_dispatch_to_out_of_service_units.sql` |
+| `20261120120220` | `index_patrol_unit_state_history_foreign_keys` | `20261120120200` | `20261120120200_index_patrol_unit_state_history_foreign_keys.sql` |
+| `20261120120342` | `patrol_beat_assignment_scheduling_and_coverage` | `20261120121000` | `20261120121000_patrol_beat_assignment_scheduling_and_coverage.sql` |
+| `20261120120433` | `index_patrol_schedule_coverage_foreign_keys` | `20261120121100` | `20261120121100_index_patrol_schedule_coverage_foreign_keys.sql` |
+| `20261120120556` | `patrol_commands_and_live_beat_coverage` | `20261120121200` | `20261120121200_patrol_commands_and_live_beat_coverage.sql` |
+| `20261120120710` | `suspend_patrol_coverage_on_incident_deployment` | `20261120121300` | `20261120121300_suspend_patrol_coverage_on_incident_deployment.sql` |
+| `20261120120955` | `patrol_road_movement_and_segment_history` | `20261120121400` | `20261120121400_patrol_road_movement_and_segment_history.sql` |
+| `20261120121018` | `fix_patrol_movement_route_variable_ambiguity` | `20261120121500` | `20261120121500_fix_patrol_movement_route_variable_ambiguity.sql` |
+| `20261120121100` | `record_transit_and_on_beat_patrol_segments` | `20261120121600` | `20261120121600_record_transit_and_on_beat_patrol_segments.sql` |
+| `20261120121122` | `include_road_movement_in_patrol_coverage` | `20261120121700` | `20261120121700_include_road_movement_in_patrol_coverage.sql` |
+| `20261120121221` | `register_patrol_commands_in_runtime_help` | `20261120121800` | `20261120121800_register_patrol_commands_in_runtime_help.sql` |
+| `20261120121513` | `remove_patrol_commands_from_forensic_dispatch` | `20261120121900` | `20261120121900_remove_patrol_commands_from_forensic_dispatch.sql` |
+| `20261120121815` | `patrol_intelligence_and_coverage_gap_reporting` | `20261120122000` | `20261120122000_patrol_intelligence_and_coverage_gap_reporting.sql` |
+| `20261120122310` | `patrol_activity_sessions_and_intelligence` | `20261120123000` | `20261120123000_patrol_activity_sessions_and_intelligence.sql` |
+| `20261120122446` | `harden_patrol_activity_record_history` | `20261120122500` | `20261120122500_harden_patrol_activity_record_history.sql` |
+| `20261120122533` | `index_patrol_movement_event_foreign_keys` | `20261120122600` | `20261120122600_index_patrol_movement_event_foreign_keys.sql` |
+| `20261120122844` | `patrol_observations_and_civilian_contacts` | `20261120124000` | `20261120124000_patrol_observations_and_civilian_contacts.sql` |
+| `20261120122903` | `patrol_intelligence_observation_contact_reporting` | `20261120124100` | `20261120124100_patrol_intelligence_observation_contact_reporting.sql` |
+| `20261120122948` | `allow_patrol_observation_contact_events` | `20261120124200` | `20261120124200_allow_patrol_observation_contact_events.sql` |
+| `20261120123044` | `index_patrol_observation_contact_foreign_keys` | `20261120124300` | `20261120124300_index_patrol_observation_contact_foreign_keys.sql` |
+| `20261120123255` | `20261120125000_searchable_patrol_intelligence` | `20261120125000` | `20261120125000_searchable_patrol_intelligence.sql` |
+| `20261120123316` | `20261120125100_refine_patrol_intelligence_search` | `20261120125100` | `20261120125100_refine_patrol_intelligence_search.sql` |
+| `20261120123807` | `20261120130000_patrol_intelligence_investigation_links` | `20261120130000` | `20261120130000_patrol_intelligence_investigation_links.sql` |
+| `20261120123949` | `20261120131000_patrol_intelligence_link_history_lookup` | `20261120131000` | `20261120131000_patrol_intelligence_link_history_lookup.sql` |
+| `20261120124058` | `20261120132000_index_patrol_intelligence_link_foreign_keys` | `20261120132000` | `20261120132000_index_patrol_intelligence_link_foreign_keys.sql` |
+| `20261120124452` | `patrol_intelligence_review_history` | `20261120134000` | `20261120134000_patrol_intelligence_review_history.sql` |
+| `20261120124710` | `patrol_intelligence_review_player_commands` | `20261120135000` | `20261120135000_patrol_intelligence_review_player_commands.sql` |
+| `20261120125144` | `case_investigative_task_management` | `20261120140000` | `20261120140000_case_investigative_task_management.sql` |
+| `20261120125347` | `case_task_player_commands` | `20261120140100` | `20261120140100_case_task_player_commands.sql` |
+| `20261120125411` | `case_task_create_command_actor_attribution` | `20261120140200` | `20261120140200_case_task_create_command_actor_attribution.sql` |
+| `20261120125559` | `case_task_help_command_registration` | `20261120140300` | `20261120140300_case_task_help_command_registration.sql` |
+| `20261120130118` | `revoke_ambiguous_case_assignment_release` | `20261120130100` | `20261120130100_revoke_ambiguous_case_assignment_release.sql` |
+| `20261120135626` | `case_lead_handovers_and_continuity` | `20261120135500` | `20261120135500_case_lead_handovers_and_continuity.sql` |
+| `20261120140743` | `fix_case_task_submission_retrieval_task_reference` | `20261120140610` | `20261120140610_fix_case_task_submission_retrieval_task_reference.sql` |
+| `20261120142033` | `index_surveillance_operation_foreign_keys` | `20261120141805` | `20261120141805_index_surveillance_operation_foreign_keys.sql` |
+| `20261120142136` | `require_surveillance_team_lead_before_deployment` | `20261120142215` | `20261120142215_require_surveillance_team_lead_before_deployment.sql` |
+| `20261120153836` | `constrain_court_event_subject_links` | `20261120153831` | `20261120153831_constrain_court_event_subject_links.sql` |
+| `20261120160009` | `correctional_foundation_and_sentence_administration` | `20261120161000` | `20261120161000_correctional_foundation_and_sentence_administration.sql` |
+| `20261120160103` | `correctional_foreign_key_indexes` | `20261120162000` | `20261120162000_correctional_foreign_key_indexes.sql` |
+| `20261120160348` | `correctional_command_runtime_integration` | `20261120170000` | `20261120170000_correctional_command_runtime_integration.sql` |
+| `20261120160601` | `correctional_sentence_case_link_validation` | `20261120170500` | `20261120170500_correctional_sentence_case_link_validation.sql` |
+| `20261120161236` | `correctional_read_only_queries_without_clock` | `20261120161200` | `20261120161200_correctional_read_only_queries_without_clock.sql` |
+| `20261120161443` | `correctional_staff_profiles_and_commands` | `20261120173500` | `20261120173500_correctional_staff_profiles_and_commands.sql` |
+| `20261120161532` | `correctional_staff_directory_authority_boundary` | `20261120174500` | `20261120174500_correctional_staff_directory_authority_boundary.sql` |
+| `20261120194513` | `kingswell_bp02_detailed_map_seed_reconciliation` | `20261120194000` | `20261120194000_kingswell_bp02_detailed_map_seed_reconciliation.sql` |
+| `20261120194528` | `kingswell_bp02_turn_traffic_aware_routing_engine_v2` | `20261120194100` | `20261120194100_kingswell_bp02_turn_traffic_aware_routing_engine_v2.sql` |
+| `20261120203656` | `bp04_sync_business_profiles_to_current_site_dossiers` | `20261120203410` | `20261120203410_bp04_sync_business_profiles_to_current_site_dossiers.sql` |
+| `20261120203946` | `bp04_individualise_property_planning_and_building_system_dossiers` | `20261120204100` | `20261120204100_bp04_individualise_property_planning_and_building_system_dossiers.sql` |
+| `20261120203959` | `bp04_add_building_specific_system_profile_references` | `20261120204200` | `20261120204200_bp04_add_building_specific_system_profile_references.sql` |
+| `20261120204220` | `bp04_individualise_unit_access_and_metering_dossiers` | `20261120204300` | `20261120204300_bp04_individualise_unit_access_and_metering_dossiers.sql` |
+| `20261120204556` | `bp04_site_agreement_term_coverage_register` | `20261120205000` | `20261120205000_bp04_site_agreement_term_coverage_register.sql` |
+| `20261120204720` | `bp04_control_interest_current_uniqueness_and_lookup_indexes` | `20261120205500` | `20261120205500_bp04_control_interest_current_uniqueness_and_lookup_indexes.sql` |
+| `20261120205002` | `bp04_site_agreement_lifecycle_event_history` | `20261120214800` | `20261120214800_bp04_site_agreement_lifecycle_event_history.sql` |
+| `20261120205301` | `bp04_detailed_organisation_institution_profiles` | `20261120220500` | `20261120220500_bp04_detailed_organisation_institution_profiles.sql` |
+| `20261120205546` | `bp04_organisation_workforce_role_dossiers` | `20261120222000` | `20261120222000_bp04_organisation_workforce_role_dossiers.sql` |
+| `20261120205750` | `bp04_site_dossiers_and_organisation_structure` | `20261120223500` | `20261120223500_bp04_site_dossiers_and_organisation_structure.sql` |
+| `20261120205942` | `bp04_property_interest_and_agreement_review_dossiers` | `20261120225000` | `20261120225000_bp04_property_interest_and_agreement_review_dossiers.sql` |
+| `20261120205957` | `bp04_correct_agreement_review_completeness_predicate` | `20261120225500` | `20261120225500_bp04_correct_agreement_review_completeness_predicate.sql` |
+| `20261120210216` | `bp04_property_title_transfer_history_framework` | `20261120231000` | `20261120231000_bp04_property_title_transfer_history_framework.sql` |
+
+### Supabase migration names without a same-name GitHub file
+
+| Supabase version | Supabase migration name | Exact-version file check |
+|---|---|---|
+| `20261119235755` | `text_command_interpreter_and_dispatch_call_intake` | No repository file with this version |
+| `20261119235824` | `fix_dispatch_call_event_type_argument` | No repository file with this version |
+| `20261120110252` | `kingswell_bp02_geographic_foundation_schema_and_seed` | `20261120110252_kingswell_bp02_geographic_foundation.sql` (same version, different name) |
+| `20261120114606` | `dispatch_eta_ranking_unit_positions_and_route_recalculation` | No repository file with this version |
+| `20261120120636` | `restrict_patrol_command_parser_and_coverage_access` | No repository file with this version |
+| `20261120124722` | `fix_patrol_intelligence_review_command_fallback` | No repository file with this version |
+| `20261120140249` | `case_task_dependency_and_workload_player_commands` | No repository file with this version |
+| `20261120192715` | `kingswell_bp02_detailed_street_atlas_and_service_access` | No repository file with this version |
+| `20261120192817` | `kingswell_bp02_turn_traffic_and_closure_aware_routing` | No repository file with this version |
+| `20261120192929` | `kingswell_bp02_dispatch_uses_simulation_clock_for_road_conditions` | No repository file with this version |
+| `20261120193001` | `kingswell_bp02_map_version_and_turn_control_register` | No repository file with this version |
+| `20261120193024` | `kingswell_bp02_extend_patrol_beat_coverage_to_service_lanes` | No repository file with this version |
+| `20261120193404` | `kingswell_bp02_connect_all_named_secondary_roads` | No repository file with this version |
+| `20261120193433` | `kingswell_bp02_complete_no_uturn_controls_for_all_segments` | No repository file with this version |
+| `20261120193805` | `kingswell_bp02_correct_service_lane_beat_coverage` | No repository file with this version |
+| `20261120193909` | `kingswell_bp02_signalised_junction_turn_bans` | No repository file with this version |
+| `20261120210623` | `bp04_physical_asset_inventory_and_unit_infrastructure` | No repository file with this version |
+
+### GitHub migration files without a same-name Supabase record
+
+| GitHub file timestamp | GitHub filename |
+|---|---|
+| `20261120030000` | `20261120030000_text_interpreter_dispatch_intake.sql` |
+| `20261120040000` | `20261120040000_fix_dispatch_call_event_type.sql` |
+| `20261120115000` | `20261120115000_dispatch_eta_ranking_unit_position_and_recalculation.sql` |
+
+### Exact-version records whose recorded name differs from the GitHub filename
+
+| Version | Supabase migration name | GitHub file at that version |
+|---|---|---|
+| `20261120110252` | `kingswell_bp02_geographic_foundation_schema_and_seed` | `20261120110252_kingswell_bp02_geographic_foundation.sql` |
+| `20261120121100` | `record_transit_and_on_beat_patrol_segments` | `20261120121100_index_patrol_schedule_coverage_foreign_keys.sql` |
+
+The version `20261120121100` is the confirmed patrol collision described in section 10. The other exact-version/name differences also require inspection; a matching timestamp alone does not prove matching SQL.
