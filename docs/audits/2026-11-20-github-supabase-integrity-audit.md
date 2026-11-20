@@ -1390,3 +1390,18 @@ Classification: **same 29 indexes; explicit default index-method notation only**
 The complete remote and GitHub SQL for `independent_forensic_method_validation_and_review_qualification` is canonically identical after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults, `search_path` declarations and concatenation-operator spacing.
 
 Classification: **canonical SQL match after formatting normalisation**. No substantive validation, independent-review qualification, command, permission or event difference was identified. Retain the existing file and remote history.
+
+
+## 88. Content-led review of version 20261120110935 — road-network topology divergence
+
+The remote migration uses a set-based seed to add 24 neighbourhood local roads, three named bridge roads, and the corresponding river approaches/bridge segments. The GitHub reconstruction uses a different procedural algorithm: it loops over all 24 neighbourhood centres, creates west/east junctions for each centre, adds two approaches per centre, and creates a bridge segment between each pair.
+
+A read-only live inventory currently shows:
+- 24 `KNG-L-` neighbourhood roads and 3 `KNG-BR` bridge roads;
+- 3 west junctions and 3 east junctions;
+- 9 `RIVER-` segments, of which 3 are bridge segments;
+- 75 total roads, 157 total junctions and 229 total road segments.
+
+The live counts match the remote three-bridge topology. The GitHub loop would attempt to establish 24 west/east pairs and 72 river segments (two approaches plus a bridge for each neighbourhood), rather than the live 3 pairs and 9 river segments. Since three pairs already exist, a clean execution of the repository algorithm would add 42 junctions and 63 river segments beyond the current live inventory.
+
+Classification: **genuine road-network seed/topology divergence with material geographic consequences**. The remote migration's three-bridge network is what is currently present in Supabase. Do not execute the GitHub reconstruction or alter the live road network; recover the applied set-based seed logic into the source before any clean replay.
