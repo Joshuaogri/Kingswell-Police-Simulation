@@ -1117,3 +1117,10 @@ The repository has the final `KWOR-` default in its earlier 153604 file. The liv
 **Outstanding live function defect:** the current `game.execute_justice_command(...)` and the consolidated repository function declare `cp` as `game.court_cases%rowtype`, but the `get_court_docket` branch loads the requested case into `case_row` and then uses `cp.id` in prosecutor, defence-counsel and court-official access subqueries. `cp` is not populated in that branch. A read-only inspection confirms the current live function still contains those `cp.id` references. This can deny court-docket access to prosecutors, defence counsel and court officials even when they are linked to the case; the police-assignment check uses `case_row.id`.
 
 Classification: **court workflow fixes consolidated into the earlier GitHub bootstrap; KWOR reference prefix is correct in live and repository state; separate live docket-access defect remains unresolved**. No live changes were made.
+
+
+## 59. Content-led review of task-submission retrieval fix
+
+The GitHub file `20261120140610_fix_case_task_submission_retrieval_task_reference.sql` is stored remotely at version `20261120140743`, under the same migration name. The complete SQL is byte-for-byte identical. It corrects task retrieval to resolve the task directly by `task_ref` rather than incorrectly joining through the submission reference.
+
+Classification: **exact source-file match with remote version/timestamp discrepancy**. Preserve both records.
