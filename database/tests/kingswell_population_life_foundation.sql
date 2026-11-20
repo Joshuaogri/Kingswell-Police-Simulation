@@ -21,6 +21,7 @@ declare
   v_incident uuid;
   v_call uuid;
   v_summary record;
+  v_baseline record;
   v_count integer;
   v_rejected boolean;
   v_clock timestamptz;
@@ -44,6 +45,22 @@ begin
   if v_city is null or v_property is null or v_unit1 is null or v_unit2 is null then
     raise exception 'Kingswell or a multi-dwelling residential property is missing';
   end if;
+
+  -- The live city is now fully occupied. Temporarily release two real dwellings
+  -- inside this rollback-only test, then restore them automatically on ROLLBACK.
+  update game.household_memberships
+     set valid_to=date '2026-01-01'
+   where household_id in (
+     select id from game.households
+     where primary_building_unit_id in (v_unit1,v_unit2)
+       and household_status='active'
+   ) and valid_to is null;
+  update game.households
+     set household_status='dissolved',dissolved_on=date '2026-01-01'
+   where primary_building_unit_id in (v_unit1,v_unit2)
+     and household_status='active';
+
+  select * into v_baseline from game.get_population_summary('KNG');
 
   insert into game.persons(person_ref,given_name,family_name,date_of_birth,nationality,person_status,birth_city_id)
   values
@@ -142,9 +159,12 @@ begin
     (v_person2,v_city,'student','2022-01-01');
 
   select * into v_summary from game.get_population_summary('KNG');
-  if v_summary.unique_people<>2 or v_summary.permanent_residents<>2
-    or v_summary.government_workers<>1 or v_summary.current_households<>1 then
-    raise exception 'Population summary double-counted or missed overlapping memberships: %',row_to_json(v_summary);
+  if v_summary.unique_people<>v_baseline.unique_people+2
+    or v_summary.permanent_residents<>v_baseline.permanent_residents+2
+    or v_summary.government_workers<>v_baseline.government_workers+1
+    or v_summary.current_households<>v_baseline.current_households+1 then
+    raise exception 'Population summary double-counted or missed overlapping memberships: baseline %, result %',
+      row_to_json(v_baseline),row_to_json(v_summary);
   end if;
 
   insert into game.person_relationships(person_id,related_person_id,relationship_type,valid_from)
@@ -180,7 +200,9 @@ begin
     raise exception 'Death event did not close current address, household and population memberships';
   end if;
   select * into v_summary from game.get_population_summary('KNG');
-  if v_summary.unique_people<>1 or v_summary.permanent_residents<>1 or v_summary.current_households<>1 then
+  if v_summary.unique_people<>v_baseline.unique_people+1
+    or v_summary.permanent_residents<>v_baseline.permanent_residents+1
+    or v_summary.current_households<>v_baseline.current_households+1 then
     raise exception 'Deceased person was still counted in current population or household totals';
   end if;
   if game.calculate_person_age(v_person2)<>19 then
