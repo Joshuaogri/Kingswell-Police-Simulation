@@ -1,6 +1,7 @@
 -- BP-03 population, household, routine and persistent individual-life regression.
 -- Every fixture is fictional and rolled back. This test must not initialise the game clock.
 begin;
+set local role service_role;
 do $$
 declare
   v_city uuid;
