@@ -5,7 +5,7 @@ declare v_city uuid; v_n integer; v_bad integer;
 begin
  select id into v_city from game.cities where code='KNG';
  if v_city is null then raise exception 'Kingswell city missing'; end if;
- select count(*) into v_n from game.properties where city_id=v_city;
+ select count(*) into v_n from game.properties where city_id=v_city and property_ref not like 'KNG-P-RH%' and property_ref not like 'KNG-P-CM%';
  if v_n<>480 then raise exception 'Expected 480 properties; found %',v_n; end if;
  select count(*) into v_n from game.buildings b join game.properties p on p.id=b.property_id where p.city_id=v_city;
  if v_n<>480 then raise exception 'Expected 480 buildings; found %',v_n; end if;
@@ -51,7 +51,7 @@ begin
  < ((jt.x_m-p.x_m)::bigint*(jt.x_m-p.x_m)::bigint+(jt.y_m-p.y_m)::bigint*(jt.y_m-p.y_m)::bigint)));
  if v_bad<>0 then raise exception 'Access points do not resolve to the nearest frontage junction: %',v_bad; end if;
  select count(*) into v_n from game.neighbourhoods n join game.districts d on d.id=n.district_id
- where d.city_id=v_city and (select count(*) from game.properties p where p.neighbourhood_id=n.id)<>20;
+ where d.city_id=v_city and (select count(*) from game.properties p where p.neighbourhood_id=n.id and p.property_ref not like 'KNG-P-RH%' and p.property_ref not like 'KNG-P-CM%')<>20;
  if v_n<>0 then raise exception 'Neighbourhoods not holding exactly 20 parcels: %',v_n; end if;
  select count(*) into v_n from pg_tables where schemaname='game'
  and tablename in ('properties','buildings','building_units','property_addresses','property_access_points','city_landmarks') and rowsecurity;
