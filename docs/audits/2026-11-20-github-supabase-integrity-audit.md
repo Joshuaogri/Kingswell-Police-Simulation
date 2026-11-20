@@ -665,3 +665,13 @@ The remote and repository `game.get_case_review_dossier(text)` function bodies a
 A read-only live privilege check confirms the current function is not executable by `anon` or `authenticated` and is executable by `service_role`.
 
 Classification: **matching dossier function; repository includes explicit permission declarations that match the current live privilege boundary**. No live change is required.
+
+
+## 37. Content-led review of version 20261120135951
+
+Two function bodies match: `game.enforce_case_task_dependencies(...)` and `game.get_case_task_workload(...)`. Two definitions differ:
+
+- The remote append-only trigger function raises: “case task dependencies are immutable; add a new task or record a separate corrective task”. The repository reconstruction uses the shorter message “case task dependencies are immutable”. This is a message-only difference.
+- The remote `game.add_case_task_dependency(...)` performs recursive cycle detection only when the prerequisite task is not already completed or cancelled. The repository version performs the cycle check unconditionally. This changes whether a dependency involving a completed/cancelled prerequisite can be recorded when it would otherwise form a cycle in the historical graph.
+
+Classification: **one message-only difference and one behavioural difference in dependency-cycle validation**. Preserve both versions. The cycle-check policy must be reviewed against the intended case-task model before any migration reconciliation; no live changes were made.
