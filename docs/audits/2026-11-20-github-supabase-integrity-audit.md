@@ -920,3 +920,10 @@ Supabase records a second migration with the same name, `case_review_dossier_and
 The remote migration additionally replaces `game.get_case_review_dossier(text)` with a substantially expanded version that restricts retrieval to the recorded case lead or an actively assigned investigator and constructs a fuller dossier. That function definition is absent from the same-version GitHub file. It is not the same content as the earlier `20261120133851` dossier function.
 
 Classification: **genuine unrecovered historical SQL at version 20261120133944**. The remote dossier-function replacement is not represented in the same-version repository file. Preserve the remote migration record and current repository file; recover and compare the missing function source before any history repair. Do not infer that the earlier dossier function is a substitute.
+
+
+## 42. Content-led review of patrol-intelligence review history
+
+The GitHub file `20261120134000_patrol_intelligence_review_history.sql` is stored remotely at version `20261120124452`, under the same migration name. The complete SQL is canonically identical. Both define the append-only patrol-intelligence review table, its indexes, and matching record/retrieval function bodies.
+
+Classification: **exact canonical SQL match with remote version/timestamp discrepancy**. Preserve the records pending final history mapping; no repair now.
