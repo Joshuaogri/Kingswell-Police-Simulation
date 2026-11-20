@@ -419,3 +419,29 @@ Remaining: rollback-only seeded dispatch integration, ETA-ranked dispatch presen
 
 
 Route-history integrity hardening: deployment_route_history is now append-only for the runtime role. service_role has SELECT and INSERT only; UPDATE and DELETE are revoked. The regression test asserts this restriction. Applied migration and main source: database/migrations/20261120114700_enforce_deployment_route_history_append_only.sql. Current migration count: 50.
+
+## Seeded dispatch-to-route end-to-end verification — 2026-11-20
+
+**PASS:** `database/tests/kingswell_dispatch_route_end_to_end.sql` executed successfully against live Supabase inside a transaction ending in ROLLBACK.
+
+The test temporarily creates:
+- one fictional person and active police personnel record;
+- one active patrol unit attached to an existing police facility;
+- one active roster and on-duty assignment;
+- one new incident at a different existing property with a primary routable access point.
+
+It then verifies:
+- candidate selection returns the eligible patrol unit and its on-duty officer;
+- candidate routing resolves the correct facility origin and incident access point;
+- route status is calculated and distance/duration are populated;
+- estimated arrival equals the fixed test game time plus the posted-speed route duration;
+- the real `game.submit_command(..., 'dispatch_unit', ...)` path dispatches the officer;
+- the deployment trigger stores a calculated route, endpoints, distance, duration and ETA;
+- exactly one initial route-history record is written for the deployment;
+- replaying the same idempotency key returns the same command ID and does not duplicate deployment;
+- incident status and dispatch event are updated;
+- fictional game time does not advance.
+
+All temporary persons, personnel, units, rosters, assignments, incidents, deployments, command-ledger rows, route calculations and route-history records are rolled back. The test leaves no fixture data in the live game.
+
+Source: `database/tests/kingswell_dispatch_route_end_to_end.sql`.
