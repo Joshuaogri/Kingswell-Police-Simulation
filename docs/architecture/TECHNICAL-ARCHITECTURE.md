@@ -2,7 +2,7 @@
 
 **Status:** Initial technical architecture outline; implementation plan to be expanded from the approved blueprint  
 **Version:** 0.1  
-**Foundation:** Implemented and verified (42-table private schema and four migrations)  
+**Foundation:** Implemented and verified (42-table private schema and six migrations)  
 **Simulation runtime:** Initial database-backed command and clock foundation implemented; domain runtime in progress
 
 ## 1. Purpose
@@ -53,7 +53,9 @@ The private schema covers geography, properties, organisations, people, police s
 - `docs/blueprint/` — master game design.
 - `docs/governance/` — implementation status and project controls.
 - `docs/architecture/` — software and data architecture.
-- `database/migrations/` — versioned database change scripts.\n- `database/tests/` — repeatable SQL regression scripts.\n- `docs/architecture/RUNTIME-FOUNDATION.md` — command and clock runtime design.
+- `database/migrations/` — versioned database change scripts.
+- `database/tests/` — repeatable SQL regression scripts.
+- `docs/architecture/RUNTIME-FOUNDATION.md` — command, clock and dispatch runtime design.
 - `src/` — future application and simulation code.
 - `tests/` — future automated and manual verification.
 - `config/` — future non-secret configuration examples.
@@ -66,4 +68,4 @@ The project uses **main only**. All work and commits go directly to `main`. Do n
 
 ## 8. Current implementation state
 
-The Supabase project is connected and healthy. The private `game` schema has 42 tables, 80 foreign keys and 147 indexes, with four migrations recorded in Supabase and committed under `database/migrations/` on GitHub `main`. RLS is enabled on all 42 tables and the schema is not exposed through the public Data API. One invoker-rights command function is installed. The singleton clock row is paused and intentionally has no fictional start time yet. The command ledger and clock history are empty. The SQL regression test passed in a transaction that rolled back its test records, including rejection of fractional and out-of-range time requests. No Edge Function is deployed: authentication and player/session mapping must be implemented before exposing a privileged endpoint. Natural-language parsing, fictional police identity/authority, domain handlers, world seed data, event scheduling, NPC processing, backup/recovery and CI remain outstanding. See `docs/architecture/RUNTIME-FOUNDATION.md`.
+The Supabase project is connected and healthy. The private `game` schema has 42 tables, 80 foreign keys and 147 indexes, with six migrations recorded in Supabase and committed under `database/migrations/` on GitHub `main`. RLS is enabled on all 42 tables and the schema is not exposed through the public Data API. Three invoker-rights runtime functions are installed: typed command submission, text interpretation and text-command execution. The singleton clock row is paused and intentionally has no fictional start time yet. The command ledger, call ledger, incidents and dispatch-event history are empty; regression tests rolled back their temporary records. The SQL regression test passed in a transaction that rolled back its test records, including rejection of fractional and out-of-range time requests. No Edge Function is deployed: authentication and player/session mapping must be implemented before exposing a privileged endpoint. The limited text grammar supports help, status, explicit time advancement and initial emergency-call intake. Full natural-language understanding, fictional police identity/authority, unit dispatch/deployment, wider domain handlers, world seed data, event scheduling, NPC processing, backup/recovery and CI remain outstanding. See `docs/architecture/RUNTIME-FOUNDATION.md`.
