@@ -343,18 +343,15 @@ Persistent identity does not require continuous full-detail processing for every
 
 ### Housing capacity and population seeding
 
-BP-04 has now expanded the existing property/building/unit system while preserving the original 480-property baseline. Kingswell has 656 properties, 656 buildings, 26,888 building units/premises and 24,512 units classified as residential. This provides planning capacity for the 100,000-person permanent-resident baseline at approximately 4.08 residents per residential unit.
+BP-04 supplies 24,512 canonical dwelling units across eight residential neighbourhoods. The original four-person profile capacity totalled only 98,048, so BP-03's housing reconciliation raises the planning occupancy limit to five in 244 dwellings in each residential neighbourhood. The resulting capacity is exactly 100,000: 22,560 dwellings at four occupants and 1,952 at five. No property, building or unit identities are duplicated.
 
-The former housing-capacity blocker is therefore cleared. BP-03 can now proceed with:
-- generating exactly one canonical person identity per NPC;
-- creating plausible household records and memberships;
-- allocating permanent residents to the existing residential property/unit inventory;
-- assigning address roles and household primary addresses;
-- linking employment to existing organisations and business sites where the person-generation rules require it.
+BP-03 now stores exact dwelling-unit references on both household primary residences (households.primary_building_unit_id) and person address history (person_addresses.building_unit_id). Database checks require a household unit to be a profiled dwelling, require the household/property/unit references to agree, require a residential address to reference a dwelling in the same property, permit only one active primary household per dwelling, and reject household membership beyond the unit's recorded occupancy capacity.
 
-The population seed must use existing BP-04 property, building, unit and address references. It must not invent duplicate housing, properties, buildings, units or addresses. Residential allocation should distribute household sizes plausibly by neighbourhood and building type, preserve unoccupied/temporary housing where appropriate, and never exceed a unit's occupancy capacity. Business employee estimates in BP-04 are not individual NPCs; BP-03 creates real employee identities and employment links.
+The population seed uses the existing BP-04 property, building, unit and address references. It must not invent duplicate housing, properties, buildings, units or addresses. Residential allocation is deterministic and distributed across neighbourhoods; it must preserve unoccupied/temporary housing where appropriate and never exceed a unit's occupancy capacity. Business employee estimates in BP-04 are not individual NPCs; BP-03 creates real employee identities and employment links through the existing organisation_personnel table.
 
 The fictional clock remains uninitialised. Population and household seeding is static setup data and must not advance fictional time. Daily routines and actual activity events remain controlled by the later runtime scheduler and explicit time-advance commands.
+
+**Implementation/test state:** Exact unit allocation and capacity enforcement are installed. The 100,000-person canonical-identity scale test, the rollback-only dwelling/household integration regression and the original BP-03 individual-life regression pass. The full population has deliberately not been left in the live database because the requested seed test was rolled back; no persistent resident or household population is present. BP-03's live population-seed acceptance remains open until the actual 100,000-person seed is intentionally committed.
 
 ### Implementation and acceptance conditions
 BP-03 is complete when all of the following are verified:
