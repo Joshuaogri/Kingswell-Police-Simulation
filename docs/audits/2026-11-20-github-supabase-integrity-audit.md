@@ -22,7 +22,7 @@ No database migrations, schema changes, permission changes, record updates or de
 | Database | PostgreSQL 17.12 |
 | Region | `eu-west-1` |
 | GitHub working branch | `main` |
-| GitHub Actions workflows | One: `.github/workflows/deploy-pages.yml` |
+| GitHub Actions workflows | Two: `.github/workflows/deploy-pages.yml` and `.github/workflows/verify-supabase-migrations.yml` |
 | Existing workflow purpose | Publishes the browser test centre to GitHub Pages |
 | Supabase deployment in existing workflow | None |
 | Supabase CLI project configuration | No `supabase/config.toml` found |
@@ -33,19 +33,22 @@ A repository-wide search found no references to `SUPABASE_ACCESS_TOKEN` or `SUPA
 
 ## 3. Migration reconciliation
 
-| Measure | Count |
+The initial filename/CLI comparison has now been supplemented by a direct, read-only query of \`supabase_migrations.schema_migrations\`, retrieving the stored version, migration name and statement-array digest. The remote table also contains the original \`statements\` array, so a deeper SQL-content comparison is possible and is the next audit step.
+
+| Measure | Verified count |
 |---|---:|
 | SQL migration files in GitHub | 212 |
 | Applied migration records in Supabase | 225 |
-| Records matching by normalised migration name | 208 |
-| Name matches with the exact same version timestamp | 134 |
-| Name matches with different version timestamps | 72 |
-| Supabase records with no matching GitHub migration name | 17 |
-| GitHub migration files with no matching Supabase migration name | 3 |
+| Exact version identifiers present on both sides | 138 |
+| GitHub-only version identifiers | 74 |
+| Supabase-only version identifiers | 87 |
+| Distinct migration names found on both sides after removing a leading 8- or 14-digit timestamp prefix from stored names | 207 |
+| Supabase records with no matching repository migration name after that normalisation | 17 |
+| GitHub migration files with no matching Supabase migration name after that normalisation | 3 |
 
-The 72 migrations with matching names but different version timestamps require particular attention. Supabase uses migration versions as well as names. A name match does not make a different version safe to deploy.
+The 138 exact version identifiers are not proof of SQL equivalence. Two of those exact-version records have a genuine different-name collision, detailed in section 13. A third record (\`20261120130735\`) has a stored name prefixed with \`20261120_\`; after removing that date prefix its name matches the repository migration name.
 
-The 17 unmatched Supabase migration names and three unmatched repository migration names must be mapped to their actual SQL files, including renamed or retimestamped candidates. The Supabase migration history provides version/name records, not a checksum or copy of each historical SQL file, so byte-for-byte comparison with the SQL originally applied is not currently possible from migration history alone.
+The 17 unmatched Supabase names and three unmatched repository names must be mapped to actual SQL files, including renamed or retimestamped candidates. The Supabase history table stores executed statement arrays, which can be compared with repository SQL after accounting for statement splitting and formatting. That comparison has not yet been completed. No migration deployment or repair is authorised by this inventory.
 
 Two distinct repository migrations share the human-readable name `case_review_dossier_and_player_command` at versions `20261120133851` and `20261120133944`. Their SQL files are different in content and should be treated as separate migrations, not as duplicate files.
 
@@ -322,11 +325,40 @@ The version `20261120121100` is the confirmed patrol collision described in sect
 
 ## 12. GitHub Actions connectivity verification
 
-A read-only GitHub Actions workflow was added at `.github/workflows/verify-supabase-migrations.yml`. It is deliberately manual-only while connection details are being completed. It contains no `db push`, migration repair, reset or write operation.
+The manual-only workflow \`.github/workflows/verify-supabase-migrations.yml\` now connects successfully through the shared IPv4 session pooler and runs \`supabase migration list\`. Run \`44827744093\` completed successfully on 2026-11-20. The job verified that the database-password secret was injected without displaying its value, read local and remote migration versions, and uploaded the \`kingswell-supabase-migration-inventory\` artifact.
 
-Two connection attempts produced useful diagnostics:
+The workflow performs no \`db push\`, migration repair, reset or SQL write. It remains manually triggered only. The database password and Supabase access token remain separate secrets; neither value is stored in the repository or exposed in logs.
 
-1. The initial `supabase link` attempt confirmed that both configured secret values were injected without displaying them. The Supabase access token then failed the CLI's project-status lookup because it lacks the `project_admin_read` permission. This does not mean the token is invalid; its current project/database scope is insufficient for that Management API operation. No broader token permission is required if the database-password route is used.
-2. A direct PostgreSQL connection using the database password reached the project's direct hostname but failed because that endpoint resolved to IPv6 and GitHub-hosted runners are IPv4-only. Supabase's current connection guide recommends the shared session pooler for IPv4-only networks. The exact pooler hostname must be copied from the project's Connect panel; it cannot safely be inferred from the region.
+The CLI inventory is timestamp-only. It is useful for version counts but cannot detect same-version/different-name collisions or compare SQL contents. A separate read-only SQL inspection was therefore performed against \`supabase_migrations.schema_migrations\` for the more complete reconciliation in section 13.
 
-The workflow was therefore changed to manual-only. It must be updated to use the exact shared session-pooler hostname and then rerun. The database password secret was injected successfully; no password value was displayed or copied into the repository. No database write was performed.
+
+## 13. Direct remote migration-history inspection
+
+A read-only query of \`supabase_migrations.schema_migrations\` confirmed the table columns include \`version\`, \`name\`, \`statements\`, \`created_by\`, \`idempotency_key\` and \`rollback\`. The audit retrieved all 225 version/name records and computed a digest over each stored statement array for later comparison. No rows were inserted, updated or deleted.
+
+### Exact-version name collisions
+
+| Version | Supabase recorded name | GitHub file at same version | Finding |
+|---|---|---|---|
+| \`20261120110252\` | \`kingswell_bp02_geographic_foundation_schema_and_seed\` | \`20261120110252_kingswell_bp02_geographic_foundation.sql\` | Genuine version/name collision; SQL-content comparison required |
+| \`20261120121100\` | \`record_transit_and_on_beat_patrol_segments\` | \`20261120121100_index_patrol_schedule_coverage_foreign_keys.sql\` | Genuine version/name collision; SQL-content comparison required |
+
+The record at \`20261120130735\` is not treated as a third genuine collision: Supabase stores the name as \`20261120_case_investigative_leads_and_enquiries\`, while the repository suffix is \`case_investigative_leads_and_enquiries\`. Removing the leading eight-digit date prefix makes the names match.
+
+### Duplicate applied migration name
+
+The remote history contains two records named \`case_review_dossier_and_player_command\`, at versions \`20261120133851\` and \`20261120133944\`. Both must remain distinct until their statement arrays and corresponding repository files are compared.
+
+### Migration names without a counterpart
+
+The 17 remote-only names and three repository-only names are listed in section 11. The mismatch pattern includes renamed migrations, migrations whose timestamps moved, and possible missing historical SQL files. Name similarity alone is not sufficient to decide which files are safe to rename or replay.
+
+### Reconciliation decision
+
+1. Preserve the live database and every existing migration-history row.
+2. Compare each remote \`statements\` array against the candidate repository SQL file, beginning with the two genuine exact-version collisions and the duplicate-name pair.
+3. Map all 17 remote-only and three repository-only names to candidate files or classify them as genuinely missing.
+4. Only after the content mapping is complete, compare the live schema with the repository's intended final schema and prepare a non-deploying reconciliation plan.
+5. Keep automatic migration deployment disabled. Do not run \`db push\`, \`migration repair\`, reset or replay during this work.
+
+**No production migration, schema, data or permission changes were made during this direct inspection.**
