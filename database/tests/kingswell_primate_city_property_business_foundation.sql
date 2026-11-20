@@ -22,7 +22,7 @@ begin
   or (select count(*) from game.properties where property_ref like 'KNG-P-CM%')<>80 then
   raise exception 'The residential tower and commercial centre expansion counts are incorrect';
  end if;
- if (select count(*) from game.building_units u join game.buildings b on b.id=u.building_id where b.building_ref like 'KNG-B-RH%' and u.unit_type='residential')<>24576 then
+ if (select count(*) from game.building_units u join game.buildings b on b.id=u.building_id where b.building_ref like 'KNG-B-RH%' and u.unit_type='residential')<>24384 then
   raise exception 'Residential tower apartment capacity is incorrect';
  end if;
  if (select count(*) from game.building_units u join game.buildings b on b.id=u.building_id where b.building_ref like 'KNG-B-CM%')<>1600 then
@@ -61,10 +61,13 @@ begin
   group by p.id having count(x.id)<>1) then
   raise exception 'Every property must have exactly one current registered owner';
  end if;
- if (select count(*) from game.business_profiles)<>1100 then
-  raise exception 'Business seed must contain 1100 unique businesses';
+ if (select count(*) from game.business_profiles)<>1452 then
+  raise exception 'Business seed must contain 1452 unique businesses';
  end if;
- if (select count(*) from game.organisation_locations ol join game.business_profiles bp on bp.organisation_id=ol.organisation_id where ol.valid_to is null)<>1100 then
+ if (select count(*) from game.business_profiles where sector='neighbourhood_services')<>352 then
+  raise exception 'Neighbourhood service business seed is incomplete';
+ end if;
+ if (select count(*) from game.organisation_locations ol join game.business_profiles bp on bp.organisation_id=ol.organisation_id where ol.valid_to is null)<>1452 then
   raise exception 'Every seeded business must have a current operating site';
  end if;
  if exists(select 1 from game.organisation_locations where building_unit_id is not null and valid_to is null and occupancy_status='active'
