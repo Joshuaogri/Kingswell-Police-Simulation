@@ -1,0 +1,6 @@
+create index scene_safety_assessments_scene_fk_idx on game.scene_safety_assessments(scene_id);
+create index scene_safety_assessments_assessed_by_fk_idx on game.scene_safety_assessments(assessed_by_personnel_id);
+create index scene_safety_assessments_source_command_fk_idx on game.scene_safety_assessments(source_command_id);
+create index scene_boundary_revisions_scene_fk_idx on game.scene_boundary_revisions(scene_id);
+create index scene_boundary_revisions_set_by_fk_idx on game.scene_boundary_revisions(set_by_personnel_id);
+create index scene_boundary_revisions_source_command_fk_idx on game.scene_boundary_revisions(source_command_id);
