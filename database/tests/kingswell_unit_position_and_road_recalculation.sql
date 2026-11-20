@@ -41,7 +41,7 @@ begin
  if coalesce((v_dispatch->>'ok')::boolean,false) is not true then raise exception 'Dispatch failed: %',v_dispatch; end if;
  select id,route_calculation_id into v_deployment,v_route from game.incident_deployments where incident_id=v_incident and unit_id=v_unit;
  if v_deployment is null or v_route is null then raise exception 'Initial route snapshot missing'; end if;
- v_position:=game.record_unit_position('KNG-TEST-UNIT-POS-01',v_second_position,'Regression movement update');
+ v_position:=game.execute_text_command('position unit KNG-TEST-UNIT-POS-01 at '||v_second_position::text||' because Regression movement update','KNG-TEST-POS-COMMAND-01',null,null);
  if (v_position->>'active_deployments_recalculated')::integer<>1 then raise exception 'Position update did not recalculate deployment: %',v_position; end if;
  if (select current_access_point_id from game.police_units where id=v_unit) is distinct from v_second_position then raise exception 'Unit position not stored'; end if;
  select count(*) into v_history from game.deployment_route_history where deployment_id=v_deployment;
