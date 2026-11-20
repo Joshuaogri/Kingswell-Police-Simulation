@@ -17,7 +17,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | Master blueprint | Approved | BP-01 to BP-44 approved as the design baseline on 2026-11-20; individual divisions retain their recorded refinement notes |
 | Implementation register | Started | This file |
 | Technical architecture | Initial draft | See `docs/architecture/TECHNICAL-ARCHITECTURE.md` |
-| Database schema | Runtime foundation and multiple police/justice/correctional/population/property/business systems implemented | Private `game` schema; live audit snapshot: 185 tables, 629 foreign keys, 915 indexes; RLS enabled on all 185 tables; Kingswell BP-02 geography and BP-04 property/business layer seeded; BP-03 life/household/routine foundation deployed; no persistent persons, households, cases, incidents, evidence, dispatch calls or route records; fictional clock remains uninitialized |
+| Database schema | Runtime foundation and multiple police/justice/correctional/population/property/business systems implemented | Private `game` schema; live audit snapshot: 185 tables, 629 foreign keys, 915 indexes; RLS enabled on all 185 tables; BP-02 geography and BP-04 property/business layer seeded; BP-03 population live: 100,000 persons, 24,512 households, 100,000 memberships and addresses, 43,412 business employees; no test fixtures, cases, incidents, evidence, dispatch calls or route records; fictional clock remains uninitialised |
 | Application/gameplay code | In progress | Database-backed text command interpreter, controlled clock, emergency-call/dispatch/arrival, scene-control, field-report and resource-request workflows implemented; full domain handlers remain outstanding |
 | Runtime regression tests | Implemented; transaction smoke-tested | Runtime, dispatch, scene, evidence, forensic laboratory, geography and police-facility/patrol-geography SQL regression scripts cover implemented slices; test fixtures roll back |
 
@@ -27,7 +27,7 @@ This register tracks actual progress. A design being written does not mean it ha
 |---|---|---|
 | BP-01 | Game Identity, Foundations and Governing Rules | Approved |
 | BP-02 | Country, City and Geographical Architecture | Complete and verified; Asterfell's eight regions, Kingswell's 20 km × 16 km grid, 12 districts/24 neighbourhoods, 51 roads/118 junctions/151 segments/3 bridges/24 landmarks; corrected all 12 map envelopes; route and dispatch integration regression suites pass |
-| BP-03 | Population and Individual Simulation Architecture | Foundation and exact dwelling allocation implemented; 24,512 dwelling units now provide 100,000 places (1,952 five-person and 22,560 four-person); household/address records link exact unit IDs; capacity and unit/property consistency are enforced; 100k identity-scale, rollback unit-allocation integration and existing individual-life regression pass; live population seed remains uncommitted by request; routine execution awaits BP-35 |
+| BP-03 | Population and Individual Simulation Architecture | Complete static foundation and live seed: 100,000 unique persons, 24,512 active households, 100,000 exact current residential addresses and primary memberships, 100,000 permanent-resident memberships, 309,760 relationship records, 100,000 birth events, 700,000 weekly sleep routines, 43,412 business employment links and 217,060 weekday work routines; all 24,512 dwellings occupied within capacity; exact business headcounts reconcile; live acceptance checks pass; actual activity execution awaits BP-35/BP-37 and the fictional clock remains uninitialised |
 | BP-04 | Buildings, Properties, Businesses and Organisations | Implemented and regression-tested: 656 properties/buildings, 26,888 units, 1,452 businesses, 25 public institutional sites, full property/building/unit dossiers, ownership/occupancy and neighbourhood map queries/commands |
 | BP-05 | Police Architecture | Approved; initial headquarters, 12 district stations, five specialist facilities and 12 district patrol sectors geographically seeded; command/personnel structure remains outstanding |
 | BP-06 | Police Personnel | Approved |
@@ -1110,12 +1110,22 @@ Resolved the open processing-model choice: every person has one persistent canon
 - `game.get_population_summary(city_code)` counts distinct people and distinct category memberships without double-counting overlapping groups.
 - Case, incident-party, dispatch-caller and incident-property resident links automatically promote relevant people to full simulation.
 
-### Regression
-The following live Supabase regression scripts passed and rolled back all fixtures:
-- `database/tests/kingswell_population_life_foundation.sql` — identity, exact current residential unit addresses, household/unit allocation, rejection of property-only current residences, household occupancy/unit/dissolution guards, overlapping categories, distinct population counts, relationships, routines, birth/death events, death-related membership closure, append-only history, monotonic promotions, automatic police-relevance promotion, activity clock guards, RLS and uninitialised clock.
-- `database/tests/kingswell_bp03_dwelling_unit_allocation.sql` — exact unit/property links, household-to-unit consistency, household capacity enforcement, rejection of non-dwelling allocation, mismatched property/unit addresses and duplicate active households, and rollback.
-- `database/tests/kingswell_bp03_population_identity_scale.sql` — 100,000 unique canonical person identities inserted and verified in one rollback-only scale test.
-The existing BP-02 geography, property/address, police/patrol geography, weighted-routing, dispatch-route and BP-04 property/business regression suites also passed after the BP-03 schema change. A 100-person integrated household/address/relationship/routine/life-event regression passed. A complete 100,000-person linked-record end-to-end load was not confirmed: the database execution window timed out during that larger test. Do not mark the full population seed acceptance as passed on the basis of identity-only scale testing.
+### Live seed and acceptance
+The complete linked population is now committed to the live Supabase database. The seed was loaded in deterministic 500-dwelling batches and employment in 1,000-job batches. All batches completed. The original 5,000-job employment batch exceeded the statement timeout; that batch rolled back, the seeder was optimised with duplicate-prevention indexes, and all remaining jobs loaded successfully in smaller batches.
+
+Live acceptance checks passed:
+- 100,000 persons with 100,000 unique person references and complete core profiles.
+- 24,512 active households, 100,000 current household memberships and 100,000 current primary addresses with exact dwelling-unit references.
+- 100,000 permanent-resident memberships in city KNG.
+- Zero household-capacity mismatches and zero address/household unit mismatches.
+- 309,760 relationship records and 100,000 birth life-event records.
+- 700,000 sleep routines: exactly 100,000 for each day of the week.
+- 43,412 current business employment links, matching the sum of all business profile employee estimates exactly; zero per-business headcount mismatches.
+- 217,060 weekday work routines: five per employed person; zero employees missing a weekday routine.
+- Population summary returns 100,000 unique people and 24,512 current households.
+- Fictional clock remains NULL/uninitialised; no actual activity events were created.
+
+The existing rollback-only BP-03 foundation, identity-scale and dwelling-allocation regression scripts remain in GitHub. The populated-city individual-life regression was updated to use rollback-only test dwelling fixtures rather than attempting to reuse occupied live homes. Live population acceptance is recorded in `database/tests/kingswell_bp03_live_population_acceptance.sql`.
 
 ### Applied migrations
 - `20261120162714_bp03_persistent_population_households_routines_and_life`
@@ -1124,14 +1134,18 @@ The existing BP-02 geography, property/address, police/patrol geography, weighte
 - `20261120163022_bp03_end_current_memberships_on_person_death`
 - `20261120171701_bp03_exact_dwelling_unit_allocation_and_capacity_reconciliation`
 - `20261120175212_bp03_require_exact_current_dwelling_membership_and_address`
+- `20261120180521_bp03_kingswell_population_and_business_workforce_seed_tools`
+- `20261120182546_bp03_optimize_employment_seed_batches_and_dedupe`
 
-### Housing capacity and population seed state
-The 24,512 dwelling profiles previously recorded only four occupants each, giving 98,048 places. The BP-03 reconciliation now sets five-person planning capacity in 244 dwellings in each of the eight residential neighbourhoods: 1,952 dwellings at five occupants and 22,560 at four, for exactly 100,000 places. Households and person address history now store exact canonical building-unit IDs. Triggers enforce dwelling classification, property/unit agreement, one active primary household per dwelling and maximum household occupancy.
+### Housing capacity and live population
+The 24,512 dwelling profiles provide exactly 100,000 places: 1,952 dwellings at five occupants and 22,560 at four. All dwellings are allocated to one active household, and every resident's current primary address references the exact same dwelling unit as their primary household. The population consists of 23,447 family households and 1,065 shared households.
 
-The full population seed was tested only in rollback-only slices; no persistent persons, households, employment links, routines or life events were left in the live database. The live 100,000-person seed remains uncommitted, and its complete linked-record end-to-end load test remains open. No duplicate properties, buildings, units or addresses are created under BP-03. Routine execution remains owned by BP-35; this foundation does not advance fictional time.
+The live population contains 100,000 persistent NPCs, 100,000 permanent-resident memberships, 100,000 household memberships, 100,000 exact current residential addresses, 309,760 relationships, 100,000 birth events and 700,000 weekly sleep routines. All 43,412 estimated business jobs are linked to individual employee NPCs; those employees have 43,412 employment life events and 217,060 weekday work routines. The city population summary reports 100,000 unique residents and 24,512 current households. The overlapping student, retired, unemployed and worker categories remain separate memberships and are not summed to calculate population.
+
+No duplicate properties, buildings, units or addresses were created under BP-03. Static population setup did not initialise or advance the fictional clock. Actual activity events remain empty until BP-35/BP-37 runtime scheduling and explicit time advancement.
 
 ### Live structural/health snapshot
-185 private `game` tables; 629 foreign keys; 915 indexes; RLS enabled on all 185 tables; Supabase health advisor returned no findings. No persistent test population was created. Fictional clock remains NULL/uninitialised.
+185 private `game` tables; 629 foreign keys; 915 indexes; RLS enabled on all 185 tables; Supabase health advisor returned no findings. No test fixtures remain. Fictional clock remains NULL/uninitialised.
 
 
 ## BP-04 — Primate-city properties, businesses and neighbourhood maps — delivered 2026-11-20
