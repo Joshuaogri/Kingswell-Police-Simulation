@@ -35,7 +35,7 @@ begin
     ('KW-BP03-TEST-002','Jon','Testwell','2005-01-01','Asterfell','active',v_city),
     ('KW-BP03-TEST-003','Iris','Testwell','1988-06-15','Asterfell','active',v_city),
     ('KW-BP03-TEST-004','Noah','Testwell','1995-09-20','Asterfell','active',v_city)
-  returning id into v_person1;
+  ;
 
   select id into v_person1 from game.persons where person_ref='KW-BP03-TEST-001';
   select id into v_person2 from game.persons where person_ref='KW-BP03-TEST-002';
