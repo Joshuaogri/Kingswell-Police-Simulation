@@ -75,7 +75,7 @@ Supported scene/field commands are listed above. The regression suite is `databa
 
 A deployed officer recorded on scene can append a safety assessment describing hazards, people at risk, controls taken and residual risk. The scene's safety status updates to assessed, while the assessment itself remains a separate historical record. The current scene manager can set or revise the scene boundary. Each revision is retained; the prior active boundary becomes superseded, and the current boundary description is reflected on the scene record. A non-manager cannot revise the boundary. Both workflows use the fictional game clock and write scene activity/game events.
 
-Commands: `scene safety PERSONNEL_REF for SCENE_REF: HAZARDS | CONTROLS | RESIDUAL RISK` and `set boundary PERSONNEL_REF for SCENE_REF: DESCRIPTION | REASON`. Regression script: `database/tests/scene_safety_and_boundaries.sql`. This is an initial recordkeeping layer; specialist hazard response, formal authority review, detailed zone geometry, multi-agency safety coordination, partial release and scene release/reopening remain outstanding.
+Commands: `scene safety PERSONNEL_REF for SCENE_REF: HAZARDS | CONTROLS | RESIDUAL RISK` and `set boundary PERSONNEL_REF for SCENE_REF: DESCRIPTION | REASON`. Regression script: `database/tests/scene_safety_and_boundaries.sql`. This is an initial recordkeeping layer; specialist hazard response, formal authority review, detailed zone geometry, multi-agency safety coordination and partial zone release remain outstanding. Formal full-scene release and reopening are implemented in the resource/lifecycle layer below.
 
 
 ## Resource response and scene lifecycle
