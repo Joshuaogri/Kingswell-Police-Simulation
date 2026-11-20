@@ -824,3 +824,12 @@ The remote migration replaces the full `game.get_case_review_dossier(text)` func
 The full dossier function embedded in the consolidated GitHub 144932 migration is canonically identical to the remote 145329 function after normalising formatting and declaration syntax. It already includes the arrest/custody section as well as the previously added investigative-activity, surveillance and search-operation sections.
 
 Classification: **dossier update consolidated into the earlier GitHub arrest/custody workflow source; exact standalone historical replacement omitted, final function body preserved**. No live change is required.
+
+
+## 51. Content-led review of version 20261120145429 — custody-property evidence reference
+
+The remote migration updates `game.execute_arrest_custody_command(...)` so evidence retained from custody property receives an explicit generated evidence reference (`KWE-` plus a generated identifier) when inserted into `game.evidence_items`.
+
+The GitHub file at this version is comment-only. The consolidated 20261120144932 executor already includes the explicit `evidence_ref` column and generated `KWE-` value in the retained-as-evidence branch.
+
+Classification: **custody-property evidence-reference fix consolidated into the earlier GitHub workflow source**. The final corrected insert is present in the consolidated file; the standalone historical patch is omitted.
