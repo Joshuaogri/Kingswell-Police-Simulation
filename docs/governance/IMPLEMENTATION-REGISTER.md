@@ -582,3 +582,22 @@ Migration: `database/migrations/20261120121300_suspend_patrol_coverage_on_incide
 
 Migrations: `20261120121400_patrol_road_movement_and_segment_history.sql`, `20261120121500_fix_patrol_movement_route_variable_ambiguity.sql`, `20261120121600_record_transit_and_on_beat_patrol_segments.sql`, `20261120121700_include_road_movement_in_patrol_coverage.sql`, `20261120121800_register_patrol_commands_in_runtime_help.sql`, `20261120121900_remove_patrol_commands_from_forensic_dispatch.sql`.
 Documentation: `docs/operations/PATROL-ROAD-MOVEMENT.md`.
+
+
+## Patrol intelligence and coverage-gap reporting — 2026-11-20
+
+**Implemented and rollback-only end-to-end regression-tested.** The player command `patrol intelligence` (aliases `patrol gaps`, `patrol analysis`) reports actual recorded patrol movement against the registered road-segment inventory of every active beat.
+
+- Per-beat visited/total road segments, coverage percentage, movement-leg count, distance, movement minutes, distinct patrol days, latest movement and fictional hours since last movement.
+- Beat coverage-gap classifications: never visited in the selected window, partially visited, or all registered segments visited.
+- Least-visited road-segment list with traversal counts and last traversal time.
+- Unit-level movement legs, distinct segments, distance, movement minutes and latest movement.
+- Citywide totals for never/partially/fully visited beats, distinct segments, patrol distance and movement minutes.
+- Optional reporting-window function parameters; the player command defaults to all recorded history through current fictional time. Future windows and invalid ranges are rejected.
+- Movement minutes count recorded road-leg movement inside the assigned beat only. This is not stationary presence time, foot-patrol time or a measure of policing effectiveness.
+- Added indexes for beat/time and road-segment/time reporting. Function and parser execution remain restricted to service_role; private schema and RLS posture unchanged.
+
+**PASS:** `database/tests/kingswell_patrol_intelligence.sql` starts a temporary patrol, moves it along a real calculated route through the text command interface, verifies road/beat/unit/time metrics and help registration, then rolls back all fixtures. Reporting does not advance fictional time.
+
+Migration: `database/migrations/20261120122000_patrol_intelligence_and_coverage_gap_reporting.sql`.
+Documentation: `docs/operations/PATROL-INTELLIGENCE.md`.
