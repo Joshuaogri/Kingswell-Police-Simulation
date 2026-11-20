@@ -121,16 +121,16 @@ begin
  if r->>'ok'<>'true' then raise exception 'Report issue failed: %',r; end if;
  v_report_ref:=r->>'report_ref';
 
- if (select fr.status from game.forensic_requests fr where fr.v_request_ref=v_request_ref)<>'reported' then
+ if (select fr.status from game.forensic_requests fr where fr.request_ref=v_request_ref)<>'reported' then
    raise exception 'Request did not reach reported state';
  end if;
- if (select fs.status from game.forensic_lab_submissions fs where fs.v_submission_ref=v_submission_ref)<>'received' then
+ if (select fs.status from game.forensic_lab_submissions fs where fs.submission_ref=v_submission_ref)<>'received' then
    raise exception 'Submission did not reach received state';
  end if;
- if (select fe.status from game.forensic_examinations fe where fe.v_examination_ref=v_examination_ref)<>'completed' then
+ if (select fe.status from game.forensic_examinations fe where fe.examination_ref=v_examination_ref)<>'completed' then
    raise exception 'Examination did not reach completed state';
  end if;
- if (select frp.status from game.forensic_reports frp where frp.v_report_ref=v_report_ref)<>'issued' then
+ if (select frp.status from game.forensic_reports frp where frp.report_ref=v_report_ref)<>'issued' then
    raise exception 'Report was not issued';
  end if;
  if not exists(select 1 from game.evidence_transfers et where et.evidence_id=evidence_id
