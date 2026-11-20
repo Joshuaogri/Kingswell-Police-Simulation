@@ -1249,3 +1249,10 @@ Classification: **exact canonical SQL match with remote version/timestamp discre
 The complete remote and GitHub SQL for `bp04_detailed_property_building_unit_business_and_ownership_records` is canonically identical after normalising whitespace around PostgreSQL string-concatenation operators, comments, whitespace and declaration formatting.
 
 Classification: **canonical SQL match; whitespace around `||` only**. No substantive source difference was identified. Retain the existing file and remote history.
+
+
+## 69. Content-led review of version 20261120164309
+
+The complete remote and GitHub SQL for `bp04_expand_primate_city_properties_buildings_and_units` is canonically identical after normalising comments, whitespace, dollar-quote delimiters, typed-NULL defaults, `search_path` declarations and concatenation-operator spacing.
+
+Classification: **canonical SQL match after formatting normalisation**. No substantive source difference was identified. Retain the existing file and remote history.
