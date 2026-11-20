@@ -15,6 +15,13 @@ begin
  if v_n<>480 then raise exception 'Expected 480 addresses; found %',v_n; end if;
  select count(*) into v_n from game.property_access_points a join game.properties p on p.id=a.property_id where p.city_id=v_city;
  if v_n<>480 then raise exception 'Expected 480 access points; found %',v_n; end if;
+ select count(*) into v_bad from game.properties where city_id=v_city
+ and (x_m<0 or x_m>20000 or y_m<0 or y_m>16000);
+ if v_bad<>0 then raise exception 'Properties outside the canonical Kingswell local grid: %',v_bad; end if;
+ select count(*) into v_bad from game.property_access_points a
+ join game.properties p on p.id=a.property_id where p.city_id=v_city
+ and (a.x_m<0 or a.x_m>20000 or a.y_m<0 or a.y_m>16000);
+ if v_bad<>0 then raise exception 'Property access points outside the canonical Kingswell local grid: %',v_bad; end if;
  select count(*) into v_n from game.city_landmarks where city_id=v_city;
  if v_n<>24 then raise exception 'Expected 24 landmarks; found %',v_n; end if;
  select count(*) into v_bad from game.properties p left join game.road_segments s on s.id=p.frontage_segment_id
