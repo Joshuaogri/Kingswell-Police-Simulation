@@ -33,6 +33,16 @@ begin
  where l.city_id=v_city and (p.city_id<>v_city or b.property_id<>p.id or a.property_id<>p.id
  or l.neighbourhood_id<>p.neighbourhood_id or l.district_id<>p.district_id);
  if v_bad<>0 then raise exception 'Landmark links invalid: %',v_bad; end if;
+ select count(*) into v_bad from game.property_access_points a
+ join game.properties p on p.id=a.property_id join game.road_segments s on s.id=a.road_segment_id
+ join game.road_junctions jf on jf.id=s.from_junction_id join game.road_junctions jt on jt.id=s.to_junction_id
+ join game.road_junctions chosen on chosen.id=a.nearest_junction_id
+ where p.city_id=v_city and
+ ((chosen.id=jf.id and ((jt.x_m-p.x_m)::bigint*(jt.x_m-p.x_m)::bigint+(jt.y_m-p.y_m)::bigint*(jt.y_m-p.y_m)::bigint)
+ < ((jf.x_m-p.x_m)::bigint*(jf.x_m-p.x_m)::bigint+(jf.y_m-p.y_m)::bigint*(jf.y_m-p.y_m)::bigint))
+ or (chosen.id=jt.id and ((jf.x_m-p.x_m)::bigint*(jf.x_m-p.x_m)::bigint+(jf.y_m-p.y_m)::bigint*(jf.y_m-p.y_m)::bigint)
+ < ((jt.x_m-p.x_m)::bigint*(jt.x_m-p.x_m)::bigint+(jt.y_m-p.y_m)::bigint*(jt.y_m-p.y_m)::bigint)));
+ if v_bad<>0 then raise exception 'Access points do not resolve to the nearest frontage junction: %',v_bad; end if;
  select count(*) into v_n from game.neighbourhoods n join game.districts d on d.id=n.district_id
  where d.city_id=v_city and (select count(*) from game.properties p where p.neighbourhood_id=n.id)<>20;
  if v_n<>0 then raise exception 'Neighbourhoods not holding exactly 20 parcels: %',v_n; end if;
