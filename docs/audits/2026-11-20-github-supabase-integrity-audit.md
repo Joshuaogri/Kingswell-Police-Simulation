@@ -896,3 +896,12 @@ The remote and repository definitions of both `game.interpret_text_command(...)`
 The complete files differ in formatting/declaration packaging, but no difference was found in either function body.
 
 Classification: **command interpreter and executor parity**. Retain both records unchanged.
+
+
+## 53. Content-led review of version 20261120145803 — transport duration and game clock
+
+The remote migration adds `duration_minutes` to `game.arrest_transport_legs`, constrains it to 1–240 minutes, and replaces the arrest/custody executor to advance the fictional clock by the recorded transport duration. It also updates the command parser to require a duration in the transport command.
+
+The consolidated GitHub 144932 workflow source already contains the duration column, a 1–240 range check, the duration-aware command syntax, and the executor's `v_arrival`/`v_minutes` clock advancement.
+
+Classification: **transport-duration schema, parser and clock behaviour consolidated into the earlier GitHub workflow source**. The standalone 145803 GitHub file is comment-only; the final functionality is present in the consolidated migration.
