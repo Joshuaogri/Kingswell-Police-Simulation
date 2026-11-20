@@ -16,8 +16,8 @@ Each division is designed with its purpose, scope, responsibilities, components,
 | BP-08 | Units and Deployment | Approved; detailed rules remain open for refinement |
 | BP-09 | Police Resources | Approved; details to refine with later operational divisions |
 | BP-10 | Patrol Operations | Approved; links to dispatch and incident design to refine |
-| BP-11 | Emergency Communications | Approved; incident lifecycle and service standards to refine |
-| BP-12 | Incident Management | Approved; offence and case connections to refine |
+| BP-11 | Emergency Communications | Approved; initial text-based call intake, call ledger and dispatch event creation implemented; full communications and dispatch workflow remains outstanding |
+| BP-12 | Incident Management | Approved; initial incident creation from dispatch calls implemented; full incident lifecycle remains outstanding |
 | BP-13 | Crime Architecture | Approved; detailed fictional offence catalogue to populate |
 | BP-14 | Crime Generation | Approved; frequency and behaviour tuning to follow |
 | BP-15 | Case Management | Approved; investigative methods and legal review to refine |
@@ -40,7 +40,7 @@ Each division is designed with its purpose, scope, responsibilities, components,
 | BP-32 | Training and Development | Approved; competency catalogue, statutory requirements and qualification rules remain open |
 | BP-33 | Human Resources | Approved; employment law, terms, entitlements and workforce rules remain open |
 | BP-34 | Finance and Procurement | Approved; legal and financial framework remains open |
-| BP-35 | Simulation Engine | Approved; runtime architecture and processing rules remain open |
+| BP-35 | Simulation Engine | Approved; typed command intake, limited text interpreter and transactional event creation implemented; broader runtime and NPC processing remain outstanding |
 | BP-36 | Relationships and Social Context | Approved; legal and social-context rules remain open |
 | BP-37 | Time and Scheduling | Approved; calendar and legal timing rules remain open |
 | BP-38 | Records and Databases | Approved; domain schemas and security design remain open |
