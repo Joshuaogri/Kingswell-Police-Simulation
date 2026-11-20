@@ -6,12 +6,15 @@ do $$
 declare
   v_city uuid;
   v_property uuid;
+  v_unit1 uuid;
+  v_unit2 uuid;
   v_person1 uuid;
   v_person2 uuid;
   v_person3 uuid;
   v_person4 uuid;
   v_household1 uuid;
   v_household2 uuid;
+  v_household3 uuid;
   v_routine uuid;
   v_life_event uuid;
   v_case uuid;
@@ -26,9 +29,21 @@ begin
   if v_clock is not null then raise exception 'BP-03 regression requires an uninitialised fictional clock'; end if;
 
   select id into v_city from game.cities where code='KNG';
-  select id into v_property from game.properties
-    where city_id=v_city and land_use='residential' order by property_ref limit 1;
-  if v_city is null or v_property is null then raise exception 'Kingswell or its existing residential property seed is missing'; end if;
+  select b.property_id,
+         (array_agg(bu.id order by bu.unit_ref))[1],
+         (array_agg(bu.id order by bu.unit_ref))[2]
+    into v_property,v_unit1,v_unit2
+  from game.buildings b
+  join game.building_units bu on bu.building_id=b.id
+  join game.building_unit_profiles up on up.building_unit_id=bu.id
+  where up.use_class='dwelling'
+  group by b.property_id
+  having count(*)>=2
+  order by b.property_id
+  limit 1;
+  if v_city is null or v_property is null or v_unit1 is null or v_unit2 is null then
+    raise exception 'Kingswell or a multi-dwelling residential property is missing';
+  end if;
 
   insert into game.persons(person_ref,given_name,family_name,date_of_birth,nationality,person_status,birth_city_id)
   values
@@ -47,23 +62,23 @@ begin
     raise exception 'Living person age must remain unresolved while the game clock is uninitialised';
   end if;
 
-  insert into game.person_addresses(person_id,property_id,address_role,valid_from,is_current,is_primary)
+  insert into game.person_addresses(person_id,property_id,building_unit_id,address_role,valid_from,is_current,is_primary)
   values
-    (v_person1,v_property,'residence','2020-01-01',true,true),
-    (v_person2,v_property,'residence','2020-01-01',true,true);
+    (v_person1,v_property,v_unit1,'residence','2020-01-01',true,true),
+    (v_person2,v_property,v_unit1,'residence','2020-01-01',true,true);
 
   v_rejected:=false;
   begin
-    insert into game.person_addresses(person_id,property_id,address_role,valid_from,is_current,is_primary)
-    values(v_person1,v_property,'residence','2021-01-01',true,false);
+    insert into game.person_addresses(person_id,property_id,building_unit_id,address_role,valid_from,is_current,is_primary)
+    values(v_person1,v_property,v_unit1,'residence','2021-01-01',true,false);
   exception when unique_violation then v_rejected:=true;
   end;
   if not v_rejected then raise exception 'Duplicate current address role was accepted'; end if;
 
-  insert into game.households(household_type,primary_property_id,formed_on)
-  values('family',v_property,'2020-01-01') returning id into v_household1;
-  insert into game.households(household_type,primary_property_id,formed_on)
-  values('shared',v_property,'2022-01-01') returning id into v_household2;
+  insert into game.households(household_type,primary_property_id,primary_building_unit_id,formed_on)
+  values('family',v_property,v_unit1,'2020-01-01') returning id into v_household1;
+  insert into game.households(household_type,primary_property_id,primary_building_unit_id,formed_on)
+  values('shared',v_property,v_unit2,'2022-01-01') returning id into v_household2;
   insert into game.household_memberships(household_id,person_id,household_role,is_primary,valid_from)
   values
     (v_household1,v_person1,'head',true,'2020-01-01'),
@@ -76,6 +91,48 @@ begin
   exception when unique_violation then v_rejected:=true;
   end;
   if not v_rejected then raise exception 'Person was allowed two current primary households'; end if;
+
+  -- Current residential addresses cannot omit the exact dwelling unit.
+  v_rejected:=false;
+  begin
+    insert into game.person_addresses(person_id,property_id,address_role,valid_from,is_current,is_primary)
+    values(v_person3,v_property,'residence','2020-01-01',true,true);
+  exception when raise_exception then
+    if sqlerrm like 'A current residential address must reference an exact dwelling unit%' then
+      v_rejected:=true; else raise; end if;
+  end;
+  if not v_rejected then raise exception 'Property-only current residence was accepted'; end if;
+
+  -- A household without a dwelling unit cannot acquire current members.
+  insert into game.households(household_type,primary_property_id,formed_on)
+  values('family',v_property,'2020-01-01') returning id into v_household3;
+  v_rejected:=false;
+  begin
+    insert into game.household_memberships(household_id,person_id,household_role,is_primary,valid_from)
+    values(v_household3,v_person3,'head',true,'2020-01-01');
+  exception when raise_exception then
+    if sqlerrm like 'Current household membership requires an exact dwelling unit%' then
+      v_rejected:=true; else raise; end if;
+  end;
+  if not v_rejected then raise exception 'Household without a unit accepted a current member'; end if;
+
+  -- A populated household cannot be moved or dissolved while current members remain.
+  v_rejected:=false;
+  begin
+    update game.households set primary_building_unit_id=v_unit2 where id=v_household1;
+  exception when raise_exception then
+    if sqlerrm like 'A household dwelling unit cannot change while current members remain assigned%' then
+      v_rejected:=true; else raise; end if;
+  end;
+  if not v_rejected then raise exception 'Populated household dwelling unit was changed'; end if;
+  v_rejected:=false;
+  begin
+    update game.households set household_status='dissolved' where id=v_household1;
+  exception when raise_exception then
+    if sqlerrm like 'Current household memberships must be closed before dissolution%' then
+      v_rejected:=true; else raise; end if;
+  end;
+  if not v_rejected then raise exception 'Populated household was dissolved'; end if;
 
   insert into game.person_population_memberships(person_id,city_id,population_category,valid_from)
   values
