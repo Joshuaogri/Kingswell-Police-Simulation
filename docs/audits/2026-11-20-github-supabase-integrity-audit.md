@@ -493,3 +493,16 @@ The remote migration is a single dynamic `DO` block (484 characters) that change
 The GitHub file is a reconstructed full-definition source (45,836 characters), not a copy of the original short `DO` block. Its static function definitions contain the updated help notice and all three evidence command names. This is consistent with the effect of the remote replacement, but the exact historical migration text is not preserved in the repository.
 
 Classification: **reconstructed equivalent help/runtime state; original dynamic patch not reproduced verbatim**. Retain the file and remote history. This entry can be cleared as a source-form difference once the static command-function definition is included in the overall function parity review.
+
+
+## 20. Content-led review of version 20261120103941
+
+The remote migration is 7,007 characters; the GitHub file is a 11,972-character reconstructed DDL record. The two sources use different formatting and constraint-declaration styles, but their structural inventory was compared.
+
+- Both define the same eight tables: `forensic_methods`, `forensic_requests`, `forensic_request_items`, `forensic_lab_submissions`, `forensic_examinations`, `forensic_findings`, `forensic_reviews`, and `forensic_reports`.
+- Every table has the same column count and column names in both sources; no missing or extra columns were found.
+- Both define the same seven indexes.
+- Both enable row-level security on the same eight tables.
+- The GitHub file is explicitly reconstructed from the applied live migration. This comparison establishes structural inventory parity, not byte-for-byte recovery of the original migration or a complete proof that every constraint expression is identical.
+
+Classification: **reconstructed DDL with matching table/column/index/RLS inventory; constraint-expression parity remains to be checked in the final schema comparison**. Retain the repository file and remote history without changes.
