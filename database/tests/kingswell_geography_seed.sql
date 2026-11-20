@@ -65,12 +65,12 @@ begin
   if v_count<>75 then raise exception 'Expected 75 named roads; found %',v_count; end if;
   if (select count(distinct name) from game.roads where city_id=v_city)<>75 then raise exception 'Duplicate road names exist'; end if;
   select count(*) into v_count from game.road_junctions where city_id=v_city;
-  if v_count<>142 then raise exception 'Expected 142 junctions; found %',v_count; end if;
+  if v_count<>157 then raise exception 'Expected 157 junctions; found %',v_count; end if;
   select count(*) into v_bad from game.road_junctions where city_id=v_city
     and (x_m<0 or x_m>20000 or y_m<0 or y_m>16000);
   if v_bad<>0 then raise exception 'Road junctions fall outside the Kingswell local grid: %',v_bad; end if;
   select count(*) into v_count from game.road_segments where city_id=v_city;
-  if v_count<>199 then raise exception 'Expected 199 road segments; found %',v_count; end if;
+  if v_count<>229 then raise exception 'Expected 229 road segments; found %',v_count; end if;
   select count(*) into v_count from game.road_segments where city_id=v_city and crossing_type='bridge' and segment_length_m=1000;
   if v_count<>3 then raise exception 'Expected three explicit 1,000 m river bridge segments; found %',v_count; end if;
   select count(*) into v_bad from game.road_junctions where city_id=v_city
@@ -101,7 +101,7 @@ begin
     where s.city_id=v_city and s.is_routable
   )
   select count(*) into v_reached from reachable;
-  if v_reached<>142 then raise exception 'Road graph is disconnected: % of 142 junctions reachable',v_reached; end if;
+  if v_reached<>157 then raise exception 'Road graph is disconnected: % of 157 junctions reachable',v_reached; end if;
 
   select count(*) into v_count from game.city_landmarks where city_id=v_city;
   if v_count<>24 then raise exception 'Expected 24 named landmarks; found %',v_count; end if;
