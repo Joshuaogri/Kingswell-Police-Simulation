@@ -527,3 +527,16 @@ Classification: **equivalent index definitions; formatting/default-method differ
 The complete remote statement and GitHub file for `independent_forensic_method_validation_and_review_qualification` produce identical canonical SQL after normalising comments, whitespace, dollar-quote tags, typed-NULL defaults, and equivalent `search_path` declaration formatting.
 
 Classification: **canonical SQL match after formatting/declaration normalisation**. No substantive divergence was identified in this pair. Retain the existing file and remote history.
+
+
+## 24. Content-led review of version 20261120110935
+
+The remote migration uses set-based CTE inserts; the GitHub reconstruction uses procedural loops. The source text is different, but both describe the same 24 neighbourhood centres, 24 local roads, four local junctions per neighbourhood, four internal local-road links plus one neighbourhood connector per centre, and three river bridges with west/east approaches and bridge/approach segments. Both also apply the same emergency/freight access update to roads `KNG-R008` and `KNG-R009`.
+
+A read-only check of the live Kingswell city records returned:
+- 27 target roads (24 local roads and 3 bridges)
+- 102 target junctions (96 neighbourhood junctions and 6 bridge approaches)
+- 129 target road segments (120 neighbourhood segments and 9 bridge/approach segments)
+- 2 target freight-access segments on `KNG-R008` and `KNG-R009`
+
+Classification: **different SQL implementation styles with matching intended network structure and live record counts**. The reconstruction is consistent with the applied network inventory; retain both records. This does not replace the later route-connectivity and reachability tests.
