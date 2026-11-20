@@ -36,6 +36,8 @@ Only the assigned active judge can rule on a pending tender. The evidence's orig
 
 The record groups pleas for the case, proceedings for the hearing, and evidence tenders/rulings for the hearing. It is a service-role database helper pending a player-facing retrieval command.
 
+The `help` command lists all four trial commands.
+
 ## Current scope
 
 This foundation records pleas, trial chronology, examination stages, submissions, objections and evidence admissibility. It does not yet record verdicts as authoritative per-count findings, sentencing, jury deliberations or appeals. Those are subsequent systems.
