@@ -341,14 +341,20 @@ Promotion is monotonic: a person can move to a higher detail level but can never
 ### Processing and scale
 Persistent identity does not require continuous full-detail processing for every person. The simulation stores the complete person identity and available life structure, while the runtime processes routines and activity only for the relevant time window and required level. Batch operations must be deterministic/idempotent, preserve stable person references, and avoid duplicate population memberships or activity events.
 
-### Housing dependency and population seeding
-The present BP-04 location inventory is not yet a credible residential base for 100,000 people: it contains 80 residential properties, 64 detached houses, 16 apartment blocks, 128 units marked residential and 160 mixed-use units. This must be expanded within BP-04's existing property/building/unit system before assigning the full permanent-resident population to homes.
+### Housing capacity and population seeding
 
-Therefore:
-- BP-03 must not pack implausible numbers of households into the current small residential inventory.
-- BP-03 schema, identity, household, life-event, routine and counting systems can be implemented and tested independently.
-- The 100,000-person seed and complete household/address allocation are deferred until BP-04 supplies realistic residential capacity.
-- This is a deliberate dependency, not permission to create duplicate buildings, properties, units or addresses under BP-03.
+BP-04 has now expanded the existing property/building/unit system while preserving the original 480-property baseline. Kingswell has 656 properties, 656 buildings, 26,888 building units/premises and 24,512 units classified as residential. This provides planning capacity for the 100,000-person permanent-resident baseline at approximately 4.08 residents per residential unit.
+
+The former housing-capacity blocker is therefore cleared. BP-03 can now proceed with:
+- generating exactly one canonical person identity per NPC;
+- creating plausible household records and memberships;
+- allocating permanent residents to the existing residential property/unit inventory;
+- assigning address roles and household primary addresses;
+- linking employment to existing organisations and business sites where the person-generation rules require it.
+
+The population seed must use existing BP-04 property, building, unit and address references. It must not invent duplicate housing, properties, buildings, units or addresses. Residential allocation should distribute household sizes plausibly by neighbourhood and building type, preserve unoccupied/temporary housing where appropriate, and never exceed a unit's occupancy capacity. Business employee estimates in BP-04 are not individual NPCs; BP-03 creates real employee identities and employment links.
+
+The fictional clock remains uninitialised. Population and household seeding is static setup data and must not advance fictional time. Daily routines and actual activity events remain controlled by the later runtime scheduler and explicit time-advance commands.
 
 ### Implementation and acceptance conditions
 BP-03 is complete when all of the following are verified:
@@ -370,7 +376,7 @@ BP-03 is complete when all of the following are verified:
 15. Full 100,000-person seeding is completed only after BP-04 residential capacity is sufficient and the population/address allocation tests pass.
 
 **Design decision:** Persistent identities for everyone, with variable simulation processing intensity.  
-**Implementation status:** Individual-life foundation implemented and rollback-tested; full population seeding remains dependent on BP-04 residential capacity and the later runtime activity scheduler.
+**Implementation status:** Individual-life foundation implemented and rollback-tested. BP-04 residential capacity is now available; the 100,000-person household/address seed is the next BP-03 completion task. Routine execution remains dependent on the BP-35 runtime scheduler.
 
 ## BP-04 — Buildings, Properties, Businesses and Organisations
 
