@@ -1071,3 +1071,10 @@ Classification: **exact canonical SQL match with remote version/timestamp discre
 The GitHub file `20261120140200_case_task_create_command_actor_attribution.sql` is stored remotely at version `20261120125411`, under the same migration name. The complete SQL is canonically identical after normalising comments and whitespace. The command grammar requires an explicit `by <personnel_ref>` actor for task creation and preserves the update, assignment and retrieval commands.
 
 Classification: **exact canonical SQL match with remote version/timestamp discrepancy**. Preserve both records.
+
+
+## 55. Content-led review of case-task help command registration
+
+The GitHub file `20261120140300_case_task_help_command_registration.sql` is stored remotely at version `20261120125559`, under the same migration name. The complete SQL is canonically identical after normalising comments and whitespace. Both add the five case-task commands to the help response while retaining the task command executor and actor checks.
+
+Classification: **exact canonical SQL match with remote version/timestamp discrepancy**. Preserve both records.
