@@ -33,6 +33,8 @@ begin
  r:=game.execute_text_command('case witness statements TEST-INT-CASE','test-int-statements-001',null,pp1); if not coalesce((r->>'ok')::boolean,false) or (r->>'count')::int<>1 then raise exception 'statement list: %',r; end if;
  r:=game.execute_text_command('case interview turn '||iref||' by TEST-INT-O1 question "Another question?" answer "Not allowed after closure."','test-int-after-close',null,pp1);
  if coalesce((r->>'ok')::boolean,true) then raise exception 'post-close turn unexpectedly accepted'; end if;
+ r:=game.execute_text_command('help','test-int-help-001',null,pp1);
+ if not coalesce((r->'available_commands') @> '["start_case_interview","record_case_interview_turn","record_case_witness_statement"]'::jsonb,false) then raise exception 'interview help registration: %',r; end if;
  if (select current_game_time from game.simulation_state where id=1)<>before_time then raise exception 'interview actions advanced fictional time'; end if;
  raise notice 'PASS: parser/executor, interview creation and idempotency, Q&A chronology and append-only guard, linked witness statement and idempotency, adoption history, conclusion, retrieval, post-conclusion rejection and fixed fictional clock';
 end $$;
