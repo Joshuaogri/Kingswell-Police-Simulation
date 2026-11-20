@@ -45,14 +45,14 @@ begin
  if parsed->>'command_type'<>'link_patrol_record' or parsed->'payload'->>'target_type'<>'incident' then raise exception 'Incident link parser failed: %',parsed; end if;
  linked_incident:=game.execute_text_command('link patrol record '||v_observation_ref||' to incident '||incident_ref||' because Same location and matching time window','link-incident-'||gen_random_uuid()::text,null,officer_id);
  if not coalesce((linked_incident->>'ok')::boolean,false) or linked_incident->>'link_ref' is null then raise exception 'Incident link failed: %',linked_incident; end if;
- linked_case:=game.execute_text_command('link patrol record '||observation_ref||' to case '||case_ref||' because Context may assist the existing investigation','link-case-'||gen_random_uuid()::text,null,officer_id);
+ linked_case:=game.execute_text_command('link patrol record '||v_observation_ref||' to case '||case_ref||' because Context may assist the existing investigation','link-case-'||gen_random_uuid()::text,null,officer_id);
  if not coalesce((linked_case->>'ok')::boolean,false) or linked_case->>'link_ref' is null then raise exception 'Case link failed: %',linked_case; end if;
- duplicate_link:=game.execute_text_command('link patrol record '||observation_ref||' to incident '||incident_ref||' because Duplicate should not create a second link','link-duplicate-'||gen_random_uuid()::text,null,officer_id);
+ duplicate_link:=game.execute_text_command('link patrol record '||v_observation_ref||' to incident '||incident_ref||' because Duplicate should not create a second link','link-duplicate-'||gen_random_uuid()::text,null,officer_id);
  if not coalesce((duplicate_link->>'duplicate')::boolean,false) then raise exception 'Duplicate link was not handled safely: %',duplicate_link; end if;
  select count(*) into link_count from game.patrol_intelligence_links where source_observation_id=(select po.id from game.patrol_observations po where po.observation_ref=v_observation_ref);
  select count(*) into event_count from game.game_events where event_key='patrol_intelligence.record_linked' and event_data->>'source_ref'=v_observation_ref;
  if link_count<>2 or event_count<>2 then raise exception 'Expected two distinct links and events, got links %, events %',link_count,event_count; end if;
- if (select description from game.patrol_observations where observation_ref=observation_ref) is distinct from original_description then raise exception 'Original observation was modified'; end if;
+ if (select po.description from game.patrol_observations po where po.observation_ref=v_observation_ref) is distinct from original_description then raise exception 'Original observation was modified'; end if;
  begin
   update game.patrol_intelligence_links set reason='tampered' where link_ref=linked_incident->>'link_ref';
   raise exception 'Immutable link unexpectedly allowed update';
