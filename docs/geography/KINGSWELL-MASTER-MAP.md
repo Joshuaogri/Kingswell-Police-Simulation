@@ -76,7 +76,19 @@ Each district is subdivided into two neighbourhoods (24 total). Every neighbourh
 4. Create junctions and road segments with connectivity tests.
 5. Add secondary/local roads and transport links.
 6. Add properties, buildings, addresses and landmarks — implemented and regression-tested.
-7. Add police stations, patrol sectors and response routing.
+7. Add police facilities, district patrol sectors and neighbourhood beats — implemented and regression-tested.\n8. Implement road-network route calculation, dispatch routing and response-time estimates.
+
+## Police facilities and patrol geography
+
+The police operational geography is now seeded against the existing property and road network. The city has 18 linked police facilities: headquarters, one district police station in each of the 12 districts, and five specialist/support sites (central custody, operations and communications, forensic services, training, and fleet/workshop). Each facility is attached to an actual property, building, structured postal address and primary road access point.
+
+The operational patrol hierarchy is distinct from the administrative district boundaries:
+- 12 district patrol sectors, one per district.
+- 24 neighbourhood beats, one per neighbourhood, each attached to its district sector.
+- All 151 currently routable road segments are attributed to a beat for geographic coverage. This association is a coverage index, not a turn-by-turn route or ordered patrol path.
+- Police unit records can reference a base facility and assigned beat when units are later created.
+
+The facility and beat coordinates inherit the current fictional local-metre planning grid and should not be treated as surveyed locations. Route calculation, turn restrictions, route optimisation, traffic and calibrated response-time estimates remain future work. Regression: `database/tests/kingswell_police_facilities_patrol_geography.sql`.
 
 ## Explicitly not yet represented
 
