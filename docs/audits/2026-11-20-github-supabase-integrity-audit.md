@@ -1002,3 +1002,10 @@ Classification: **exact canonical SQL match**. Retain both records unchanged.
 The complete remote and repository SQL for `case_dossier_supervisory_history` is canonically identical. Both replace the case-review dossier read model to include supervisory reviews and case-status transition history.
 
 Classification: **exact canonical SQL match**. Retain both records unchanged.
+
+
+## 49. Content-led review of version 20261120135332 — case governance indexes
+
+The remote and GitHub migration files are byte-for-byte identical. Both create the same four foreign-key support indexes for supervisory reviewer, supervisory command, case-status actor and case-status command references.
+
+Classification: **exact source-file match**. Retain both records unchanged.
