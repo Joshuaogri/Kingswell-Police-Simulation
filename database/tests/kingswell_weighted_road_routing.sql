@@ -6,6 +6,8 @@ declare
  v_destination uuid;
  v_public_origin uuid;
  v_public_destination uuid;
+ v_controlled uuid;
+ v_rejected boolean := false;
  v_fast uuid;
  v_short uuid;
  v_public uuid;
@@ -31,6 +33,13 @@ begin
  v_public:=game.calculate_road_route(v_public_origin,v_public_destination,'public','fastest');
  if not exists(select 1 from game.road_route_calculations where id=v_public and route_status='calculated') then raise exception 'Public route missing'; end if;
  if exists(select 1 from game.road_route_legs l join game.road_segments s on s.id=l.road_segment_id where l.route_id=v_public and s.access_profile<>'public') then raise exception 'Public route used a restricted road'; end if;
+ select id into v_controlled from game.property_access_points where access_profile='controlled_service_or_public' order by access_ref limit 1;
+ begin
+   perform game.calculate_road_route(v_controlled,v_public_destination,'public','fastest');
+ exception when others then
+   v_rejected:=true;
+ end;
+ if not v_rejected then raise exception 'Public routing accepted a controlled service access point'; end if;
 
  if exists(select 1 from game.road_route_legs l join game.road_segments s on s.id=l.road_segment_id
    where l.route_id=v_fast and s.directionality<>'two_way'
