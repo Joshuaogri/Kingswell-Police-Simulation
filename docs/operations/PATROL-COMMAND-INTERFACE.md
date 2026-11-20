@@ -92,3 +92,8 @@ See `docs/operations/SUSPECT-INTERVIEWS.md` for suspect classification, per-turn
 ## Case account comparisons
 
 See `docs/operations/CASE-ACCOUNT-COMPARISONS.md` for comparing witness statements and interview turns, recording discrepancy assessments, linking existing evidence and retrieving comparison history.
+
+
+## Investigative case review dossier
+
+`case review CASE_REF` returns a unified, read-only case dossier containing assignments, leads, enquiries, tasks, interviews, statements, suspect interview assessments, account comparisons, evidence and custody history, forensic examinations/findings/reports and linked incidents. See `docs/operations/CASE-REVIEW-DOSSIER.md`.
