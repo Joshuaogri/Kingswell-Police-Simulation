@@ -796,3 +796,16 @@ The rollback-only regression now verifies actor attribution and case access alon
 ### Case review help registration deduplication — 2026-11-20
 
 Migration: `database/migrations/20261120134240_deduplicate_case_review_help_command.sql`. The help wrapper now checks whether `get_case_review_dossier` is already present before appending it, so the command appears exactly once. The rollback-only case review test asserts unique help registration, assigned-officer access and successful dossier retrieval.
+
+
+### Case review dossier active-personnel safeguard — 2026-11-20
+
+Migration: `database/migrations/20261120134345_case_review_require_active_personnel.sql`.
+
+The case review command now rejects personnel who are neither active nor seconded, even if a stale lead or assignment reference remains. Case lead/active assignment access and actor matching remain enforced.
+
+### Case review dossier completeness refinement — 2026-11-20
+
+Migration: `database/migrations/20261120134455_case_review_dossier_tasks_and_linked_evidence.sql`.
+
+The read-only dossier now includes the case task register and includes evidence associated through case account comparisons, investigative lead links and forensic requests, even where the evidence item's primary case_id is not populated. Original evidence records remain authoritative.
