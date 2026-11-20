@@ -1,11 +1,11 @@
 begin;
 do $test$
 declare
-  v_clock timestamptz := '2026-11-20 12:00:00+00';
+  v_clock timestamptz := '2026-11-23 08:00:00+00';
   v_facility_id uuid; v_origin_access uuid; v_destination_property uuid; v_destination_access uuid;
   v_station_id uuid; v_person_id uuid; v_personnel_id uuid; v_unit_id uuid; v_roster_id uuid; v_incident_id uuid;
   v_candidate record; v_result jsonb; v_repeat jsonb; v_deployment_count integer; v_history_count integer;
-  v_route_status text; v_route_id uuid; v_eta timestamptz; v_distance integer; v_seconds integer;
+  v_route_status text; v_route_id uuid; v_eta timestamptz; v_distance integer; v_seconds integer; v_baseline_route uuid; v_baseline_seconds integer;
 begin
   if exists(select 1 from game.police_units) or exists(select 1 from game.incidents) then raise exception 'End-to-end fixture requires empty unit and incident baseline'; end if;
   update game.simulation_state set current_game_time=v_clock,time_paused=true where id=1;
@@ -32,6 +32,11 @@ begin
   values('KNG-TEST-INCIDENT-ROUTE-01',v_clock,v_destination_property,'Regression test property',3,'new','Temporary route integration test incident','{"fixture":true}')
   returning id into v_incident_id;
   select * into v_candidate from game.get_dispatch_candidates('KNG-TEST-INCIDENT-ROUTE-01');
+  v_baseline_route:=game.calculate_road_route(v_origin_access,v_destination_access,'police','fastest');
+  select estimated_duration_seconds into v_baseline_seconds from game.road_route_calculations where id=v_baseline_route;
+  if v_candidate.estimated_duration_seconds<=v_baseline_seconds or position('authored peak traffic' in v_candidate.route_basis)=0 then
+    raise exception 'Dispatch did not use the simulation-clock traffic profile';
+  end if;
   if v_candidate.unit_ref is distinct from 'KNG-TEST-UNIT-ROUTE-01' or v_candidate.eligible_personnel_count<>1
      or not ('KNG-TEST-OFFICER-ROUTE-01'=any(v_candidate.personnel_refs)) or v_candidate.route_status<>'calculated'
      or v_candidate.distance_m is null or v_candidate.distance_m<=0 or v_candidate.estimated_duration_seconds is null
