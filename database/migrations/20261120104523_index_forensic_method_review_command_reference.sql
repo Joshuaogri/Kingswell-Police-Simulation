@@ -1,0 +1,1 @@
+create index idx_fk_forensic_method_reviews_source_command_id on game.forensic_method_reviews(source_command_id);
