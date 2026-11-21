@@ -2,7 +2,7 @@
 -- All fictional records are rolled back.
 begin;
 do $test$
-declare v_p1 uuid; v_p2 uuid; v_pp1 uuid; v_pp2 uuid; v_unit uuid; v_roster uuid; v_incident uuid; r jsonb; v_scene uuid; v_first_boundary text; v_second_boundary text;
+declare v_p1 uuid; v_p2 uuid; v_pp1 uuid; v_pp2 uuid; v_unit uuid; v_roster uuid; v_incident uuid; v_property uuid; r jsonb; v_scene uuid; v_first_boundary text; v_second_boundary text;
 begin
  r:=game.submit_command('Initialize safety boundary test clock','initialize_clock','{"start_at":"2036-04-19T10:00:00Z"}'::jsonb,'scene-safety-clock-test-0001');
  if r->>'ok'<>'true' then raise exception 'Clock init failed: %',r; end if;
@@ -15,7 +15,16 @@ begin
  insert into game.duty_assignments(roster_id,personnel_id,assignment_role,starts_at,ends_at,status) values
  (v_roster,v_pp1,'response officer','2036-04-19T09:00:00Z','2036-04-19T19:00:00Z','assigned'),
  (v_roster,v_pp2,'response officer','2036-04-19T09:00:00Z','2036-04-19T19:00:00Z','assigned');
- insert into game.incidents(incident_ref,reported_at,location_description,priority,status,summary) values('KW-INC-SAFE-TEST','2036-04-19T10:00:00Z','4 Mill Road',2,'new','Scene safety test') returning id into v_incident;
+ select p.id into v_property
+ from game.properties p
+ join game.property_access_points ap on ap.property_id=p.id and ap.is_primary
+ join game.road_segments rs on rs.id=ap.road_segment_id and rs.is_routable
+ where p.status='active'
+ order by p.property_ref
+ limit 1;
+ if v_property is null then raise exception 'No routable property fixture for scene workflow'; end if;
+ insert into game.incidents(incident_ref,reported_at,location_property_id,location_description,priority,status,summary)
+ values('KW-INC-SAFE-TEST','2036-04-19T10:00:00Z',v_property,'4 Mill Road',2,'new','Scene safety test') returning id into v_incident;
  r:=game.execute_text_command('help','scene-safety-help-test-0001');
  if not (r->'available_commands' ? 'record_scene_safety') or not (r->'available_commands' ? 'set_scene_boundary') then raise exception 'Help missing scene safety commands: %',r; end if;
  r:=game.execute_text_command('dispatch SAFE-TEST-UNIT to KW-INC-SAFE-TEST','scene-safety-dispatch-test-0001'); if r->>'ok'<>'true' then raise exception 'Dispatch failed: %',r; end if;
