@@ -1,5 +1,6 @@
 
 -- Activate neighbourhood retail at tower podiums and in existing Riverside mixed-use premises.
+-- Retain staging tables across psql autocommit statements until this migration session ends.
 -- These are extensions to existing canonical units, not duplicate properties or premises.
 
 update game.building_units u
@@ -36,7 +37,7 @@ set floor_directory=jsonb_set(bp.floor_directory,'{0,primary_use}','"residential
 from game.buildings b
 where b.id=bp.building_id and b.building_ref like 'KNG-B-RH%';
 
-create temporary table bp04_neighbourhood_business_units on commit drop as
+create temporary table bp04_neighbourhood_business_units as
 with tower_shops as (
  select n.code neighbourhood_code,n.name neighbourhood_name,d.code district_code,p.id property_id,u.id unit_id,u.unit_ref
  from game.building_units u join game.buildings b on b.id=u.building_id
@@ -57,7 +58,7 @@ select row_number() over(order by neighbourhood_code,unit_ref)::integer seq,
  neighbourhood_code,neighbourhood_name,district_code,property_id,unit_id,unit_ref
 from (select * from tower_shops union all select * from riverside_shops) q;
 
-create temporary table bp04_neighbourhood_business_seed on commit drop as
+create temporary table bp04_neighbourhood_business_seed as
 select s.*,
  'KWORG-BIZ-'||lpad((1100+seq)::text,6,'0') organisation_ref,
  'AF-BIZ-'||lpad((1100+seq)::text,6,'0') business_number,
