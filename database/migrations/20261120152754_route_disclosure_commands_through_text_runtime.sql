@@ -1,10 +1,8 @@
 
 alter function game.execute_text_command(text,text,uuid,uuid) rename to execute_text_command_before_disclosure;
-CREATE OR REPLACE FUNCTION game.execute_text_command(p_command_text text, p_idempotency_key text, p_session_id uuid DEFAULT NULL::uuid, p_actor_personnel_id uuid DEFAULT NULL::uuid)
- RETURNS jsonb
- LANGUAGE plpgsql
- SET search_path TO 'pg_catalog', 'game'
-AS $function$
+create or replace function game.execute_text_command(
+ p_command_text text,p_idempotency_key text,p_session_id uuid default null,p_actor_personnel_id uuid default null
+) returns jsonb language plpgsql set search_path='pg_catalog','game' as $$
 declare i jsonb;typ text;d jsonb;cmd game.game_commands%rowtype;res jsonb;
 begin
  i:=game.interpret_text_command(p_command_text);typ:=i->>'command_type';d:=coalesce(i->'payload','{}'::jsonb);
@@ -33,7 +31,6 @@ begin
   res:=res||jsonb_build_object('command_id',cmd.id);
  end if;
  return res;
-end $function$
-;
+end $$;
 revoke all on function game.execute_text_command(text,text,uuid,uuid) from public,anon,authenticated;
 grant execute on function game.execute_text_command(text,text,uuid,uuid) to service_role;
