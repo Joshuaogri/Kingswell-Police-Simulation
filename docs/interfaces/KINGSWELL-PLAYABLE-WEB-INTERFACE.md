@@ -18,6 +18,10 @@ The browser renders a cartographic canvas from the Kingswell local metric grid a
 - 24 neighbourhood names positioned from the centroids of their registered properties.
 - 75 named roads and all 229 connected road-segment geometries.
 - 157 junctions.
+- 1,136 primary and secondary property entrances.
+- 24 named landmarks linked to their property/building/access records.
+- 282 active turn-control records associated with mapped junctions.
+- All 229 road segments linked to patrol-beat coverage.
 - 656 individually rendered building footprints.
 - Building positions, width, depth and footprint area from BP-04 records.
 - Distinct land-use styling for residential, commercial, industrial, civic/public, transport, mixed-use and other properties.
@@ -57,7 +61,11 @@ The snapshot was exported from the live Supabase `game` schema on 21 November 20
 | Neighbourhoods | 24 |
 | Named roads | 75 |
 | Road segments with geometry | 229 / 229 |
-| Junctions with local-grid positions | 157 / 157 |\n| Property access points | 1,136 |\n| Named landmarks | 24 |\n| Active turn controls | 282 |\n| Patrol-beat segment coverage | 229 / 229 |
+| Junctions with local-grid positions | 157 / 157 |
+| Property access points | 1,136 |
+| Named landmarks | 24 |
+| Active turn controls | 282 |
+| Patrol-beat segment coverage | 229 / 229 |
 | Properties with local-grid positions and road/neighbourhood links | 656 / 656 |
 | Buildings with local-grid positions and footprint dimensions | 656 / 656 |
 | Building units | 26,888 |
