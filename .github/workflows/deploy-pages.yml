@@ -5,7 +5,7 @@ on:
     paths:
       - "index.html"
       - "city-map.html"
-      - "records.html"
+      - "records.html"\n      - "record.html"
       - "geography.html"
       - "data/**"
       - "docs/geography/kingswell-detailed-road-network.svg"
@@ -29,7 +29,7 @@ jobs:
           mkdir -p _site/data
           cp index.html _site/index.html
           cp city-map.html _site/city-map.html
-          cp records.html _site/records.html
+          cp records.html _site/records.html\n          cp record.html _site/record.html
           cp geography.html _site/geography.html
           cp docs/geography/kingswell-detailed-road-network.svg _site/map.svg
           cp -R data/. _site/data/
@@ -44,7 +44,7 @@ jobs:
           required = [
               "index.html",
               "city-map.html",
-              "records.html",
+              "records.html",\n              "record.html",
               "geography.html",
               "map.svg",
               "data/kingswell-map-data.json",
@@ -208,7 +208,18 @@ jobs:
               )
               if page.locator(".record[data-live-id]").count() == 0:
                   raise SystemExit("Live person search by canonical reference returned no record")
-              print("Chromium directory test passed: static property search plus live people, business, organisation and property pagination, search and individual dossiers.")
+              from urllib.parse import quote
+              person_id = page.locator(".record[data-live-id]").first.get_attribute("data-live-id")
+              full_record = page.goto(base + "/record.html?type=people&id=" + quote(person_id, safe=""), wait_until="domcontentloaded")
+              if not full_record or full_record.status != 200:
+                  raise SystemExit("Dedicated individual record page did not load")
+              page.wait_for_function(
+                  "() => document.querySelector('#title')?.textContent !== 'Loading individual record…'",
+                  timeout=30000,
+              )
+              if page.locator("#title").inner_text() in ("Record unavailable", "Loading individual record…"):
+                  raise SystemExit(f"Dedicated person record failed: {page.locator('#status').inner_text()}")
+              print("Chromium directory test passed: live people, business, organisation and property directories; individual dossiers; canonical search; dedicated full person record page.")
 
               browser.close()
           PY
