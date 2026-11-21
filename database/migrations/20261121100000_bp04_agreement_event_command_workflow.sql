@@ -64,7 +64,7 @@ begin
   -- agreement event AGR-0001 EVT-0001 varied 2026-11-20 "Rent review agreed" "Parties signed the documented variation." by KNG-0001
   -- Use unknown when the event date is not established by the source record.
   m := regexp_match(t,
-    '^agreement event ([^[:space:]]+) ([^[:space:]]+) ([a-z_]+) (unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}) "([^"]{1,200})" "([^"]{1,2000})" by ([^[:space:]]+)$','i');
+    '^agreement event ([^[:space:]]+) ([^[:space:]]+) (proposed|executed|commenced|varied|rent_reviewed|break_notice_served|renewal_offered|renewed|expired|terminated|surrendered|dispute_opened|dispute_resolved|assigned|subletting_consented|counterparty_changed|corrected|other) (unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}) "([^"]{1,200})" "([^"]{1,2000})" by ([^[:space:]]+)$','i');
   if m is not null then
     return jsonb_build_object(
       'command_type','agreement_event_record',
@@ -158,7 +158,7 @@ begin
       btrim(payload->>'event_ref'),v_agreement.id,v_event_type,v_occurred_on,
       current_date,btrim(payload->>'subject'),btrim(payload->>'description'),
       v_personnel.person_id,nullif(btrim(payload->>'source_reference'),''),
-      coalesce(nullif(btrim(payload->>'source_description'),''),'Recorded through the Kingswell agreement-event command.'),
+      coalesce(nullif(btrim(payload->>'source_description'),''),'Source details not supplied.'),
       coalesce(payload->'event_details','{}'::jsonb)
     )
     on conflict(event_ref) do nothing;
@@ -214,8 +214,8 @@ $function$;
 create or replace function game.execute_text_command_before_runtime_chain_repair(
   p_command_text text,
   p_idempotency_key text,
-  p_session_id uuid,
-  p_actor_personnel_id uuid
+  p_session_id uuid default null,
+  p_actor_personnel_id uuid default null
 )
 returns jsonb
 language plpgsql
