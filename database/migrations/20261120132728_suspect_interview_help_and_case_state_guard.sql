@@ -1,9 +1,5 @@
--- Add suspect interview commands to help and reject classification after case closure.
-CREATE OR REPLACE FUNCTION game.record_case_suspect_interview(p_interview_ref text, p_reason text, p_actor_ref text, p_command_id uuid)
- RETURNS jsonb
- LANGUAGE plpgsql
- SET search_path TO 'pg_catalog', 'game'
-AS $function$
+create or replace function game.record_case_suspect_interview(p_interview_ref text,p_reason text,p_actor_ref text,p_command_id uuid)
+returns jsonb language plpgsql set search_path to 'pg_catalog','game' as $$
 declare v_interview game.case_interviews%rowtype; v_actor game.police_personnel%rowtype; v_clock timestamptz; v_person game.persons%rowtype; v_case game.cases%rowtype;
 begin
  select * into v_interview from game.case_interviews where interview_ref=btrim(p_interview_ref) for update;
@@ -25,13 +21,10 @@ begin
  insert into game.case_suspect_interview_records(interview_id,case_id,suspect_person_id,recorded_by_personnel_id,recorded_at_game_time,reason,source_command_id)
  values(v_interview.id,v_interview.case_id,v_person.id,v_actor.id,v_clock,btrim(p_reason),p_command_id);
  return jsonb_build_object('ok',true,'interview_ref',v_interview.interview_ref,'suspect',v_person.person_ref,'case_ref',v_case.case_ref,'recorded_at',v_clock,'message','Suspect interview classification recorded. This is an investigative status, not a determination of guilt.');
-end $function$
+end $$;
 
-CREATE OR REPLACE FUNCTION game.execute_text_command(p_command_text text, p_idempotency_key text, p_session_id uuid DEFAULT NULL::uuid, p_actor_personnel_id uuid DEFAULT NULL::uuid)
- RETURNS jsonb
- LANGUAGE plpgsql
- SET search_path TO 'pg_catalog', 'game'
-AS $function$
+create or replace function game.execute_text_command(p_command_text text,p_idempotency_key text,p_session_id uuid default null,p_actor_personnel_id uuid default null)
+returns jsonb language plpgsql set search_path to 'pg_catalog','game' as $$
 declare v_i jsonb; v_type text; v_payload jsonb; v_cmd game.game_commands%rowtype; v_result jsonb; v_actor game.police_personnel%rowtype;
 begin
  v_i:=game.interpret_text_command(p_command_text); v_type:=v_i->>'command_type'; v_payload:=coalesce(v_i->'payload','{}'::jsonb);
@@ -67,7 +60,6 @@ begin
   v_result:=v_result||jsonb_build_object('command_id',v_cmd.id);
  end if;
  return v_result;
-end $function$
-
+end $$;
 revoke all on function game.record_case_suspect_interview(text,text,text,uuid),game.execute_text_command(text,text,uuid,uuid) from public,anon,authenticated;
 grant execute on function game.record_case_suspect_interview(text,text,text,uuid),game.execute_text_command(text,text,uuid,uuid) to service_role;
