@@ -34,7 +34,7 @@ GitHub Actions run **#36** passed:
 
 GitHub Actions run: https://github.com/Joshuaogri/Kingswell-Police-Simulation/actions/runs/44925414846
 
-A further Chromium check is running for the new dedicated `record.html` page and its published navigation.
+GitHub Actions run **#40** also passed Chromium checks for the dedicated `record.html` person record route, with the Pages build and deployment completing successfully.\n\nGitHub Actions run: https://github.com/Joshuaogri/Kingswell-Police-Simulation/actions/runs/44925628935
 
 ## Explicit remaining work
 
