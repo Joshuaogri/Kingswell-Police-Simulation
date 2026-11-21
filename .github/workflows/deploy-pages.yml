@@ -258,7 +258,17 @@ jobs:
               page.wait_for_function("name => document.querySelector('#dtitle')?.textContent === name", arg=landmark_name, timeout=15000)
               if page.locator("#dtype").inner_text() != "BP-02 CITY LANDMARK":
                   raise SystemExit("Searching a landmark did not open its individual map record")
-              print("Chromium passed: live entity directories, full record pages, bidirectional property/map navigation, optional landmark layer and landmark search.")
+              if len(map_data.get("access_points", [])) < 1000:
+                  raise SystemExit("Canonical property entrance/access-point layer is incomplete")
+              access_ref = map_data["access_points"][0]["ref"]
+              page.locator("#access").click()
+              if "on" not in page.locator("#access").get_attribute("class"):
+                  raise SystemExit("Property entrance layer did not enable")
+              page.locator("#search").fill(access_ref)
+              page.wait_for_function("ref => document.querySelector('#dtitle')?.textContent === ref", arg=access_ref, timeout=15000)
+              if page.locator("#dtype").inner_text() != "BP-02 PROPERTY ACCESS POINT":
+                  raise SystemExit("Searching an entrance did not open its individual access-point record")
+              print("Chromium passed: live entity directories, full record pages, bidirectional map/property navigation, searchable landmark layer and searchable property entrances.")
 
               browser.close()
           PY
