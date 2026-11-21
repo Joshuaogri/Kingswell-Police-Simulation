@@ -675,13 +675,15 @@ begin
          coalesce(res->'available_commands','[]'::jsonb)||
          jsonb_build_array('property_get_record','property_neighbourhood_map',
            'property_city_summary','business_get_record','business_directory',
-           'agreement_event_record')
+           'agreement_event_record','organisation_control_record',
+            'property_title_event_record')
        ) x),true);
   end if;
 
   if typ not in (
     'property_get_record','property_neighbourhood_map','property_city_summary',
-    'business_get_record','business_directory','agreement_event_record'
+    'business_get_record','business_directory','agreement_event_record',
+    'organisation_control_record','property_title_event_record'
   ) then
     return game.execute_text_command_before_property(
       p_command_text,p_idempotency_key,p_session_id,p_actor_personnel_id
