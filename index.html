@@ -154,4 +154,4 @@ $$('[data-tab]').forEach(el=>el.addEventListener('click',()=>{$$('[data-tab]').f
 window.addEventListener('resize',resize);
 fetch('./data/kingswell-map-data.json').then(r=>{if(!r.ok)throw new Error('Map data snapshot not found');return r.json()}).then(d=>{data=d;$('#countBuildings').textContent=fmt(d.properties.length);$('#countUnits').textContent=fmt(d.properties.reduce((n,p)=>n+(p.unit_count||0),0));resize();$('#mapStatus').textContent='CANONICAL SNAPSHOT LOADED · '+fmt(d.properties.length)+' BUILDINGS · '+fmt(d.segments.length)+' ROAD SEGMENTS';}).catch(e=>{$('#mapStatus').textContent='Unable to load map data: '+e.message;});
 </script>
-</body></html>
+<a href="./city-map.html" style="position:fixed;right:26px;bottom:24px;z-index:9999;background:#173b2b;border:1px solid #5b9b73;color:#c2f2d2;border-radius:9px;padding:13px 17px;font:700 11px 'DM Mono',monospace;letter-spacing:.08em;text-decoration:none;box-shadow:0 10px 35px #0008">⌖ ENTER PLAYABLE CITY MAP →</a></body></html>
