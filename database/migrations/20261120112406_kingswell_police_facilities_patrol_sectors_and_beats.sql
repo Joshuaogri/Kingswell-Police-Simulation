@@ -1,5 +1,3 @@
--- Kingswell BP-02: police facilities, patrol sectors, neighbourhood beats and road coverage.
--- All records are fictional planning data; no personnel, units or incidents are seeded.
 
 create table game.police_facilities (
  id uuid primary key default gen_random_uuid(),
@@ -87,7 +85,7 @@ with ranked as (
  ('KNG-PF-KMX','Riverside District Police Station','district_station','KMX',1,'public_counter_and_patrol'),
  ('KNG-PF-CUSTODY','Kingswell Central Custody Facility','custody_facility','KCI',3,'secure_custody_operations'),
  ('KNG-PF-COMMS','Kingswell Police Operations and Communications Centre','operations_centre','KST',2,'continuous_dispatch_operations'),
- ('KNG-PF-FORENSICS','Kingswell Forensic Services Centre','forensic_facility','KED',2,'scheduled_specialist_operations'),
+ ('KNG-PF-FORensics','Kingswell Forensic Services Centre','forensic_facility','KED',2,'scheduled_specialist_operations'),
  ('KNG-PF-TRAIN','Kingswell Police Training Centre','training_centre','KDW',2,'scheduled_training'),
  ('KNG-PF-FLEET','Kingswell Police Fleet and Workshop','fleet_facility','KAS',2,'scheduled_fleet_support')
 )
