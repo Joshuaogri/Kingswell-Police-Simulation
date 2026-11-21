@@ -16,7 +16,7 @@ The project is built around three connected parts:
 
 ## Latest verified delivery: BP-04
 
-<badge>COMPLETE · LIVE DEPLOYED · TESTED</badge>
+**COMPLETE · LIVE DEPLOYED · TESTED**
 
 BP-04 delivers the detailed property, building, unit, business, organisation, site, workforce, asset, infrastructure and premises-context foundations. It is integrated with the wider police incident, dispatch, scene and case workflows.
 
