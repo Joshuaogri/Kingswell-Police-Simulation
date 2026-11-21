@@ -68,4 +68,4 @@ All commands use the existing command audit and idempotency chain.
 
 The complete isolated PostgreSQL migration-chain and gameplay regression workflow is the acceptance gate. Do not mark BP-04 complete until the latest workflow for the final commit reports success.
 
-The live Supabase project is separate from the isolated CI database. This record does not claim that a live deployment or live population has occurred.
+The live Supabase project is separate from the isolated CI database. The repository migration-sync workflow now applies the repository migrations to live Supabase automatically only after the main-branch gameplay regression workflow completes successfully. It verifies that the tested migration and test files still match the current main branch before deployment. A manual workflow-dispatch deployment remains available as well. Live completion is confirmed separately from CI completion.

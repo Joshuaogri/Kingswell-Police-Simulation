@@ -7,6 +7,10 @@ on:
     paths:
       - "database/migrations/**"
       - ".github/workflows/supabase-migration-sync.yml"
+  workflow_run:
+    workflows: ["Kingswell Gameplay Regression Tests"]
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
     inputs:
       deploy_to_production:
@@ -64,6 +68,14 @@ jobs:
           test -n "$SUPABASE_DB_PASSWORD"
           echo "Supabase database credential is available."
 
+      - name: Verify successful regression tested the current migration sources
+        if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin "${{ github.event.workflow_run.head_sha }}"
+          git diff --exit-code "${{ github.event.workflow_run.head_sha }}" HEAD -- database/migrations database/tests
+
       - name: List repository and live migration history
         shell: bash
         run: |
@@ -81,7 +93,7 @@ jobs:
           supabase db push --db-url "$DB_URL" --dry-run
 
       - name: Apply migrations to live Supabase
-        if: ${{ inputs.deploy_to_production }}
+        if: ${{ inputs.deploy_to_production || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') }}
         shell: bash
         run: |
           set -euo pipefail
@@ -90,7 +102,7 @@ jobs:
           supabase db push --db-url "$DB_URL" --yes
 
       - name: Confirm live migration history after deployment
-        if: ${{ inputs.deploy_to_production }}
+        if: ${{ inputs.deploy_to_production || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') }}
         shell: bash
         run: |
           set -euo pipefail
