@@ -1,4 +1,4 @@
--- Kingswell charge verdicts and sentencing foundation.
+
 create sequence game.trial_verdict_ref_seq;
 create sequence game.trial_sentence_ref_seq;
 
@@ -31,7 +31,7 @@ create table game.trial_sentences(
  imposed_at_game_time timestamptz not null,
  source_command_id uuid not null references game.game_commands(id),
  created_at timestamptz not null default now(),
- check((sentence_type='custodial' and duration_days>0) or sentence_type<>'custodial'),
+ check((sentence_type='custodial' and duration_days>0) or (sentence_type<>'custodial')),
  check((sentence_type='fine' and fine_amount>0) or sentence_type<>'fine')
 );
 create index trial_sentences_hearing_idx on game.trial_sentences(hearing_id,imposed_at_game_time);
@@ -57,16 +57,13 @@ alter table game.trial_outcome_events enable row level security;
 revoke all on game.trial_verdicts,game.trial_sentences,game.trial_outcome_events from public,anon,authenticated;
 grant select,insert on game.trial_verdicts,game.trial_sentences,game.trial_outcome_events to service_role;
 grant usage,select on sequence game.trial_verdict_ref_seq,game.trial_sentence_ref_seq to service_role;
+
 create trigger trial_verdicts_append_only before update or delete on game.trial_verdicts for each row execute function game.reject_trial_history_mutation();
 create trigger trial_sentences_append_only before update or delete on game.trial_sentences for each row execute function game.reject_trial_history_mutation();
 create trigger trial_outcome_events_append_only before update or delete on game.trial_outcome_events for each row execute function game.reject_trial_history_mutation();
 
-CREATE OR REPLACE FUNCTION game.interpret_text_command(p_command_text text)
- RETURNS jsonb
- LANGUAGE plpgsql
- IMMUTABLE
- SET search_path TO 'pg_catalog', 'game'
-AS $function$
+create or replace function game.interpret_text_command(p_command_text text)
+returns jsonb language plpgsql immutable set search_path='pg_catalog','game' as $$
 declare m text[]; r jsonb;
 begin
  m:=regexp_match(btrim(p_command_text),'^court plea record ([A-Za-z0-9_-]+) by ([A-Za-z0-9_-]+) as (guilty|not_guilty|no_plea)(?: notes "([^"]*)")?$','i');
@@ -86,14 +83,10 @@ begin
  r:=game.interpret_prosecution_command(p_command_text);
  if r is not null then return r; end if;
  return game.interpret_text_command_before_arrest_custody(p_command_text);
-end $function$
+end $$;
 
-CREATE OR REPLACE FUNCTION game.execute_trial_command(p_command_id uuid, p_type text, p jsonb)
- RETURNS jsonb
- LANGUAGE plpgsql
- SECURITY DEFINER
- SET search_path TO 'pg_catalog', 'game'
-AS $function$
+create or replace function game.execute_trial_command(p_command_id uuid,p_type text,p jsonb)
+returns jsonb language plpgsql security definer set search_path='pg_catalog','game' as $$
 declare n timestamptz; ch game.formal_charges%rowtype; pl game.trial_pleas%rowtype; pe game.persons%rowtype; h game.court_hearings%rowtype; cc game.court_cases%rowtype;
  off game.court_official_profiles%rowtype; ev game.evidence_items%rowtype; pro game.prosecutor_profiles%rowtype; dc game.defence_counsel_profiles%rowtype;
  te game.trial_evidence_tenders%rowtype; tp game.trial_proceedings%rowtype; vd game.trial_verdicts%rowtype; st game.trial_sentences%rowtype;
@@ -189,13 +182,10 @@ begin
   return jsonb_build_object('ok',true,'sentence_ref',st.sentence_ref,'verdict_ref',vd.verdict_ref,'charge_ref',ch.charge_ref,'sentence_type',st.sentence_type,'duration_days',st.duration_days,'fine_amount',st.fine_amount);
  end if;
  return jsonb_build_object('ok',false,'code','unsupported_trial_command');
-end $function$
+end $$;
 
-CREATE OR REPLACE FUNCTION game.execute_text_command(p_command_text text, p_idempotency_key text, p_session_id uuid DEFAULT NULL::uuid, p_actor_personnel_id uuid DEFAULT NULL::uuid)
- RETURNS jsonb
- LANGUAGE plpgsql
- SET search_path TO 'pg_catalog', 'game'
-AS $function$
+create or replace function game.execute_text_command(p_command_text text,p_idempotency_key text,p_session_id uuid default null,p_actor_personnel_id uuid default null)
+returns jsonb language plpgsql set search_path='pg_catalog','game' as $$
 declare i jsonb; typ text; d jsonb; cmd game.game_commands%rowtype; res jsonb;
 begin
  i:=game.interpret_text_command(p_command_text); typ:=i->>'command_type'; d:=coalesce(i->'payload','{}'::jsonb);
@@ -224,14 +214,10 @@ begin
   res:=res||jsonb_build_object('command_id',cmd.id);
  end if;
  return res;
-end $function$
+end $$;
 
-CREATE OR REPLACE FUNCTION game.get_trial_record(p_hearing_ref text)
- RETURNS jsonb
- LANGUAGE sql
- STABLE SECURITY DEFINER
- SET search_path TO 'pg_catalog', 'game'
-AS $function$
+create or replace function game.get_trial_record(p_hearing_ref text)
+returns jsonb language sql stable security definer set search_path='pg_catalog','game' as $$
  select jsonb_build_object(
   'ok',true,'hearing_ref',h.hearing_ref,
   'pleas',(select coalesce(jsonb_agg(jsonb_build_object('plea_ref',p.plea_ref,'charge_ref',fc.charge_ref,'person_ref',person.person_ref,'plea',p.plea,'recorded_at',p.recorded_at_game_time,'notes',p.notes) order by p.recorded_at_game_time),'[]'::jsonb) from game.trial_pleas p join game.formal_charges fc on fc.id=p.charge_id join game.persons person on person.id=p.person_id where fc.case_id=cc.case_id),
@@ -242,7 +228,7 @@ AS $function$
  )
  from game.court_hearings h join game.court_cases cc on cc.id=h.court_case_id
  where h.hearing_ref=p_hearing_ref and h.hearing_type in ('trial','sentencing')
-$function$
+$$;
 
 revoke all on function game.interpret_text_command(text) from public,anon,authenticated;
 grant execute on function game.interpret_text_command(text) to service_role;
