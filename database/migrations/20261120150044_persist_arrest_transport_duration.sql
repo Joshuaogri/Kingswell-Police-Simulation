@@ -1,6 +1,3 @@
--- Persist the explicit duration on each arrest transport leg and preserve the transport clock transition.
-alter table game.arrest_transport_legs add column if not exists duration_minutes integer not null default 1;
-do $$ begin if not exists(select 1 from pg_constraint where conname='arrest_transport_duration_valid' and conrelid='game.arrest_transport_legs'::regclass) then alter table game.arrest_transport_legs add constraint arrest_transport_duration_valid check(duration_minutes between 1 and 240);end if;end $$;
 CREATE OR REPLACE FUNCTION game.execute_arrest_custody_command(p_command_id uuid, p_type text, p jsonb, p_actor_id uuid)
  RETURNS jsonb
  LANGUAGE plpgsql
@@ -86,4 +83,3 @@ begin
  end if;
  return jsonb_build_object('ok',false,'code','unsupported_command');
 end $function$
-
