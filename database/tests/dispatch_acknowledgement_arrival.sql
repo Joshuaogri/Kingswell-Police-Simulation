@@ -3,7 +3,7 @@
 begin;
 do $test$
 declare
-  v_person uuid; v_personnel uuid; v_unit uuid; v_roster uuid; v_incident uuid; v_personnel_ref text; r jsonb;
+  v_person uuid; v_personnel uuid; v_unit uuid; v_roster uuid; v_incident uuid; v_property uuid; v_personnel_ref text; r jsonb;
 begin
   r:=game.submit_command('Initialize acknowledgement test clock','initialize_clock',
     '{"start_at":"2036-03-12T09:00:00Z"}'::jsonb,'dispatch-arrival-test-clock-0001');
@@ -16,8 +16,16 @@ begin
     values('TEST-ROSTER-ARR-001',v_unit,'Arrival Test Shift','2036-03-12T08:00:00Z','2036-03-12T18:00:00Z','active') returning id into v_roster;
   insert into game.duty_assignments(roster_id,personnel_id,assignment_role,starts_at,ends_at,status)
     values(v_roster,v_personnel,'response officer','2036-03-12T08:00:00Z','2036-03-12T18:00:00Z','assigned');
-  insert into game.incidents(incident_ref,reported_at,location_description,priority,status,summary)
-    values('KW-INC-ARR-TEST','2036-03-12T09:00:00Z','22 Station Road',2,'new','Arrival workflow test') returning id into v_incident;
+  select p.id into v_property
+  from game.properties p
+  join game.property_access_points ap on ap.property_id=p.id and ap.is_primary
+  join game.road_segments rs on rs.id=ap.road_segment_id and rs.is_routable
+  where p.status='active'
+  order by p.property_ref
+  limit 1;
+  if v_property is null then raise exception 'No routable property fixture for arrival test'; end if;
+  insert into game.incidents(incident_ref,reported_at,location_property_id,location_description,priority,status,summary)
+    values('KW-INC-ARR-TEST','2036-03-12T09:00:00Z',v_property,'22 Station Road',2,'new','Arrival workflow test') returning id into v_incident;
   r:=game.execute_text_command('help','dispatch-arrival-test-help-0001');
   if not (r->'available_commands' ? 'acknowledge_dispatch') or not (r->'available_commands' ? 'arrive_scene') then
     raise exception 'Help catalogue is missing acknowledgement or arrival: %',r;
