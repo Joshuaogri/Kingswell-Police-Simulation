@@ -28,6 +28,9 @@ for ((first=1; first<=43412; first+=1000)); do
   "${psql_cmd[@]}" -c "select game.seed_kingswell_business_employment_batch($first,$last);"
 done
 
+echo "Generating the complete BP-04 fictional world after canonical people and workforce are committed."
+"${psql_cmd[@]}" -c "select game.seed_bp04_complete_world();"
+
 echo "Verifying deterministic fixture totals."
 "${psql_cmd[@]}" -Atc "
 DO \$\$
