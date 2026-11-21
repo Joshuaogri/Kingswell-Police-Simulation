@@ -222,6 +222,21 @@ jobs:
               )
               if page.locator("#title").inner_text() in ("Record unavailable", "Loading individual record…"):
                   raise SystemExit(f"Dedicated person record failed: {page.locator('#status').inner_text()}")
+              person_sections = page.locator("#sections").inner_text()
+              for required_section in [
+                  "Personal & simulation profile",
+                  "Households",
+                  "Household members",
+                  "Employment",
+                  "Weekly routines",
+                  "Life events",
+                  "Population memberships",
+                  "Relationships",
+              ]:
+                  if required_section not in person_sections:
+                      raise SystemExit(f"Person dossier is missing {required_section}: {person_sections}")
+              if "KWHH-" not in person_sections or "KWR-" not in person_sections:
+                  raise SystemExit("Person dossier did not expose linked household and routine references")
               map_data = page.request.get(base + "/data/kingswell-map-data.json").json()
               property_ref = map_data["properties"][0]["ref"]
               map_page_response = page.goto(base + "/city-map.html?property=" + quote(property_ref, safe=""), wait_until="domcontentloaded")
