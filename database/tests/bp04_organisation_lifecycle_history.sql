@@ -10,7 +10,7 @@ declare
  result jsonb;
 begin
  parsed:=game.interpret_text_command(
-  'organisation lifecycle event ORG-TEST-01 EVT-TEST-01 name_changed unknown "Registered name changed" "The filed record confirms the organisation changed its registered name." "REGISTRY-TEST-01" "Fictional registry extract" by KNG-TEST-0001'
+  'organisation lifecycle event ORG-TEST-01 EVT-TEST-01 name_changed unknown unknown "Registered name changed" "The filed record confirms the organisation changed its registered name." "REGISTRY-TEST-01" "Fictional registry extract" by KNG-TEST-0001'
  );
  if parsed->>'command_type'<>'organisation_lifecycle_event_record'
   or parsed#>>'{payload,organisation_ref}'<>'ORG-TEST-01'
@@ -21,7 +21,7 @@ begin
  end if;
 
  parsed:=game.interpret_text_command(
-  'organisation lifecycle event ORG-TEST-01 EVT-TEST-02 merged 2026-11-20 "Merger recorded" "The registry records a merger." "" "" by KNG-TEST-0001'
+  'organisation lifecycle event ORG-TEST-01 EVT-TEST-02 merged 2026-11-20 ORG-TEST-02 "Merger recorded" "The registry records a merger." "" "" by KNG-TEST-0001'
  );
  if parsed->>'command_type'<>'organisation_lifecycle_event_record'
   or parsed#>>'{payload,event_type}'<>'merged'
@@ -30,7 +30,7 @@ begin
  end if;
 
  malformed:=game.interpret_text_command(
-  'organisation lifecycle event ORG-TEST-01 EVT-TEST-03 fake_event unknown "Bad event" "Invalid event type." "" "" by KNG-TEST-0001'
+  'organisation lifecycle event ORG-TEST-01 EVT-TEST-03 fake_event unknown unknown "Bad event" "Invalid event type." "" "" by KNG-TEST-0001'
  );
  if malformed->>'command_type'='organisation_lifecycle_event_record' then
   raise exception 'Invalid lifecycle event type was accepted: %',malformed;
@@ -42,7 +42,7 @@ begin
  end if;
 
  result:=game.execute_text_command(
-  'organisation lifecycle event ORG-DOES-NOT-EXIST EVT-TEST-04 formed unknown "Formation" "Test event." "" "" by KNG-NONEXISTENT',
+  'organisation lifecycle event ORG-DOES-NOT-EXIST EVT-TEST-04 formed unknown unknown "Formation" "Test event." "" "" by KNG-NONEXISTENT',
   'bp04-organisation-lifecycle-actor-01',null,null
  );
  if result->>'code'<>'actor_mismatch' then
