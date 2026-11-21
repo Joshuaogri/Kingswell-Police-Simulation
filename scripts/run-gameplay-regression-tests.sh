@@ -12,6 +12,15 @@ case "$DATABASE_URL" in
     ;;
 esac
 
+# Bound individual SQL statements, lock waits, and total test runtime so one
+# pathological query cannot leave the CI job apparently running forever.
+TEST_TIMEOUT_SECONDS="${TEST_TIMEOUT_SECONDS:-180}"
+TOTAL_TIMEOUT_SECONDS="${TOTAL_TIMEOUT_SECONDS:-1500}"
+if ! [[ "$TEST_TIMEOUT_SECONDS" =~ ^[1-9][0-9]*$ && "$TOTAL_TIMEOUT_SECONDS" =~ ^[1-9][0-9]*$ ]]; then
+  echo "::error::Test timeout values must be positive whole seconds."
+  exit 2
+fi
+
 shopt -s nullglob
 test_files=(database/tests/*.sql)
 if (("${#test_files[@]}" == 0)); then
@@ -20,11 +29,21 @@ if (("${#test_files[@]}" == 0)); then
 fi
 
 echo "Running ${#test_files[@]} Kingswell SQL regression tests against the disposable local database."
+echo "Per-test limit: ${TEST_TIMEOUT_SECONDS}s; total suite limit: ${TOTAL_TIMEOUT_SECONDS}s."
 passed=0
 failed=0
 failures=()
+suite_started=$SECONDS
 
 for test_file in "${test_files[@]}"; do
+  elapsed=$((SECONDS-suite_started))
+  if ((elapsed >= TOTAL_TIMEOUT_SECONDS)); then
+    failed=$((failed+1))
+    failures+=("$test_file and remaining tests (total suite timeout)")
+    echo "::error::Total regression-suite timeout reached after ${elapsed}s; stopping remaining tests."
+    break
+  fi
+
   # Each test owns a transaction or is wrapped in one. A failed psql process
   # closes its connection, so PostgreSQL rolls back any still-open transaction.
   has_begin=0
@@ -33,24 +52,39 @@ for test_file in "${test_files[@]}"; do
   grep -Eiq '^[[:space:]]*rollback[[:space:]]*;' "$test_file" && has_rollback=1 || true
 
   echo "::group::${test_file}"
+  echo "START $(date -u +'%Y-%m-%dT%H:%M:%SZ') — ${test_file}"
+  test_started=$SECONDS
+  psql_cmd=(timeout --signal=TERM --kill-after=10s "${TEST_TIMEOUT_SECONDS}s" env
+    "PGOPTIONS=-c statement_timeout=${TEST_TIMEOUT_SECONDS}000 -c lock_timeout=30000"
+    "PGAPPNAME=kingswell-regression")
   if ((has_begin && has_rollback)); then
-    if psql "$DATABASE_URL" -X --no-psqlrc -v ON_ERROR_STOP=1 -f "$test_file"; then
+    if "${psql_cmd[@]}" psql "$DATABASE_URL" -X --no-psqlrc -v ON_ERROR_STOP=1 -f "$test_file"; then
       ((passed+=1))
-      echo "PASS: $test_file"
+      echo "PASS: $test_file ($((SECONDS-test_started))s)"
     else
+      rc=$?
       ((failed+=1))
       failures+=("$test_file")
-      echo "::error file=$test_file::Regression test failed; continuing to collect remaining failures."
+      if ((rc==124 || rc==137)); then
+        echo "::error file=$test_file::Test exceeded its ${TEST_TIMEOUT_SECONDS}s execution limit."
+      else
+        echo "::error file=$test_file::Regression test failed (exit $rc); continuing."
+      fi
     fi
   elif ((!has_begin && !has_rollback)); then
-    if psql "$DATABASE_URL" -X --no-psqlrc -v ON_ERROR_STOP=1 \
+    if "${psql_cmd[@]}" psql "$DATABASE_URL" -X --no-psqlrc -v ON_ERROR_STOP=1 \
       -c 'BEGIN;' -f "$test_file" -c 'ROLLBACK;'; then
       ((passed+=1))
-      echo "PASS: $test_file"
+      echo "PASS: $test_file ($((SECONDS-test_started))s)"
     else
+      rc=$?
       ((failed+=1))
       failures+=("$test_file")
-      echo "::error file=$test_file::Regression test failed; continuing to collect remaining failures."
+      if ((rc==124 || rc==137)); then
+        echo "::error file=$test_file::Test exceeded its ${TEST_TIMEOUT_SECONDS}s execution limit."
+      else
+        echo "::error file=$test_file::Regression test failed (exit $rc); continuing."
+      fi
     fi
   else
     ((failed+=1))
@@ -60,7 +94,7 @@ for test_file in "${test_files[@]}"; do
   echo "::endgroup::"
 done
 
-echo "Gameplay regression results: $passed passed, $failed failed, ${#test_files[@]} total."
+echo "Gameplay regression results: $passed passed, $failed failed, ${#test_files[@]} discovered."
 if ((failed)); then
   printf 'FAILED: %s\n' "${failures[@]}"
   exit 1
