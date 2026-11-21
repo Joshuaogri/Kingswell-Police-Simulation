@@ -1,3 +1,4 @@
+
 create sequence game.prosecution_referral_ref_seq;
 
 create table game.prosecution_referrals (
@@ -68,7 +69,7 @@ end $$;
 
 create or replace function game.execute_prosecution_command(p_command_id uuid,p_type text,p jsonb,p_actor_id uuid)
 returns jsonb language plpgsql security definer set search_path='pg_catalog','game' as $$
-declare n timestamptz; c game.cases%rowtype; a game.arrests%rowtype; r game.prosecution_referrals%rowtype;
+declare n timestamptz; c game.cases%rowtype; a game.arrests%rowtype; r game.prosecution_referrals%rowtype; v_ref text;
 begin
  select current_game_time into n from game.simulation_state where id=1 for update;
  if n is null then return jsonb_build_object('ok',false,'code','clock_not_initialized');end if;
