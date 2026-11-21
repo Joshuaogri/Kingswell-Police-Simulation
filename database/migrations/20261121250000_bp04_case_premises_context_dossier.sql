@@ -89,25 +89,33 @@ begin
 end;
 $function$;
 
--- Extend the existing comprehensive dossier in place; retain every existing section.
-do $patch$
-declare
-  v_definition text;
-  v_anchor text := ' return v_result;';
-  v_replacement text := ' v_result:=v_result||jsonb_build_object(''premises_context'',game.get_case_premises_context(v_case.case_ref));'||E'\n return v_result;';
-begin
-  select pg_get_functiondef('game.get_case_review_dossier(text)'::regprocedure)
-    into v_definition;
-  if position(v_anchor in v_definition)=0 then
-    raise exception 'Case dossier return anchor not found; refusing to replace an unexpected definition';
-  end if;
-  if position('get_case_premises_context' in v_definition)>0 then
-    raise exception 'Case dossier already contains premises context; migration must not be applied twice';
-  end if;
-  v_definition:=replace(v_definition,v_anchor,v_replacement);
-  execute v_definition;
-end
-$patch$;
+-- Preserve the complete existing dossier by wrapping its current public function.
+-- The underlying function may itself be a wrapper around earlier dossier sections;
+-- never rewrite its body by matching a fragile textual return statement.
+alter function game.get_case_review_dossier(text)
+  rename to get_case_review_dossier_before_premises;
 
-revoke all on function game.get_case_premises_context(text) from public,anon,authenticated;
-grant execute on function game.get_case_premises_context(text) to service_role;
+create or replace function game.get_case_review_dossier(p_case_ref text)
+returns jsonb
+language plpgsql
+stable
+set search_path to 'pg_catalog','game'
+as $function$
+declare
+  v_result jsonb;
+begin
+  v_result:=game.get_case_review_dossier_before_premises(p_case_ref);
+
+  if coalesce((v_result->>'ok')::boolean,false) is not true then
+    return v_result;
+  end if;
+
+  return v_result || jsonb_build_object(
+    'premises_context',
+    game.get_case_premises_context(p_case_ref)
+  );
+end;
+$function$;
+
+revoke all on function game.get_case_review_dossier(text) from public,anon,authenticated;
+grant execute on function game.get_case_review_dossier(text) to service_role;
