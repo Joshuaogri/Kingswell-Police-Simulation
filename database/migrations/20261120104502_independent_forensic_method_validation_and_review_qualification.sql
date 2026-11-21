@@ -1,19 +1,4 @@
--- Independent method-validation review and qualified technical-review controls.
-create table game.forensic_method_reviews (
- id uuid primary key default gen_random_uuid(),
- review_ref text not null unique,
- method_id uuid not null references game.forensic_methods(id),
- reviewer_personnel_id uuid not null references game.police_personnel(id),
- decision text not null check(decision in ('validated','changes_required','suspended')),
- review_notes text not null,
- reviewed_at timestamptz not null,
- source_command_id uuid references game.game_commands(id),
- created_at timestamptz not null default now()
-);
-create index forensic_method_reviews_method_time_idx on game.forensic_method_reviews(method_id,reviewed_at desc);
-create index forensic_method_reviews_reviewer_idx on game.forensic_method_reviews(reviewer_personnel_id);
-alter table game.forensic_method_reviews enable row level security;
-
+create table game.forensic_method_reviews (id uuid primary key default gen_random_uuid(),review_ref text not null unique,method_id uuid not null references game.forensic_methods(id),reviewer_personnel_id uuid not null references game.police_personnel(id),decision text not null check(decision in ('validated','changes_required','suspended')),review_notes text not null,reviewed_at timestamptz not null,source_command_id uuid references game.game_commands(id),created_at timestamptz not null default now()); create index forensic_method_reviews_method_time_idx on game.forensic_method_reviews(method_id,reviewed_at desc); create index forensic_method_reviews_reviewer_idx on game.forensic_method_reviews(reviewer_personnel_id); alter table game.forensic_method_reviews enable row level security;
 CREATE OR REPLACE FUNCTION game.execute_forensic_action(p_command_id uuid, p_command_type text, p_payload jsonb, p_actor_personnel_id uuid DEFAULT NULL::uuid)
  RETURNS jsonb
  LANGUAGE plpgsql
@@ -127,7 +112,6 @@ $function$
 ;
 revoke all on function game.execute_forensic_action(uuid,text,jsonb,uuid) from public,anon,authenticated;
 grant execute on function game.execute_forensic_action(uuid,text,jsonb,uuid) to service_role;
-
 CREATE OR REPLACE FUNCTION game.interpret_text_command(p_command_text text)
  RETURNS jsonb
  LANGUAGE plpgsql
@@ -234,7 +218,6 @@ begin
 end;
 $function$
 ;
-
 CREATE OR REPLACE FUNCTION game.submit_command(p_command_text text, p_command_type text, p_payload jsonb DEFAULT '{}'::jsonb, p_idempotency_key text DEFAULT NULL::text, p_session_id uuid DEFAULT NULL::uuid, p_actor_personnel_id uuid DEFAULT NULL::uuid)
  RETURNS jsonb
  LANGUAGE plpgsql
