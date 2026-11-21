@@ -1,4 +1,3 @@
--- Kingswell initial scene control, activity, access, field report and resource request records.
 create table game.incident_scenes (
  id uuid primary key default gen_random_uuid(), scene_ref text not null unique, incident_id uuid not null references game.incidents(id), case_id uuid references game.cases(id),
  scene_type text not null default 'suspected', location_description text, designation_reason text not null, confidence text not null default 'suspected', status text not null default 'controlled',
@@ -20,11 +19,8 @@ create index incident_field_reports_personnel_idx on game.incident_field_reports
 create table game.incident_resource_requests (id uuid primary key default gen_random_uuid(),request_ref text not null unique,incident_id uuid not null references game.incidents(id),scene_id uuid references game.incident_scenes(id),requested_by_personnel_id uuid not null references game.police_personnel(id),resource_type text not null,quantity integer not null default 1 check(quantity>0),priority smallint not null default 3 check(priority between 1 and 5),reason text not null,status text not null default 'requested' check(status in ('requested','acknowledged','approved','declined','fulfilled','cancelled')),requested_at timestamptz not null,responded_at timestamptz,response_notes text,fulfilled_by_personnel_id uuid references game.police_personnel(id),source_command_id uuid references game.game_commands(id),created_at timestamptz not null default now());
 create index incident_resource_requests_incident_idx on game.incident_resource_requests(incident_id,status,requested_at);
 create index incident_resource_requests_scene_idx on game.incident_resource_requests(scene_id,status);
-CREATE OR REPLACE FUNCTION game.execute_scene_action(p_command_id uuid, p_command_type text, p_payload jsonb, p_actor_personnel_id uuid DEFAULT NULL::uuid)
- RETURNS jsonb
- LANGUAGE plpgsql
- SET search_path TO 'pg_catalog', 'game'
-AS $function$
+create or replace function game.execute_scene_action(p_command_id uuid,p_command_type text,p_payload jsonb,p_actor_personnel_id uuid default null)
+returns jsonb language plpgsql set search_path to pg_catalog,game as $scene$
 declare
  v_clock_time timestamptz; v_incident_id uuid; v_incident_ref text; v_incident_status text;
  v_scene_id uuid; v_scene_ref text; v_scene_status text; v_scene_manager uuid; v_personnel_id uuid;
@@ -108,8 +104,10 @@ begin
  end if;
  return jsonb_build_object('ok',false,'code','unsupported_scene_action','message','This scene action is not supported.');
 end;
-$function$
-;
+$scene$;
+revoke all on function game.execute_scene_action(uuid,text,jsonb,uuid) from public,anon,authenticated;
+grant execute on function game.execute_scene_action(uuid,text,jsonb,uuid) to service_role;
+
 CREATE OR REPLACE FUNCTION game.submit_command(p_command_text text, p_command_type text, p_payload jsonb DEFAULT '{}'::jsonb, p_idempotency_key text DEFAULT NULL::text, p_session_id uuid DEFAULT NULL::uuid, p_actor_personnel_id uuid DEFAULT NULL::uuid)
  RETURNS jsonb
  LANGUAGE plpgsql
@@ -542,8 +540,6 @@ begin
 end;
 $function$
 ;
-revoke all on function game.execute_scene_action(uuid,text,jsonb,uuid) from public,anon,authenticated;
-grant execute on function game.execute_scene_action(uuid,text,jsonb,uuid) to service_role;
 revoke all on function game.submit_command(text,text,jsonb,text,uuid,uuid) from public,anon,authenticated;
 revoke all on function game.interpret_text_command(text) from public,anon,authenticated;
 grant execute on function game.submit_command(text,text,jsonb,text,uuid,uuid) to service_role;
