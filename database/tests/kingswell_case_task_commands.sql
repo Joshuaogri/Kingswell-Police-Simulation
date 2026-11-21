@@ -26,7 +26,8 @@ begin
  if (r->>'count')::int<>1 then raise exception 'List command failed: %',r; end if;
  r:=game.execute_text_command('case task '||ref,'kwtc-get-0001',null,pp1);
  if (r->>'count')::int<>1 then raise exception 'Get command failed: %',r; end if;
- seed:=game.execute_text_command('help','kwtc-source-command-0001',null,pp2); source_id:=(seed->>'command_id')::uuid;\n submission:=game.submit_case_task(ref,'TEST-KWTC-O2','Interview completed; witness statement recorded.',source_id);
+ seed:=game.execute_text_command('help','kwtc-source-command-0001',null,pp2); source_id:=(seed->>'command_id')::uuid;
+ submission:=game.submit_case_task(ref,'TEST-KWTC-O2','Interview completed; witness statement recorded.',source_id);
  if not coalesce((submission->>'ok')::boolean,false) then raise exception 'Completion submission failed: %',submission; end if;
  review:=game.review_case_task_submission(submission->>'submission_ref','accepted','Supervisor reviewed the completion record and confirms the task outcome.','TEST-KWTC-O1',source_id);
  if not coalesce((review->>'ok')::boolean,false) then raise exception 'Supervisor review failed: %',review; end if;
