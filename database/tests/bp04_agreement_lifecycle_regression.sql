@@ -5,14 +5,22 @@ declare
  v_ref text;
  v_agreement_id uuid;
  v_json jsonb;
- v_event_count integer;
  v_immutable boolean:=false;
 begin
  if to_regclass('game.organisation_site_agreement_events') is null then
   raise exception 'BP04: agreement lifecycle event table missing';
  end if;
- if (select count(*) from game.organisation_site_agreement_events)<>0 then
-  raise exception 'BP04: migration unexpectedly fabricated agreement lifecycle events';
+ if not exists(
+  select 1 from game.organisation_site_agreement_events
+  where event_details->>'generated_fictional_baseline'='true'
+ ) then
+  raise exception 'BP04: generated agreement lifecycle baseline is missing';
+ end if;
+ if exists(
+  select 1 from game.organisation_site_agreement_events
+  where coalesce(event_details->>'generated_fictional_baseline','false')<>'true'
+ ) then
+  raise exception 'BP04: unexpected non-baseline agreement lifecycle rows in clean fixture';
  end if;
  select agreement_ref,id into v_ref,v_agreement_id
  from game.organisation_site_agreements order by agreement_ref limit 1;
@@ -22,14 +30,13 @@ begin
     and v_json?'lifecycle_events' and v_json?'term_coverage' and v_json?'provenance')
  then raise exception 'BP04: agreement dossier is incomplete'; end if;
  if jsonb_typeof(v_json->'lifecycle_events')<>'array'
- then raise exception 'BP04: agreement lifecycle history is not an array'; end if;
+  or jsonb_array_length(v_json->'lifecycle_events')=0
+ then raise exception 'BP04: agreement dossier omitted generated lifecycle events'; end if;
  if v_json#>>'{provenance,occupancy_dates_are_contract_dates}'<>'false'
  then raise exception 'BP04: agreement dossier conflates occupancy and contract dates'; end if;
  if v_json#>>'{term_coverage,execution_date}'<>'not_recorded'
  then raise exception 'BP04: missing execution date is not preserved as unknown'; end if;
 
- -- Insert and attempt to mutate a transient test event inside a subtransaction.
- -- The expected exception rolls the transient row back automatically.
  begin
   insert into game.organisation_site_agreement_events(
    event_ref,agreement_id,event_type,recorded_on,subject,description,source_description
