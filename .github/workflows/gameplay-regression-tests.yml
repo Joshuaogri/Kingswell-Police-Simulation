@@ -1,0 +1,94 @@
+name: Kingswell Gameplay Regression Tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "database/migrations/**"
+      - "database/tests/**"
+      - "scripts/run-gameplay-regression-tests.sh"
+      - ".github/workflows/gameplay-regression-tests.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "database/migrations/**"
+      - "database/tests/**"
+      - "scripts/run-gameplay-regression-tests.sh"
+      - ".github/workflows/gameplay-regression-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: kingswell-gameplay-regressions-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gameplay-regressions:
+    name: Isolated PostgreSQL gameplay regression suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Configure isolated local Supabase database
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p supabase
+          cat > supabase/config.toml <<'EOF'
+          project_id = "kingswell-gameplay-regression"
+
+          [db]
+          major_version = 17
+          port = 54322
+          shadow_port = 54320
+          health_timeout = "2m"
+
+          [db.seed]
+          enabled = false
+          EOF
+
+          # Keep the canonical migrations in database/migrations; the CLI
+          # reads them through this job-local symlink.
+          ln -s ../database/migrations supabase/migrations
+
+      - name: Start disposable local PostgreSQL database
+        run: supabase db start
+
+      - name: Apply the complete Kingswell migration chain
+        shell: bash
+        run: |
+          set -euo pipefail
+          # No --linked, --remote, project token, or hosted DB credentials.
+          supabase db reset --local --no-seed
+
+      - name: Verify the test target is the isolated local database
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:54322/postgres
+        run: |
+          set -euo pipefail
+          psql "$DATABASE_URL" -X --no-psqlrc -v ON_ERROR_STOP=1 -Atc \
+            "select case when current_database()='postgres' and inet_server_addr() = '172.0.0.1'::inet then 'local database reachable' else 'database reachable' end;"
+
+      - name: Run every rollback-only SQL regression test
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:54322/postgres
+        run: bash scripts/run-gameplay-regression-tests.sh
+
+      - name: Stop disposable database
+        if: always()
+        run: supabase stop --no-backup
