@@ -64,7 +64,7 @@ begin
   -- agreement event AGR-0001 EVT-0001 varied 2026-11-20 "Rent review agreed" "Parties signed the documented variation." by KNG-0001
   -- Use unknown when the event date is not established by the source record.
   m := regexp_match(t,
-    '^agreement event ([^[:space:]]+) ([^[:space:]]+) (proposed|executed|commenced|varied|rent_reviewed|break_notice_served|renewal_offered|renewed|expired|terminated|surrendered|dispute_opened|dispute_resolved|assigned|subletting_consented|counterparty_changed|corrected|other) (unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}) "([^"]{1,200})" "([^"]{1,2000})" by ([^[:space:]]+)$','i');
+    '^agreement event ([^[:space:]]+) ([^[:space:]]+) (proposed|executed|commenced|varied|rent_reviewed|break_notice_served|renewal_offered|renewed|expired|terminated|surrendered|dispute_opened|dispute_resolved|assigned|subletting_consented|counterparty_changed|corrected|other) (unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}) "([^"]{1,200})" "([^"]+)" by ([^[:space:]]+)$','i');
   if m is not null then
     return jsonb_build_object(
       'command_type','agreement_event_record',
