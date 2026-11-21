@@ -22,7 +22,7 @@ begin
  if has_table_privilege('anon','game.surveillance_operations','select') or has_table_privilege('authenticated','game.surveillance_operations','select') then raise exception 'Public role access unexpectedly granted';end if;
  if not has_table_privilege('service_role','game.surveillance_operations','select') then raise exception 'Service role access missing';end if;
  if exists(select 1 from pg_constraint con join pg_class c on c.oid=con.conrelid join pg_namespace n on n.oid=c.relnamespace where n.nspname='game' and c.relname like 'surveillance_%' and con.contype='f' and not exists(select 1 from pg_index i where i.indrelid=con.conrelid and i.indisvalid and i.indkey[0:cardinality(con.conkey)-1]::int2[]=con.conkey)) then raise exception 'Surveillance foreign key is not indexed';end if;
- if position('surveillance_operations' in pg_get_functiondef('game.get_case_review_dossier(text)'::regprocedure))=0 then raise exception 'Dossier integration missing';end if;
+ if position('surveillance_operations' in pg_get_functiondef('game.get_case_review_dossier_before_disclosure(text)'::regprocedure))=0 then raise exception 'Dossier integration missing';end if;
  if not exists(select 1 from pg_indexes where schemaname='game' and indexname='surveillance_operation_single_team_lead_idx') then raise exception 'Single team-lead guard index missing';end if;
  if position('team_lead_required' in pg_get_functiondef('game.start_surveillance_operation(text,text,uuid)'::regprocedure))=0 then raise exception 'Team-lead deployment guard missing';end if;
 end $$;
