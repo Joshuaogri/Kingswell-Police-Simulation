@@ -83,7 +83,7 @@ BEGIN
     );
   END IF;
 
-  IF v_type NOT IN (
+  IF v_type IS NULL OR v_type NOT IN (
     'execute_arrest','transport_arrest','book_custody','record_custody_property',
     'custody_check','custody_event','release_custody','transfer_custody','get_case_arrests',
     'submit_prosecution_referral','decide_prosecution_referral','get_prosecution_referrals',
