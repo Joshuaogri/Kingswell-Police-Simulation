@@ -14,12 +14,9 @@ BEGIN
  r:=game.interpret_text_command('court verdict record KWC-000001 at KWH-000001 by KWO-000001 as guilty because "Regression"');
  IF r->>'command_type'<>'record_trial_verdict' THEN RAISE EXCEPTION 'Existing court parser regressed: %',r; END IF;
 
- SELECT pg_get_functiondef('game.execute_text_command(text,text,uuid,uuid)'::regprocedure) INTO v;
+ SELECT pg_get_functiondef('game.execute_text_command_before_unit_infrastructure(text,text,uuid,uuid)'::regprocedure) INTO v;
  IF position('correctional_staff_list' IN v)=0 OR position('game.execute_correctional_command' IN v)=0 THEN
-  RAISE EXCEPTION 'Outer text runtime does not route the correctional staff directory to its handler';
- END IF;
- IF position('correctional_staff_list' IN v)=0 OR position('game.execute_correctional_command' IN v)=0 THEN
-  RAISE EXCEPTION 'Correctional staff directory is not registered in the delegated runtime';
+  RAISE EXCEPTION 'Delegated text runtime does not route the correctional staff directory to its handler';
  END IF;
 
  r:=game.execute_text_command('prison staff list KWCF-000001 by KW-TEST','test-correctional-staff-routing-0001',NULL,NULL);

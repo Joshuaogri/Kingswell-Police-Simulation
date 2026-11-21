@@ -11,9 +11,9 @@ BEGIN
  r:=game.interpret_text_command('prison facilities by KW-TEST');
  IF r->>'command_type'<>'correctional_list_facilities' THEN RAISE EXCEPTION 'Existing facilities parser regressed: %',r; END IF;
 
- SELECT pg_get_functiondef('game.execute_text_command(text,text,uuid,uuid)'::regprocedure) INTO v;
+ SELECT pg_get_functiondef('game.execute_text_command_before_unit_infrastructure(text,text,uuid,uuid)'::regprocedure) INTO v;
  IF position('correctional_staff_list' IN v)=0 OR position('game.execute_correctional_command' IN v)=0 THEN
-  RAISE EXCEPTION 'Active text runtime does not route the staff directory to the correctional executor';
+  RAISE EXCEPTION 'Delegated text runtime does not route the staff directory to the correctional executor';
  END IF;
  SELECT pg_get_functiondef('game.execute_correctional_command(uuid,text,jsonb,uuid)'::regprocedure) INTO v;
  IF position('correctional_staff_list' IN v)=0 THEN
