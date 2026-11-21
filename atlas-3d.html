@@ -9,6 +9,31 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 const stage=document.querySelector('#stage'),status=document.querySelector('#status'),loading=document.querySelector('#loading'),info=document.querySelector('#info');
+const LIVE_NAMES_API='https://gdbzkgejyfwfackyuorl.supabase.co/functions/v1/kingswell-records',LIVE_NAMES_KEY='sb_publishable_6C99n5foLP42ICgDT1O-fA_mPxdL7VB';
+async function syncCanonicalNames(data){
+  try{
+    const response=await fetch(LIVE_NAMES_API+'?type=map_names',{headers:{apikey:LIVE_NAMES_KEY},cache:'no-store'});
+    if(!response.ok)throw Error('HTTP '+response.status);
+    const live=await response.json();
+    const roadNames=new Map((live.roads||[]).map(x=>[x.id,x.official_name||x.name]));
+    const propertyNames=new Map((live.properties||[]).map(x=>[x.property_ref,x]));
+    const buildingNames=new Map((live.buildings||[]).map(x=>[x.building_ref,x.name]));
+    for(const road of (data.roads||[])){
+      const name=roadNames.get(road.id);
+      if(name){road.name=name;road.official_name=name;}
+    }
+    for(const property of (data.properties||[])){
+      const current=propertyNames.get(property.ref);
+      if(current){property.name=current.property_name;property.address=current.address_line;}
+      if(property.building){
+        const name=buildingNames.get(property.building.ref);
+        if(name)property.building.name=name;
+      }
+    }
+    return true;
+  }catch(error){console.warn('Live canonical map names unavailable; using published snapshot names.',error);return false;}
+}
+
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;stage.prepend(renderer.domElement);
 const scene=new THREE.Scene();scene.background=new THREE.Color('#111c17');scene.fog=new THREE.Fog('#111c17',9000,26000);
 const camera=new THREE.PerspectiveCamera(48,1,.5,60000);const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.065;controls.maxPolarAngle=Math.PI*.485;controls.minDistance=20;controls.maxDistance=24000;
@@ -19,7 +44,7 @@ const mats={residential:material('#91bca0'),commercial:material('#c5a878'),indus
 function cat(p){let t=String(p.building?.type||p.type||'').toLowerCase();if(/industrial|warehouse|factory|logistic/.test(t))return 'industrial';if(/commercial|retail|office|hotel|transport|aviation/.test(t))return 'commercial';if(/institution|school|hospital|government|police|civic/.test(t))return 'institutional';if(/residential|house|apartment|dwelling/.test(t))return 'residential';return 'other'}
 function fit(){const box=new THREE.Box3().setFromObject(city);if(box.isEmpty())return;const size=box.getSize(new THREE.Vector3()),c=box.getCenter(new THREE.Vector3()),max=Math.max(size.x,size.z);controls.target.set(c.x,0,c.z);camera.position.set(c.x+max*.75,max*.72,c.z+max*.8);camera.near=Math.max(.1,max/5000);camera.far=max*8;camera.updateProjectionMatrix();controls.maxDistance=max*2.2;controls.minDistance=Math.max(10,max*.002);controls.update()}
 function makeText(text,x,y,z){const canvas=document.createElement('canvas');canvas.width=256;canvas.height=64;const ctx=canvas.getContext('2d');ctx.fillStyle='#eaf2ed';ctx.font='bold 26px monospace';ctx.fillText(text,8,42);const tex=new THREE.CanvasTexture(canvas);const m=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:true}));m.position.set(x,y,z);m.scale.set(45,11,1);labelGroup.add(m)}
-async function boot(){const res=await fetch('./data/kingswell-map-data.json');if(!res.ok)throw Error('Map data HTTP '+res.status);mapData=await res.json();props=mapData.properties||[];const xs=props.map(p=>Number(p.building?.x??p.x)).filter(Number.isFinite),ys=props.map(p=>Number(p.building?.y??p.y)).filter(Number.isFinite);center.x=(Math.min(...xs)+Math.max(...xs))/2;center.y=(Math.min(...ys)+Math.max(...ys))/2;groundSize=Math.max(Math.max(...xs)-Math.min(...xs),Math.max(...ys)-Math.min(...ys))*1.18;
+async function boot(){const res=await fetch('./data/kingswell-map-data.json');if(!res.ok)throw Error('Map data HTTP '+res.status);mapData=await res.json();const liveNames=await syncCanonicalNames(mapData);props=mapData.properties||[];const xs=props.map(p=>Number(p.building?.x??p.x)).filter(Number.isFinite),ys=props.map(p=>Number(p.building?.y??p.y)).filter(Number.isFinite);center.x=(Math.min(...xs)+Math.max(...xs))/2;center.y=(Math.min(...ys)+Math.max(...ys))/2;groundSize=Math.max(Math.max(...xs)-Math.min(...xs),Math.max(...ys)-Math.min(...ys))*1.18;
 const ground=new THREE.Mesh(new THREE.PlaneGeometry(groundSize*1.35,groundSize*1.35),material('#26352d'));ground.rotation.x=-Math.PI/2;ground.position.y=-1;ground.receiveShadow=true;city.add(ground);
 const grid=new THREE.GridHelper(groundSize*1.3,Math.max(20,Math.round(groundSize/250)),0x53685b,0x394b40);grid.position.y=.1;city.add(grid);
 for(const p of props){const b=p.building||{},x=Number(b.x??p.x)-center.x,z=-(Number(b.y??p.y)-center.y);if(!Number.isFinite(x)||!Number.isFinite(z))continue;const w=Math.max(5,Number(b.width||14)),d=Math.max(5,Number(b.depth||18)),floors=Math.max(1,Number(b.floors||1)),h=Math.max(3,floors*3.15);const geo=new THREE.BoxGeometry(w,h,d);const mesh=new THREE.Mesh(geo,mats[cat(p)]||mats.other);mesh.position.set(x,h/2,z);mesh.castShadow=true;mesh.receiveShadow=true;mesh.userData={property:p};city.add(mesh);buildMeshes.push(mesh);if(floors>=4)labelCandidates.push({ref:p.ref,x,labelHeight:h+9,z});if(w>13&&d>13){const roof=new THREE.Mesh(new THREE.BoxGeometry(w*.88,.35,d*.88),material('#64766b'));roof.position.set(x,h+.16,z);city.add(roof)}}
