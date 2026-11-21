@@ -6,7 +6,8 @@ on:
     paths:
       - "database/migrations/**"
       - "database/tests/**"
-      - "scripts/run-gameplay-regression-tests.sh"\n      - "scripts/seed-gameplay-regression-fixtures.sh"
+      - "scripts/run-gameplay-regression-tests.sh"
+      - "scripts/seed-gameplay-regression-fixtures.sh"
       - ".github/workflows/gameplay-regression-tests.yml"
   pull_request:
     branches: [main]
