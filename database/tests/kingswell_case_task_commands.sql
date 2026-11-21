@@ -1,7 +1,7 @@
 -- Player-facing case task command regression; all fixtures roll back.
 begin;
 do $$
-declare p1 uuid;p2 uuid;pp1 uuid;pp2 uuid;c uuid; r jsonb; ref text; dup jsonb; cmd text; submission jsonb; review jsonb;
+declare p1 uuid;p2 uuid;pp1 uuid;pp2 uuid;c uuid; r jsonb; ref text; dup jsonb; cmd text; submission jsonb; review jsonb; seed jsonb; source_id uuid;
 begin
  update game.simulation_state set current_game_time='2026-01-01 09:00:00+00',time_paused=true where id=1;
  insert into game.persons(person_ref,given_name,family_name) values('TEST-KWTC-P1','Test','One') returning id into p1;
@@ -26,9 +26,9 @@ begin
  if (r->>'count')::int<>1 then raise exception 'List command failed: %',r; end if;
  r:=game.execute_text_command('case task '||ref,'kwtc-get-0001',null,pp1);
  if (r->>'count')::int<>1 then raise exception 'Get command failed: %',r; end if;
- submission:=game.submit_case_task(ref,'TEST-KWTC-O2','Interview completed; witness statement recorded.',null);
+ seed:=game.execute_text_command('help','kwtc-source-command-0001',null,pp2); source_id:=(seed->>'command_id')::uuid;\n submission:=game.submit_case_task(ref,'TEST-KWTC-O2','Interview completed; witness statement recorded.',source_id);
  if not coalesce((submission->>'ok')::boolean,false) then raise exception 'Completion submission failed: %',submission; end if;
- review:=game.review_case_task_submission(submission->>'submission_ref','accepted','Supervisor reviewed the completion record and confirms the task outcome.','TEST-KWTC-O1',null);
+ review:=game.review_case_task_submission(submission->>'submission_ref','accepted','Supervisor reviewed the completion record and confirms the task outcome.','TEST-KWTC-O1',source_id);
  if not coalesce((review->>'ok')::boolean,false) then raise exception 'Supervisor review failed: %',review; end if;
  if (select status from game.case_tasks where task_ref=ref)<>'completed' then raise exception 'Accepted review did not complete the task'; end if;
  r:=game.execute_text_command('help','kwtc-help-0001',null,pp1);
