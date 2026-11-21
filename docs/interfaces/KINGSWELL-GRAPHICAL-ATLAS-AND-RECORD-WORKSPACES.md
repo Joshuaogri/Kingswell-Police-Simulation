@@ -2,7 +2,7 @@
 
 **Decision recorded:** 21 November 2026  
 **Project:** Kingswell Police Simulation — entirely fictional game  
-**Status:** Approved interface direction; implementation is staged and must not be represented as already delivered  
+**Status:** Approved interface direction; initial separate workspace routes and an interactive 3D atlas have been implemented; remaining enhancements are staged  
 **Design authority:** Existing approved master blueprint BP-01–BP-44. This document refines delivery and presentation under BP-40; it does not replace, split, reopen or require reapproval of any blueprint division.
 
 ## 1. User-approved product direction
@@ -64,6 +64,18 @@ Create distinct navigation destinations and record pages. These are separate vie
 11. **Simulation and administration** — game clock, event history, commands, schedules, notifications, reports, configuration, permissions, audit and system status.
 
 The navigation should expose only useful top-level workspaces, with sub-navigation inside each domain. It must not turn every table into a top-level menu item.
+
+## 3A. Separate workspace implementation direction (user reaffirmation, 21 November 2026)
+
+The four record domains are separate first-class destinations, not tabs in one combined directory:
+- `people.html` — People workspace.
+- `businesses.html` — Businesses workspace.
+- `organisations.html` — Organisations workspace.
+- `properties.html` — Properties workspace.
+
+Each has its own top-level navigation destination, focused heading, dedicated route and domain-specific directory selection. They may share reusable presentation code and the same canonical read API; shared code does not mean a combined user interface. Cross-domain links remain available from individual dossiers.
+
+A separate `atlas-3d.html` route provides the first interactive 3D city view. The initial scene uses canonical map snapshot coordinates, 656 building footprints represented as extruded building masses, the 229-segment road network, orbit/zoom/pan controls, category styling, optional road/building-reference layers, a height-colour mode and selection links into full property dossiers. This first 3D release is an initial massing/geometry viewer, not a finished photorealistic city: it does not claim detailed interiors, surveyed terrain, satellite imagery or unsupported building geometry. Further work should improve district/terrain context, landmarks, labels, performance and richer building forms while preserving canonical source geometry.
 
 ## 4. Record design and relationships
 
