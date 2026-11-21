@@ -75,7 +75,7 @@ as $function$
 declare t text:=btrim(coalesce(p_command_text,'')); m text[];
 begin
  m:=regexp_match(t,
-  '^organisation lifecycle event ([^[:space:]]+) ([^[:space:]]+) (formed|registered|trading_commenced|name_changed|trading_name_changed|restructured|parent_changed|subsidiary_created|merged|acquired|relocated|suspended|resumed|insolvency_started|administration_started|receivership_started|closed|reopened|dissolved|deregistered|ceased_trading|corrected|other) (unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}) ([^[:space:]]+) "([^"]{1,200})" "([^"]{1,4000})" "([^"]{0,200})" "([^"]{0,1000})" by ([^[:space:]]+)$','i');
+  '^organisation lifecycle event ([^[:space:]]+) ([^[:space:]]+) (formed|registered|trading_commenced|name_changed|trading_name_changed|restructured|parent_changed|subsidiary_created|merged|acquired|relocated|suspended|resumed|insolvency_started|administration_started|receivership_started|closed|reopened|dissolved|deregistered|ceased_trading|corrected|other) (unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}) ([^[:space:]]+) "([^"]{1,200})" "([^"]+)" "([^"]{0,200})" "([^"]*)" by ([^[:space:]]+)$','i');
  if m is not null then
   return jsonb_build_object('command_type','organisation_lifecycle_event_record',
    'payload',jsonb_build_object(
