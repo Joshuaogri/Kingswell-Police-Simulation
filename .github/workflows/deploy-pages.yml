@@ -344,7 +344,7 @@ jobs:
                       raise SystemExit(f"{slug} workspace exposes the combined directory tabs")
                   if frame.locator("#type").is_visible():
                       raise SystemExit(f"{slug} workspace exposes the combined type selector")
-                  if not page.locator(".nav a.active").inner_text().lower().startswith(slug.rstrip("s")):
+                  if page.locator(".nav a.active").get_attribute("href") != "./" + slug + ".html":
                       raise SystemExit(f"{slug} navigation is not marked active")
               # Verify the 3D atlas loads the canonical 656-building scene in Chromium.
               page_errors.clear()
