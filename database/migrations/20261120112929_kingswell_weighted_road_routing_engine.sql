@@ -1,6 +1,3 @@
--- Kingswell weighted road routing engine.
--- Dijkstra routing over the fictional 118-junction / 151-segment road graph.
--- Travel times use posted segment speeds; no live traffic or emergency-speed uplift is assumed.
 
 create table game.road_route_calculations (
  id uuid primary key default gen_random_uuid(),
@@ -199,6 +196,7 @@ begin
      insert into game.road_route_legs(route_id,leg_order,road_segment_id,from_junction_id,to_junction_id,distance_m,estimated_duration_seconds)
      values(v_route_id,v_leg_order,v_segment.id,v_nodes[v_cursor],v_nodes[v_neighbour],v_segment.segment_length_m,v_duration);
      v_distance:=v_distance+v_segment.segment_length_m;
+     v_duration:=v_duration;
      v_cursor:=v_neighbour;
    end loop;
  end if;
