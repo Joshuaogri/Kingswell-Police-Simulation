@@ -1,3 +1,4 @@
+
 -- BP-03 hardening: isolate promotion provenance and index every new foreign key.
 alter table game.person_population_memberships
   add column if not exists city_id uuid references game.cities(id) on delete set null;
@@ -53,6 +54,7 @@ begin
       simulation_promoted_reason=p_reason,
       updated_at=now()
   where id=p_person_id;
+  -- Do not leak provenance into a later, unrelated promotion in the same transaction.
   perform set_config('game.person_promotion_source_type','',true);
   perform set_config('game.person_promotion_source_id','',true);
   return true;
