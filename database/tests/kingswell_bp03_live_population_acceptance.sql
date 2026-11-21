@@ -77,16 +77,16 @@ GROUP BY day_of_week ORDER BY day_of_week;
 SELECT (SELECT count(*) FROM game.organisation_personnel WHERE is_current)*5 AS expected_weekday_work_routines,
        (SELECT count(*) FROM game.organisation_personnel WHERE is_current) AS employees_with_five_expected_workdays;
 
+WITH work_routines AS (
+  SELECT person_id,count(*) AS workdays
+  FROM game.person_routines
+  WHERE routine_category='work' AND routine_status='active'
+  GROUP BY person_id
+)
 SELECT count(*) AS employees_not_assigned_five_weekday_routines
-FROM (
-  SELECT op.person_id,count(r.id) AS workdays
-  FROM game.organisation_personnel op
-  LEFT JOIN game.person_routines r ON r.person_id=op.person_id
-    AND r.routine_category='work' AND r.routine_status='active'
-  WHERE op.is_current
-  GROUP BY op.person_id
-  HAVING count(r.id)<>5
-) q;
+FROM game.organisation_personnel op
+LEFT JOIN work_routines wr ON wr.person_id=op.person_id
+WHERE op.is_current AND coalesce(wr.workdays,0)<>5;
 
 -- 7. Individual life-history and relationship coverage.
 SELECT count(*) AS birth_events,
