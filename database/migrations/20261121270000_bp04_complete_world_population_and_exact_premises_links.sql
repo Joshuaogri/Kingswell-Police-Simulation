@@ -126,7 +126,10 @@ begin
   -- Business control records: generated people are drawn from the canonical
   -- Kingswell population; share splits match the fictional legal-form profile.
   with person_pool as (
-    select id,row_number() over(order by person_ref)::bigint rn,count(*) over()::bigint total
+    -- Materialise the canonical person references once. Array subscripting
+    -- makes each deterministic holder selection O(1), not a repeated scan
+    -- of the 100,000-person population for every ownership slot.
+    select array_agg(id order by person_ref) as person_ids
     from game.persons
   ), slots as (
     select bp.organisation_id,bp.business_number,bp.ownership_form,bp.incorporation_date,
@@ -157,16 +160,13 @@ begin
       when 'public_company' then 4 else 1 end
   ), assigned as (
     select s.*,
-      p.id holder_person_id
+      pool.person_ids[
+        ((hashtextextended(s.business_number||':control:'||s.slot::text,0)
+          & 9223372036854775807) % cardinality(pool.person_ids))::integer + 1
+      ] as holder_person_id
     from slots s
-    cross join lateral (
-      select pp.id
-      from person_pool pp
-      where pp.rn=(
-        mod(abs(hashtextextended(s.business_number||':control:'||s.slot::text,0)),pp.total)+1
-      )
-      limit 1
-    ) p
+    cross join person_pool pool
+    where cardinality(pool.person_ids)>0
   )
   insert into game.organisation_control_interests(
     organisation_id,holder_person_id,control_type,ownership_share_pct,voting_share_pct,
