@@ -19,7 +19,7 @@ DECLARE
   v_match text[];
 BEGIN
   v_match:=regexp_match(v_text,
-    '^unit infrastructure ([^[:space:]]+) (unknown|connected|disconnected|shared|independent|not_applicable) (unknown|connected|disconnected|shared|independent|not_applicable) (unknown|connected|disconnected|shared|independent|not_applicable) (unknown|connected|disconnected|shared|independent|not_applicable) (unknown|connected|disconnected|shared|independent|not_applicable) (unknown|central|unit_level|none|not_applicable) (unknown|present|absent|shared|not_applicable) (unknown|present|absent|shared|not_applicable) (unknown|controlled|mechanical_key|open_access|shared|not_applicable) "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" by ([^[:space:]]+)\\Z','i');
+    format('^unit infrastructure ([^[:space:]]+) (unknown|connected|disconnected|shared|independent|not_applicable) (unknown|connected|disconnected|shared|independent|not_applicable) (unknown|connected|disconnected|shared|independent|not_applicable) (unknown|connected|disconnected|shared|independent|not_applicable) (unknown|connected|disconnected|shared|independent|not_applicable) (unknown|central|unit_level|none|not_applicable) (unknown|present|absent|shared|not_applicable) (unknown|present|absent|shared|not_applicable) (unknown|controlled|mechanical_key|open_access|shared|not_applicable) %s([^%s]*)%s %s([^%s]*)%s %s([^%s]*)%s %s([^%s]*)%s %s([^%s]*)%s %s([^%s]*)%s by ([^[:space:]]+)$',chr(34),chr(34),chr(34),chr(34),chr(34),chr(34),chr(34),chr(34),chr(34),chr(34),chr(34),chr(34)),'i');
   IF v_match IS NOT NULL THEN
     RETURN jsonb_build_object(
       'recognized',true,
