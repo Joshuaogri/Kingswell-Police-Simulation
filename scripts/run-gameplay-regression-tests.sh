@@ -22,18 +22,23 @@ fi
 echo "Running ${#test_files[@]} Kingswell SQL regression tests against the disposable local database."
 passed=0
 for test_file in "${test_files[@]}"; do
-  # Each regression must own a transaction and roll back its test fixtures.
-  if ! grep -Eiq '^[[:space:]]*begin[[:space:]]*;' "$test_file"; then
-    echo "::error file=$test_file::Regression test must begin a transaction."
-    exit 1
-  fi
-  if ! grep -Eiq '^[[:space:]]*rollback[[:space:]]*;' "$test_file"; then
-    echo "::error file=$test_file::Regression test must roll back its fixtures."
-    exit 1
-  fi
+  # Existing tests may manage their own transaction. For legacy tests without
+  # either boundary, wrap the entire file in one transaction so writes cannot persist.
+  has_begin=0
+  has_rollback=0
+  grep -Eiq '^[[:space:]]*begin[[:space:]]*;' "$test_file" && has_begin=1 || true
+  grep -Eiq '^[[:space:]]*rollback[[:space:]]*;' "$test_file" && has_rollback=1 || true
 
   echo "::group::${test_file}"
-  psql "$DATABASE_URL" -X --no-psqlrc -v ON_ERROR_STOP=1 -f "$test_file"
+  if ((has_begin && has_rollback)); then
+    psql "$DATABASE_URL" -X --no-psqlrc -v ON_ERROR_STOP=1 -f "$test_file"
+  elif ((!has_begin && !has_rollback)); then
+    psql "$DATABASE_URL" -X --no-psqlrc -v ON_ERROR_STOP=1 \
+      -c 'BEGIN;' -f "$test_file" -c 'ROLLBACK;'
+  else
+    echo "::error file=$test_file::Test has an incomplete transaction boundary."
+    exit 1
+  fi
   echo "::endgroup::"
   ((passed+=1))
 done
