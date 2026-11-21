@@ -1,6 +1,12 @@
 
 begin;
 
+alter table game.canonical_name_corrections
+ drop constraint if exists canonical_name_corrections_entity_type_check;
+alter table game.canonical_name_corrections
+ add constraint canonical_name_corrections_entity_type_check
+ check (entity_type in ('person','business','organisation','property','property_address','site','road','building'));
+
 -- Bulk canonical renames are checked set-wise below; disable per-row cross-domain
 -- scans during this migration to avoid 100k-row rescans for each of 3k updates.
 alter table game.roads disable trigger roads_cross_domain_name_separation;
