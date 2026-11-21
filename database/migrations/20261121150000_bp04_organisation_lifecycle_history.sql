@@ -274,3 +274,21 @@ as $function$
  cross join lateral (select game.get_business_record_before_lifecycle(p_business_number) as base_record) q
  where bp.business_number=p_business_number;
 $function$;
+
+-- Keep lifecycle read/write helpers private to the game runtime service.
+revoke all on function game.get_organisation_lifecycle_history(text),
+ game.interpret_property_command(text),
+ game.execute_property_command(uuid,text,jsonb,uuid),
+ game.execute_text_command_before_runtime_chain_repair(text,text,uuid,uuid),
+ game.get_organisation_record(text),
+ game.get_business_record(text),
+ game.prevent_organisation_lifecycle_event_mutation()
+from public,anon,authenticated;
+grant execute on function game.get_organisation_lifecycle_history(text),
+ game.interpret_property_command(text),
+ game.execute_property_command(uuid,text,jsonb,uuid),
+ game.execute_text_command_before_runtime_chain_repair(text,text,uuid,uuid),
+ game.get_organisation_record(text),
+ game.get_business_record(text),
+ game.prevent_organisation_lifecycle_event_mutation()
+to service_role;
