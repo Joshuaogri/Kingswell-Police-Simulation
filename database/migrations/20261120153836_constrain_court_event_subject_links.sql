@@ -1,0 +1,1 @@
+alter table game.court_hearing_events add constraint court_hearing_event_subject_check check ((event_type='court_created' and court_id is not null and court_case_id is null) or (event_type='official_appointed' and subject_official_id is not null and court_case_id is null) or (event_type not in ('court_created','official_appointed') and court_case_id is not null));
