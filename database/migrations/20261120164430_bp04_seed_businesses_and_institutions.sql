@@ -1,7 +1,7 @@
 
 create temporary table bp04_special_orgs(
  organisation_ref text primary key,name text not null,organisation_type text not null,district_code text not null,role_group text not null
-) on commit drop;
+);
 insert into bp04_special_orgs values
 ('KWORG-EST-01','Kingswell Metropolitan Estates Group','property_holding_company','KCB','estate'),
 ('KWORG-EST-02','Asterfell Crown Commercial Properties','property_holding_company','KCB','estate'),
@@ -44,7 +44,8 @@ insert into bp04_special_orgs values
 insert into game.organisations(organisation_ref,name,organisation_type,status)
 select organisation_ref,name,organisation_type,'active' from bp04_special_orgs;
 
-create temporary table bp04_business_seed on commit drop as
+-- Keep the seed staging rows available across autocommitted statements in this migration.
+create temporary table bp04_business_seed as
 with raw as (
  select n,case when n<=150 then 'financial_services' when n<=280 then 'import_export'
   when n<=450 then 'logistics_warehousing' when n<=550 then 'transport_services'
