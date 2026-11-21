@@ -1466,3 +1466,5 @@ Next action: manually run the read-only workflow and review the new artifact bef
 ## Reconciliation resolution — 2026-11-21
 
 The initial migration-history mismatch has been resolved without modifying the live migration history or replaying any migration. The active `database/migrations/` directory now contains 228 SQL files for 228 applied Supabase records. The read-only content audit reports 228 exact version-identifier matches, 227 exact non-empty canonical SQL matches, zero same-version/different-content collisions, and zero remote records without a matching repository SQL source. The single comment-only/empty migration remains paired by version and name. Thirty-six superseded, unapplied local drafts were moved intact to `database/migration-archive/unapplied-superseded/`; this archive is outside the active migration directory. Live game data and the applied migration ledger were not changed during reconciliation.
+
+The final post-rename audit also confirms zero repository-only versions, zero remote-only versions, zero unmatched migration names, and zero unmatched SQL files. The active migration directory is now an exact 228-to-228 inventory match.
