@@ -15,10 +15,10 @@ BEGIN
  IF r->>'command_type'<>'record_trial_verdict' THEN RAISE EXCEPTION 'Existing court parser regressed: %',r; END IF;
 
  SELECT pg_get_functiondef('game.execute_text_command(text,text,uuid,uuid)'::regprocedure) INTO v;
- IF position('execute_text_command_before_property' IN v)=0 THEN
+ IF position('execute_text_command_before_runtime_chain_repair' IN v)=0 THEN
   RAISE EXCEPTION 'Outer text runtime no longer delegates to the established command layer';
  END IF;
- SELECT pg_get_functiondef('game.execute_text_command_before_property(text,text,uuid,uuid)'::regprocedure) INTO v;
+ SELECT pg_get_functiondef('game.execute_text_command_before_runtime_chain_repair(text,text,uuid,uuid)'::regprocedure) INTO v;
  IF position('correctional_staff_list' IN v)=0 OR position('game.execute_correctional_command' IN v)=0 THEN
   RAISE EXCEPTION 'Correctional staff directory is not registered in the delegated runtime';
  END IF;
