@@ -63,10 +63,16 @@ begin
  select o.id,o.organisation_ref,bp.business_number into v_org_id,v_org_ref,v_business_number
  from game.organisations o join game.business_profiles bp on bp.organisation_id=o.id
  order by o.organisation_ref limit 1;
- select id into v_person_id from game.persons order by id limit 1;
+ select p.id into v_person_id
+ from game.persons p
+ where not exists(select 1 from game.police_personnel pp where pp.person_id=p.id)
+ order by p.person_ref limit 1;
  if v_org_id is null or v_person_id is null then
   raise exception 'Deterministic organisation/person fixtures are required for lifecycle history tests.';
  end if;
+ insert into game.police_personnel(personnel_ref,person_id,service_number,employment_status,joined_on)
+ values('KNG-CI-BP04-0001',v_person_id,'KNG-CI-BP04-0001','active',date '2020-01-01')
+ on conflict do nothing;
 
  insert into game.organisation_lifecycle_events(
   event_ref,organisation_id,event_type,occurred_on,subject,description,
