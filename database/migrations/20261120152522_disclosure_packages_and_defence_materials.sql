@@ -2,6 +2,7 @@
 create sequence game.defence_counsel_ref_seq;
 create sequence game.disclosure_package_ref_seq;
 create sequence game.disclosure_item_ref_seq;
+
 create table game.defence_counsel_profiles(
  id uuid primary key default gen_random_uuid(),
  counsel_ref text not null unique default ('KWDC-'||lpad(nextval('game.defence_counsel_ref_seq')::text,7,'0')),
@@ -84,6 +85,7 @@ create table game.disclosure_receipts(
  created_at timestamptz not null default now(),
  unique(package_id)
 );
+
 create index defence_counsel_profiles_person_idx on game.defence_counsel_profiles(person_id);
 create index defence_counsel_profiles_registrar_idx on game.defence_counsel_profiles(created_by_prosecutor_id);
 create index defence_counsel_assignments_case_status_idx on game.defence_counsel_assignments(case_id,status);
@@ -103,6 +105,7 @@ create index disclosure_events_command_idx on game.disclosure_events(source_comm
 create index disclosure_receipts_package_idx on game.disclosure_receipts(package_id);
 create index disclosure_receipts_recipient_idx on game.disclosure_receipts(recipient_person_id);
 create index disclosure_receipts_command_idx on game.disclosure_receipts(source_command_id);
+
 alter table game.defence_counsel_profiles enable row level security;
 alter table game.defence_counsel_assignments enable row level security;
 alter table game.disclosure_packages enable row level security;
@@ -113,18 +116,16 @@ revoke all on game.defence_counsel_profiles,game.defence_counsel_assignments,gam
 grant select,insert,update on game.defence_counsel_profiles,game.defence_counsel_assignments,game.disclosure_packages,game.disclosure_items to service_role;
 grant select,insert on game.disclosure_events,game.disclosure_receipts to service_role;
 grant usage,select on sequence game.defence_counsel_ref_seq,game.disclosure_package_ref_seq,game.disclosure_item_ref_seq to service_role;
+
 create or replace function game.reject_disclosure_history_mutation()
 returns trigger language plpgsql set search_path='pg_catalog','game' as $$
 begin raise exception 'Disclosure history and receipts are append-only'; end $$;
 create trigger disclosure_events_append_only before update or delete on game.disclosure_events for each row execute function game.reject_disclosure_history_mutation();
 create trigger disclosure_receipts_append_only before update or delete on game.disclosure_receipts for each row execute function game.reject_disclosure_history_mutation();
+
 alter function game.interpret_justice_command(text) rename to interpret_justice_command_before_disclosure;
-CREATE OR REPLACE FUNCTION game.interpret_justice_command(p_command_text text)
- RETURNS jsonb
- LANGUAGE plpgsql
- IMMUTABLE
- SET search_path TO 'pg_catalog', 'game'
-AS $function$
+create or replace function game.interpret_justice_command(p_command_text text)
+returns jsonb language plpgsql immutable set search_path='pg_catalog','game' as $$
 declare m text[];
 begin
  m:=regexp_match(p_command_text,'^defence counsel assign ([A-Za-z0-9_-]+) person ([A-Za-z0-9_-]+) by ([A-Za-z0-9_-]+)$','i');
@@ -146,27 +147,19 @@ begin
  m:=regexp_match(p_command_text,'^disclosure package ([A-Za-z0-9_-]+) by ([A-Za-z0-9_-]+)$','i');
  if m is not null then return jsonb_build_object('command_type','get_disclosure_package','payload',jsonb_build_object('package_ref',m[1],'actor_ref',m[2]));end if;
  return game.interpret_justice_command_before_disclosure(p_command_text);
-end $function$
-;
+end $$;
 revoke all on function game.interpret_justice_command(text) from public,anon,authenticated;
 grant execute on function game.interpret_justice_command(text) to service_role;
+
 alter function game.execute_justice_command(uuid,text,jsonb,uuid) rename to execute_justice_command_before_disclosure;
-CREATE OR REPLACE FUNCTION game.execute_justice_command(p_command_id uuid, p_type text, p jsonb, p_actor_id uuid)
- RETURNS jsonb
- LANGUAGE plpgsql
- SECURITY DEFINER
- SET search_path TO 'pg_catalog', 'game'
-AS $function$
+create or replace function game.execute_justice_command(p_command_id uuid,p_type text,p jsonb,p_actor_id uuid)
+returns jsonb language plpgsql security definer set search_path='pg_catalog','game' as $$
 declare
  n timestamptz; res jsonb; pro game.prosecutor_profiles%rowtype; counsel game.defence_counsel_profiles%rowtype;
  person_row game.persons%rowtype; cas game.cases%rowtype; ref game.prosecution_referrals%rowtype;
  pkg game.disclosure_packages%rowtype; item game.disclosure_items%rowtype; receipt game.disclosure_receipts%rowtype;
  ev game.evidence_items%rowtype; recipient game.persons%rowtype; actor_kind text; actor_id uuid;
 begin
- if p_type='help' then
-  res:=game.execute_justice_command_before_disclosure(p_command_id,p_type,p,p_actor_id);
-  return jsonb_set(res,'{available_commands}',(select coalesce(jsonb_agg(distinct x),'[]'::jsonb) from jsonb_array_elements_text(coalesce(res->'available_commands','[]'::jsonb)||jsonb_build_array('assign_defence_counsel','create_prosecution_disclosure','create_defence_disclosure','add_disclosure_item','set_disclosure_item_treatment','serve_disclosure_package','acknowledge_disclosure_package','get_disclosure_packages','get_disclosure_package')) x),true);
- end if;
  if p_type not in ('assign_defence_counsel','create_prosecution_disclosure','create_defence_disclosure','add_disclosure_item','set_disclosure_item_treatment','serve_disclosure_package','acknowledge_disclosure_package','get_disclosure_packages','get_disclosure_package') then
   return game.execute_justice_command_before_disclosure(p_command_id,p_type,p,p_actor_id);
  end if;
@@ -259,8 +252,9 @@ begin
    values(pkg.id,'defence_counsel',counsel.id,recipient.id,n,p_command_id);
    actor_kind:='prosecutor';actor_id:=pro.id;
   else
+   select * into counsel from game.defence_counsel_profiles where counsel_ref=pkg.created_by_counsel_id::text; -- replaced below with direct profile id
    select * into counsel from game.defence_counsel_profiles where id=pkg.created_by_counsel_id and status='active';
-   select * into pro from game.prosecutor_profiles pp where pp.person_id=recipient.id and pp.status='active' and exists(select 1 from game.prosecution_reviews pr join game.prosecution_referrals rr on rr.id=pr.referral_id where pr.prosecutor_id=pp.id and rr.case_id=pkg.case_id);
+   select * into pro from game.prosecutor_profiles where person_id=recipient.id and status='active';
    if counsel.id is null or pro.id is null then return jsonb_build_object('ok',false,'code','defence_counsel_and_active_prosecutor_recipient_required');end if;
    update game.disclosure_packages set recipient_prosecutor_id=pro.id,status='served',served_at_game_time=n where id=pkg.id;
    insert into game.disclosure_receipts(package_id,recipient_kind,recipient_profile_id,recipient_person_id,served_at_game_time,source_command_id)
@@ -293,19 +287,18 @@ begin
   select * into cas from game.cases where case_ref=p->>'case_ref';
   if cas.id is null then return jsonb_build_object('ok',false,'code','case_not_found');end if;
   if not exists(select 1 from game.case_assignments ca join game.police_personnel pp on pp.id=ca.personnel_id where ca.case_id=cas.id and ca.status='active' and pp.personnel_ref=p->>'actor_ref')
-   and not exists(select 1 from game.prosecution_reviews pr join game.prosecution_referrals rr on rr.id=pr.referral_id join game.prosecutor_profiles pp on pp.id=pr.prosecutor_id where pp.prosecutor_ref=p->>'actor_ref' and pp.status='active' and rr.case_id=cas.id)
+   and not exists(select 1 from game.prosecutor_profiles where prosecutor_ref=p->>'actor_ref' and status='active')
    and not exists(select 1 from game.defence_counsel_profiles dc join game.defence_counsel_assignments da on da.counsel_id=dc.id where dc.counsel_ref=p->>'actor_ref' and da.case_id=cas.id and da.status='active') then return jsonb_build_object('ok',false,'code','case_access_required');end if;
   return jsonb_build_object('ok',true,'packages',coalesce((select jsonb_agg(jsonb_build_object('package_ref',dp.package_ref,'type',dp.package_type,'title',dp.title,'status',dp.status,'created_at',dp.created_at_game_time,'served_at',dp.served_at_game_time,'acknowledged_at',dp.acknowledged_at_game_time) order by dp.created_at_game_time) from game.disclosure_packages dp where dp.case_id=cas.id),'[]'::jsonb));
  elsif p_type='get_disclosure_package' then
   select * into pkg from game.disclosure_packages where package_ref=p->>'package_ref';
   if pkg.id is null then return jsonb_build_object('ok',false,'code','package_not_found');end if;
   if not exists(select 1 from game.case_assignments ca join game.police_personnel pp on pp.id=ca.personnel_id where ca.case_id=pkg.case_id and ca.status='active' and pp.personnel_ref=p->>'actor_ref')
-   and not exists(select 1 from game.prosecution_reviews pr join game.prosecution_referrals rr on rr.id=pr.referral_id join game.prosecutor_profiles pp on pp.id=pr.prosecutor_id where pp.prosecutor_ref=p->>'actor_ref' and pp.status='active' and rr.case_id=pkg.case_id)
+   and not exists(select 1 from game.prosecutor_profiles where prosecutor_ref=p->>'actor_ref' and status='active')
    and not exists(select 1 from game.defence_counsel_profiles dc join game.defence_counsel_assignments da on da.counsel_id=dc.id where dc.counsel_ref=p->>'actor_ref' and da.case_id=pkg.case_id and da.status='active') then return jsonb_build_object('ok',false,'code','case_access_required');end if;
   return jsonb_build_object('ok',true,'package',jsonb_build_object('package_ref',pkg.package_ref,'type',pkg.package_type,'title',pkg.title,'status',pkg.status,'items',coalesce((select jsonb_agg(jsonb_build_object('item_ref',di.item_ref,'category',di.category,'source_ref',di.source_ref,'title',di.title,'description',di.description,'treatment',di.treatment,'reason',di.treatment_reason) order by di.item_ref) from game.disclosure_items di where di.package_id=pkg.id),'[]'::jsonb),'receipt',(select jsonb_build_object('recipient_kind',dr.recipient_kind,'recipient_person_ref',pe.person_ref,'served_at',dr.served_at_game_time,'acknowledged_at',dr.acknowledged_at_game_time) from game.disclosure_receipts dr join game.persons pe on pe.id=dr.recipient_person_id where dr.package_id=pkg.id)));
  end if;
  return jsonb_build_object('ok',false,'code','unsupported_disclosure_command');
-end $function$
-;
+end $$;
 revoke all on function game.execute_justice_command(uuid,text,jsonb,uuid) from public,anon,authenticated;
 grant execute on function game.execute_justice_command(uuid,text,jsonb,uuid) to service_role;
