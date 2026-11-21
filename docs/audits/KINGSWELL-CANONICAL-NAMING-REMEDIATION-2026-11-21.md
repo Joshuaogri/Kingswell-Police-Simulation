@@ -105,7 +105,7 @@ It is designed to:
 - reserve former family surnames permanently;
 - verify every person has one family identity, every family has a unique surname, and every complete personal name remains unique.
 
-**Not yet applied:** the attempt to apply the family migration encountered a database storage exhaustion error (`No space left on device`). The database then reported `default_transaction_read_only=on` and `transaction_read_only=on`. The Supabase project itself reports `ACTIVE_HEALTHY`, but the database is currently read-only. The migration must not be represented as live until the database is writable and all final checks pass.
+**Not yet applied:** the attempt to apply the family migration encountered a database storage exhaustion error (`No space left on device`). The database then reported `default_transaction_read_only=on` and `transaction_read_only=on`. The Supabase project itself reports `ACTIVE_HEALTHY`, but the database is currently read-only. The migration must not be represented as live until the database is writable and all final checks pass. Separately, the GitHub migration-sync workflow reports four previously applied remote migration versions missing from the repository migration directory; its dry-run stops at that history mismatch. Reconcile the local and remote migration history after the database is writable.
 
 ## Known remaining work
 
