@@ -182,7 +182,7 @@ jobs:
               for tab, minimum in [("people", 100000), ("business", 1000), ("organisation", 1000), ("property", 600)]:
                   page.locator(f'#tabs button[data-type="{tab}"]').click()
                   page.wait_for_function(
-                      "() => document.querySelector('#resultCount')?.textContent.includes('MATCHING RECORDS')",
+                      "() => { const t=document.querySelector('#resultCount')?.textContent || ''; return t.includes('MATCHING RECORDS') || t.includes('CONNECTION ERROR'); }",
                       timeout=45000,
                   )
                   count_text = page.locator("#resultCount").inner_text()
@@ -199,11 +199,11 @@ jobs:
                   if page.locator("#dTitle").inner_text() in ("Select a record", "Record unavailable"):
                       raise SystemExit(f"{tab} individual record did not load: {page.locator('#dbody').inner_text()}")
               page.locator('#tabs button[data-type="people"]').click()
-              page.wait_for_function("() => document.querySelector('#resultCount')?.textContent.includes('MATCHING RECORDS')", timeout=45000)
+              page.wait_for_function("() => { const t=document.querySelector('#resultCount')?.textContent || ''; return t.includes('MATCHING RECORDS') || t.includes('CONNECTION ERROR'); }", timeout=45000)
               selected_ref = page.locator(".record[data-live-id] .ref").first.inner_text()
               page.locator("#q").fill(selected_ref)
               page.wait_for_function(
-                  "() => document.querySelector('#resultCount')?.textContent.includes('MATCHING RECORDS')",
+                  "() => { const t=document.querySelector('#resultCount')?.textContent || ''; return t.includes('MATCHING RECORDS') || t.includes('CONNECTION ERROR'); }",
                   timeout=45000,
               )
               if page.locator(".record[data-live-id]").count() == 0:
