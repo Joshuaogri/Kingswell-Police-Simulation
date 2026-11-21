@@ -2,7 +2,7 @@
 -- Run against the connected test database. Every fixture and clock change rolls back.
 begin;
 do $$
-declare v_person uuid; v_personnel uuid; v_supervisor_person uuid; v_supervisor_personnel uuid; v_case uuid; v_create jsonb; v_update jsonb; v_read jsonb; v_ref text; v_submission jsonb; v_review jsonb;
+declare v_person uuid; v_personnel uuid; v_supervisor_person uuid; v_supervisor_personnel uuid; v_case uuid; v_create jsonb; v_update jsonb; v_read jsonb; v_ref text; v_submission jsonb; v_review jsonb; v_seed jsonb; v_source_command_id uuid;
 begin
  update game.simulation_state set current_game_time='2026-01-01 09:00:00+00',time_paused=true where id=1;
  insert into game.persons(person_ref,given_name,family_name) values('TEST-KWT-PERSON','Test','Investigator') returning id into v_person;
@@ -16,9 +16,9 @@ begin
  v_ref:=v_create->>'task_ref';
  v_update:=game.update_case_task(v_ref,'in_progress',null,null,'TEST-KWT-OFFICER',null);
  if not coalesce((v_update->>'ok')::boolean,false) or v_update->>'status'<>'in_progress' then raise exception 'Task update failed: %',v_update; end if;
- v_submission:=game.submit_case_task(v_ref,'TEST-KWT-OFFICER','Interview completed; statement recorded.',null);
+ v_seed:=game.execute_text_command('help','kwt-source-command-0001',null,v_personnel); v_source_command_id:=(v_seed->>'command_id')::uuid;\n v_submission:=game.submit_case_task(v_ref,'TEST-KWT-OFFICER','Interview completed; statement recorded.',v_source_command_id);
  if not coalesce((v_submission->>'ok')::boolean,false) then raise exception 'Task completion submission failed: %',v_submission; end if;
- v_review:=game.review_case_task_submission(v_submission->>'submission_ref','accepted','Supervisor reviewed the submitted completion record.','TEST-KWT-SUPERVISOR',null);
+ v_review:=game.review_case_task_submission(v_submission->>'submission_ref','accepted','Supervisor reviewed the submitted completion record.','TEST-KWT-SUPERVISOR',v_source_command_id);
  if not coalesce((v_review->>'ok')::boolean,false) or v_review#>>'{task_result,status}'<>'completed' then raise exception 'Supervisor review failed: %',v_review; end if;
  v_read:=game.get_case_tasks('TEST-KWT-CASE',null,10);
  if (v_read->>'count')::int<>1 or jsonb_array_length(v_read->'tasks'->0->'history')<4 then raise exception 'Task history mismatch: %',v_read; end if;
