@@ -29,7 +29,7 @@ The browser renders a cartographic canvas from the Kingswell local metric grid a
 - Layer controls for buildings, district areas, neighbourhood labels, primary/secondary/local/service roads, junctions, property entrances, landmarks, turn controls and patrol-beat coverage.
 - Mouse/touch pan, wheel zoom, zoom buttons, fit-to-city and reset.
 - Search across building/property references, addresses, business names, roads and neighbourhoods.
-- Click a building footprint to open its property/building record; click a road segment to inspect its road and segment record. Toggle entrance, landmark, turn-control and patrol-beat overlays independently.
+- Click a building footprint to open its property/building record; at close zoom the unique building reference is printed on the footprint.\n- Click a road segment to inspect its road and segment record, including speed limit, lanes, direction, surface, width, condition, footway, cycle lane, lighting, parking, routability and access profile.\n- Click a junction to inspect signal/control, pedestrian/tactile crossing and linked turn restrictions. Toggle entrance, landmark, turn-control and patrol-beat overlays independently.
 
 ### 2. BP-04 map-linked property browser
 
