@@ -91,11 +91,11 @@ begin
         'organisation_ref',m[1],'holder_type',lower(m[2]),'holder_ref',m[3],
         'control_type',lower(m[4]),
         'ownership_share_pct',case when lower(m[5])='unknown' then null else m[5] end,
-        'voting_share_pct',case when lower(m[7])='unknown' then null else m[7] end,
-        'valid_from',case when lower(m[9])='unknown' then null else m[9] end,
-        'valid_to',case when lower(m[10])='unknown' then null else m[10] end,
-        'source_reference',nullif(m[11],''),'source_description',nullif(m[12],''),
-        'actor_ref',m[13]));
+        'voting_share_pct',case when lower(m[6])='unknown' then null else m[6] end,
+        'valid_from',case when lower(m[7])='unknown' then null else m[7] end,
+        'valid_to',case when lower(m[8])='unknown' then null else m[8] end,
+        'source_reference',nullif(m[9],''),'source_description',nullif(m[10],''),
+        'actor_ref',m[11]));
   end if;
 
   -- Property title event capture. Use the literal unknown token for absent facts.
@@ -114,10 +114,10 @@ begin
         'transferee_ref',case when lower(m[9])='unknown' or lower(m[10])='unknown' then null else m[10] end,
         'interest_transferred',case when lower(m[11])='unknown' then null else m[11] end,
         'share_transferred_pct',case when lower(m[12])='unknown' then null else m[12] end,
-        'prior_title_reference',nullif(m[14],''),'resulting_title_reference',nullif(m[15],''),
-        'instrument_type',nullif(m[16],''),'instrument_reference',nullif(m[17],''),
-        'source_reference',nullif(m[18],''),'source_description',nullif(m[19],''),
-        'actor_ref',m[20]));
+        'prior_title_reference',nullif(m[13],''),'resulting_title_reference',nullif(m[14],''),
+        'instrument_type',nullif(m[15],''),'instrument_reference',nullif(m[16],''),
+        'source_reference',nullif(m[17],''),'source_description',nullif(m[18],''),
+        'actor_ref',m[19]));
   end if;
 
   return null;
