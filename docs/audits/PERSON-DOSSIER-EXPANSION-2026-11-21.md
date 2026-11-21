@@ -6,7 +6,7 @@
 
 ## Delivered
 
-The `kingswell-records` Supabase Edge Function was upgraded to version 7. The person-detail response now includes:
+The `kingswell-records` Supabase Edge Function was upgraded to version 8. The person-detail response now includes:
 
 - Canonical person identity and simulation profile fields.
 - Current addresses and linked unit/property references.
@@ -37,14 +37,14 @@ These are existing records. This delivery created no duplicate people, household
 ## Verification
 
 - Supabase Edge Function `kingswell-records`: active version **7**.
-- GitHub Actions workflow **#58** completed successfully:
+- GitHub Actions workflow **#59** completed its Chromium build and browser checks successfully:
   - Existing 656-building map smoke test passed.
   - Published geographic data and property dossier checks passed.
   - Chromium opened the live person directory and individual person record.
   - Chromium verified all eight new person-dossier sections.
   - Household and routine canonical references were present in the selected dossier.
   - The existing map, property record and atlas-layer checks also passed.
-- Workflow: https://github.com/Joshuaogri/Kingswell-Police-Simulation/actions/runs/44932475865
+- Workflow: https://github.com/Joshuaogri/Kingswell-Police-Simulation/actions/runs/44932623775
 
 ## Remaining work
 
