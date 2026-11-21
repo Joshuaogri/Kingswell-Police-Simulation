@@ -39,7 +39,9 @@ The published data snapshot carries all 656 canonical property/building map reco
 
 - Property and building IDs/references, address, district and neighbourhood IDs, land use, property type and status.
 - Building type, name, floors, local-grid position, footprint dimensions/area, construction type and occupancy status.
-- Unit counts and counts by unit type.\n- On-demand individual unit directory for all 26,888 units, split into 24 neighbourhood data files and loaded only when a building's Units tab is opened.\n- Unit reference/name/type/floor/parent, floor number/suite, use class, internal area, capacity, bedrooms/bathrooms, security zone, condition grade and nine infrastructure status fields.
+- Unit counts and counts by unit type.
+- On-demand individual unit directory for all 26,888 units, split into 24 neighbourhood data files and loaded only when a building's Units tab is opened.
+- Unit reference/name/type/floor/parent, floor number/suite, use class, internal area, capacity, bedrooms/bathrooms, security zone, condition grade and nine infrastructure status fields.
 - Organisation site references, site names, location roles and occupancy statuses.
 - Linked business profiles with business number, trading name, sector/subsector, size and estimated employee count.
 
@@ -51,7 +53,8 @@ The Units tab now loads the individual unit records for the selected building on
 - `play.html` is the named operations/workspace entry point; the root `index.html` mirrors it.
 - `city-map.html` is the dedicated full-screen geographic intelligence view, with district/type filters and building/road inspection.
 - `geography.html` redirects to the root playable workspace.
-- The map data snapshot is stored at `data/kingswell-map-data.json`, with provenance/counts in `data/kingswell-map-data-manifest.json`.\n- Individual BP-04 unit snapshots are stored in `data/units/` (24 neighbourhood files, 26,888 unit records) with a manifest and a reproducible export query.
+- The map data snapshot is stored at `data/kingswell-map-data.json`, with provenance/counts in `data/kingswell-map-data-manifest.json`.
+- Individual BP-04 unit snapshots are stored in `data/units/` (24 neighbourhood files, 26,888 unit records) with a manifest and a reproducible export query.
 - The repeatable read-only export query is stored at `scripts/export-kingswell-map-data.sql`.
 - The UI uses a local vector/canvas renderer; it does not require third-party map tiles or expose Supabase credentials.
 
