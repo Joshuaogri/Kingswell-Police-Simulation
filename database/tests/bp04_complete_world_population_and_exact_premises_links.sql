@@ -51,27 +51,26 @@ begin
 
  select count(*) into v_agreements from game.organisation_site_agreements;
  -- Unknown landlords remain unknown. A registered owner is not
- -- promoted to landlord unless a separate current landlord interest exists.
+ -- promoted to landlord unless at least one linked property has a separate,
+ -- current landlord-interest record for that exact party.
  if exists(
   select 1
   from game.organisation_site_agreements a
-  join game.organisation_site_agreement_locations al on al.agreement_id=a.id
-  join game.organisation_locations ol on ol.id=al.organisation_location_id
   where a.counterparty_role='landlord'
-    and (
-      (a.counterparty_organisation_id is not null and not exists(
-        select 1 from game.property_interest_records pi
-        where pi.property_id=ol.property_id and pi.interest_type='landlord'
-          and pi.valid_to is null
-          and pi.holder_organisation_id=a.counterparty_organisation_id
-      ))
-      or
-      (a.counterparty_person_id is not null and not exists(
-        select 1 from game.property_interest_records pi
-        where pi.property_id=ol.property_id and pi.interest_type='landlord'
-          and pi.valid_to is null
-          and pi.holder_person_id=a.counterparty_person_id
-      ))
+    and not exists(
+      select 1
+      from game.organisation_site_agreement_locations al
+      join game.organisation_locations ol on ol.id=al.organisation_location_id
+      join game.property_interest_records pi on pi.property_id=ol.property_id
+      where al.agreement_id=a.id
+        and pi.interest_type='landlord' and pi.valid_to is null
+        and (
+          (a.counterparty_organisation_id is not null
+            and pi.holder_organisation_id=a.counterparty_organisation_id)
+          or
+          (a.counterparty_person_id is not null
+            and pi.holder_person_id=a.counterparty_person_id)
+        )
     )
  ) then
   raise exception 'Lease counterparty was assigned landlord status without a matching current landlord interest';
