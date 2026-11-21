@@ -12,7 +12,7 @@ DECLARE
   v_marker_position integer;
   v_insert text;
 BEGIN
-  SELECT pg_get_functiondef('game.get_case_review_dossier(text)'::regprocedure)
+  SELECT pg_get_functiondef('game.get_case_review_dossier_before_disclosure(text)'::regprocedure)
     INTO v_definition;
 
   IF position('''activities''' IN v_definition)=0 THEN
