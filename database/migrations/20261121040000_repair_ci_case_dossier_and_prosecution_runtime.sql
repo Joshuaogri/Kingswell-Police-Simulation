@@ -43,12 +43,12 @@ SET search_path TO 'pg_catalog','game'
 AS $function$
 DECLARE m text[];
 BEGIN
-  m:=regexp_match(p_command_text,'^prosecution refer ([A-Za-z0-9_-]+) arrest ([A-Za-z0-9_-]+) by ([A-Za-z0-9_-]+) summary "([^"]{1,4000})" charges "([^"]{1,4000})" evidence "([^"]{1,8000})"$','i');
+  m:=regexp_match(p_command_text,'^prosecution refer ([A-Za-z0-9_-]+) arrest ([A-Za-z0-9_-]+) by ([A-Za-z0-9_-]+) summary "([^"]+)" charges "([^"]+)" evidence "([^"]+)"$','i');
   IF m IS NOT NULL THEN
     RETURN jsonb_build_object('command_type','submit_prosecution_referral','payload',jsonb_build_object('case_ref',m[1],'arrest_ref',m[2],'actor_ref',m[3],'summary',m[4],'charges',m[5],'evidence',m[6]));
   END IF;
 
-  m:=regexp_match(p_command_text,'^prosecution decision ([A-Za-z0-9_-]+) set (accepted|returned|declined) by ([A-Za-z0-9_-]+) because "([^"]{1,4000})"$','i');
+  m:=regexp_match(p_command_text,'^prosecution decision ([A-Za-z0-9_-]+) set (accepted|returned|declined) by ([A-Za-z0-9_-]+) because "([^"]+)"$','i');
   IF m IS NOT NULL THEN
     RETURN jsonb_build_object('command_type','decide_prosecution_referral','payload',jsonb_build_object('referral_ref',m[1],'decision',lower(m[2]),'actor_ref',m[3],'reason',m[4]));
   END IF;
