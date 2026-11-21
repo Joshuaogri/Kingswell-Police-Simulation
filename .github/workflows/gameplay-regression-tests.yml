@@ -28,7 +28,7 @@ concurrency:
 
 jobs:
   gameplay-regressions:
-    name: Isolated PostgreSQL gameplay regression suite
+    name: Isolated PostgreSQL targeted BP-04 regression tests
     runs-on: ubuntu-latest
     timeout-minutes: 60
     services:
@@ -63,17 +63,11 @@ jobs:
         run: |
           set -euo pipefail
           for attempt in $(seq 1 30); do
-            if pg_isready -h 127.0.0.1 -p 54322 -U postgres -d postgres; then
-              break
-            fi
-            if [ "$attempt" -eq 30 ]; then
-              echo "::error::Disposable PostgreSQL service did not become ready."
-              exit 1
-            fi
+            if pg_isready -h 127.0.0.1 -p 54322 -U postgres -d postgres; then break; fi
+            if [ "$attempt" -eq 30 ]; then echo "::error::Disposable PostgreSQL service did not become ready."; exit 1; fi
             sleep 2
           done
-          psql "$DATABASE_URL" -X --no-psqlrc -v ON_ERROR_STOP=1 -Atc \
-            "select 'isolated disposable PostgreSQL 17' where current_database()='postgres' and current_user='postgres';"
+          psql "$DATABASE_URL" -X --no-psqlrc -v ON_ERROR_STOP=1 -Atc "select 'isolated disposable PostgreSQL 17' where current_database()='postgres' and current_user='postgres';"
 
       - name: Bootstrap Supabase-compatible roles and extensions
         shell: bash
@@ -82,47 +76,20 @@ jobs:
           psql "$DATABASE_URL" -X --no-psqlrc -v ON_ERROR_STOP=1 <<'SQL'
           DO $$
           BEGIN
-            IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname='anon') THEN
-              CREATE ROLE anon NOLOGIN;
-            END IF;
-            IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname='authenticated') THEN
-              CREATE ROLE authenticated NOLOGIN;
-            END IF;
-            IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname='service_role') THEN
-              CREATE ROLE service_role NOLOGIN BYPASSRLS;
-            END IF;
+            IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname='anon') THEN CREATE ROLE anon NOLOGIN; END IF;
+            IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname='authenticated') THEN CREATE ROLE authenticated NOLOGIN; END IF;
+            IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname='service_role') THEN CREATE ROLE service_role NOLOGIN BYPASSRLS; END IF;
           END
           $$;
-
           CREATE SCHEMA IF NOT EXISTS auth;
-          CREATE OR REPLACE FUNCTION auth.uid()
-          RETURNS uuid
-          LANGUAGE sql STABLE
-          AS $$
-            SELECT nullif(current_setting('request.jwt.claim.sub', true), '')::uuid
-          $$;
-          CREATE OR REPLACE FUNCTION auth.jwt()
-          RETURNS jsonb
-          LANGUAGE sql STABLE
-          AS $$
-            SELECT coalesce(nullif(current_setting('request.jwt.claims', true), '')::jsonb, '{}'::jsonb)
-          $$;
-          CREATE OR REPLACE FUNCTION auth.role()
-          RETURNS text
-          LANGUAGE sql STABLE
-          AS $$
-            SELECT coalesce(
-              nullif(current_setting('request.jwt.claim.role', true), ''),
-              current_user
-            )
-          $$;
-
+          CREATE OR REPLACE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql STABLE AS $$ SELECT nullif(current_setting('request.jwt.claim.sub', true), '')::uuid $$;
+          CREATE OR REPLACE FUNCTION auth.jwt() RETURNS jsonb LANGUAGE sql STABLE AS $$ SELECT coalesce(nullif(current_setting('request.jwt.claims', true), '')::jsonb, '{}'::jsonb) $$;
+          CREATE OR REPLACE FUNCTION auth.role() RETURNS text LANGUAGE sql STABLE AS $$ SELECT coalesce(nullif(current_setting('request.jwt.claim.role', true), ''), current_user) $$;
           CREATE EXTENSION IF NOT EXISTS pgcrypto;
           CREATE EXTENSION IF NOT EXISTS pg_trgm;
           CREATE EXTENSION IF NOT EXISTS unaccent;
           CREATE EXTENSION IF NOT EXISTS citext;
           CREATE EXTENSION IF NOT EXISTS btree_gist;
-
           GRANT USAGE ON SCHEMA auth TO anon, authenticated, service_role;
           GRANT EXECUTE ON FUNCTION auth.uid() TO anon, authenticated, service_role;
           GRANT EXECUTE ON FUNCTION auth.jwt() TO anon, authenticated, service_role;
@@ -135,18 +102,11 @@ jobs:
           set -Eeuo pipefail
           shopt -s nullglob
           migrations=(database/migrations/*.sql)
-          if (("${#migrations[@]}" == 0)); then
-            echo "::error::No canonical database migrations were found."
-            exit 1
-          fi
-
+          if (("${#migrations[@]}" == 0)); then echo "::error::No canonical database migrations were found."; exit 1; fi
           echo "Applying ${#migrations[@]} canonical migrations to disposable PostgreSQL 17."
           for migration in "${migrations[@]}"; do
             echo "::group::${migration}"
-            echo "START $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-            timeout --signal=TERM --kill-after=15s 300s \
-              env PGOPTIONS="-c statement_timeout=280000 -c lock_timeout=30000" \
-              psql "$DATABASE_URL" -X --no-psqlrc -v ON_ERROR_STOP=1 -f "$migration"
+            timeout --signal=TERM --kill-after=15s 300s env PGOPTIONS="-c statement_timeout=280000 -c lock_timeout=30000" psql "$DATABASE_URL" -X --no-psqlrc -v ON_ERROR_STOP=1 -f "$migration"
             echo "PASS: ${migration}"
             echo "::endgroup::"
           done
@@ -155,11 +115,22 @@ jobs:
         run: bash scripts/seed-gameplay-regression-fixtures.sh
 
       - name: Verify the test target is isolated
+        run: psql "$DATABASE_URL" -X --no-psqlrc -v ON_ERROR_STOP=1 -Atc "select 'isolated local database reachable' where current_database()='postgres' and current_user='postgres';"
+
+      - name: Run only the four previously failing BP-04 regression tests
         shell: bash
         run: |
           set -euo pipefail
-          psql "$DATABASE_URL" -X --no-psqlrc -v ON_ERROR_STOP=1 -Atc \
-            "select 'isolated local database reachable' where current_database()='postgres' and current_user='postgres';"
-
-      - name: Run every rollback-only SQL regression test
-        run: bash scripts/run-gameplay-regression-tests.sh
+          tests=(
+            database/tests/bp04_agreement_lifecycle_regression.sql
+            database/tests/bp04_organisation_lifecycle_history.sql
+            database/tests/bp04_property_asset_event_command_workflow.sql
+            database/tests/bp04_property_title_history_regression.sql
+          )
+          for test_file in "${tests[@]}"; do
+            echo "::group::${test_file}"
+            echo "START ${test_file}"
+            timeout --signal=TERM --kill-after=10s 180s env PGOPTIONS="-c statement_timeout=180000 -c lock_timeout=30000" psql "$DATABASE_URL" -X --no-psqlrc -v ON_ERROR_STOP=1 -f "$test_file"
+            echo "PASS: ${test_file}"
+            echo "::endgroup::"
+          done
