@@ -11,7 +11,7 @@ begin
  if not (select relrowsecurity from pg_class where oid='game.case_activity_records'::regclass) or not (select relrowsecurity from pg_class where oid='game.case_activity_links'::regclass) then raise exception 'Activity RLS missing';end if;
  if has_table_privilege('anon','game.case_activity_records','select') or has_table_privilege('authenticated','game.case_activity_records','select') then raise exception 'Activity public read access unexpectedly granted';end if;
  if not has_table_privilege('service_role','game.case_activity_records','select') then raise exception 'Service role access missing';end if;
- if position('activities' in pg_get_functiondef('game.get_case_review_dossier(text)'::regprocedure))=0 then raise exception 'Dossier integration missing';end if;
+ if position('activities' in pg_get_functiondef('game.get_case_review_dossier_before_disclosure(text)'::regprocedure))=0 then raise exception 'Dossier integration missing';end if;
 end $$;
 select game.execute_text_command('help','kng-case-activity-help-0001',null,null);
 rollback;
