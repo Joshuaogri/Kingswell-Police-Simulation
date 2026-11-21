@@ -167,16 +167,16 @@ jobs:
               except Exception:
                   directory_status = page.locator("#dataStatus").inner_text()
                   raise SystemExit(f"Directory failed to initialise: {directory_status}; browser errors: {page_errors}")
-              page.locator('#tabs button[data-type="property"]').click()
+              page.locator('#tabs button[data-type="road"]').click()
               page.wait_for_function("() => document.querySelectorAll('.record').length > 0")
               first_record = page.locator(".record").first
               first_record.click()
               if page.locator("#dTitle").inner_text() == "Select a record":
-                  raise SystemExit("Selecting a property did not open its individual record")
+                  raise SystemExit("Selecting a road did not open its individual geography record")
               selected_ref = page.locator(".record.selected .ref").inner_text()
               page.locator("#q").fill(selected_ref)
               if page.locator("#resultCount").inner_text().startswith("0"):
-                  raise SystemExit("Directory search did not find the selected canonical reference")
+                  raise SystemExit("Geography search did not find the selected canonical reference")
               # Live Supabase-backed directories: paginated search and individual dossiers.
               page.locator("#q").fill("")
               for tab, minimum in [("people", 100000), ("business", 1000), ("organisation", 1000), ("property", 600)]:
