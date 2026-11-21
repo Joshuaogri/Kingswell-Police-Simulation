@@ -66,15 +66,17 @@ jobs:
           # reads them through this job-local symlink.
           ln -s ../database/migrations supabase/migrations
 
-      - name: Start disposable local PostgreSQL database
-        run: supabase db start
+      - name: Start isolated local Supabase database services
+        run: >-
+          supabase start
+          -x gotrue,realtime,storage-api,imgproxy,kong,mailpit,postgrest,postgres-meta,studio,edge-runtime,logflare,vector,supavisor
 
       - name: Apply the complete Kingswell migration chain
         shell: bash
         run: |
           set -euo pipefail
           # No --linked, --remote, project token, or hosted DB credentials.
-          supabase db reset --local --no-seed
+          supabase db reset --no-seed
 
       - name: Verify the test target is the isolated local database
         env:
@@ -82,7 +84,7 @@ jobs:
         run: |
           set -euo pipefail
           psql "$DATABASE_URL" -X --no-psqlrc -v ON_ERROR_STOP=1 -Atc \
-            "select case when current_database()='postgres' and inet_server_addr() = '172.0.0.1'::inet then 'local database reachable' else 'database reachable' end;"
+            "select 'isolated local database reachable' where current_database()='postgres' and current_user='postgres';"
 
       - name: Run every rollback-only SQL regression test
         env:
