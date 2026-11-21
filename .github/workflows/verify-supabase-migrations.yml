@@ -2,6 +2,13 @@ name: Read-only Supabase Migration Inventory
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "database/migrations/**"
+      - "scripts/audit_supabase_migrations.py"
+      - "tests/test_audit_supabase_migrations.py"
+      - ".github/workflows/verify-supabase-migrations.yml"
 
 permissions:
   contents: read
