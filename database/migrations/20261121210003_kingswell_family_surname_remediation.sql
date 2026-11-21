@@ -55,10 +55,6 @@ BEGIN
  '20261121210003_kingswell_realistic_name_remediation'
  FROM kng_old_person_names o JOIN game.persons p ON p.id=o.id
  WHERE o.family_name IS DISTINCT FROM p.family_name;
- ALTER TABLE game.persons ALTER COLUMN family_id SET NOT NULL;
- ALTER TABLE game.persons ALTER COLUMN family_name SET NOT NULL;
- CREATE UNIQUE INDEX IF NOT EXISTS persons_unique_full_display_name_v2_uidx
- ON game.persons(game.normalise_entity_name_v2(concat_ws(' ',nullif(btrim(given_name),''),nullif(btrim(middle_names),''),nullif(btrim(family_name),''))));
  SELECT count(*) INTO duplicate_names FROM (
   SELECT game.normalise_entity_name_v2(concat_ws(' ',given_name,nullif(middle_names,''),family_name)) n
   FROM game.persons GROUP BY 1 HAVING count(*)>1
