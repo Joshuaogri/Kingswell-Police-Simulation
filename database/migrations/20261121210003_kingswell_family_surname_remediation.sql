@@ -41,20 +41,40 @@ BEGIN
  SELECT count(*) INTO family_count FROM kng_family_names;
  IF component_count<>family_count THEN RAISE EXCEPTION 'Surname pool insufficient: % families, % surnames',component_count,family_count; END IF;
  CREATE TEMP TABLE kng_old_person_names ON COMMIT DROP AS
- SELECT id,person_ref,family_name FROM game.persons;
+ SELECT id,person_ref,family_id,family_name FROM game.persons;
  INSERT INTO game.person_families(id,family_ref,family_name,name_source,family_status)
  SELECT gen_random_uuid(),'KNG-FAM-'||lpad(rn::text,6,'0'),surname,'curated_catalog','active'
  FROM kng_family_names ORDER BY rn;
+
+ ALTER TABLE game.persons DISABLE TRIGGER persons_00_family_identity_guard;
+ ALTER TABLE game.persons DISABLE TRIGGER persons_10_assign_unique_middle_name;
+ ALTER TABLE game.persons DISABLE TRIGGER persons_10_cross_domain_name_separation;
+ ALTER TABLE game.persons DISABLE TRIGGER persons_family_name_history;
+
  UPDATE game.persons p SET family_id=f.id,family_name=f.family_name,updated_at=now()
  FROM kng_family_components c JOIN kng_family_names n ON n.root_id=c.root_id
  JOIN game.person_families f ON f.normalised_family_name=n.normalised_name
  WHERE p.id=c.person_id;
+
+ INSERT INTO game.person_family_name_history
+  (person_id,previous_family_id,resulting_family_id,previous_family_name,resulting_family_name,change_reason)
+ SELECT o.id,o.family_id,p.family_id,o.family_name,p.family_name,
+  'Bulk assignment to distinct kinship-connected family; housemate relationships excluded'
+ FROM kng_old_person_names o JOIN game.persons p ON p.id=o.id
+ WHERE o.family_id IS DISTINCT FROM p.family_id;
+
  INSERT INTO game.canonical_name_corrections(entity_type,entity_id,entity_ref,field_name,previous_value,corrected_value,correction_reason,migration_ref)
  SELECT 'person',o.id,o.person_ref,'family_name',o.family_name,p.family_name,
  'Distinct surname assigned to actual kinship-connected family; housemate links excluded',
  '20261121210003_kingswell_realistic_name_remediation'
  FROM kng_old_person_names o JOIN game.persons p ON p.id=o.id
  WHERE o.family_name IS DISTINCT FROM p.family_name;
+
+ ALTER TABLE game.persons ENABLE TRIGGER persons_00_family_identity_guard;
+ ALTER TABLE game.persons ENABLE TRIGGER persons_10_assign_unique_middle_name;
+ ALTER TABLE game.persons ENABLE TRIGGER persons_10_cross_domain_name_separation;
+ ALTER TABLE game.persons ENABLE TRIGGER persons_family_name_history;
+
  SELECT count(*) INTO duplicate_names FROM (
   SELECT game.normalise_entity_name_v2(concat_ws(' ',given_name,nullif(middle_names,''),family_name)) n
   FROM game.persons GROUP BY 1 HAVING count(*)>1
