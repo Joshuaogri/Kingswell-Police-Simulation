@@ -33,7 +33,8 @@ create index if not exists organisation_lifecycle_events_timeline_idx
 create index if not exists organisation_lifecycle_events_related_idx
  on game.organisation_lifecycle_events(related_organisation_id) where related_organisation_id is not null;
 alter table game.organisation_lifecycle_events enable row level security;
-revoke all on game.organisation_lifecycle_events from anon,authenticated;\ngrant all on game.organisation_lifecycle_events to service_role;
+revoke all on game.organisation_lifecycle_events from anon,authenticated;
+grant all on game.organisation_lifecycle_events to service_role;
 
 create or replace function game.prevent_organisation_lifecycle_event_mutation()
 returns trigger language plpgsql set search_path to 'pg_catalog','game'
