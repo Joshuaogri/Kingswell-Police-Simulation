@@ -1,5 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import { createClient } from "npm:@supabase/supabase-js@2";
+import postgres from "npm:postgres@3.4.7";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -13,19 +13,22 @@ const json = (body: unknown, status = 200) =>
     headers: { ...cors, "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" },
   });
 const fail = (message: string, status = 400) => json({ error: message }, status);
-const safeText = (v: unknown, max = 80) => String(v ?? "").trim().slice(0, max).replace(/[,%()]/g, " ").replace(/\s+/g, " ");
+const safeText = (v: unknown, max = 80) =>
+  String(v ?? "").trim().slice(0, max).replace(/[,%()]/g, " ").replace(/\s+/g, " ");
 const pageInt = (v: string | null, fallback: number, min: number, max: number) => {
   const n = Number.parseInt(v ?? "", 10);
   return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;
 };
-const personSelect = "id,person_ref,given_name,middle_names,family_name,preferred_name,date_of_birth,person_status,occupation,nationality,preferred_language,simulation_level,date_of_death";
-const businessSelect = "organisation_id,business_number,trading_name,sector,subsector,business_size,ownership_form,incorporation_date,estimated_employee_count,annual_turnover_band,import_export_activity,principal_goods_categories,service_description,business_hours,fictional_website_domain";
-const orgSelect = "id,organisation_ref,name,organisation_type,parent_organisation_id,status";
-const propertySelect = "id,property_ref,city_id,district_id,neighbourhood_id,road_id,street_number,address_line,property_type,latitude,longitude,status,x_m,y_m,parcel_area_sqm,frontage_width_m,land_use,postal_code";
-const personSearch = (q: string) => `person_ref.ilike.%${q}%,given_name.ilike.%${q}%,middle_names.ilike.%${q}%,family_name.ilike.%${q}%,preferred_name.ilike.%${q}%,occupation.ilike.%${q}%`;
-const businessSearch = (q: string) => `business_number.ilike.%${q}%,trading_name.ilike.%${q}%,sector.ilike.%${q}%,subsector.ilike.%${q}%`;
-const orgSearch = (q: string) => `organisation_ref.ilike.%${q}%,name.ilike.%${q}%,organisation_type.ilike.%${q}%`;
-const propertySearch = (q: string) => `property_ref.ilike.%${q}%,address_line.ilike.%${q}%,street_number.ilike.%${q}%,postal_code.ilike.%${q}%`;
+
+const databaseUrl = Deno.env.get("SUPABASE_DB_URL");
+const db = databaseUrl
+  ? postgres(databaseUrl, { max: 1, prepare: false, ssl: "require", connect_timeout: 10, idle_timeout: 20 })
+  : null;
+
+const personFields = "id,person_ref,given_name,middle_names,family_name,preferred_name,date_of_birth,person_status,occupation,nationality,preferred_language,simulation_level,date_of_death";
+const businessFields = "organisation_id,business_number,trading_name,sector,subsector,business_size,ownership_form,incorporation_date,estimated_employee_count,annual_turnover_band,import_export_activity,principal_goods_categories,service_description,business_hours,fictional_website_domain";
+const organisationFields = "id,organisation_ref,name,organisation_type,parent_organisation_id,status";
+const propertyFields = "p.id,p.property_ref,p.city_id,p.district_id,p.neighbourhood_id,p.road_id,p.street_number,p.address_line,p.property_type,p.latitude,p.longitude,p.status,p.x_m,p.y_m,p.parcel_area_sqm,p.frontage_width_m,p.land_use,p.postal_code";
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
@@ -37,134 +40,175 @@ Deno.serve(async (req: Request) => {
   const id = safeText(url.searchParams.get("id"), 80);
   const limit = pageInt(url.searchParams.get("limit"), 25, 1, 50);
   const offset = pageInt(url.searchParams.get("offset"), 0, 0, 100000);
-  const allowed = ["people", "businesses", "organisations", "properties"];
-  if (!allowed.includes(type)) return fail("Choose people, businesses, organisations or properties.");
-
-
-  const supabaseUrl = Deno.env.get("SUPABASE_URL");
-  const legacyKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-  const secretKeysRaw = Deno.env.get("SUPABASE_SECRET_KEYS");
-  let serviceKey = legacyKey;
-  if (secretKeysRaw) {
-    try { serviceKey = JSON.parse(secretKeysRaw).default ?? serviceKey; } catch { /* use legacy key */ }
+  if (!["people", "businesses", "organisations", "properties"].includes(type)) {
+    return fail("Choose people, businesses, organisations or properties.");
   }
-  if (!supabaseUrl || !serviceKey) return fail("Record service is not configured.", 503);
-  const db = createClient(supabaseUrl, serviceKey, {
-    auth: { autoRefreshToken: false, persistSession: false },
-    db: { schema: "game" },
-  });
+  if (!db) return fail("Record service database connection is not configured.", 503);
 
   try {
-    if (type === "people") {
-      if (id) {
-        let base = db.from("persons").select(personSelect).limit(1);
-        base = id.includes("-") ? base.eq("id", id) : base.eq("person_ref", id);
-        const { data: person, error } = await base.maybeSingle();
-        if (error) throw error;
-        if (!person) return fail("Person record not found.", 404);
-        const [{ data: addresses, error: addressError }, { data: links, error: linksError }] = await Promise.all([
-          db.from("person_addresses").select("address_role,valid_from,valid_to,is_current,is_primary,property_id,building_unit_id").eq("person_id", person.id).eq("is_current", true).limit(5),
-          db.from("person_relationships").select("relationship_type,related_person_id,valid_from,valid_to").eq("person_id", person.id).limit(20),
-        ]);
-        if (addressError) throw addressError;
-        if (linksError) throw linksError;
-        const propertyIds = [...new Set((addresses ?? []).map((a: any) => a.property_id).filter(Boolean))];
-        const unitIds = [...new Set((addresses ?? []).map((a: any) => a.building_unit_id).filter(Boolean))];
-        const [{ data: properties }, { data: units }] = await Promise.all([
-          propertyIds.length ? db.from("properties").select("id,property_ref,street_number,address_line,postal_code,neighbourhood_id,district_id").in("id", propertyIds) : Promise.resolve({ data: [] }),
-          unitIds.length ? db.from("building_units").select("id,unit_ref,unit_name,unit_type,floor_label").in("id", unitIds) : Promise.resolve({ data: [] }),
-        ]);
-        const addressRecords = (addresses ?? []).map((a: any) => ({
-          role: a.address_role, from: a.valid_from, to: a.valid_to, primary: a.is_primary,
-          property: (properties ?? []).find((p: any) => p.id === a.property_id) ?? null,
-          unit: (units ?? []).find((u: any) => u.id === a.building_unit_id) ?? null,
-        }));
-        const relatedIds = [...new Set((links ?? []).map((x: any) => x.related_person_id))];
-        const { data: related } = relatedIds.length
-          ? await db.from("persons").select("id,person_ref,given_name,family_name,preferred_name").in("id", relatedIds)
-          : { data: [] };
-        return json({ record: { ...person, addresses: addressRecords, relationships: (links ?? []).map((x: any) => ({ type: x.relationship_type, valid_from: x.valid_from, valid_to: x.valid_to, person: (related ?? []).find((p: any) => p.id === x.related_person_id) ?? null })) } });
-      }
-      let query = db.from("persons").select(personSelect, { count: "exact" }).order("family_name").order("given_name").range(offset, offset + limit - 1);
-      if (q) query = query.or(personSearch(q));
-      const { data, error, count } = await query;
-      if (error) throw error;
-      return json({ type, q, limit, offset, total: count ?? 0, records: data ?? [] });
-    }
+    const result = await db.begin(async (tx) => {
+      await tx`set transaction read only`;
 
-    if (type === "businesses") {
-      if (id) {
-        const { data: business, error } = await db.from("business_profiles").select(businessSelect).eq("business_number", id).maybeSingle();
-        if (error) throw error;
-        if (!business) return fail("Business record not found.", 404);
-        const [{ data: org }, { data: sites }, { data: staff }] = await Promise.all([
-          db.from("organisations").select(orgSelect).eq("id", business.organisation_id).maybeSingle(),
-          db.from("organisation_locations").select("site_ref,site_name,location_role,occupancy_status,valid_from,valid_to,property_id,building_unit_id").eq("organisation_id", business.organisation_id).limit(30),
-          db.from("organisation_personnel").select("id,person_id,job_title,employment_type,valid_from,valid_to,is_current").eq("organisation_id", business.organisation_id).eq("is_current", true).limit(50),
-        ]);
-        return json({ record: { ...business, organisation: org ?? null, sites: sites ?? [], workforce: staff ?? [] } });
+      if (type === "people") {
+        if (id) {
+          const rows = await tx`select ${tx.unsafe(personFields)} from game.persons
+            where id::text = ${id} or person_ref = ${id} limit 1`;
+          const person = rows[0];
+          if (!person) return { notFound: "Person record not found." };
+          const addresses = await tx`
+            select pa.address_role as role, pa.valid_from, pa.valid_to, pa.is_primary,
+              case when p.id is null then null else jsonb_build_object(
+                'property_ref',p.property_ref,'address',concat_ws(' ',p.street_number,p.address_line),
+                'postal_code',p.postal_code,'district_id',p.district_id,'neighbourhood_id',p.neighbourhood_id
+              ) end as property,
+              case when bu.id is null then null else jsonb_build_object(
+                'unit_ref',bu.unit_ref,'unit_name',bu.unit_name,'unit_type',bu.unit_type,'floor_label',bu.floor_label
+              ) end as unit
+            from game.person_addresses pa
+            left join game.properties p on p.id=pa.property_id
+            left join game.building_units bu on bu.id=pa.building_unit_id
+            where pa.person_id=${person.id} and pa.is_current=true
+            order by pa.is_primary desc, pa.valid_from desc limit 5`;
+          const relationships = await tx`
+            select pr.relationship_type as type,pr.valid_from,pr.valid_to,
+              case when p.id is null then null else jsonb_build_object(
+                'id',p.id,'person_ref',p.person_ref,'given_name',p.given_name,
+                'family_name',p.family_name,'preferred_name',p.preferred_name
+              ) end as person
+            from game.person_relationships pr
+            left join game.persons p on p.id=pr.related_person_id
+            where pr.person_id=${person.id} order by pr.relationship_type limit 20`;
+          return { record: { ...person, addresses, relationships } };
+        }
+        const where = q
+          ? tx`(person_ref ilike ${"%" + q + "%"} or given_name ilike ${"%" + q + "%"} or middle_names ilike ${"%" + q + "%"} or family_name ilike ${"%" + q + "%"} or preferred_name ilike ${"%" + q + "%"} or occupation ilike ${"%" + q + "%"})`
+          : tx`true`;
+        const records = await tx`select ${tx.unsafe(personFields)} from game.persons
+          where ${where} order by family_name,given_name,person_ref limit ${limit} offset ${offset}`;
+        const [{ total }] = await tx`select count(*)::int as total from game.persons where ${where}`;
+        return { type, q, limit, offset, total, records };
       }
-      let query = db.from("business_profiles").select(businessSelect, { count: "exact" }).order("trading_name").range(offset, offset + limit - 1);
-      if (q) query = query.or(businessSearch(q));
-      const { data, error, count } = await query;
-      if (error) throw error;
-      return json({ type, q, limit, offset, total: count ?? 0, records: data ?? [] });
-    }
 
-    if (type === "organisations") {
-      if (id) {
-        let query = db.from("organisations").select(orgSelect).limit(1);
-        query = id.includes("-") ? query.eq("id", id) : query.eq("organisation_ref", id);
-        const { data: org, error } = await query.maybeSingle();
-        if (error) throw error;
-        if (!org) return fail("Organisation record not found.", 404);
-        const [{ data: profile }, { data: sites }, { data: parent }] = await Promise.all([
-          db.from("organisation_profiles").select("profile_ref,organisation_class,operating_model,primary_remit,service_or_market_scope,governance_structure_status,legal_form_status,branch_network_summary,staffing_summary,premises_summary,public_contact_profile").eq("organisation_id", org.id).maybeSingle(),
-          db.from("organisation_locations").select("site_ref,site_name,location_role,occupancy_status,valid_from,valid_to,property_id,building_unit_id").eq("organisation_id", org.id).limit(50),
-          org.parent_organisation_id ? db.from("organisations").select(orgSelect).eq("id", org.parent_organisation_id).maybeSingle() : Promise.resolve({ data: null }),
-        ]);
-        return json({ record: { ...org, profile: profile ?? null, sites: sites ?? [], parent: parent.data ?? null } });
+      if (type === "businesses") {
+        if (id) {
+          const rows = await tx`
+            select bp.*,o.organisation_ref,o.name as organisation_name,o.organisation_type,o.status as organisation_status
+            from game.business_profiles bp left join game.organisations o on o.id=bp.organisation_id
+            where bp.business_number=${id} limit 1`;
+          const business = rows[0];
+          if (!business) return { notFound: "Business record not found." };
+          const sites = await tx`
+            select ol.site_ref,ol.site_name,ol.location_role,ol.occupancy_status,ol.valid_from,ol.valid_to,
+              p.property_ref,concat_ws(' ',p.street_number,p.address_line) as address,bu.unit_ref,bu.unit_name
+            from game.organisation_locations ol
+            left join game.properties p on p.id=ol.property_id
+            left join game.building_units bu on bu.id=ol.building_unit_id
+            where ol.organisation_id=${business.organisation_id}
+            order by ol.is_primary_location desc,ol.site_name limit 30`;
+          const workforce = await tx`
+            select op.job_title,op.employment_type,op.valid_from,op.valid_to,op.is_current,
+              p.person_ref,p.given_name,p.family_name,p.preferred_name
+            from game.organisation_personnel op left join game.persons p on p.id=op.person_id
+            where op.organisation_id=${business.organisation_id} and op.is_current=true
+            order by p.family_name,p.given_name limit 50`;
+          return { record: { ...business, sites, workforce } };
+        }
+        const where = q
+          ? tx`(bp.business_number ilike ${"%" + q + "%"} or bp.trading_name ilike ${"%" + q + "%"} or bp.sector ilike ${"%" + q + "%"} or bp.subsector ilike ${"%" + q + "%"})`
+          : tx`true`;
+        const records = await tx`
+          select ${tx.unsafe(businessFields)},o.name as organisation_name,o.organisation_ref
+          from game.business_profiles bp left join game.organisations o on o.id=bp.organisation_id
+          where ${where} order by bp.trading_name,bp.business_number limit ${limit} offset ${offset}`;
+        const [{ total }] = await tx`select count(*)::int as total from game.business_profiles bp where ${where}`;
+        return { type, q, limit, offset, total, records };
       }
-      let query = db.from("organisations").select(orgSelect, { count: "exact" }).order("name").range(offset, offset + limit - 1);
-      if (q) query = query.or(orgSearch(q));
-      const { data, error, count } = await query;
-      if (error) throw error;
-      return json({ type, q, limit, offset, total: count ?? 0, records: data ?? [] });
-    }
 
-    if (type === "properties") {
-      if (id) {
-        const { data: property, error } = await db.from("properties").select(propertySelect).eq("property_ref", id).maybeSingle();
-        if (error) throw error;
-        if (!property) return fail("Property record not found.", 404);
-        const [{ data: buildings }, { data: profile }, { data: district }, { data: neighbourhood }] = await Promise.all([
-          db.from("buildings").select("id,building_ref,name,building_type,floors,x_m,y_m,footprint_width_m,footprint_depth_m,footprint_area_sqm,construction_type,occupancy_status").eq("property_id", property.id).limit(10),
-          db.from("property_profiles").select("parcel_number,cadastral_block,zoning_code,permitted_uses,development_intensity,tenure_type,heritage_status,flood_exposure,contamination_status,map_label,site_description").eq("property_id", property.id).maybeSingle(),
-          property.district_id ? db.from("districts").select("code,name,district_type").eq("id", property.district_id).maybeSingle() : Promise.resolve({ data: null }),
-          property.neighbourhood_id ? db.from("neighbourhoods").select("code,name").eq("id", property.neighbourhood_id).maybeSingle() : Promise.resolve({ data: null }),
-        ]);
-        const buildingIds = (buildings ?? []).map((b: any) => b.id);
-        const { data: units } = buildingIds.length
-          ? await db.from("building_units").select("id,unit_ref,unit_name,unit_type,floor_label,building_id").in("building_id", buildingIds).order("unit_ref").limit(100)
-          : { data: [] };
-        const { data: locationRows } = await db.from("organisation_locations").select("organisation_id").eq("property_id", property.id);
-        const organisationIds = [...new Set((locationRows ?? []).map((x: any) => x.organisation_id).filter(Boolean))];
-        const [{ data: businesses }, { data: sites }] = await Promise.all([
-          organisationIds.length
-            ? db.from("business_profiles").select("business_number,trading_name,sector,subsector,organisation_id").in("organisation_id", organisationIds).limit(30)
-            : Promise.resolve({ data: [] }),
-          db.from("organisation_site_dossiers").select("site_ref,site_class,site_status,physical_address,building_ref,building_name,unit_ref,unit_name,organisation_id").eq("property_id", property.id).limit(30),
-        ]);
-        return json({ record: { ...property, district: district.data ?? null, neighbourhood: neighbourhood.data ?? null, profile: profile ?? null, buildings: buildings ?? [], units: units ?? [], businesses: businesses ?? [], sites: sites ?? [] } });
+      if (type === "organisations") {
+        if (id) {
+          const rows = await tx`
+            select o.id,o.organisation_ref,o.name,o.organisation_type,o.parent_organisation_id,o.status,
+              op.profile_ref,op.organisation_class,op.operating_model,op.primary_remit,op.service_or_market_scope,
+              op.governance_structure_status,op.legal_form_status,op.branch_network_summary,
+              op.staffing_summary,op.premises_summary,op.public_contact_profile
+            from game.organisations o left join game.organisation_profiles op on op.organisation_id=o.id
+            where o.id::text=${id} or o.organisation_ref=${id} limit 1`;
+          const org = rows[0];
+          if (!org) return { notFound: "Organisation record not found." };
+          const sites = await tx`
+            select ol.site_ref,ol.site_name,ol.location_role,ol.occupancy_status,ol.valid_from,ol.valid_to,
+              p.property_ref,concat_ws(' ',p.street_number,p.address_line) as address,bu.unit_ref,bu.unit_name
+            from game.organisation_locations ol
+            left join game.properties p on p.id=ol.property_id
+            left join game.building_units bu on bu.id=ol.building_unit_id
+            where ol.organisation_id=${org.id} order by ol.is_primary_location desc,ol.site_name limit 50`;
+          const parentRows = org.parent_organisation_id
+            ? await tx`select id,organisation_ref,name,organisation_type,status from game.organisations where id=${org.parent_organisation_id} limit 1`
+            : [];
+          return { record: { ...org, sites, parent: parentRows[0] ?? null } };
+        }
+        const where = q
+          ? tx`(organisation_ref ilike ${"%" + q + "%"} or name ilike ${"%" + q + "%"} or organisation_type ilike ${"%" + q + "%"})`
+          : tx`true`;
+        const records = await tx`select ${tx.unsafe(organisationFields)} from game.organisations
+          where ${where} order by name,organisation_ref limit ${limit} offset ${offset}`;
+        const [{ total }] = await tx`select count(*)::int as total from game.organisations where ${where}`;
+        return { type, q, limit, offset, total, records };
       }
-      let query = db.from("properties").select(propertySelect, { count: "exact" }).order("property_ref").range(offset, offset + limit - 1);
-      if (q) query = query.or(propertySearch(q));
-      const { data, error, count } = await query;
-      if (error) throw error;
-      return json({ type, q, limit, offset, total: count ?? 0, records: data ?? [] });
-    }
+
+      if (type === "properties") {
+        if (id) {
+          const rows = await tx`
+            select p.id,p.property_ref,p.city_id,p.district_id,p.neighbourhood_id,p.road_id,
+              p.street_number,p.address_line,p.property_type,p.latitude,p.longitude,p.status,p.x_m,p.y_m,
+              p.parcel_area_sqm,p.frontage_width_m,p.land_use,p.postal_code,
+              jsonb_build_object('code',d.code,'name',d.name,'district_type',d.district_type) as district,
+              jsonb_build_object('code',n.code,'name',n.name) as neighbourhood,
+              jsonb_build_object('parcel_number',pp.parcel_number,'cadastral_block',pp.cadastral_block,
+                'zoning_code',pp.zoning_code,'permitted_uses',pp.permitted_uses,'development_intensity',pp.development_intensity,
+                'tenure_type',pp.tenure_type,'heritage_status',pp.heritage_status,'flood_exposure',pp.flood_exposure,
+                'contamination_status',pp.contamination_status,'map_label',pp.map_label,'site_description',pp.site_description) as profile
+            from game.properties p
+            left join game.districts d on d.id=p.district_id
+            left join game.neighbourhoods n on n.id=p.neighbourhood_id
+            left join game.property_profiles pp on pp.property_id=p.id
+            where p.property_ref=${id} limit 1`;
+          const property = rows[0];
+          if (!property) return { notFound: "Property record not found." };
+          const buildings = await tx`
+            select id,building_ref,name,building_type,floors,x_m,y_m,footprint_width_m,footprint_depth_m,
+              footprint_area_sqm,construction_type,occupancy_status
+            from game.buildings where property_id=${property.id} order by building_ref limit 10`;
+          const units = await tx`
+            select bu.id,bu.unit_ref,bu.unit_name,bu.unit_type,bu.floor_label,bu.building_id
+            from game.building_units bu join game.buildings b on b.id=bu.building_id
+            where b.property_id=${property.id} order by bu.unit_ref limit 100`;
+          const businesses = await tx`
+            select distinct bp.business_number,bp.trading_name,bp.sector,bp.subsector,bp.organisation_id
+            from game.business_profiles bp join game.organisation_locations ol on ol.organisation_id=bp.organisation_id
+            where ol.property_id=${property.id} order by bp.trading_name limit 30`;
+          const sites = await tx`
+            select site_ref,site_class,site_status,physical_address,building_ref,building_name,unit_ref,unit_name,organisation_id
+            from game.organisation_site_dossiers where property_id=${property.id} limit 30`;
+          return { record: { ...property, buildings, units, businesses, sites } };
+        }
+        const where = q
+          ? tx`(p.property_ref ilike ${"%" + q + "%"} or p.address_line ilike ${"%" + q + "%"} or p.street_number ilike ${"%" + q + "%"} or p.postal_code ilike ${"%" + q + "%"})`
+          : tx`true`;
+        const records = await tx`
+          select ${tx.unsafe(propertyFields)},d.name as district_name,n.name as neighbourhood_name
+          from game.properties p left join game.districts d on d.id=p.district_id
+          left join game.neighbourhoods n on n.id=p.neighbourhood_id
+          where ${where} order by p.property_ref limit ${limit} offset ${offset}`;
+        const [{ total }] = await tx`select count(*)::int as total from game.properties p where ${where}`;
+        return { type, q, limit, offset, total, records };
+      }
+      return { notFound: "Unsupported record type." };
+    });
+    if ("notFound" in result) return fail(result.notFound, 404);
+    return json(result);
   } catch (error) {
     console.error("kingswell-records", error);
-    return fail("The record query failed. Check the requested record type and canonical reference.", 500);
+    return fail("The live record query failed. Check the record type and canonical reference.", 500);
   }
 });
