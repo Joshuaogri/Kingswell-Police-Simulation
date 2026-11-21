@@ -7,6 +7,14 @@ alter table game.property_interest_records
  add column if not exists command_id uuid references game.game_commands(id) on delete restrict,
  add column if not exists updated_at timestamptz not null default now();
 
+alter table game.property_interest_records enable row level security;
+revoke all on game.property_interest_records from public,anon,authenticated;
+grant all on game.property_interest_records to service_role;
+create index if not exists property_interest_records_recorded_by_idx
+ on game.property_interest_records(recorded_by_personnel_id) where recorded_by_personnel_id is not null;
+create index if not exists property_interest_records_command_idx
+ on game.property_interest_records(command_id) where command_id is not null;
+
 create table if not exists game.property_interest_events (
  id uuid primary key default gen_random_uuid(),
  event_ref text not null unique,
@@ -23,6 +31,9 @@ create table if not exists game.property_interest_events (
 );
 create index if not exists property_interest_events_interest_date_idx
  on game.property_interest_events(property_interest_id,occurred_on,recorded_on,created_at);
+create index if not exists property_interest_events_command_idx
+ on game.property_interest_events(command_id) where command_id is not null;
+alter table game.property_interest_events enable row level security;
 
 create or replace function game.reject_property_interest_event_mutation()
 returns trigger language plpgsql set search_path to 'pg_catalog','game' as $function$
@@ -218,7 +229,7 @@ as $function$
   'interests',coalesce((select jsonb_agg(jsonb_build_object(
     'interest',to_jsonb(i),
     'holder',case when i.holder_person_id is not null
-      then jsonb_build_object('type','person','ref',pn.person_ref,'name',pn.full_name)
+      then jsonb_build_object('type','person','ref',pn.person_ref,'name',concat_ws(' ',pn.given_name,pn.middle_names,pn.family_name))
       else jsonb_build_object('type','organisation','ref',o.organisation_ref,'name',o.name) end,
     'events',coalesce((select jsonb_agg(to_jsonb(e) order by e.occurred_on nulls first,e.recorded_on,e.created_at)
       from game.property_interest_events e where e.property_interest_id=i.id),'[]'::jsonb)
