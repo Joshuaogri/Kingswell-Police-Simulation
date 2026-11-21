@@ -50,9 +50,31 @@ begin
  end if;
 
  select count(*) into v_agreements from game.organisation_site_agreements;
- if (select count(*) from game.organisation_site_agreements
-     where counterparty_person_id is null and counterparty_organisation_id is null)<>0 then
-  raise exception 'At least one occupancy agreement remains without a counterparty';
+ -- Unknown landlords remain unknown. A registered owner is not
+ -- promoted to landlord unless a separate current landlord interest exists.
+ if exists(
+  select 1
+  from game.organisation_site_agreements a
+  join game.organisation_site_agreement_locations al on al.agreement_id=a.id
+  join game.organisation_locations ol on ol.id=al.organisation_location_id
+  where a.counterparty_role='landlord'
+    and (
+      (a.counterparty_organisation_id is not null and not exists(
+        select 1 from game.property_interest_records pi
+        where pi.property_id=ol.property_id and pi.interest_type='landlord'
+          and pi.valid_to is null
+          and pi.holder_organisation_id=a.counterparty_organisation_id
+      ))
+      or
+      (a.counterparty_person_id is not null and not exists(
+        select 1 from game.property_interest_records pi
+        where pi.property_id=ol.property_id and pi.interest_type='landlord'
+          and pi.valid_to is null
+          and pi.holder_person_id=a.counterparty_person_id
+      ))
+    )
+ ) then
+  raise exception 'Lease counterparty was assigned landlord status without a matching current landlord interest';
  end if;
  if (select count(*) from game.organisation_site_agreements
      where execution_date is null or effective_from is null or rent_amount is null
