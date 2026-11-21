@@ -1,11 +1,6 @@
--- Player command parser and idempotent executor for case account comparisons.
 alter function game.interpret_text_command(text) rename to interpret_text_command_before_account_comparisons;
-CREATE OR REPLACE FUNCTION game.interpret_text_command(p_command_text text)
- RETURNS jsonb
- LANGUAGE plpgsql
- IMMUTABLE
- SET search_path TO 'pg_catalog', 'game'
-AS $function$
+create or replace function game.interpret_text_command(p_command_text text)
+returns jsonb language plpgsql immutable set search_path to 'pg_catalog','game' as $$
 declare t text:=btrim(coalesce(p_command_text,''));m text[];
 begin
  m:=regexp_match(t,'^case compare accounts ([^[:space:]]+) first (witness_statement|interview_turn) ([^[:space:]]+) second (witness_statement|interview_turn) ([^[:space:]]+) category (timeline_conflict|location_conflict|sequence_conflict|action_conflict|identity_conflict|description_conflict|other) because "([^"]+)" by ([^[:space:]]+)$','i');
@@ -17,14 +12,11 @@ begin
  m:=regexp_match(t,'^case account comparisons ([^[:space:]]+)$','i');
  if m is not null then return jsonb_build_object('recognized',true,'command_type','get_case_account_comparisons','payload',jsonb_build_object('case_ref',m[1])); end if;
  return game.interpret_text_command_before_account_comparisons(p_command_text);
-end $function$
+end $$;
 
 alter function game.execute_text_command(text,text,uuid,uuid) rename to execute_text_command_before_account_comparisons;
-CREATE OR REPLACE FUNCTION game.execute_text_command(p_command_text text, p_idempotency_key text, p_session_id uuid DEFAULT NULL::uuid, p_actor_personnel_id uuid DEFAULT NULL::uuid)
- RETURNS jsonb
- LANGUAGE plpgsql
- SET search_path TO 'pg_catalog', 'game'
-AS $function$
+create or replace function game.execute_text_command(p_command_text text,p_idempotency_key text,p_session_id uuid default null,p_actor_personnel_id uuid default null)
+returns jsonb language plpgsql set search_path to 'pg_catalog','game' as $$
 declare v_i jsonb;v_type text;v_payload jsonb;v_cmd game.game_commands%rowtype;v_result jsonb;v_actor game.police_personnel%rowtype;
 begin
  v_i:=game.interpret_text_command(p_command_text);v_type:=v_i->>'command_type';v_payload:=coalesce(v_i->'payload','{}'::jsonb);
@@ -65,7 +57,6 @@ begin
   v_result:=v_result||jsonb_build_object('command_id',v_cmd.id);
  end if;
  return v_result;
-end $function$
-
+end $$;
 revoke all on function game.interpret_text_command(text),game.execute_text_command(text,text,uuid,uuid) from public,anon,authenticated;
 grant execute on function game.interpret_text_command(text),game.execute_text_command(text,text,uuid,uuid) to service_role;
