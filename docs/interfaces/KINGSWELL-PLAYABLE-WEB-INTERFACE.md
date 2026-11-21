@@ -22,7 +22,7 @@ The browser renders a cartographic canvas from the Kingswell local metric grid a
 - Building positions, width, depth and footprint area from BP-04 records.
 - Distinct land-use styling for residential, commercial, industrial, civic/public, transport, mixed-use and other properties.
 - River and harbour context, north indicator, scale indicator and a map legend.
-- Layer controls for buildings, district areas, neighbourhood labels, primary/secondary/local/service roads and junctions.
+- Layer controls for buildings, district areas, neighbourhood labels, primary/secondary/local/service roads, junctions, property entrances, landmarks, turn controls and patrol-beat coverage.
 - Mouse/touch pan, wheel zoom, zoom buttons, fit-to-city and reset.
 - Search across building/property references, addresses, business names, roads and neighbourhoods.
 - Click a building footprint to open its property/building record; click a road segment to inspect its road and segment record.
@@ -57,7 +57,7 @@ The snapshot was exported from the live Supabase `game` schema on 21 November 20
 | Neighbourhoods | 24 |
 | Named roads | 75 |
 | Road segments with geometry | 229 / 229 |
-| Junctions with local-grid positions | 157 / 157 |
+| Junctions with local-grid positions | 157 / 157 |\n| Property access points | 1,136 |\n| Named landmarks | 24 |\n| Active turn controls | 282 |\n| Patrol-beat segment coverage | 229 / 229 |
 | Properties with local-grid positions and road/neighbourhood links | 656 / 656 |
 | Buildings with local-grid positions and footprint dimensions | 656 / 656 |
 | Building units | 26,888 |
@@ -73,7 +73,7 @@ The snapshot is static. Supabase remains authoritative. A future authenticated a
 - This is a static read-only map and BP-04 browser snapshot, not yet a live Supabase-connected operational console.
 - Formal neighbourhood polygons are not yet present in the canonical geography records.
 - Building outlines are schematic footprints, not survey-grade cadastral or architectural geometry.
-- The map does not yet render all 1,136 primary/secondary entrance points, traffic states, turn restrictions, patrol positions, active incidents, case overlays or live unit positions as interactive layers.
+- The map now renders primary/secondary entrances, landmarks, active turn restrictions and patrol-beat road coverage as optional layers. Dynamic traffic states, individual patrol positions, active incidents, case overlays and live unit positions are not yet connected.
 - The map is citywide and building-identifiable; very dense clusters require zooming in for reliable individual selection.
 - The 26,888 units are represented by per-building counts and unit-type summaries; individual unit dossiers are the next BP-04 browser layer.
 - Police, dispatch, incidents, cases, people, evidence, forensics, justice and simulation-clock workspaces are not represented as functional pages yet. The navigation is a development shell, not a claim that those pages are complete.
