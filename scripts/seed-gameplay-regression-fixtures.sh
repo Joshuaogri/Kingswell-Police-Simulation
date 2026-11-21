@@ -29,7 +29,25 @@ for ((first=1; first<=43412; first+=1000)); do
 done
 
 echo "Generating the complete BP-04 fictional world after canonical people and workforce are committed."
-"${psql_cmd[@]}" -c "select game.seed_bp04_complete_world();"
+"${psql_cmd[@]}" -Atc "
+DO \$\$
+DECLARE r jsonb;
+BEGIN
+  r:=game.seed_bp04_complete_world();
+  IF coalesce((r->>'ok')::boolean,false) IS NOT TRUE THEN
+    RAISE EXCEPTION 'BP-04 complete-world seed failed: %',r;
+  END IF;
+  IF (SELECT count(*) FROM game.organisation_department_assignments)
+     <> (SELECT count(*) FROM game.organisation_personnel) THEN
+    RAISE EXCEPTION 'BP-04 structure seed did not assign every canonical employment record';
+  END IF;
+  IF (SELECT count(*) FROM game.building_unit_infrastructure_profiles)
+     <> (SELECT count(*) FROM game.building_units) THEN
+    RAISE EXCEPTION 'BP-04 infrastructure seed did not cover every building unit';
+  END IF;
+END
+\$\$;
+"
 
 echo "Verifying deterministic fixture totals."
 "${psql_cmd[@]}" -Atc "
