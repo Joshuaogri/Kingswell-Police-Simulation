@@ -187,16 +187,16 @@ declare
  command_payload jsonb;
  command_row game.game_commands%rowtype;
  actor game.police_personnel%rowtype;
- result jsonb;
+ v_result jsonb;
 begin
  interpreted:=game.interpret_text_command(p_command_text);
  command_type:=interpreted->>'command_type';
  command_payload:=coalesce(interpreted->'payload','{}'::jsonb);
  if command_type='help' then
-  result:=game.execute_text_command_before_organisation_lifecycle(
+  v_result:=game.execute_text_command_before_organisation_lifecycle(
    p_command_text,p_idempotency_key,p_session_id,p_actor_personnel_id);
-  return jsonb_set(result,'{available_commands}',
-   coalesce(result->'available_commands','[]'::jsonb)||
+  return jsonb_set(v_result,'{available_commands}',
+   coalesce(v_result->'available_commands','[]'::jsonb)||
    jsonb_build_array('organisation_lifecycle_event_record'),true);
  end if;
  if command_type<>'organisation_lifecycle_event_record' then
@@ -222,7 +222,7 @@ begin
    or command_row.payload<>command_payload then
    return jsonb_build_object('ok',false,'code','idempotency_conflict');
   end if;
-  return coalesce(command_row.result,
+  return coalesce(command_row.v_result,
    jsonb_build_object('ok',command_row.status='completed'))||
    jsonb_build_object('duplicate',true);
  end if;
@@ -233,23 +233,23 @@ begin
    and employment_status in ('active','seconded');
  if actor.id is null or
   (p_actor_personnel_id is not null and p_actor_personnel_id<>actor.id) then
-  result:=jsonb_build_object('ok',false,'code','actor_mismatch',
+  v_result:=jsonb_build_object('ok',false,'code','actor_mismatch',
    'message','The named command actor must match active or seconded personnel.');
  else
-  result:=game.execute_property_command(command_row.id,command_type,
+  v_result:=game.execute_property_command(command_row.id,command_type,
    command_payload,actor.id);
  end if;
- if coalesce((result->>'ok')::boolean,false) then
-  result:=result||jsonb_build_object('status','completed','command_id',command_row.id);
-  update game.game_commands set status='completed',result=result,completed_at=now()
+ if coalesce((v_result->>'ok')::boolean,false) then
+  v_result:=v_result||jsonb_build_object('status','completed','command_id',command_row.id);
+  update game.game_commands set status='completed',result=v_result,completed_at=now()
    where id=command_row.id;
  else
-  update game.game_commands set status='rejected',result=result,
-   rejection_reason=coalesce(result->>'message',result->>'code','Lifecycle command rejected'),
+  update game.game_commands set status='rejected',result=v_result,
+   rejection_reason=coalesce(v_result->>'message',v_result->>'code','Lifecycle command rejected'),
    completed_at=now() where id=command_row.id;
-  result:=result||jsonb_build_object('command_id',command_row.id);
+  v_result:=v_result||jsonb_build_object('command_id',command_row.id);
  end if;
- return result;
+ return v_result;
 end;
 $function$;
 
