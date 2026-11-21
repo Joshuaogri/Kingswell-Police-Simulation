@@ -111,3 +111,16 @@ The snapshot is static. Supabase remains authoritative. A future authenticated a
 - Do not invent missing property, occupancy, ownership, people, event or legal facts.
 - Do not label a static snapshot as live data.
 - No live Supabase migrations or seed data are part of this delivery.
+
+
+## Approved expansion direction — graphical atlas and dedicated workspaces
+
+On 21 November 2026, the user approved a richer Google Maps-quality direction for the fictional city atlas and a separate searchable record interface for every major game domain. The detailed requirements and delivery principles are recorded in [KINGSWELL-GRAPHICAL-ATLAS-AND-RECORD-WORKSPACES.md](./KINGSWELL-GRAPHICAL-ATLAS-AND-RECORD-WORKSPACES.md).
+
+The map must become a polished, progressively detailed graphical city atlas, with optional layers and map-to-record navigation. It must not become one screen containing every game record. People, businesses, organisations, properties, geography, police, operations, investigations, evidence, justice and simulation each receive dedicated searchable directories/workspaces and individual linked record pages. The default map must not be covered in 100,000 person markers or every business label; person markers are optional and query-driven.
+
+**Population data distinction:** the approved division register records the 100,000-person population as seeded in the authoritative game database. The present static map/browser snapshot does not yet provide the complete people directory or individual person workspaces. Do not confuse missing UI exposure with missing canonical population data.
+
+**Browser standard:** Chromium is the designated primary browser for development and browser verification. Continue using Playwright with Chromium in GitHub Actions. Expand the existing map smoke test into visual and end-to-end tests for search, map selection, record navigation, people, businesses, organisations, properties and operational workspaces. A successful build/deployment alone is not browser verification.
+
+This is an interface refinement under approved BP-40 and the existing BP-01–BP-44 blueprint. It does not reopen or replace any approved blueprint division.
