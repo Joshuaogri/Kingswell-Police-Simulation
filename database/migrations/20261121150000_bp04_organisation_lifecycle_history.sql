@@ -74,7 +74,7 @@ as $function$
 declare t text:=btrim(coalesce(p_command_text,'')); m text[];
 begin
  m:=regexp_match(t,
-  '^organisation lifecycle event ([^[:space:]]+) ([^[:space:]]+) (formed|registered|trading_commenced|name_changed|trading_name_changed|restructured|parent_changed|subsidiary_created|merged|acquired|relocated|suspended|resumed|insolvency_started|administration_started|receivership_started|closed|reopened|dissolved|deregistered|ceased_trading|corrected|other) (unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}) "([^"]{1,200})" "([^"]{1,4000})" "([^"]{0,200})" "([^"]{0,1000})" by ([^[:space:]]+)$','i');
+  '^organisation lifecycle event ([^[:space:]]+) ([^[:space:]]+) (formed|registered|trading_commenced|name_changed|trading_name_changed|restructured|parent_changed|subsidiary_created|merged|acquired|relocated|suspended|resumed|insolvency_started|administration_started|receivership_started|closed|reopened|dissolved|deregistered|ceased_trading|corrected|other) (unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}) ([^[:space:]]+) "([^"]{1,200})" "([^"]{1,4000})" "([^"]{0,200})" "([^"]{0,1000})" by ([^[:space:]]+)$','i');
  if m is not null then
   return jsonb_build_object('command_type','organisation_lifecycle_event_record',
    'payload',jsonb_build_object(
@@ -125,7 +125,7 @@ begin
   return jsonb_build_object('ok',false,'code','organisation_not_found',
    'organisation_ref',payload->>'organisation_ref');
  end if;
- if nullif(payload->>'occurred_on','') is null then v_occurred_on:=null;
+ if nullif(payload->>'related_organisation_ref','') is not null then\n  select * into v_related_org from game.organisations\n   where organisation_ref=payload->>'related_organisation_ref';\n  if v_related_org.id is null or v_related_org.id=v_org.id then\n   return jsonb_build_object('ok',false,'code','related_organisation_not_found_or_invalid');\n  end if;\n end if;\n if nullif(payload->>'occurred_on','') is null then v_occurred_on:=null;
  else
   begin v_occurred_on:=(payload->>'occurred_on')::date;
   exception when others then return jsonb_build_object('ok',false,'code','invalid_event_date'); end;
