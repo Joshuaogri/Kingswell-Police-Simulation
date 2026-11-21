@@ -74,7 +74,7 @@ Examples of the new natural names:
 
 The 38 non-business public, civic and institutional organisations retain their existing institutionally appropriate names.
 
-The migration refreshed current property address projections, property map labels, site display names and current site dossier addresses/building labels. Historical case/event/contract snapshots were intentionally not rewritten.
+The migration refreshed current property address projections, property map labels, site display names and current site dossier addresses/building labels. Historical case/event/contract snapshots were intentionally not rewritten. The live record Edge Function was advanced to version 11 and now exposes canonical property names in property list/detail responses plus a read-only `map_names` feed for all roads, properties and buildings. The 2D map and 3D atlas now overlay these live canonical names on the published geometry snapshot; the live name overlay is being checked by the current GitHub Pages browser workflow.
 
 The following database protections remain enabled:
 - Normalised unique indexes for people, businesses, organisations, properties, buildings and roads.
@@ -113,7 +113,7 @@ It is designed to:
 2. Apply and verify the family identity migration.
 3. Review person given/middle-name diversity and correct any artificial patterns without breaking family identity.
 4. Audit junction labels, building-unit names, institutional facilities, courts, police facilities, departments, positions and other named records for placeholders and confusing similarities.
-5. Refresh the static 2D and 3D map snapshot from the canonical database.
+5. Complete the GitHub Pages browser test of the live map-name overlay; the map geometry remains a published snapshot while road, property and building names are overlaid live from Supabase.
 6. Deploy GitHub Pages and verify the directories, dossiers, addresses, maps and 3D atlas against live canonical records.
 7. Add regression tests for duplicate, near-duplicate, Unicode, punctuation, concurrency, alias, historical-name and family-membership cases.
 
