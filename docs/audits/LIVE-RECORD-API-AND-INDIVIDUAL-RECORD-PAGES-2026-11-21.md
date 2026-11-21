@@ -34,7 +34,7 @@ GitHub Actions run **#36** passed:
 
 GitHub Actions run: https://github.com/Joshuaogri/Kingswell-Police-Simulation/actions/runs/44925414846
 
-GitHub Actions run **#40** also passed Chromium checks for the dedicated `record.html` person record route, with the Pages build and deployment completing successfully.\n\nGitHub Actions run: https://github.com/Joshuaogri/Kingswell-Police-Simulation/actions/runs/44925628935
+GitHub Actions run **#40** passed Chromium checks for the dedicated `record.html` person record route. Run **#45** then passed the full end-to-end navigation checks: selecting a property on the map opens its live individual record, and the record page links back to the same highlighted property on the map. The Pages build and deployment completed successfully.\n\nGitHub Actions run #40: https://github.com/Joshuaogri/Kingswell-Police-Simulation/actions/runs/44925628935\n\nGitHub Actions run #45: https://github.com/Joshuaogri/Kingswell-Police-Simulation/actions/runs/44925951765
 
 ## Explicit remaining work
 
