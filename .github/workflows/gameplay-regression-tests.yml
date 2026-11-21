@@ -58,7 +58,7 @@ jobs:
           major_version = 17
           port = 54322
           shadow_port = 54320
-          health_timeout = "2m"
+          health_timeout = "5m"
 
           [db.seed]
           enabled = false
@@ -69,9 +69,23 @@ jobs:
           ln -s ../database/migrations supabase/migrations
 
       - name: Start isolated local Supabase database services
-        run: >-
-          supabase start
-          -x gotrue,realtime,storage-api,imgproxy,kong,mailpit,postgrest,postgres-meta,studio,edge-runtime,logflare,vector,supavisor
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          # Bound startup and preserve diagnostics instead of leaving CI stuck
+          # indefinitely while Docker pulls images or waits for DB health.
+          if ! timeout --signal=TERM --kill-after=30s 15m supabase start --debug \
+            -x gotrue,realtime,storage-api,imgproxy,kong,mailpit,postgrest,postgres-meta,studio,edge-runtime,logflare,vector,supavisor; then
+            echo "::error::Local Supabase database startup failed or exceeded 15 minutes."
+            echo "Docker containers:"
+            docker ps -a || true
+            echo "Recent Docker events:"
+            docker events --since 20m --until 0s --format '{{json .}}' | tail -n 100 || true
+            echo "Supabase CLI status:"
+            supabase status || true
+            exit 1
+          fi
+          supabase status
 
       - name: Apply the complete Kingswell migration chain
         shell: bash
