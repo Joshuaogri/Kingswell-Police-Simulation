@@ -1,0 +1,49 @@
+{
+  "snapshot_date": "2026-11-21",
+  "source": "Supabase game.building_units, game.building_unit_profiles and game.building_unit_infrastructure_profiles",
+  "read_only": true,
+  "neighbourhood_files": 24,
+  "total_unit_records": 26888,
+  "counts_by_neighbourhood": {
+    "KAS-01": 120,
+    "KAS-02": 120,
+    "KCB-01": 120,
+    "KCB-02": 120,
+    "KCI-01": 120,
+    "KCI-02": 120,
+    "KDW-01": 3120,
+    "KDW-02": 3120,
+    "KED-01": 3092,
+    "KED-02": 3092,
+    "KIN-01": 120,
+    "KIN-02": 120,
+    "KLG-01": 120,
+    "KLG-02": 120,
+    "KMA-01": 120,
+    "KMA-02": 120,
+    "KMX-01": 3152,
+    "KMX-02": 3152,
+    "KNA-01": 3120,
+    "KNA-02": 3120,
+    "KPT-01": 120,
+    "KPT-02": 120,
+    "KST-01": 120,
+    "KST-02": 120
+  },
+  "fields": [
+    "unit reference and name",
+    "building and property references",
+    "unit type and floor",
+    "parent unit reference",
+    "floor number and suite code",
+    "use class and internal area",
+    "occupancy capacity and bedroom/bathroom counts",
+    "security zone and condition grade",
+    "electrical, water, wastewater, gas, telecoms, heating/cooling, fire detection/suppression and access-control statuses"
+  ],
+  "omitted_for_snapshot_size": [
+    "meter register details",
+    "full utility/access/fire-safety JSON detail objects",
+    "provenance payloads"
+  ]
+}
