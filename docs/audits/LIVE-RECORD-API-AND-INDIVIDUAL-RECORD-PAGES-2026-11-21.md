@@ -43,3 +43,14 @@ GitHub Actions run **#40** passed Chromium checks for the dedicated `record.html
 - Add map-to-record and record-to-highlighted-map navigation.
 - Add query-driven atlas layers and progressive detail without putting every person or business label on the default map.
 - Continue expanding Chromium checks across all record routes, search, pagination, navigation and responsive layouts.
+
+
+## Atlas overlays and search
+
+- Added an optional **24-landmark layer**, with individual landmark inspection and search.
+- Added an optional **property entrance/access-point layer** (more than 1,000 canonical entrances), with access-point inspection, connected property/building context and links to the full property record.
+- Kept both layers off by default to preserve a clear base map.
+- Added landmark and entrance symbols to the map legend and included their counts in map status.
+- Map search now recognises landmark names/references and entrance references as well as properties.
+- GitHub Actions run **#55** passed Chromium verification of landmark and entrance layer toggles, search and individual inspection, alongside all existing map, record and live-directory checks.
+- Run #55: https://github.com/Joshuaogri/Kingswell-Police-Simulation/actions/runs/44926500905
