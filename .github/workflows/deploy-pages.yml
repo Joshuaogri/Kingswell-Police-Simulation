@@ -74,6 +74,84 @@ jobs:
               len(list(units_dir.glob("*.json"))), "unit dossier files."
           )
           PY
+      - name: Install Chromium for browser smoke test
+        run: |
+          python3 -m pip install --disable-pip-version-check playwright
+          python3 -m playwright install --with-deps chromium
+      - name: Verify map and property visibility in Chromium
+        run: |
+          python3 -m http.server 8765 --directory _site >/tmp/kingswell-pages-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          python3 - <<'PY'
+          import time
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+
+          base = "http://127.0.0.1:8765"
+          for _ in range(40):
+              try:
+                  import urllib.request
+                  urllib.request.urlopen(base, timeout=1)
+                  break
+              except Exception:
+                  time.sleep(0.5)
+          else:
+              raise SystemExit("Local Pages preview server did not start")
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch(headless=True)
+              page = browser.new_page(viewport={"width": 1440, "height": 1000})
+              map_response = []
+              page.on(
+                  "response",
+                  lambda response: map_response.append(response.status)
+                  if "kingswell-map-data.json" in response.url else None
+              )
+
+              response = page.goto(base + "/index.html", wait_until="domcontentloaded")
+              if not response or response.status != 200:
+                  raise SystemExit("Kingswell main page did not load")
+
+              page.wait_for_function(
+                  "() => document.querySelector('#mapStatus')?.textContent.includes('CANONICAL SNAPSHOT LOADED')",
+                  timeout=30000,
+              )
+              count = page.locator("#countBuildings").inner_text()
+              if count != "656":
+                  raise SystemExit(f"Browser shows {count} buildings, expected 656")
+              if not map_response or map_response[-1] != 200:
+                  raise SystemExit(f"Map JSON request failed: {map_response}")
+
+              canvas = page.locator("#mapCanvas")
+              metrics = canvas.evaluate("""c => {
+                const r = c.getBoundingClientRect();
+                const x = c.getContext('2d');
+                const p = x.getImageData(Math.floor(c.width/2), Math.floor(c.height/2), 1, 1).data;
+                return {width:r.width, height:r.height, pixel:[...p]};
+              }""")
+              if metrics["width"] < 300 or metrics["height"] < 250:
+                  raise SystemExit(f"Map canvas is not visible: {metrics}")
+              if metrics["pixel"][3] == 0:
+                  raise SystemExit(f"Map canvas is blank: {metrics}")
+
+              unit_file = next((Path("_site/data/units")).glob("*.json"), None)
+              if unit_file is None:
+                  raise SystemExit("No property unit dossier available")
+              unit_url = base + "/data/units/" + unit_file.name
+              unit_response = page.request.get(unit_url)
+              if unit_response.status != 200:
+                  raise SystemExit(f"Property dossier unavailable: {unit_url} ({unit_response.status})")
+
+              print(
+                  "Chromium smoke test passed:",
+                  count, "buildings visible;",
+                  "map JSON HTTP", map_response[-1],
+                  "canvas", metrics["width"], "x", metrics["height"],
+                  "property dossier HTTP", unit_response.status
+              )
+              browser.close()
+          PY
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
