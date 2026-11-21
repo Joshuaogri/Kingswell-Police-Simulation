@@ -57,7 +57,7 @@ begin
   end if;
 
   parsed:=game.interpret_text_command(
-    'property title event PROP-TEST-0001 EVT-TEST-0002 other unknown unknown unknown unknown unknown unknown unknown unknown unknown unknown "" "" "" "" "" "" by KNG-TEST-0001'
+    'property title event PROP-TEST-0001 EVT-TEST-0002 other unknown unknown unknown unknown unknown unknown unknown unknown unknown "" "" "" "" "" "" by KNG-TEST-0001'
   );
   if parsed->>'command_type'<>'property_title_event_record'
      or parsed#>'{payload,occurred_on}' is distinct from 'null'::jsonb
@@ -81,7 +81,7 @@ begin
   end if;
 
   routed:=game.execute_text_command(
-    'property title event PROP-TEST-0001 EVT-TEST-0004 other unknown unknown unknown unknown unknown unknown unknown unknown unknown unknown "" "" "" "" "" "" by KNG-NONEXISTENT',
+    'property title event PROP-TEST-0001 EVT-TEST-0004 other unknown unknown unknown unknown unknown unknown unknown unknown unknown "" "" "" "" "" "" by KNG-NONEXISTENT',
     'bp04-title-route-test-01',null,null
   );
   if routed->>'code'<>'actor_mismatch' then
