@@ -343,8 +343,12 @@ begin
    when 'property_interest_end' then
     v_result:=game.end_property_interest(v_cmd.id,v_payload,v_actor.id);
    when 'property_interest_history_get' then
-    v_result:=coalesce(game.get_property_interest_history(v_payload->>'property_ref'),
-      jsonb_build_object('ok',false,'code','property_not_found'));
+    if game.get_property_interest_history(v_payload->>'property_ref') is null then
+     v_result:=jsonb_build_object('ok',false,'code','property_not_found');
+    else
+     v_result:=jsonb_build_object('ok',true,'record_type','property_interest_history',
+      'record',game.get_property_interest_history(v_payload->>'property_ref'));
+    end if;
    when 'property_asset_event_record' then
     v_result:=game.execute_property_command(v_cmd.id,v_type,v_payload,v_actor.id);
    when 'scene_premises_set' then
