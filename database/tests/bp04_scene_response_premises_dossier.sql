@@ -14,7 +14,7 @@ begin
     raise exception 'Unknown scene must return a stable not-found response: %',v_result;
   end if;
 
-  select pg_get_functiondef('game.get_scene_response_record(text)'::regprocedure)
+  select pg_get_functiondef('game.get_scene_response_record_before_exact_premises(text)'::regprocedure)
     into v_definition;
   if position('get_incident_site_context' in v_definition)=0
     or position('incident_deployments' in v_definition)=0
@@ -26,16 +26,23 @@ begin
     or position('scene_boundary_revisions' in v_definition)=0
     or position('scene_specialist_attendances' in v_definition)=0
     or position('scene_examination_plans' in v_definition)=0 then
-    raise exception 'Scene response dossier does not compose all required operational records';
+    raise exception 'Underlying scene response record does not compose all required operational records';
+  end if;
+
+  select pg_get_functiondef('game.get_scene_response_record(text)'::regprocedure)
+    into v_definition;
+  if position('get_scene_premises_record' in v_definition)=0
+    or position('evidence_premises_history' in v_definition)=0 then
+    raise exception 'Scene response wrapper does not compose exact scene/evidence premises';
   end if;
 
   if not exists (
     select 1 from pg_proc p
     join pg_namespace n on n.oid=p.pronamespace
-    where n.nspname='game' and p.proname='get_scene_response_record'
+    where n.nspname='game' and p.proname='get_scene_response_record_before_exact_premises'
       and p.prosecdef=true
   ) then
-    raise exception 'Scene response dossier must run with controlled SECURITY DEFINER privileges';
+    raise exception 'Underlying scene response dossier must retain controlled SECURITY DEFINER privileges';
   end if;
 end;
 $$;

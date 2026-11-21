@@ -21,7 +21,7 @@ begin
   raise exception 'Incident-site association missing canonical organisation location reference';
  end if;
  if not exists(select 1 from pg_constraint where conrelid='game.incident_site_associations'::regclass
-  and conname='incident_site_associations_incident_id_organisation_location_id_relation_type_key') then
+  and contype='u' and pg_get_constraintdef(oid)='UNIQUE (incident_id, organisation_location_id, relation_type)') then
   raise exception 'Incident-site association uniqueness constraint missing';
  end if;
 end;

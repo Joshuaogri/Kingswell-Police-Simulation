@@ -12,6 +12,7 @@ declare
  v_properties bigint;
  v_buildings bigint;
  v_actor uuid;
+ v_actor_ref text;
  v_incident_type uuid;
  v_property uuid;
  v_building uuid;
