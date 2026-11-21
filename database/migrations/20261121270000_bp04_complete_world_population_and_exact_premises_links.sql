@@ -224,28 +224,31 @@ begin
   on conflict(event_ref) do nothing;
   get diagnostics v_title=row_count;
 
-  -- Resolve the 152 missing lease counterparties to the existing registered
-  -- owner of the exact canonical property. Occupancy dates are not contract dates.
-  with owner_map as (
-    select distinct on (a.id) a.id,pi.holder_organisation_id
+  -- Resolve an unknown lease counterparty only where a separate, explicit
+  -- landlord interest exists for the exact property. Registered ownership by
+  -- itself does not establish that the owner is the landlord.
+  with landlord_map as (
+    select distinct on (a.id) a.id,pi.holder_organisation_id,pi.holder_person_id
     from game.organisation_site_agreements a
     join game.organisation_site_agreement_locations al on al.agreement_id=a.id
     join game.organisation_locations ol on ol.id=al.organisation_location_id
     join game.property_interest_records pi
       on pi.property_id=ol.property_id
-     and pi.interest_type='registered_owner'
+     and pi.interest_type='landlord'
      and pi.valid_to is null
-     and pi.holder_organisation_id<>a.tenant_organisation_id
+     and (pi.holder_organisation_id is null
+       or pi.holder_organisation_id<>a.tenant_organisation_id)
     where a.counterparty_person_id is null and a.counterparty_organisation_id is null
     order by a.id,ol.is_primary_location desc,pi.id
   )
   update game.organisation_site_agreements a
   set counterparty_organisation_id=m.holder_organisation_id,
+      counterparty_person_id=m.holder_person_id,
       counterparty_role='landlord',
       source_reference=coalesce(a.source_reference,'KNG-GEN-AGREEMENT-'||a.agreement_ref),
       source_description=coalesce(a.source_description,
-        'Generated fictional landlord relationship from the canonical registered property owner.')
-  from owner_map m
+        'Generated fictional lease record linked to the separately recorded landlord interest.')
+  from landlord_map m
   where a.id=m.id;
   get diagnostics v_counterparties=row_count;
 
@@ -253,7 +256,11 @@ begin
   -- dates are generated independently of the site occupancy dates.
   update game.organisation_site_agreements a
   set
-    counterparty_role=coalesce(a.counterparty_role,'landlord'),
+    counterparty_role=case
+      when a.counterparty_person_id is not null or a.counterparty_organisation_id is not null
+        then coalesce(a.counterparty_role,'landlord')
+      else a.counterparty_role
+    end,
     execution_date=coalesce(a.execution_date,
       date '2010-01-01'+mod(abs(hashtextextended(a.agreement_ref||':execution',0)),5000)::integer),
     effective_from=coalesce(a.effective_from,
