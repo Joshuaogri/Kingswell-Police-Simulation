@@ -136,17 +136,19 @@ async function loadUnitDirectory(p){
    const dossier=await response.json();unitCache[code]=dossier.units||[];
   }
   const units=unitCache[code].filter(u=>u.building_ref===p.building.ref);
-  const drawUnits=(term='')=>{
-   const q=term.trim().toLowerCase();
-   const found=units.filter(u=>[u.ref,u.name,u.type,u.floor,u.parent_ref,u.profile?.use_class,u.profile?.security_zone].join(' ').toLowerCase().includes(q));
-   slot.innerHTML='<div class="listitem"><b>'+fmt(found.length)+' / '+fmt(units.length)+' units</b><span>'+esc(p.building.ref)+' · '+esc(hood.name)+' · cached neighbourhood register</span></div><input id="unitSearch" placeholder="Filter unit reference, name, floor or use…" style="width:100%;padding:8px 9px;margin:5px 0 8px;border:1px solid var(--line2);border-radius:6px;background:#0d1712;color:var(--ink)"><div id="unitResults">'+(found.length?found.map(u=>{
+  const renderResults=(term='')=>{
+   const q=term.trim().toLowerCase(),found=units.filter(u=>[u.ref,u.name,u.type,u.floor,u.parent_ref,u.profile?.use_class,u.profile?.security_zone].join(' ').toLowerCase().includes(q));
+   const results=$('#unitResults');
+   results.innerHTML=found.length?found.map(u=>{
     const pr=u.profile||{},inf=u.infrastructure||{},profile=[pr.use_class,pr.area_sqm!=null?pr.area_sqm+' m²':null,pr.capacity!=null?'capacity '+pr.capacity:null,pr.bedrooms!=null?pr.bedrooms+' bed':null,pr.bathrooms!=null?pr.bathrooms+' bath':null,pr.condition,pr.security_zone].filter(Boolean).join(' · ');
     const infra=Object.entries(inf).map(([k,v])=>k.replaceAll('_',' ')+': '+v).join(' · ');
     return '<div class="listitem"><b>'+esc(u.name)+' <span class="detailref">'+esc(u.ref)+'</span></b><span>'+esc(u.type)+' · '+esc(u.floor)+(u.parent_ref?' · parent '+esc(u.parent_ref):'')+'</span>'+(profile?'<div class="small">'+esc(profile)+'</div>':'')+(infra?'<div class="small">'+esc(infra)+'</div>':'')+'</div>';
-   }).join(''):'<div class="empty">No units match this filter.</div>')+'</div>';
-   $('#unitSearch').value=term;$('#unitSearch').oninput=e=>drawUnits(e.target.value);
+   }).join(''):'<div class="empty">No units match this filter.</div>';
+   const header=results.parentElement.querySelector('.listitem b');if(header)header.textContent=fmt(found.length)+' / '+fmt(units.length)+' units';
   };
-  drawUnits();
+  slot.innerHTML='<div class="listitem"><b>'+fmt(units.length)+' units</b><span>'+esc(p.building.ref)+' · '+esc(hood.name)+' · detailed BP-04 register</span></div><input id="unitSearch" placeholder="Filter unit reference, name, floor or use…" style="width:100%;padding:8px 9px;margin:5px 0 8px;border:1px solid var(--line2);border-radius:6px;background:#0d1712;color:var(--ink)"><div id="unitResults"></div>';
+  $('#unitSearch').oninput=e=>renderResults(e.target.value);
+  renderResults();
  }catch(error){slot.innerHTML='<div class="empty">Unit directory could not be loaded: '+esc(error.message)+'</div>'}
 }
 
