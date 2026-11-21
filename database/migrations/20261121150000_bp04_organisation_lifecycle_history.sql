@@ -145,7 +145,7 @@ begin
    and v_existing.occurred_on is not distinct from v_occurred_on
    and v_existing.subject=btrim(payload->>'subject')
    and v_existing.description=btrim(payload->>'description')
-   and v_existing.actor_person_id=v_personnel.person_id
+   and v_existing.related_organisation_id is not distinct from v_related_org.id\n   and v_existing.actor_person_id=v_personnel.person_id
    and v_existing.source_reference is not distinct from nullif(btrim(payload->>'source_reference'),'') then
    return jsonb_build_object('ok',true,'record_type','organisation_lifecycle_event',
     'event_ref',v_existing.event_ref,'event',to_jsonb(v_existing),'duplicate',true);
