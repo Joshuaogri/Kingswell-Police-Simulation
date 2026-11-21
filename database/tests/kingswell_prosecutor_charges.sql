@@ -16,4 +16,5 @@ r:=game.execute_text_command('prosecutor review '||rr||' set accepted by '||pr||
 r:=game.execute_text_command('prosecution charge file '||rr||' by '||pr||' count 1 offence THEFT-01 title "Theft" particulars "Alleged taking of property belonging to another person."','kng-just-charge-101',null,null); if not coalesce((r->>'ok')::boolean,false) then raise exception 'Charge: %',r; end if;
 r:=game.execute_text_command('prosecution charges '||rr||' by '||pr,'kng-just-list-101',null,null); if not coalesce((r->>'ok')::boolean,false) or jsonb_array_length(r->'charges')<>1 then raise exception 'Retrieval: %',r; end if;
 if (select current_game_time from game.simulation_state where id=1)<>clk then raise exception 'Clock advanced'; end if;
-end $$; rollback;
+end $;
+rollback;
