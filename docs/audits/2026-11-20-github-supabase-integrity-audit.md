@@ -1461,3 +1461,8 @@ Four unit tests were added in `tests/test_audit_supabase_migrations.py` (commit 
 **Run #6 cross-version content-match counts are superseded for reconciliation purposes.** The 82 same-version collision investigations remain useful because they compare the actual same-version SQL statements, but the cross-version exact-content match totals and unmatched-version classifications must be regenerated with the corrected comparator.
 
 Next action: manually run the read-only workflow and review the new artifact before continuing cross-version reconciliation. The workflow remains manual-only and still contains no deploy, repair, reset or write operation. Live Supabase remains unchanged.
+
+
+## Reconciliation resolution — 2026-11-21
+
+The initial migration-history mismatch has been resolved without modifying the live migration history or replaying any migration. The active `database/migrations/` directory now contains 228 SQL files for 228 applied Supabase records. The read-only content audit reports 228 exact version-identifier matches, 227 exact non-empty canonical SQL matches, zero same-version/different-content collisions, and zero remote records without a matching repository SQL source. The single comment-only/empty migration remains paired by version and name. Thirty-six superseded, unapplied local drafts were moved intact to `database/migration-archive/unapplied-superseded/`; this archive is outside the active migration directory. Live game data and the applied migration ledger were not changed during reconciliation.
