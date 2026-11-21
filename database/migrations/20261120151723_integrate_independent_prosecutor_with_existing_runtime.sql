@@ -1,9 +1,6 @@
-CREATE OR REPLACE FUNCTION game.interpret_prosecution_command(p_command_text text)
- RETURNS jsonb
- LANGUAGE plpgsql
- IMMUTABLE
- SET search_path TO 'pg_catalog', 'game'
-AS $function$
+
+create or replace function game.interpret_prosecution_command(p_command_text text)
+returns jsonb language plpgsql immutable set search_path='pg_catalog','game' as $$
 declare m text[];
 begin
  m:=regexp_match(p_command_text,'^prosecution refer ([A-Za-z0-9_-]+) arrest ([A-Za-z0-9_-]+) by ([A-Za-z0-9_-]+) summary "([^"]+)" charges "([^"]+)" evidence "([^"]+)"$','i');
@@ -11,28 +8,10 @@ begin
  m:=regexp_match(p_command_text,'^prosecution referrals ([A-Za-z0-9_-]+) by ([A-Za-z0-9_-]+)$','i');
  if m is not null then return jsonb_build_object('command_type','get_prosecution_referrals','payload',jsonb_build_object('case_ref',m[1],'actor_ref',m[2]));end if;
  return null;
-end $function$
+end $$;
 
-CREATE OR REPLACE FUNCTION game.interpret_text_command(p_command_text text)
- RETURNS jsonb
- LANGUAGE plpgsql
- IMMUTABLE
- SET search_path TO 'pg_catalog', 'game'
-AS $function$
-declare r jsonb;
-begin
- r:=game.interpret_justice_command(p_command_text);
- if r is not null then return r;end if;
- r:=game.interpret_prosecution_command(p_command_text);
- if r is not null then return r;end if;
- return game.interpret_text_command_before_arrest_custody(p_command_text);
-end $function$
-
-CREATE OR REPLACE FUNCTION game.execute_text_command(p_command_text text, p_idempotency_key text, p_session_id uuid DEFAULT NULL::uuid, p_actor_personnel_id uuid DEFAULT NULL::uuid)
- RETURNS jsonb
- LANGUAGE plpgsql
- SET search_path TO 'pg_catalog', 'game'
-AS $function$
+create or replace function game.execute_text_command(p_command_text text,p_idempotency_key text,p_session_id uuid default null,p_actor_personnel_id uuid default null)
+returns jsonb language plpgsql set search_path='pg_catalog','game' as $$
 declare i jsonb;typ text;d jsonb;cmd game.game_commands%rowtype;actor game.police_personnel%rowtype;res jsonb;
 begin
  i:=game.interpret_text_command(p_command_text);typ:=i->>'command_type';d:=coalesce(i->'payload','{}'::jsonb);
@@ -68,6 +47,8 @@ begin
   res:=res||jsonb_build_object('command_id',cmd.id);
  end if;
  return res;
-end $function$
-
-revoke all on function game.interpret_prosecution_command(text),game.interpret_text_command(text),game.execute_text_command(text,text,uuid,uuid) from public,anon,authenticated; grant execute on function game.interpret_prosecution_command(text),game.interpret_text_command(text),game.execute_text_command(text,text,uuid,uuid) to service_role;
+end $$;
+revoke all on function game.interpret_prosecution_command(text) from public,anon,authenticated;
+grant execute on function game.interpret_prosecution_command(text) to service_role;
+revoke all on function game.execute_text_command(text,text,uuid,uuid) from public,anon,authenticated;
+grant execute on function game.execute_text_command(text,text,uuid,uuid) to service_role;
