@@ -1,0 +1,29 @@
+{
+  "snapshot_date": "2026-11-21",
+  "map_version": "KNG-MAP-0.3",
+  "source": "Supabase game schema",
+  "read_only_export": true,
+  "counts": {
+    "districts": 12,
+    "neighbourhoods": 24,
+    "named_roads": 75,
+    "road_segments_with_geometry": 229,
+    "junctions": 157,
+    "property_access_points": 1136,
+    "landmarks": 24,
+    "active_turn_controls": 282,
+    "patrol_beat_segment_coverage": 229,
+    "properties": 656,
+    "buildings": 656,
+    "building_units": 26888,
+    "business_profiles": 1452,
+    "organisations": 1490,
+    "organisation_sites": 1477,
+    "employment_dossiers": 43412
+  },
+  "limitations": [
+    "Static snapshot, not live browser data",
+    "Neighbourhood boundaries are not polygon geometries in the canonical table",
+    "Building footprints are authored fictional map geometry, not survey-grade cadastral geometry"
+  ]
+}
