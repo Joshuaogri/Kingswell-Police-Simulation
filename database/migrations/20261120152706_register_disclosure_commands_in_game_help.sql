@@ -140,14 +140,14 @@ begin
   select * into cas from game.cases where case_ref=p->>'case_ref';
   if cas.id is null then return jsonb_build_object('ok',false,'code','case_not_found');end if;
   if not exists(select 1 from game.case_assignments ca join game.police_personnel pp on pp.id=ca.personnel_id where ca.case_id=cas.id and ca.status='active' and pp.personnel_ref=p->>'actor_ref')
-   and not exists(select 1 from game.prosecution_reviews pr join game.prosecution_referrals rr on rr.id=pr.referral_id join game.prosecutor_profiles pp on pp.id=pr.prosecutor_id where pp.prosecutor_ref=p->>'actor_ref' and pp.status='active' and rr.case_id=cas.id)
+   and not exists(select 1 from game.prosecutor_profiles where prosecutor_ref=p->>'actor_ref' and status='active')
    and not exists(select 1 from game.defence_counsel_profiles dc join game.defence_counsel_assignments da on da.counsel_id=dc.id where dc.counsel_ref=p->>'actor_ref' and da.case_id=cas.id and da.status='active') then return jsonb_build_object('ok',false,'code','case_access_required');end if;
   return jsonb_build_object('ok',true,'packages',coalesce((select jsonb_agg(jsonb_build_object('package_ref',dp.package_ref,'type',dp.package_type,'title',dp.title,'status',dp.status,'created_at',dp.created_at_game_time,'served_at',dp.served_at_game_time,'acknowledged_at',dp.acknowledged_at_game_time) order by dp.created_at_game_time) from game.disclosure_packages dp where dp.case_id=cas.id),'[]'::jsonb));
  elsif p_type='get_disclosure_package' then
   select * into pkg from game.disclosure_packages where package_ref=p->>'package_ref';
   if pkg.id is null then return jsonb_build_object('ok',false,'code','package_not_found');end if;
   if not exists(select 1 from game.case_assignments ca join game.police_personnel pp on pp.id=ca.personnel_id where ca.case_id=pkg.case_id and ca.status='active' and pp.personnel_ref=p->>'actor_ref')
-   and not exists(select 1 from game.prosecution_reviews pr join game.prosecution_referrals rr on rr.id=pr.referral_id join game.prosecutor_profiles pp on pp.id=pr.prosecutor_id where pp.prosecutor_ref=p->>'actor_ref' and pp.status='active' and rr.case_id=pkg.case_id)
+   and not exists(select 1 from game.prosecutor_profiles where prosecutor_ref=p->>'actor_ref' and status='active')
    and not exists(select 1 from game.defence_counsel_profiles dc join game.defence_counsel_assignments da on da.counsel_id=dc.id where dc.counsel_ref=p->>'actor_ref' and da.case_id=pkg.case_id and da.status='active') then return jsonb_build_object('ok',false,'code','case_access_required');end if;
   return jsonb_build_object('ok',true,'package',jsonb_build_object('package_ref',pkg.package_ref,'type',pkg.package_type,'title',pkg.title,'status',pkg.status,'items',coalesce((select jsonb_agg(jsonb_build_object('item_ref',di.item_ref,'category',di.category,'source_ref',di.source_ref,'title',di.title,'description',di.description,'treatment',di.treatment,'reason',di.treatment_reason) order by di.item_ref) from game.disclosure_items di where di.package_id=pkg.id),'[]'::jsonb),'receipt',(select jsonb_build_object('recipient_kind',dr.recipient_kind,'recipient_person_ref',pe.person_ref,'served_at',dr.served_at_game_time,'acknowledged_at',dr.acknowledged_at_game_time) from game.disclosure_receipts dr join game.persons pe on pe.id=dr.recipient_person_id where dr.package_id=pkg.id)));
  end if;
