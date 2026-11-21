@@ -17,7 +17,7 @@ The `kingswell-records` Supabase Edge Function was upgraded to version 8. The pe
 - Population membership categories and city links.
 - Existing person-to-person relationships.
 
-The individual record page now renders dedicated sections for personal/simulation profile, addresses, households, household members, employment, weekly routines, life events, population memberships and relationships. Linked people, businesses and properties have navigable record links.
+The individual person page now renders dedicated sections for personal/simulation profile, named birthplace, addresses, households, household members, employment, weekly routines with weekday names, life events, population memberships and relationships. Linked people, businesses and properties have navigable record links.\n\nThe same delivery also expanded full business dossiers to show operational profile, business hours, cash-handling profile, security arrangements, trade profile, workforce, premises and the registered organisation link. Workforce entries link to person records; premises entries link to property records.
 
 ## Canonical data check
 
@@ -37,14 +37,14 @@ These are existing records. This delivery created no duplicate people, household
 ## Verification
 
 - Supabase Edge Function `kingswell-records`: active version **7**.
-- GitHub Actions workflow **#59** completed its Chromium build and browser checks successfully:
+- GitHub Actions workflow **#62** completed its Chromium build and browser checks successfully:
   - Existing 656-building map smoke test passed.
   - Published geographic data and property dossier checks passed.
   - Chromium opened the live person directory and individual person record.
-  - Chromium verified all eight new person-dossier sections.
+  - Chromium verified all eight person-dossier sections, and opened the full business, organisation and property record pages to verify their dedicated sections.
   - Household and routine canonical references were present in the selected dossier.
   - The existing map, property record and atlas-layer checks also passed.
-- Workflow: https://github.com/Joshuaogri/Kingswell-Police-Simulation/actions/runs/44932623775
+- Workflow: https://github.com/Joshuaogri/Kingswell-Police-Simulation/actions/runs/44932867549
 
 ## Remaining work
 
