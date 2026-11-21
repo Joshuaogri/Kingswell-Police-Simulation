@@ -13,6 +13,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: kingswell-migration-audit-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   migration-inventory:
     name: Read remote migration history (no deployment)
