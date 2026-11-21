@@ -55,3 +55,14 @@ These are existing records. This delivery created no duplicate people, household
 - Continue atlas cartography and map-layer refinements independently of the record directories.
 
 Opening, searching or browsing these read-only records does not advance the fictional simulation clock.
+
+
+## 3D atlas and separate workspace update — 21 November 2026
+
+Delivered four separate user-facing entry points: `people.html`, `businesses.html`, `organisations.html` and `properties.html`. Each opens its own focused directory workspace, with a domain-specific heading and navigation; the combined directory remains available as a shared internal route, not the primary user-facing destination.
+
+Added `atlas-3d.html`, an interactive Three.js city viewer built from the canonical 656-building and 229-road-segment map snapshot. It supports orbit, zoom, pan, building selection, road visibility, building-reference labels and a height-colour mode. Selected buildings link to their canonical full property dossiers. This is an initial 3D building-massing viewer, not a completed photorealistic city or detailed interior model.
+
+Main entry point now links to all four directories and the 3D atlas. The 2D city map also links to the separate directories and 3D view.
+
+**Chromium / deployment verification:** GitHub Actions run [#71](https://github.com/Joshuaogri/Kingswell-Police-Simulation/actions/runs/44933815297) completed successfully on 21 November 2026. The build verified all four workspace pages and confirmed their focused headings and hidden combined-directory tabs, then loaded the 3D atlas in Chromium, checked WebGL canvas creation and verified the 656-building scene. The Pages deployment job also completed successfully.
