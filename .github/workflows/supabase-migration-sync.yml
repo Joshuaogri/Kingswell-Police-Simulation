@@ -1,0 +1,93 @@
+name: Kingswell Supabase Migration Sync
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_to_production:
+        description: "Apply pending repository migrations to the live Kingswell Supabase database"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: kingswell-supabase-production-migrations
+  cancel-in-progress: false
+
+jobs:
+  migration-sync:
+    name: Inspect and optionally apply Supabase migrations
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Supabase CLI
+        uses: supabase/setup-cli@v3
+        with:
+          version: v2.stable
+
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Configure Kingswell migration directory
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p supabase
+          cat > supabase/config.toml <<'EOF'
+          project_id = "gdbzkgejyfwfackyuorl"
+
+          [db]
+          major_version = 17
+          EOF
+          ln -s ../database/migrations supabase/migrations
+
+      - name: Verify Supabase credentials without displaying them
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$SUPABASE_DB_PASSWORD"
+          echo "Supabase database credential is available."
+
+      - name: List repository and live migration history
+        shell: bash
+        run: |
+          set -euo pipefail
+          DB_URL="$(node -e 'process.stdout.write("postgresql://postgres.gdbzkgejyfwfackyuorl:" + encodeURIComponent(process.env.SUPABASE_DB_PASSWORD) + "@aws-1-eu-west-1.pooler.supabase.com:5432/postgres?sslmode=require")')"
+          echo "::add-mask::$DB_URL"
+          supabase migration list --db-url "$DB_URL"
+
+      - name: Preview pending production migrations
+        shell: bash
+        run: |
+          set -euo pipefail
+          DB_URL="$(node -e 'process.stdout.write("postgresql://postgres.gdbzkgejyfwfackyuorl:" + encodeURIComponent(process.env.SUPABASE_DB_PASSWORD) + "@aws-1-eu-west-1.pooler.supabase.com:5432/postgres?sslmode=require")')"
+          echo "::add-mask::$DB_URL"
+          supabase db push --db-url "$DB_URL" --dry-run
+
+      - name: Apply migrations to live Supabase
+        if: ${{ inputs.deploy_to_production }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          DB_URL="$(node -e 'process.stdout.write("postgresql://postgres.gdbzkgejyfwfackyuorl:" + encodeURIComponent(process.env.SUPABASE_DB_PASSWORD) + "@aws-1-eu-west-1.pooler.supabase.com:5432/postgres?sslmode=require")')"
+          echo "::add-mask::$DB_URL"
+          supabase db push --db-url "$DB_URL" --yes
+
+      - name: Confirm live migration history after deployment
+        if: ${{ inputs.deploy_to_production }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          DB_URL="$(node -e 'process.stdout.write("postgresql://postgres.gdbzkgejyfwfackyuorl:" + encodeURIComponent(process.env.SUPABASE_DB_PASSWORD) + "@aws-1-eu-west-1.pooler.supabase.com:5432/postgres?sslmode=require")')"
+          echo "::add-mask::$DB_URL"
+          supabase migration list --db-url "$DB_URL"
