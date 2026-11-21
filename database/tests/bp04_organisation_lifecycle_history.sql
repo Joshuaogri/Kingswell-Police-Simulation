@@ -13,6 +13,9 @@ declare
  v_business_number text;
  v_business_dossier jsonb;
  v_person_id uuid;
+ v_actor_ref text;
+ v_command_result jsonb;
+ v_command_text text;
  v_event_ref text:='LIFECYCLE-CI-TEST-01';
  v_history jsonb;
  v_dossier jsonb;
@@ -96,6 +99,39 @@ begin
  exception when others then
   if sqlerrm='Append-only lifecycle event update unexpectedly succeeded.' then raise; end if;
  end;
+
+ -- Verify command-level idempotency: exact repeats are harmless, but a changed
+ -- source description under the same event reference must be rejected.
+ select personnel_ref into v_actor_ref
+ from game.police_personnel
+ where employment_status in ('active','seconded')
+ order by personnel_ref limit 1;
+ if v_actor_ref is null then
+  raise exception 'An active or seconded personnel fixture is required for command idempotency tests.';
+ end if;
+ v_command_text:='organisation lifecycle event '||v_org_ref||
+  ' LIFECYCLE-CMD-TEST-01 registered unknown unknown "Command lifecycle event" '||
+  '"Source-backed command idempotency regression." "CI-SOURCE-01" "Original source description" by '||v_actor_ref;
+ v_command_result:=game.execute_text_command(
+  v_command_text,'bp04-lifecycle-command-first',null,null
+ );
+ if coalesce((v_command_result->>'ok')::boolean,false) is not true then
+  raise exception 'Lifecycle command did not create its event: %',v_command_result;
+ end if;
+ v_command_result:=game.execute_text_command(
+  v_command_text,'bp04-lifecycle-command-repeat',null,null
+ );
+ if coalesce((v_command_result->>'ok')::boolean,false) is not true
+  or coalesce((v_command_result->>'duplicate')::boolean,false) is not true then
+  raise exception 'Identical lifecycle event retry was not idempotent: %',v_command_result;
+ end if;
+ v_command_result:=game.execute_text_command(
+  replace(v_command_text,'"Original source description"','"Changed source description"'),
+  'bp04-lifecycle-command-conflict',null,null
+ );
+ if v_command_result->>'code'<>'event_ref_conflict' then
+  raise exception 'Changed source description was incorrectly accepted as an identical event: %',v_command_result;
+ end if;
 
  if not exists(
   select 1 from pg_trigger
