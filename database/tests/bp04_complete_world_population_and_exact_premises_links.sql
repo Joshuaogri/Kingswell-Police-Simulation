@@ -159,6 +159,7 @@ begin
   raise exception 'Case, search and incident-site exact premises validation triggers are missing';
  end if;
 
+ update game.simulation_state set current_game_time='2026-11-21 08:00:00+00'::timestamptz where id=1;
  v_command:=game.execute_text_command(
   'scene premises set KNG-TEST-BP04-PREMISES-SCENE '||
   (select property_ref from game.properties where id=v_property)||' '||
@@ -169,6 +170,21 @@ begin
  );
  if coalesce((v_command->>'ok')::boolean,false) is not true then
   raise exception 'Player-facing scene premises command failed: %',v_command;
+ end if;
+ if (select current_game_time from game.simulation_state where id=1)
+    <> '2026-11-21 08:00:00+00'::timestamptz then
+  raise exception 'Recording premises must not advance the simulation clock';
+ end if;
+ update game.simulation_state set current_game_time=null where id=1;
+ v_command:=game.record_scene_premises(
+  'KNG-TEST-BP04-PREMISES-SCENE',
+  (select property_ref from game.properties where id=v_property),
+  (select building_ref from game.buildings where id=v_building),
+  (select unit_ref from game.building_units where id=v_unit),
+  'Clock guard regression',v_actor_ref,null
+ );
+ if v_command->>'code'<>'clock_not_initialized' then
+  raise exception 'Scene premises history must require the initialized simulation clock: %',v_command;
  end if;
 
  if (game.get_scene_response_record('KNG-TEST-BP04-PREMISES-SCENE')->'exact_premises'->'current'->>'unit_ref')
