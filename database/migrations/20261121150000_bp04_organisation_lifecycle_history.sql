@@ -80,8 +80,9 @@ begin
    'payload',jsonb_build_object(
     'organisation_ref',m[1],'event_ref',m[2],'event_type',lower(m[3]),
     'occurred_on',case when lower(m[4])='unknown' then null else m[4] end,
-    'subject',m[5],'description',m[6],'source_reference',nullif(m[7],''),
-    'source_description',nullif(m[8],''),'actor_ref',m[9]));
+    'related_organisation_ref',case when lower(m[5])='unknown' then null else m[5] end,
+    'subject',m[6],'description',m[7],'source_reference',nullif(m[8],''),
+    'source_description',nullif(m[9],''),'actor_ref',m[10]));
  end if;
  return game.interpret_property_command_before_lifecycle(p_command_text);
 end;
@@ -96,6 +97,7 @@ as $function$
 declare
  v_personnel game.police_personnel%rowtype;
  v_org game.organisations%rowtype;
+ v_related_org game.organisations%rowtype;
  v_existing game.organisation_lifecycle_events%rowtype;
  v_event_type text;
  v_occurred_on date;
@@ -125,16 +127,23 @@ begin
   return jsonb_build_object('ok',false,'code','organisation_not_found',
    'organisation_ref',payload->>'organisation_ref');
  end if;
- if nullif(payload->>'related_organisation_ref','') is not null then\n  select * into v_related_org from game.organisations\n   where organisation_ref=payload->>'related_organisation_ref';\n  if v_related_org.id is null or v_related_org.id=v_org.id then\n   return jsonb_build_object('ok',false,'code','related_organisation_not_found_or_invalid');\n  end if;\n end if;\n if nullif(payload->>'occurred_on','') is null then v_occurred_on:=null;
+ if nullif(payload->>'related_organisation_ref','') is not null then
+  select * into v_related_org from game.organisations
+   where organisation_ref=payload->>'related_organisation_ref';
+  if v_related_org.id is null or v_related_org.id=v_org.id then
+   return jsonb_build_object('ok',false,'code','related_organisation_not_found_or_invalid');
+  end if;
+ end if;
+ if nullif(payload->>'occurred_on','') is null then v_occurred_on:=null;
  else
   begin v_occurred_on:=(payload->>'occurred_on')::date;
   exception when others then return jsonb_build_object('ok',false,'code','invalid_event_date'); end;
  end if;
  insert into game.organisation_lifecycle_events(
-  event_ref,organisation_id,event_type,occurred_on,recorded_on,subject,description,
+  event_ref,organisation_id,event_type,occurred_on,recorded_on,related_organisation_id,subject,description,
   actor_person_id,source_reference,source_description
  ) values(
-  btrim(payload->>'event_ref'),v_org.id,v_event_type,v_occurred_on,current_date,
+  btrim(payload->>'event_ref'),v_org.id,v_event_type,v_occurred_on,current_date,v_related_org.id,
   btrim(payload->>'subject'),btrim(payload->>'description'),v_personnel.person_id,
   nullif(btrim(payload->>'source_reference'),''),coalesce(nullif(btrim(payload->>'source_description'),''),'Source details not supplied.')
  ) on conflict(event_ref) do nothing;
@@ -145,7 +154,8 @@ begin
    and v_existing.occurred_on is not distinct from v_occurred_on
    and v_existing.subject=btrim(payload->>'subject')
    and v_existing.description=btrim(payload->>'description')
-   and v_existing.related_organisation_id is not distinct from v_related_org.id\n   and v_existing.actor_person_id=v_personnel.person_id
+   and v_existing.related_organisation_id is not distinct from v_related_org.id\n   and v_existing.related_organisation_id is not distinct from v_related_org.id
+   and v_existing.actor_person_id=v_personnel.person_id
    and v_existing.source_reference is not distinct from nullif(btrim(payload->>'source_reference'),'') then
    return jsonb_build_object('ok',true,'record_type','organisation_lifecycle_event',
     'event_ref',v_existing.event_ref,'event',to_jsonb(v_existing),'duplicate',true);
