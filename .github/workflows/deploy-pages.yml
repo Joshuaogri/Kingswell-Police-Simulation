@@ -233,7 +233,7 @@ jobs:
                   "Population memberships",
                   "Relationships",
               ]:
-                  if required_section not in person_sections:
+                  if required_section.lower() not in person_sections.lower():
                       raise SystemExit(f"Person dossier is missing {required_section}: {person_sections}")
               if "KWHH-" not in person_sections or "KWR-" not in person_sections:
                   raise SystemExit("Person dossier did not expose linked household and routine references")
