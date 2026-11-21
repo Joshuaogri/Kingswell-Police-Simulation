@@ -171,10 +171,37 @@ jobs:
               page.locator("#q").fill(selected_ref)
               if page.locator("#resultCount").inner_text().startswith("0"):
                   raise SystemExit("Directory search did not find the selected canonical reference")
+              # Live Supabase-backed directories: paginated search and individual dossiers.
+              for tab, minimum in [("people", 100000), ("business", 1000), ("organisation", 1000), ("property", 600)]:
+                  page.locator(f'#tabs button[data-type="{tab}"]').click()
+                  page.wait_for_function(
+                      "() => document.querySelector('#resultCount')?.textContent.includes('MATCHING RECORDS')",
+                      timeout=45000,
+                  )
+                  count_text = page.locator("#resultCount").inner_text()
+                  if "CONNECTION ERROR" in count_text:
+                      raise SystemExit(f"{tab} live directory failed: {page.locator('#rows').inner_text()}")
+                  if page.locator(".record[data-live-id]").count() == 0:
+                      raise SystemExit(f"{tab} live directory returned no records: {count_text}")
+                  first = page.locator(".record[data-live-id]").first
+                  first.click()
+                  page.wait_for_function(
+                      "() => document.querySelector('#dTitle')?.textContent !== 'Loading record…'",
+                      timeout=45000,
+                  )
+                  if page.locator("#dTitle").inner_text() in ("Select a record", "Record unavailable"):
+                      raise SystemExit(f"{tab} individual record did not load: {page.locator('#dbody').inner_text()}")
               page.locator('#tabs button[data-type="people"]').click()
-              if "100,000 records" not in page.locator("#rows").inner_text():
-                  raise SystemExit("People directory status is not displayed")
-              print("Chromium directory test passed: searchable records, individual record view, and population directory status.")
+              page.wait_for_function("() => document.querySelector('#resultCount')?.textContent.includes('MATCHING RECORDS')", timeout=45000)
+              selected_ref = page.locator(".record[data-live-id] .ref").first.inner_text()
+              page.locator("#q").fill(selected_ref)
+              page.wait_for_function(
+                  "() => document.querySelector('#resultCount')?.textContent.includes('MATCHING RECORDS')",
+                  timeout=45000,
+              )
+              if page.locator(".record[data-live-id]").count() == 0:
+                  raise SystemExit("Live person search by canonical reference returned no record")
+              print("Chromium directory test passed: static property search plus live people, business, organisation and property pagination, search and individual dossiers.")
 
               browser.close()
           PY
