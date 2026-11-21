@@ -280,6 +280,15 @@ jobs:
               if "KWHH-" not in person_sections or "KWR-" not in person_sections:
                   raise SystemExit("Person dossier did not expose linked household and routine references")
               map_data = page.request.get(base + "/data/kingswell-map-data.json").json()
+              live_names_response = page.request.get(
+                  "https://gdbzkgejyfwfackyuorl.supabase.co/functions/v1/kingswell-records?type=map_names",
+                  headers={"apikey": "sb_publishable_6C99n5foLP42ICgDT1O-fA_mPxdL7VB"},
+              )
+              if live_names_response.status != 200:
+                  raise SystemExit(f"Live canonical map names failed: HTTP {live_names_response.status}")
+              live_names = live_names_response.json()
+              if len(live_names.get("roads", [])) != 75 or len(live_names.get("properties", [])) != 656 or len(live_names.get("buildings", [])) != 656:
+                  raise SystemExit("Live canonical map-name feed has incomplete road/property/building coverage")
               property_ref = map_data["properties"][0]["ref"]
               map_page_response = page.goto(base + "/city-map.html?property=" + quote(property_ref, safe=""), wait_until="domcontentloaded")
               if not map_page_response or map_page_response.status != 200:
@@ -288,6 +297,17 @@ jobs:
                   "() => document.querySelector('#dtitle')?.textContent !== 'Select a building or road'",
                   timeout=30000,
               )
+              page.wait_for_function(
+                  "() => document.querySelector('#status')?.textContent.includes('LIVE CANONICAL NAMES')",
+                  timeout=30000,
+              )
+              live_property = next(x for x in live_names["properties"] if x["property_ref"] == property_ref)
+              if live_property["property_name"] not in page.locator("#dbody").inner_text():
+                  raise SystemExit("2D map dossier does not show the live canonical property name")
+              map_property = next(x for x in map_data["properties"] if x["ref"] == property_ref)
+              live_road = next(x for x in live_names["roads"] if x["id"] == map_property["road_id"])
+              if live_road["official_name"] not in page.locator("#dbody").inner_text():
+                  raise SystemExit("2D map dossier does not show the live official road name")
               if "Open full property record" not in page.locator("#dbody").inner_text():
                   raise SystemExit("Selected map property does not link to its individual record")
               page.locator('#dbody a[href*="record.html"]').click()
@@ -360,7 +380,7 @@ jobs:
               if not page.locator("canvas").count():
                   raise SystemExit("3D atlas did not create a WebGL canvas")
               page.wait_for_function(
-                  "() => document.querySelector('#status')?.textContent.includes('656 buildings')",
+                  "() => document.querySelector('#status')?.textContent.includes('656 buildings') && document.querySelector('#status')?.textContent.includes('LIVE CANONICAL NAMES')",
                   timeout=30000,
               )
               if page_errors:
