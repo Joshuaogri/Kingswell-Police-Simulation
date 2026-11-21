@@ -2,7 +2,7 @@
 -- All fictional records are rolled back.
 begin;
 do $test$
-declare v_p1 uuid; v_p2 uuid; v_pp1 uuid; v_pp2 uuid; v_unit uuid; v_roster uuid; v_incident uuid; v_scene uuid; v_qual uuid; r jsonb; v_plan1 text; v_plan2 text; v_attendance text; v_evidence_ref text;
+declare v_p1 uuid; v_p2 uuid; v_pp1 uuid; v_pp2 uuid; v_unit uuid; v_roster uuid; v_incident uuid; v_property uuid; v_scene uuid; v_qual uuid; r jsonb; v_plan1 text; v_plan2 text; v_attendance text; v_evidence_ref text;
 begin
  r:=game.submit_command('Initialize specialist examination test clock','initialize_clock','{"start_at":"2036-04-21T10:00:00Z"}'::jsonb,'scene-specialist-clock-test-0001');
  if r->>'ok'<>'true' then raise exception 'Clock init failed: %',r; end if;
@@ -18,7 +18,16 @@ begin
  insert into game.duty_assignments(roster_id,personnel_id,assignment_role,starts_at,ends_at,status) values
  (v_roster,v_pp1,'scene manager','2036-04-21T09:00:00Z','2036-04-21T19:00:00Z','assigned'),
  (v_roster,v_pp2,'forensic examiner','2036-04-21T09:00:00Z','2036-04-21T19:00:00Z','assigned');
- insert into game.incidents(incident_ref,reported_at,location_description,priority,status,summary) values('KW-INC-SPEC-TEST','2036-04-21T10:00:00Z','12 Foundry Lane',2,'new','Specialist examination test') returning id into v_incident;
+ select p.id into v_property
+ from game.properties p
+ join game.property_access_points ap on ap.property_id=p.id and ap.is_primary
+ join game.road_segments rs on rs.id=ap.road_segment_id and rs.is_routable
+ where p.status='active'
+ order by p.property_ref
+ limit 1;
+ if v_property is null then raise exception 'No routable property fixture for scene workflow'; end if;
+ insert into game.incidents(incident_ref,reported_at,location_property_id,location_description,priority,status,summary)
+ values('KW-INC-SPEC-TEST','2036-04-21T10:00:00Z',v_property,'12 Foundry Lane',2,'new','Specialist examination test') returning id into v_incident;
  r:=game.execute_text_command('help','scene-specialist-help-test-0001');
  if not (r->'available_commands' ? 'specialist_attend') or not (r->'available_commands' ? 'plan_scene_examination') or not (r->'available_commands' ? 'complete_scene_examination') then raise exception 'Help missing specialist commands: %',r; end if;
  r:=game.execute_text_command('dispatch SPEC-TEST-UNIT to KW-INC-SPEC-TEST','scene-specialist-dispatch-test-0001'); if r->>'ok'<>'true' then raise exception 'Dispatch failed: %',r; end if;
