@@ -8,6 +8,12 @@ declare
  malformed jsonb;
  missing_history jsonb;
  result jsonb;
+ v_org_id uuid;
+ v_org_ref text;
+ v_person_id uuid;
+ v_event_ref text:='LIFECYCLE-CI-TEST-01';
+ v_history jsonb;
+ v_dossier jsonb;
 begin
  parsed:=game.interpret_text_command(
   'organisation lifecycle event ORG-TEST-01 EVT-TEST-01 name_changed unknown unknown "Registered name changed" "The filed record confirms the organisation changed its registered name." "REGISTRY-TEST-01" "Fictional registry extract" by KNG-TEST-0001'
@@ -48,6 +54,41 @@ begin
  if result->>'code'<>'actor_mismatch' then
   raise exception 'Lifecycle event capture bypassed actor validation: %',result;
  end if;
+
+ select id,organisation_ref into v_org_id,v_org_ref
+ from game.organisations order by organisation_ref limit 1;
+ select id into v_person_id from game.persons order by id limit 1;
+ if v_org_id is null or v_person_id is null then
+  raise exception 'Deterministic organisation/person fixtures are required for lifecycle history tests.';
+ end if;
+
+ insert into game.organisation_lifecycle_events(
+  event_ref,organisation_id,event_type,occurred_on,subject,description,
+  actor_person_id,source_reference,source_description
+ ) values(
+  v_event_ref,v_org_id,'registered',null,'CI lifecycle event',
+  'Rollback-only test of historical event storage and dossier retrieval.',
+  v_person_id,'CI-LIFECYCLE-TEST','Deterministic regression fixture'
+ );
+ v_history:=game.get_organisation_lifecycle_history(v_org_ref);
+ if (v_history->>'event_count')::integer<>1
+  or v_history#>>'{events,0,event,event_ref}'<>v_event_ref
+  or v_history#>'{events,0,event,occurred_on}' is distinct from 'null'::jsonb then
+  raise exception 'Lifecycle history retrieval lost the event or unknown date: %',v_history;
+ end if;
+
+ v_dossier:=game.get_organisation_record(v_org_ref);
+ if v_dossier#>>'{lifecycle_history,events,0,event,event_ref}'<>v_event_ref then
+  raise exception 'Organisation dossier does not include lifecycle history: %',v_dossier;
+ end if;
+
+ begin
+  update game.organisation_lifecycle_events
+   set subject='Attempted rewrite' where event_ref=v_event_ref;
+  raise exception 'Append-only lifecycle event update unexpectedly succeeded.';
+ exception when others then
+  if sqlerrm='Append-only lifecycle event update unexpectedly succeeded.' then raise; end if;
+ end;
 
  if not exists(
   select 1 from pg_trigger
