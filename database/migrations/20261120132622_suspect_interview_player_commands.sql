@@ -1,11 +1,6 @@
--- Player command parser and idempotent executor for suspect interview workflow.
 alter function game.interpret_text_command(text) rename to interpret_text_command_before_suspect_interviews;
-CREATE OR REPLACE FUNCTION game.interpret_text_command(p_command_text text)
- RETURNS jsonb
- LANGUAGE plpgsql
- IMMUTABLE
- SET search_path TO 'pg_catalog', 'game'
-AS $function$
+create or replace function game.interpret_text_command(p_command_text text)
+returns jsonb language plpgsql immutable set search_path to 'pg_catalog','game' as $$
 declare t text:=btrim(coalesce(p_command_text,'')); m text[];
 begin
  m:=regexp_match(t,'^case suspect interview classify ([^[:space:]]+) because "([^"]+)" by ([^[:space:]]+)$','i');
@@ -15,21 +10,14 @@ begin
  m:=regexp_match(t,'^case suspect interview review ([^[:space:]]+)$','i');
  if m is not null then return jsonb_build_object('recognized',true,'command_type','get_case_suspect_interview_review','payload',jsonb_build_object('interview_ref',m[1])); end if;
  return game.interpret_text_command_before_suspect_interviews(p_command_text);
-end $function$
+end $$;
 
 alter function game.execute_text_command(text,text,uuid,uuid) rename to execute_text_command_before_suspect_interviews;
-CREATE OR REPLACE FUNCTION game.execute_text_command(p_command_text text, p_idempotency_key text, p_session_id uuid DEFAULT NULL::uuid, p_actor_personnel_id uuid DEFAULT NULL::uuid)
- RETURNS jsonb
- LANGUAGE plpgsql
- SET search_path TO 'pg_catalog', 'game'
-AS $function$
+create or replace function game.execute_text_command(p_command_text text,p_idempotency_key text,p_session_id uuid default null,p_actor_personnel_id uuid default null)
+returns jsonb language plpgsql set search_path to 'pg_catalog','game' as $$
 declare v_i jsonb; v_type text; v_payload jsonb; v_cmd game.game_commands%rowtype; v_result jsonb; v_actor game.police_personnel%rowtype;
 begin
  v_i:=game.interpret_text_command(p_command_text); v_type:=v_i->>'command_type'; v_payload:=coalesce(v_i->'payload','{}'::jsonb);
- if v_type='help' then
-  v_result:=game.execute_text_command_before_suspect_interviews(p_command_text,p_idempotency_key,p_session_id,p_actor_personnel_id);
-  return jsonb_set(v_result,'{available_commands}',coalesce(v_result->'available_commands','[]'::jsonb)||jsonb_build_array('classify_case_suspect_interview','assess_case_suspect_interview_turn','get_case_suspect_interview_review'),true);
- end if;
  if coalesce((v_i->>'recognized')::boolean,false)=false or v_type not in ('classify_case_suspect_interview','assess_case_suspect_interview_turn','get_case_suspect_interview_review') then
   return game.execute_text_command_before_suspect_interviews(p_command_text,p_idempotency_key,p_session_id,p_actor_personnel_id);
  end if;
@@ -42,12 +30,16 @@ begin
   return coalesce(v_cmd.result,jsonb_build_object('ok',v_cmd.status='completed','status',v_cmd.status,'command_id',v_cmd.id))||jsonb_build_object('duplicate',true);
  end if;
  select * into v_cmd from game.game_commands where idempotency_key=p_idempotency_key for update;
- if v_type='get_case_suspect_interview_review' then v_result:=game.get_case_suspect_interview_review(v_payload->>'interview_ref');
+ if v_type='get_case_suspect_interview_review' then
+  v_result:=game.get_case_suspect_interview_review(v_payload->>'interview_ref');
  else
   select * into v_actor from game.police_personnel where personnel_ref=btrim(v_payload->>'actor_ref');
-  if not found or (p_actor_personnel_id is not null and p_actor_personnel_id<>v_actor.id) then v_result:=jsonb_build_object('ok',false,'code','actor_mismatch','message','The command actor must match the named police personnel record.');
-  elsif v_type='classify_case_suspect_interview' then v_result:=game.record_case_suspect_interview(v_payload->>'interview_ref',v_payload->>'reason',v_payload->>'actor_ref',v_cmd.id);
-  else v_result:=game.assess_case_suspect_interview_turn(v_payload->>'interview_ref',v_payload->>'turn_ref',v_payload->>'assessment',v_payload->>'reason',v_payload->>'actor_ref',v_cmd.id);
+  if not found or (p_actor_personnel_id is not null and p_actor_personnel_id<>v_actor.id) then
+   v_result:=jsonb_build_object('ok',false,'code','actor_mismatch','message','The command actor must match the named police personnel record.');
+  elsif v_type='classify_case_suspect_interview' then
+   v_result:=game.record_case_suspect_interview(v_payload->>'interview_ref',v_payload->>'reason',v_payload->>'actor_ref',v_cmd.id);
+  else
+   v_result:=game.assess_case_suspect_interview_turn(v_payload->>'interview_ref',v_payload->>'turn_ref',v_payload->>'assessment',v_payload->>'reason',v_payload->>'actor_ref',v_cmd.id);
   end if;
  end if;
  if coalesce((v_result->>'ok')::boolean,false) then
@@ -58,7 +50,6 @@ begin
   v_result:=v_result||jsonb_build_object('command_id',v_cmd.id);
  end if;
  return v_result;
-end $function$
-
+end $$;
 revoke all on function game.interpret_text_command(text),game.execute_text_command(text,text,uuid,uuid) from public,anon,authenticated;
 grant execute on function game.interpret_text_command(text),game.execute_text_command(text,text,uuid,uuid) to service_role;
