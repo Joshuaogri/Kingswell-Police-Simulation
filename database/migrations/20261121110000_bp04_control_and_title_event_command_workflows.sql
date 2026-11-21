@@ -87,7 +87,44 @@ begin
 
   -- Organisation control interest capture. Unknown facts are stored as SQL null.
   m := regexp_match(t,
-    '^organisation control ([^[:space:]]+) (person|organisation) ([^[:space:]]+) (beneficial_owner|shareholder|director|partner|controlling_person|franchise_operator|other) (unknown|[0-9]+[.]?[0-9]*) (unknown|[0-9]+[.]?[0-9]*) (unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}) (unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}) "([^"]*)" "([^"]*)" by ([^[:space:]]+)
+    '^organisation control ([^[:space:]]+) (person|organisation) ([^[:space:]]+) (beneficial_owner|shareholder|director|partner|controlling_person|franchise_operator|other) (unknown|[0-9]+[.]?[0-9]*) (unknown|[0-9]+[.]?[0-9]*) (unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}) (unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}) "([^"]*)" "([^"]*)" by ([^[:space:]]+)$','i');
+  if m is not null then
+    return jsonb_build_object('command_type','organisation_control_record',
+      'payload',jsonb_build_object(
+        'organisation_ref',m[1],'holder_type',lower(m[2]),'holder_ref',m[3],
+        'control_type',lower(m[4]),
+        'ownership_share_pct',case when lower(m[5])='unknown' then null else m[5] end,
+        'voting_share_pct',case when lower(m[6])='unknown' then null else m[6] end,
+        'valid_from',case when lower(m[7])='unknown' then null else m[7] end,
+        'valid_to',case when lower(m[8])='unknown' then null else m[8] end,
+        'source_reference',m[9],'source_description',m[10],'actor_ref',m[11]
+      ));
+  end if;
+
+  -- Property title-event capture. Parties and dates may be explicitly unknown.
+  m := regexp_match(t,
+    '^property title event ([^[:space:]]+) ([^[:space:]]+) (initial_registration|transfer|sale|gift|inheritance|court_order|subdivision|amalgamation|title_correction|restriction_registered|restriction_discharged|caveat_registered|caveat_removed|lease_registered|lease_discharged|mortgage_registered|mortgage_discharged|other) (unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}) (unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}) (draft|lodged|recorded|rejected|withdrawn|unknown) (unknown|person|organisation) ([^[:space:]]+) (unknown|person|organisation) ([^[:space:]]+) ([^[:space:]]+) (unknown|[0-9]+[.]?[0-9]*) "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" by ([^[:space:]]+)$','i');
+  if m is not null then
+    return jsonb_build_object('command_type','property_title_event_record',
+      'payload',jsonb_build_object(
+        'property_ref',m[1],'event_ref',m[2],'event_type',lower(m[3]),
+        'occurred_on',case when lower(m[4])='unknown' then null else m[4] end,
+        'recorded_on',case when lower(m[5])='unknown' then null else m[5] end,
+        'registration_status',lower(m[6]),
+        'transferor_type',lower(m[7]),
+        'transferor_ref',case when lower(m[7])='unknown' or lower(m[8])='unknown' then null else m[8] end,
+        'transferee_type',lower(m[9]),
+        'transferee_ref',case when lower(m[9])='unknown' or lower(m[10])='unknown' then null else m[10] end,
+        'interest_transferred',case when lower(m[11])='unknown' then null else m[11] end,
+        'share_transferred_pct',case when lower(m[12])='unknown' then null else m[12] end,
+        'prior_title_reference',m[13],'resulting_title_reference',m[14],
+        'instrument_type',m[15],'instrument_reference',m[16],
+        'source_reference',m[17],'source_description',m[18],'actor_ref',m[19]
+      ));
+  end if;
+  return null;
+end;
+$function$;
 
 create or replace function game.execute_property_command(
   p_command_id uuid,
