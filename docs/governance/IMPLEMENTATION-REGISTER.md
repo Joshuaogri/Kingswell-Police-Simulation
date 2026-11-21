@@ -1,6 +1,6 @@
 # Kingswell Implementation Register
 
-**Status date:** 2026-11-20  
+**Status date:** 2026-11-21  
 **Overall stage:** Stage 2 — Simulation runtime foundation  
 **Register status:** Updated after live database-to-blueprint audit
 
@@ -28,7 +28,7 @@ This register tracks actual progress. A design being written does not mean it ha
 | BP-01 | Game Identity, Foundations and Governing Rules | Approved |
 | BP-02 | Country, City and Geographical Architecture | Complete and verified; Asterfell's eight regions, Kingswell's 20 km × 16 km grid, 12 districts/24 neighbourhoods, 51 roads/118 junctions/151 segments/3 bridges/24 landmarks; corrected all 12 map envelopes; route and dispatch integration regression suites pass |
 | BP-03 | Population and Individual Simulation Architecture | Complete static foundation and live seed: 100,000 unique persons, 24,512 active households, 100,000 exact current residential addresses and primary memberships, 100,000 permanent-resident memberships, 309,760 relationship records, 100,000 birth events, 700,000 weekly sleep routines, 43,412 business employment links and 217,060 weekday work routines; all 24,512 dwellings occupied within capacity; exact business headcounts reconcile; live acceptance checks pass; actual activity execution awaits BP-35/BP-37 and the fictional clock remains uninitialised |
-| BP-04 | Buildings, Properties, Businesses and Organisations | Implemented and regression-tested: 656 properties/buildings, 26,888 units, 1,452 businesses, 25 public institutional sites, full property/building/unit dossiers, ownership/occupancy and neighbourhood map queries/commands |
+| BP-04 | Buildings, Properties, Businesses and Organisations | **Complete — deployed and verified 2026-11-21.** 656 properties/buildings, 26,888 units, 1,452 business profiles, 1,490 organisations, 1,477 sites and 43,412 employment dossiers. 28/28 live migrations reconciled; 29/29 BP-04 tests and 97/97 full regression tests passed. Active-officer property-event command integration passed in a rollback-only live transaction. See `docs/audits/BP-04-COMPLETION-AND-LIVE-VERIFICATION-2026-11-21.md`. |
 | BP-05 | Police Architecture | Approved; initial headquarters, 12 district stations, five specialist facilities and 12 district patrol sectors geographically seeded; command/personnel structure remains outstanding |
 | BP-06 | Police Personnel | Approved |
 | BP-07 | Career System | Approved; detailed rules remain open for refinement |
@@ -1190,3 +1190,18 @@ Live structural snapshot: 185 tables, 627 foreign keys, 912 indexes; RLS enabled
 
 ### BP-03 dependency cleared
 24,512 residential units now provide planning capacity for the 100,000-person baseline at about 4.08 residents per unit. BP-03 population and household allocation can proceed next. BP-05 must wait until BP-03's population seed is complete, preserving blueprint order.
+
+
+## BP-04 completion and live verification — 2026-11-21
+
+BP-04 is complete, deployed and verified. The authoritative detailed record is [BP-04 Completion and Live Verification](../audits/BP-04-COMPLETION-AND-LIVE-VERIFICATION-2026-11-21.md).
+
+Live database snapshot: 656 properties, 656 buildings, 26,888 units, 1,452 business profiles, 1,490 organisations, 1,477 organisation sites and 43,412 employment dossiers.
+
+Deployment: 28/28 canonical BP-04 migrations applied and reconciled. Verification: 29/29 BP-04 tests passed; GitHub Actions run 161 concluded `success` with 97/97 full gameplay regression tests passing.
+
+A temporary active officer successfully executed a property-event command through the live text-command runtime. Event actor attribution and command audit completion were checked. The transaction was rolled back; post-test counts confirmed zero remaining temporary person, personnel, event or command records. Permanent police personnel count remains zero.
+
+Data-provenance controls remain in force: 152 tenant-agreement counterparties are unresolved; contract terms, title events, physical inspections and repairs are not fabricated where no supporting game record exists. These unknowns are preserved explicitly.
+
+The GitHub Pages test centre displays a dated BP-04 status snapshot and links to the detailed report. It is not yet connected to a public live Supabase data endpoint. The dedicated property/business browser remains unpublished.
