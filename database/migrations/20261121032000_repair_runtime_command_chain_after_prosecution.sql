@@ -176,38 +176,3 @@ BEGIN
   RETURN v_result;
 END;
 $$;
-
--- Ensure the consolidated case dossier retains activity and surveillance sections.
-DO $dossier$
-DECLARE
-  v_definition text;
-  v_marker text := '  ''arrests'',';
-  v_injected text :=
-    '  ''activities'',game.get_case_activity(v_case.case_ref,500)->''activities'',' || chr(10) ||
-    '  ''surveillance_operations'',game.get_surveillance_operations(v_case.case_ref,100)->''operations'',' || chr(10) ||
-    '  ''arrests'',';
-BEGIN
-  SELECT pg_get_functiondef('game.get_case_review_dossier(text)'::regprocedure)
-  INTO v_definition;
-
-  IF position('activities' IN v_definition)=0 THEN
-    IF position(v_marker IN v_definition)=0 THEN
-      RAISE EXCEPTION 'Could not locate case dossier insertion point for investigative activity';
-    END IF;
-    v_definition:=replace(v_definition,v_marker,v_injected);
-  ELSIF position('surveillance_operations' IN v_definition)=0 THEN
-    IF position(v_marker IN v_definition)=0 THEN
-      RAISE EXCEPTION 'Could not locate case dossier insertion point for surveillance operations';
-    END IF;
-    v_definition:=replace(v_definition,v_marker,
-      '  ''surveillance_operations'',game.get_surveillance_operations(v_case.case_ref,100)->''operations'',' || chr(10) || v_marker);
-  END IF;
-
-  EXECUTE v_definition;
-END;
-$dossier$;
-
-REVOKE ALL ON FUNCTION game.interpret_text_command(text),game.execute_text_command(text,text,uuid,uuid)
-FROM PUBLIC,anon,authenticated;
-GRANT EXECUTE ON FUNCTION game.interpret_text_command(text),game.execute_text_command(text,text,uuid,uuid)
-TO service_role;
