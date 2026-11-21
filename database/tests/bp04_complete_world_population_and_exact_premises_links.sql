@@ -19,6 +19,7 @@ declare
  v_unit uuid;
  v_incident uuid;
  v_scene uuid;
+ v_command jsonb;
  v_evidence uuid;
  v_case_ref text;
 begin
