@@ -48,7 +48,7 @@ The unit tab displays the registered unit inventory by type. It does not yet exp
 - The root GitHub Pages URL now opens the playable atlas.
 - `play.html` is the named application entry point.
 - The former geography entry redirects to the root playable atlas.
-- The map data snapshot is stored at `data/kingswell-map-data.json`.
+- The map data snapshot is stored at `data/kingswell-map-data.json`, with provenance/counts in `data/kingswell-map-data-manifest.json`.\n- The repeatable read-only export query is stored at `scripts/export-kingswell-map-data.sql`.
 - The UI uses a local vector/canvas renderer; it does not require third-party map tiles or expose Supabase credentials.
 
 ## Source data and accuracy
