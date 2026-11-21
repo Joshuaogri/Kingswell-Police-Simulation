@@ -2,7 +2,7 @@
 -- All fictional records are rolled back.
 begin;
 do $test$
-declare v_p1 uuid; v_p2 uuid; v_pp1 uuid; v_pp2 uuid; v_unit uuid; v_roster uuid; v_incident uuid; r jsonb; v_scene uuid; v_request1 text; v_request2 text; v_request3 text;
+declare v_p1 uuid; v_p2 uuid; v_pp1 uuid; v_pp2 uuid; v_unit uuid; v_roster uuid; v_incident uuid; v_property uuid; r jsonb; v_scene uuid; v_request1 text; v_request2 text; v_request3 text;
 begin
  r:=game.submit_command('Initialize scene lifecycle test clock','initialize_clock','{"start_at":"2036-04-20T10:00:00Z"}'::jsonb,'scene-lifecycle-clock-test-0001'); if r->>'ok'<>'true' then raise exception 'Clock init failed: %',r; end if;
  insert into game.persons(person_ref,given_name,family_name) values('LIFE-PERSON-001','Life','One') returning id into v_p1;
@@ -12,7 +12,16 @@ begin
  insert into game.police_personnel(personnel_ref,person_id,service_number,current_unit_id,employment_status) values('LIFE-PP-002',v_p2,'LIFE-SN-002',v_unit,'active') returning id into v_pp2;
  insert into game.duty_rosters(roster_ref,unit_id,shift_name,starts_at,ends_at,status) values('LIFE-ROSTER-001',v_unit,'Lifecycle Test Shift','2036-04-20T09:00:00Z','2036-04-20T19:00:00Z','active') returning id into v_roster;
  insert into game.duty_assignments(roster_id,personnel_id,assignment_role,starts_at,ends_at,status) values (v_roster,v_pp1,'response officer','2036-04-20T09:00:00Z','2036-04-20T19:00:00Z','assigned'),(v_roster,v_pp2,'response officer','2036-04-20T09:00:00Z','2036-04-20T19:00:00Z','assigned');
- insert into game.incidents(incident_ref,reported_at,location_description,priority,status,summary) values('KW-INC-LIFE-TEST','2036-04-20T10:00:00Z','20 Foundry Road',2,'new','Scene lifecycle test') returning id into v_incident;
+ select p.id into v_property
+ from game.properties p
+ join game.property_access_points ap on ap.property_id=p.id and ap.is_primary
+ join game.road_segments rs on rs.id=ap.road_segment_id and rs.is_routable
+ where p.status='active'
+ order by p.property_ref
+ limit 1;
+ if v_property is null then raise exception 'No routable property fixture for scene workflow'; end if;
+ insert into game.incidents(incident_ref,reported_at,location_property_id,location_description,priority,status,summary)
+ values('KW-INC-LIFE-TEST','2036-04-20T10:00:00Z',v_property,'20 Foundry Road',2,'new','Scene lifecycle test') returning id into v_incident;
  r:=game.execute_text_command('help','scene-lifecycle-help-test-0001'); if not (r->'available_commands' ? 'approve_scene_resource') or not (r->'available_commands' ? 'release_scene') or not (r->'available_commands' ? 'reopen_scene') then raise exception 'Help missing lifecycle commands: %',r; end if;
  r:=game.execute_text_command('dispatch LIFE-TEST-UNIT to KW-INC-LIFE-TEST','scene-lifecycle-dispatch-test-0001'); if r->>'ok'<>'true' then raise exception 'Dispatch failed: %',r; end if;
  r:=game.execute_text_command('acknowledge LIFE-PP-001 for KW-INC-LIFE-TEST','scene-lifecycle-ack1-test-0001'); if r->>'ok'<>'true' then raise exception 'Ack1 failed: %',r; end if;
