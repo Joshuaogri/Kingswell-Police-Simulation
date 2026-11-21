@@ -59,7 +59,7 @@ begin
  end if;
  if p_command_type in ('scene_update','assume_scene_command','request_scene_resource','scene_entry','scene_exit','release_scene','reopen_scene','specialist_attend','specialist_depart','plan_scene_examination','start_scene_examination','complete_scene_examination','cancel_scene_examination') then
   v_scene_ref:=nullif(btrim(p_payload->>'scene_ref'),'');
-  if v_scene_ref is null then return jsonb_build_object('ok',false,'code','missing_scene_reference','message','A scene reference or a valid examination plan reference is required.'); end if;
+  if v_scene_ref is null then return jsonb_build_object('ok',false,'code','missing_scene_reference','message','A scene reference is required.'); end if;
   select s.id,s.incident_id,s.status,s.scene_manager_personnel_id,i.incident_ref,i.status into v_scene_id,v_incident_id,v_scene_status,v_scene_manager,v_incident_ref,v_incident_status from game.incident_scenes s join game.incidents i on i.id=s.incident_id where s.scene_ref=v_scene_ref for update of s;
   if v_scene_id is null then return jsonb_build_object('ok',false,'code','scene_not_found','message','No scene exists with that reference.'); end if;
   if v_scene_status='closed' or (v_scene_status='released' and p_command_type<>'reopen_scene') then return jsonb_build_object('ok',false,'code','scene_not_active','message','This scene is released or closed.'); end if;
