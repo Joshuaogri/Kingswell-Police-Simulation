@@ -1,7 +1,7 @@
 -- Player-facing case task command regression; all fixtures roll back.
 begin;
 do $$
-declare p1 uuid;p2 uuid;pp1 uuid;pp2 uuid;c uuid; r jsonb; ref text; dup jsonb; cmd text;
+declare p1 uuid;p2 uuid;pp1 uuid;pp2 uuid;c uuid; r jsonb; ref text; dup jsonb; cmd text; submission jsonb; review jsonb;
 begin
  update game.simulation_state set current_game_time='2026-01-01 09:00:00+00',time_paused=true where id=1;
  insert into game.persons(person_ref,given_name,family_name) values('TEST-KWTC-P1','Test','One') returning id into p1;
@@ -9,6 +9,7 @@ begin
  insert into game.police_personnel(personnel_ref,person_id,service_number,employment_status) values('TEST-KWTC-O1',p1,'TEST-KWTC-S1','active') returning id into pp1;
  insert into game.police_personnel(personnel_ref,person_id,service_number,employment_status) values('TEST-KWTC-O2',p2,'TEST-KWTC-S2','active') returning id into pp2;
  insert into game.cases(case_ref,case_title,status,opened_at,case_data) values('TEST-KWTC-CASE','Command task test','under_investigation','2026-01-01 08:00:00+00','{}') returning id into c;
+ insert into game.case_assignments(case_id,personnel_id,assignment_role,status) values(c,pp1,'supervisor','active'),(c,pp2,'investigator','active');
  cmd:='case task create TEST-KWTC-CASE type witness_enquiry priority high assign TEST-KWTC-O1 title "Interview witness" because "Obtain a full account" by TEST-KWTC-O1';
  r:=game.interpret_text_command(cmd);
  if r->>'command_type'<>'create_case_task' then raise exception 'Parser create failed: %',r; end if;
@@ -25,8 +26,11 @@ begin
  if (r->>'count')::int<>1 then raise exception 'List command failed: %',r; end if;
  r:=game.execute_text_command('case task '||ref,'kwtc-get-0001',null,pp1);
  if (r->>'count')::int<>1 then raise exception 'Get command failed: %',r; end if;
- r:=game.execute_text_command('case task update '||ref||' completed by TEST-KWTC-O1 outcome "Interview completed"','kwtc-complete-0001',null,pp1);
- if r->>'status'<>'completed' or not coalesce((r->>'ok')::boolean,false) then raise exception 'Complete command failed: %',r; end if;
+ submission:=game.submit_case_task(ref,'TEST-KWTC-O2','Interview completed; witness statement recorded.',null);
+ if not coalesce((submission->>'ok')::boolean,false) then raise exception 'Completion submission failed: %',submission; end if;
+ review:=game.review_case_task_submission(submission->>'submission_ref','accepted','Supervisor reviewed the completion record and confirms the task outcome.','TEST-KWTC-O1',null);
+ if not coalesce((review->>'ok')::boolean,false) then raise exception 'Supervisor review failed: %',review; end if;
+ if (select status from game.case_tasks where task_ref=ref)<>'completed' then raise exception 'Accepted review did not complete the task'; end if;
  r:=game.execute_text_command('help','kwtc-help-0001',null,pp1);
  if not (r->'available_commands' ? 'create_case_task') then raise exception 'Help missing case task commands: %',r; end if;
  if (select current_game_time from game.simulation_state where id=1)<>'2026-01-01 09:00:00+00'::timestamptz then raise exception 'Task commands advanced time'; end if;
