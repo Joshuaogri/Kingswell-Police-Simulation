@@ -14,6 +14,7 @@ on:
       - "database/migrations/**"
       - "database/tests/**"
       - "scripts/run-gameplay-regression-tests.sh"
+      - "scripts/seed-gameplay-regression-fixtures.sh"
       - ".github/workflows/gameplay-regression-tests.yml"
   workflow_dispatch:
 
