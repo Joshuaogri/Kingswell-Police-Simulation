@@ -59,7 +59,8 @@ begin
  if v_site_ref is null then raise exception 'No canonical site fixture is available for dispatch dossier integration'; end if;
  v_site_link:=game.record_incident_site_association(
    'KNG-TEST-DOPT-INCIDENT-01',v_site_ref,'related_site',
-   'Dispatch dossier integration regression fixture','KNG-TEST-DOPT-OFFICER-01',gen_random_uuid()
+   'Dispatch dossier integration regression fixture','KNG-TEST-DOPT-OFFICER-01',
+   (select id from game.game_commands where idempotency_key='KNG-TEST-DOPT-OPTIONS-01')
  );
  if coalesce((v_site_link->>'ok')::boolean,false) is not true then
    raise exception 'Could not record related-site fixture: %',v_site_link;
