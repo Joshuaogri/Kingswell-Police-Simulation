@@ -105,6 +105,15 @@ begin
   where u.id is null
  ) then raise exception 'Infrastructure profile contains an unresolved unit'; end if;
 
+ -- The isolated test database has no police payroll seed. Create one
+ -- explicitly fictional, rollback-only officer so actor-attributed workflows
+ -- can be exercised without changing the canonical population.
+ insert into game.police_personnel(personnel_ref,person_id,service_number,employment_status,joined_on)
+ select 'KNG-CI-BP04-0001',p.id,'KNG-CI-BP04-0001','active',date '2020-01-01'
+ from game.persons p
+ where not exists(select 1 from game.police_personnel pp where pp.person_id=p.id)
+ order by p.person_ref limit 1
+ on conflict do nothing;
  -- Verify incident -> scene -> evidence exact premises propagation.
  select pp.id,pp.personnel_ref into v_actor,v_actor_ref from game.police_personnel pp
  where pp.employment_status in ('active','seconded') order by pp.personnel_ref limit 1;
