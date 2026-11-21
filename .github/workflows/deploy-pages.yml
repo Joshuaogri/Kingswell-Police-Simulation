@@ -222,7 +222,33 @@ jobs:
               )
               if page.locator("#title").inner_text() in ("Record unavailable", "Loading individual record…"):
                   raise SystemExit(f"Dedicated person record failed: {page.locator('#status').inner_text()}")
-              print("Chromium directory test passed: live people, business, organisation and property directories; individual dossiers; canonical search; dedicated full person record page.")
+              map_data = page.request.get(base + "/data/kingswell-map-data.json").json()
+              property_ref = map_data["properties"][0]["ref"]
+              map_response = page.goto(base + "/city-map.html?property=" + quote(property_ref, safe=""), wait_until="domcontentloaded")
+              if not map_response or map_response.status != 200:
+                  raise SystemExit("Map-to-record route did not load")
+              page.wait_for_function(
+                  "() => document.querySelector('#dtitle')?.textContent !== 'Select a building or road'",
+                  timeout=30000,
+              )
+              if "Open full property record" not in page.locator("#dbody").inner_text():
+                  raise SystemExit("Selected map property does not link to its individual record")
+              page.locator('#dbody a[href*="record.html"]').click()
+              page.wait_for_function(
+                  "() => document.querySelector('#title')?.textContent !== 'Loading individual record…'",
+                  timeout=30000,
+              )
+              if page.locator("#title").inner_text() == "Record unavailable":
+                  raise SystemExit("Map-selected property record did not load")
+              map_href = page.locator("#mapLink").get_attribute("href")
+              if "property=" + property_ref not in map_href:
+                  raise SystemExit("Property record does not link back to its highlighted map feature")
+              page.locator("#mapLink").click()
+              page.wait_for_function(
+                  "() => document.querySelector('#dtitle')?.textContent !== 'Select a building or road'",
+                  timeout=30000,
+              )
+              print("Chromium passed: live entity directories and dossiers, dedicated record pages, and bidirectional map/property-record navigation.")
 
               browser.close()
           PY
