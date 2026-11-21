@@ -1,3 +1,4 @@
+
 CREATE OR REPLACE FUNCTION game.seed_kingswell_population_unit_batch(
   p_first_unit integer,
   p_last_unit integer
@@ -203,6 +204,7 @@ BEGIN
       AND r.routine_status='active'
   );
 
+  -- Directional relationship records: partner, parent/child, relatives and shared-household members.
   INSERT INTO game.person_relationships(
     person_id,related_person_id,relationship_type,valid_from,notes
   )
@@ -248,7 +250,7 @@ BEGIN
   RETURN jsonb_build_object(
     'unit_start',p_first_unit,'unit_end',p_last_unit,
     'households',p_last_unit-p_first_unit+1,
-    'people',(SELECT count(*) FROM bp03_seed_people),
+    'people', (SELECT count(*) FROM bp03_seed_people),
     'population_categories',true,'addresses',true,'relationships',true,
     'birth_events',true,'weekly_sleep_routines',true
   );
@@ -335,6 +337,7 @@ BEGIN
          greatest(date_of_birth,date '2018-01-01'),true
   FROM bp03_seed_jobs
   ON CONFLICT DO NOTHING;
+  GET DIAGNOSTICS v_rows = ROW_COUNT;
 
   UPDATE game.persons p
   SET occupation=j.job_title,updated_at=now()
@@ -392,7 +395,8 @@ BEGIN
 
   RETURN jsonb_build_object(
     'job_start',p_first_job,'job_end',p_last_job,
-    'employees',v_total_jobs,'work_routines',v_total_jobs*5
+    'employment_links',v_rows,'employees',v_total_jobs,
+    'work_routines',v_total_jobs*5
   );
 END;
 $$;
