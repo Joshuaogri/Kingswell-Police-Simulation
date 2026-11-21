@@ -9,21 +9,23 @@ CREATE INDEX IF NOT EXISTS person_routines_person_category_status_day_idx
 DO $migration$
 DECLARE
   v_definition text;
-  v_marker text := '  ''forensic_requests'',';
+  v_marker_position integer;
   v_insert text;
 BEGIN
   SELECT pg_get_functiondef('game.get_case_review_dossier(text)'::regprocedure)
     INTO v_definition;
 
   IF position('''activities''' IN v_definition)=0 THEN
+    v_marker_position:=strpos(v_definition,'''forensic_requests''');
+    IF v_marker_position=0 THEN
+      RAISE EXCEPTION 'Case dossier forensic section anchor not found';
+    END IF;
     v_insert :=
       '  ''activities'',game.get_case_activity(v_case.case_ref,500)->''activities'',' || E'\n' ||
       '  ''surveillance_operations'',(SELECT coalesce(jsonb_agg(to_jsonb(so)-''id''-''case_id''-''source_command_id'' ORDER BY so.created_at),''[]''::jsonb) FROM game.surveillance_operations so WHERE so.case_id=v_case.id),' || E'\n' ||
-      v_marker;
-    IF position(v_marker IN v_definition)=0 THEN
-      RAISE EXCEPTION 'Case dossier forensic section anchor not found';
-    END IF;
-    v_definition:=replace(v_definition,v_marker,v_insert);
+      '  ';
+    v_definition:=substring(v_definition from 1 for v_marker_position-1)
+      ||v_insert||substring(v_definition from v_marker_position);
     EXECUTE v_definition;
   ELSE
     IF position('''surveillance_operations''' IN v_definition)=0 THEN
