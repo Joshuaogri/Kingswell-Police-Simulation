@@ -1,4 +1,4 @@
--- BP-04 primate-city business, property-holding and public institution register.
+
 create temporary table bp04_special_orgs(
  organisation_ref text primary key,name text not null,organisation_type text not null,district_code text not null,role_group text not null
 ) on commit drop;
@@ -126,11 +126,11 @@ select organisation_ref,name,'business','active' from bp04_business_seed;
 
 insert into game.business_profiles(
  organisation_id,business_number,trading_name,sector,subsector,business_size,ownership_form,incorporation_date,
- estimated_employee_count,annual_turnover_band,import_export_activity,principal_goods_categories,service_description,
- business_hours,cash_handling_profile,security_arrangements,trade_profile,fictional_website_domain,profile_notes
+ estimated_employee_count,annual_turnover_band,import_export_activity,principal_goods_categories,
+ service_description,business_hours,cash_handling_profile,security_arrangements,trade_profile,fictional_website_domain,profile_notes
 )
-select o.id,'AF-BIZ-'||lpad(b.n::text,6,'0'),b.name,b.sector,replace(b.sector,'_',' '),b.business_size,b.ownership_form,
- b.incorporation_date,b.employee_count,b.turnover_band,b.trade_activity,b.goods,b.service_description,
+select o.id,'AF-BIZ-'||lpad(b.n::text,6,'0'),b.name,b.sector,replace(b.sector,'_',' '),b.business_size,
+ b.ownership_form,b.incorporation_date,b.employee_count,b.turnover_band,b.trade_activity,b.goods,b.service_description,
  jsonb_build_object('monday_friday','08:00-18:00','saturday','09:00-14:00','sunday','closed',
   'sector_variation',case when b.sector in ('logistics_warehousing','transport_services','import_export') then 'extended_or_shift_operations'
    when b.sector='hospitality_entertainment' then 'evening_and_weekend_operations' else 'standard_business_hours' end),
@@ -159,10 +159,11 @@ ranked_units as (
  where p.property_ref like 'KNG-P-CM%'
 )
 insert into game.organisation_locations(
- organisation_id,property_id,location_role,valid_from,valid_to,building_unit_id,is_primary_location,occupancy_status,
- site_name,operating_hours,site_details,lease_reference,lease_type,rent_band,lease_details
+ organisation_id,property_id,location_role,valid_from,valid_to,building_unit_id,is_primary_location,
+ occupancy_status,site_name,operating_hours,site_details,lease_reference,lease_type,rent_band,lease_details
 )
-select b.organisation_id,u.property_id,case when b.n%5=0 then 'owner_occupier' else 'tenant' end,b.incorporation_date,null,u.unit_id,true,'active',b.name,
+select b.organisation_id,u.property_id,case when b.n%5=0 then 'owner_occupier' else 'tenant' end,
+ b.incorporation_date,null,u.unit_id,true,'active',b.name,
  jsonb_build_object('monday_friday','08:00-18:00','weekend','sector_dependent'),
  jsonb_build_object('unit_ref',u.unit_ref,'business_number','AF-BIZ-'||lpad(b.n::text,6,'0'),'site_function','primary_operating_site','district',b.district_code),
  case when b.n%5=0 then null else 'KW-LEASE-'||lpad(b.n::text,7,'0') end,
