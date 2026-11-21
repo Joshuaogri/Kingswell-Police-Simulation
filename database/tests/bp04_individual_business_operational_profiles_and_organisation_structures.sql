@@ -4,6 +4,11 @@ begin;
 do $test$
 declare r jsonb; v_employment bigint; v_assignments bigint; v_businesses bigint;
 begin
+  r:=game.seed_bp04_business_operational_profiles();
+  if coalesce((r->>'ok')::boolean,false) is not true then
+    raise exception 'Business operational profile seed failed: %',r;
+  end if;
+
   r:=game.seed_bp04_organisation_structures();
   if coalesce((r->>'ok')::boolean,false) is not true then
     raise exception 'Organisation structure seed failed: %',r;
