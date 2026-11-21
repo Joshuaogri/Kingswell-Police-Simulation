@@ -4,7 +4,8 @@ on:
     branches: [main]
     paths:
       - "index.html"
-      - "city-map.html"\n      - "records.html"
+      - "city-map.html"
+      - "records.html"
       - "geography.html"
       - "data/**"
       - "docs/geography/kingswell-detailed-road-network.svg"
@@ -27,7 +28,8 @@ jobs:
         run: |
           mkdir -p _site/data
           cp index.html _site/index.html
-          cp city-map.html _site/city-map.html\n          cp records.html _site/records.html
+          cp city-map.html _site/city-map.html
+          cp records.html _site/records.html
           cp geography.html _site/geography.html
           cp docs/geography/kingswell-detailed-road-network.svg _site/map.svg
           cp -R data/. _site/data/
@@ -41,7 +43,8 @@ jobs:
           site = Path("_site")
           required = [
               "index.html",
-              "city-map.html",\n              "records.html",
+              "city-map.html",
+              "records.html",
               "geography.html",
               "map.svg",
               "data/kingswell-map-data.json",
