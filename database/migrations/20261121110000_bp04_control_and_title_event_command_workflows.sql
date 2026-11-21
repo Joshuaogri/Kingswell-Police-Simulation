@@ -84,7 +84,7 @@ begin
 
   -- Organisation control-interest capture; unknown facts remain SQL null.
   m := regexp_match(t,
-    '^organisation control ([^[:space:]]+) (person|organisation) ([^[:space:]]+) (beneficial_owner|shareholder|director|partner|controlling_person|franchise_operator|other) (unknown|[0-9]+([.][0-9]+)?) (unknown|[0-9]+([.][0-9]+)?) (unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}) (unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}) "([^"]*)" "([^"]*)" by ([^[:space:]]+),'i');
+    '^organisation control ([^[:space:]]+) (person|organisation) ([^[:space:]]+) (beneficial_owner|shareholder|director|partner|controlling_person|franchise_operator|other) (unknown|[0-9]+[.]?[0-9]*) (unknown|[0-9]+[.]?[0-9]*) (unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}) (unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}) "([^"]*)" "([^"]*)" by ([^[:space:]]+)$','i');
   if m is not null then
     return jsonb_build_object('command_type','organisation_control_record',
       'payload',jsonb_build_object(
@@ -100,7 +100,7 @@ begin
 
   -- Property title event capture. Use the literal unknown token for absent facts.
   m := regexp_match(t,
-    '^property title event ([^[:space:]]+) ([^[:space:]]+) (initial_registration|transfer|sale|gift|inheritance|court_order|subdivision|amalgamation|title_correction|restriction_registered|restriction_discharged|caveat_registered|caveat_removed|lease_registered|lease_discharged|mortgage_registered|mortgage_discharged|other) (unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}) (unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}) (draft|lodged|recorded|rejected|withdrawn|unknown) (unknown|person|organisation) (unknown|[^[:space:]]+) (unknown|person|organisation) (unknown|[^[:space:]]+) (unknown|[^[:space:]]+) (unknown|[0-9]+([.][0-9]+)?) "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" by ([^[:space:]]+),'i');
+    '^property title event ([^[:space:]]+) ([^[:space:]]+) (initial_registration|transfer|sale|gift|inheritance|court_order|subdivision|amalgamation|title_correction|restriction_registered|restriction_discharged|caveat_registered|caveat_removed|lease_registered|lease_discharged|mortgage_registered|mortgage_discharged|other) (unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}) (unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}) (draft|lodged|recorded|rejected|withdrawn|unknown) (unknown|person|organisation) (unknown|[^[:space:]]+) (unknown|person|organisation) (unknown|[^[:space:]]+) (unknown|[^[:space:]]+) (unknown|[0-9]+[.]?[0-9]*) "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" by ([^[:space:]]+)$','i');
   if m is not null then
     return jsonb_build_object('command_type','property_title_event_record',
       'payload',jsonb_build_object(
