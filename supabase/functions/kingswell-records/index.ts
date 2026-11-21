@@ -28,7 +28,7 @@ const db = databaseUrl
 const personFields = "id,person_ref,given_name,middle_names,family_name,preferred_name,date_of_birth,person_status,occupation,nationality,preferred_language,simulation_level,date_of_death";
 const businessFields = "organisation_id,business_number,trading_name,sector,subsector,business_size,ownership_form,incorporation_date,estimated_employee_count,annual_turnover_band,import_export_activity,principal_goods_categories,service_description,business_hours,fictional_website_domain";
 const organisationFields = "id,organisation_ref,name,organisation_type,parent_organisation_id,status";
-const propertyFields = "p.id,p.property_ref,p.city_id,p.district_id,p.neighbourhood_id,p.road_id,p.street_number,p.address_line,p.property_type,p.latitude,p.longitude,p.status,p.x_m,p.y_m,p.parcel_area_sqm,p.frontage_width_m,p.land_use,p.postal_code";
+const propertyFields = "p.id,p.property_ref,p.property_name,p.city_id,p.district_id,p.neighbourhood_id,p.road_id,p.street_number,p.address_line,p.property_type,p.latitude,p.longitude,p.status,p.x_m,p.y_m,p.parcel_area_sqm,p.frontage_width_m,p.land_use,p.postal_code";
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
@@ -159,7 +159,7 @@ Deno.serve(async (req: Request) => {
       if (type === "properties") {
         if (id) {
           const rows = await tx`
-            select p.id,p.property_ref,p.city_id,p.district_id,p.neighbourhood_id,p.road_id,
+            select p.id,p.property_ref,p.property_name,p.city_id,p.district_id,p.neighbourhood_id,p.road_id,
               p.street_number,p.address_line,p.property_type,p.latitude,p.longitude,p.status,p.x_m,p.y_m,
               p.parcel_area_sqm,p.frontage_width_m,p.land_use,p.postal_code,
               jsonb_build_object('code',d.code,'name',d.name,'district_type',d.district_type) as district,
