@@ -93,7 +93,7 @@ jobs:
           supabase db push --db-url "$DB_URL" --dry-run
 
       - name: Apply migrations to live Supabase
-        if: ${{ inputs.deploy_to_production || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') }}
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy_to_production == true }}
         shell: bash
         run: |
           set -euo pipefail
@@ -102,7 +102,7 @@ jobs:
           supabase db push --db-url "$DB_URL" --yes
 
       - name: Confirm live migration history after deployment
-        if: ${{ inputs.deploy_to_production || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') }}
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy_to_production == true }}
         shell: bash
         run: |
           set -euo pipefail
