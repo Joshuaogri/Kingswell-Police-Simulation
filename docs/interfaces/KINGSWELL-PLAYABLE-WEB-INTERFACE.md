@@ -25,7 +25,7 @@ The browser renders a cartographic canvas from the Kingswell local metric grid a
 - Layer controls for buildings, district areas, neighbourhood labels, primary/secondary/local/service roads, junctions, property entrances, landmarks, turn controls and patrol-beat coverage.
 - Mouse/touch pan, wheel zoom, zoom buttons, fit-to-city and reset.
 - Search across building/property references, addresses, business names, roads and neighbourhoods.
-- Click a building footprint to open its property/building record; click a road segment to inspect its road and segment record.
+- Click a building footprint to open its property/building record; click a road segment to inspect its road and segment record. Toggle entrance, landmark, turn-control and patrol-beat overlays independently.
 
 ### 2. BP-04 map-linked property browser
 
@@ -81,7 +81,7 @@ The snapshot is static. Supabase remains authoritative. A future authenticated a
 ## Next interface increments
 
 1. **BP-04 dossier browser:** paginated property/building/unit, organisation/site, business, workforce, agreement, ownership/control, asset, infrastructure and lifecycle dossiers; map-to-record navigation both ways.
-2. **Geography detail layers:** entrance markers, road/junction inspector, district/neighbourhood overlays, map filters, patrol beats, facilities, closures, turn controls and traffic profiles.
+2. **Geography detail layers:** dynamic traffic states, individual patrol positions, police facilities, active closures and case/incident overlays.
 3. **BP-05–BP-12 department and operations:** police structure, personnel, career, units/resources, patrol, emergency calls, dispatch and incident consoles.
 4. **BP-13–BP-24 crime and investigation:** crime catalogue, cases, investigative work, victims/witnesses, suspects, interviews, surveillance, intelligence, scenes, evidence and forensic laboratory.
 5. **BP-25–BP-34 justice and institution:** arrest, custody, legal process, courts, corrections, governance, standards, training, HR and finance.
