@@ -40,14 +40,21 @@ Deno.serve(async (req: Request) => {
   const id = safeText(url.searchParams.get("id"), 80);
   const limit = pageInt(url.searchParams.get("limit"), 25, 1, 50);
   const offset = pageInt(url.searchParams.get("offset"), 0, 0, 100000);
-  if (!["people", "businesses", "organisations", "properties"].includes(type)) {
-    return fail("Choose people, businesses, organisations or properties.");
+  if (!["people", "businesses", "organisations", "properties", "map_names"].includes(type)) {
+    return fail("Choose people, businesses, organisations, properties or map_names.");
   }
   if (!db) return fail("Record service database connection is not configured.", 503);
 
   try {
     const result = await db.begin(async (tx) => {
       await tx`set transaction read only`;
+
+      if (type === "map_names") {
+        const roads = await tx`select id,code,name,official_name from game.roads order by code`;
+        const properties = await tx`select property_ref,property_name,address_line from game.properties order by property_ref`;
+        const buildings = await tx`select building_ref,name from game.buildings order by building_ref`;
+        return { type, roads, properties, buildings };
+      }
 
       if (type === "people") {
         if (id) {
