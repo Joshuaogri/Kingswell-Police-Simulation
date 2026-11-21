@@ -105,8 +105,8 @@ jobs:
           with sync_playwright() as p:
               browser = p.chromium.launch(headless=True)
               page = browser.new_page(viewport={"width": 1440, "height": 1000})
-          page_errors = []
-          page.on("pageerror", lambda error: page_errors.append(str(error)))
+              page_errors = []
+              page.on("pageerror", lambda error: page_errors.append(str(error)))
               map_response = []
               page.on(
                   "response",
@@ -159,9 +159,13 @@ jobs:
               directory = page.goto(base + "/records.html", wait_until="domcontentloaded")
               if not directory or directory.status != 200:
                   raise SystemExit("Kingswell record directory did not load")
-              page.wait_for_timeout(1500)
-              directory_status = page.locator("#dataStatus").inner_text()
-              if "Published geographic snapshot loaded" not in directory_status:
+              try:
+                  page.wait_for_function(
+                      "() => document.querySelector('#dataStatus')?.textContent.includes('Published geographic snapshot loaded')",
+                      timeout=15000,
+                  )
+              except Exception:
+                  directory_status = page.locator("#dataStatus").inner_text()
                   raise SystemExit(f"Directory failed to initialise: {directory_status}; browser errors: {page_errors}")
               page.locator('#tabs button[data-type="property"]').click()
               page.wait_for_function("() => document.querySelectorAll('.record').length > 0")
