@@ -1,5 +1,7 @@
 
-create temporary table bp04_new_sites on commit drop as
+-- Keep this staging table for the full migration session: psql runs each statement
+-- in autocommit mode, so ON COMMIT DROP would remove it immediately after CREATE.
+create temporary table bp04_new_sites as
 with bounds as (
   select n.id neighbourhood_id,n.code neighbourhood_code,n.name neighbourhood_name,d.id district_id,d.code district_code,d.name district_name,
          min(p.x_m) min_x,max(p.x_m) max_x,min(p.y_m) min_y,max(p.y_m) max_y
