@@ -47,9 +47,10 @@ The unit tab displays the registered unit inventory by type. It does not yet exp
 
 ### 3. Browser structure
 
-- The root GitHub Pages URL now opens the playable atlas.
-- `play.html` is the named application entry point.
-- The former geography entry redirects to the root playable atlas.
+- The root GitHub Pages URL opens the map-first simulation workspace.
+- `play.html` is the named operations/workspace entry point; the root `index.html` mirrors it.
+- `city-map.html` is the dedicated full-screen geographic intelligence view, with district/type filters and building/road inspection.
+- `geography.html` redirects to the root playable workspace.
 - The map data snapshot is stored at `data/kingswell-map-data.json`, with provenance/counts in `data/kingswell-map-data-manifest.json`.
 - The repeatable read-only export query is stored at `scripts/export-kingswell-map-data.sql`.
 - The UI uses a local vector/canvas renderer; it does not require third-party map tiles or expose Supabase credentials.
