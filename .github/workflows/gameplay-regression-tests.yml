@@ -117,20 +117,28 @@ jobs:
       - name: Verify the test target is isolated
         run: psql "$DATABASE_URL" -X --no-psqlrc -v ON_ERROR_STOP=1 -Atc "select 'isolated local database reachable' where current_database()='postgres' and current_user='postgres';"
 
-      - name: Run only the four previously failing BP-04 regression tests
+      - name: Run all four previously failing BP-04 regression tests independently
         shell: bash
         run: |
-          set -euo pipefail
+          set -uo pipefail
           tests=(
             database/tests/bp04_agreement_lifecycle_regression.sql
             database/tests/bp04_organisation_lifecycle_history.sql
             database/tests/bp04_property_asset_event_command_workflow.sql
             database/tests/bp04_property_title_history_regression.sql
           )
+          failures=0
           for test_file in "${tests[@]}"; do
             echo "::group::${test_file}"
             echo "START ${test_file}"
-            timeout --signal=TERM --kill-after=10s 180s env PGOPTIONS="-c statement_timeout=180000 -c lock_timeout=30000" psql "$DATABASE_URL" -X --no-psqlrc -v ON_ERROR_STOP=1 -f "$test_file"
-            echo "PASS: ${test_file}"
+            if timeout --signal=TERM --kill-after=10s 180s env PGOPTIONS="-c statement_timeout=180000 -c lock_timeout=30000" psql "$DATABASE_URL" -X --no-psqlrc -v ON_ERROR_STOP=1 -f "$test_file"; then
+              echo "PASS: ${test_file}"
+            else
+              status=$?
+              echo "FAIL: ${test_file} (exit ${status})"
+              failures=$((failures + 1))
+            fi
             echo "::endgroup::"
           done
+          echo "BP-04 targeted regression summary: $((4 - failures))/4 passed; ${failures}/4 failed."
+          test "$failures" -eq 0
