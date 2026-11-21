@@ -176,3 +176,9 @@ BEGIN
   RETURN v_result;
 END;
 $$;
+
+-- Keep the command entry points private to the game runtime service role.
+REVOKE ALL ON FUNCTION game.interpret_text_command(text),game.execute_text_command(text,text,uuid,uuid)
+FROM PUBLIC,anon,authenticated;
+GRANT EXECUTE ON FUNCTION game.interpret_text_command(text),game.execute_text_command(text,text,uuid,uuid)
+TO service_role;
