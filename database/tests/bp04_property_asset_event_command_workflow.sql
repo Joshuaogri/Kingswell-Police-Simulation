@@ -29,7 +29,7 @@ begin
   raise exception 'Unsupported property event type was accepted.';
  end if;
  routed:=game.execute_text_command(
-  'property event PROP-NOT-FOUND EVT-PROP-0004 inspection recorded moderate unknown unknown unknown unknown unknown "Test event" "Actor validation test." "" "" unknown unknown "" "" by KNG-NONEXISTENT',
+  'property event PROP-NOT-FOUND EVT-PROP-0004 inspection recorded moderate unknown unknown unknown unknown "Test event" "Actor validation test." "" "" unknown unknown "" "" by KNG-NONEXISTENT',
   'bp04-property-event-actor-01',null,null
  );
  if routed->>'code'<>'actor_mismatch' then
