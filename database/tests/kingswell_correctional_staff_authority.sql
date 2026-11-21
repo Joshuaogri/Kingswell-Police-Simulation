@@ -12,10 +12,10 @@ BEGIN
  IF r->>'command_type'<>'correctional_list_facilities' THEN RAISE EXCEPTION 'Existing facilities parser regressed: %',r; END IF;
 
  SELECT pg_get_functiondef('game.execute_text_command(text,text,uuid,uuid)'::regprocedure) INTO v;
- IF position('execute_text_command_before_property' IN v)=0 THEN
+ IF position('execute_text_command_before_runtime_chain_repair' IN v)=0 THEN
   RAISE EXCEPTION 'Outer text runtime no longer delegates to the established command layer';
  END IF;
- SELECT pg_get_functiondef('game.execute_text_command_before_property(text,text,uuid,uuid)'::regprocedure) INTO v;
+ SELECT pg_get_functiondef('game.execute_text_command_before_runtime_chain_repair(text,text,uuid,uuid)'::regprocedure) INTO v;
  IF position('correctional_staff_list' IN v)=0 THEN
   RAISE EXCEPTION 'Staff directory command missing from delegated runtime';
  END IF;
