@@ -1,4 +1,3 @@
--- Add case task records and all case-linked evidence references to the dossier read model.
 CREATE OR REPLACE FUNCTION game.get_case_review_dossier(p_case_ref text)
  RETURNS jsonb
  LANGUAGE plpgsql
@@ -41,6 +40,3 @@ begin
  return v_result;
 end
 $function$
-
-revoke all on function game.get_case_review_dossier(text) from public,anon,authenticated;
-grant execute on function game.get_case_review_dossier(text) to service_role;
