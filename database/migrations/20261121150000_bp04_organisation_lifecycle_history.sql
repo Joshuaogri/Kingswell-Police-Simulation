@@ -222,7 +222,7 @@ begin
    or command_row.payload<>command_payload then
    return jsonb_build_object('ok',false,'code','idempotency_conflict');
   end if;
-  return coalesce(command_row.v_result,
+  return coalesce(command_row.result,
    jsonb_build_object('ok',command_row.status='completed'))||
    jsonb_build_object('duplicate',true);
  end if;
