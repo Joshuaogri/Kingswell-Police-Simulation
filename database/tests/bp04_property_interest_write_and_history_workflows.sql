@@ -36,7 +36,7 @@ begin
  v_parsed:=game.interpret_bp04_property_interest_command(v_command);
  if v_parsed->>'command_type'<>'property_interest_record'
   or v_parsed#>>'{payload,holder_ref}'<>v_holder_ref
-  or v_parsed#>>'{payload,interest_type}<>'landlord' then
+  or v_parsed#>>'{payload,interest_type}'<>'landlord' then
   raise exception 'Property-interest command parser returned incorrect fields: %',v_parsed;
  end if;
 
