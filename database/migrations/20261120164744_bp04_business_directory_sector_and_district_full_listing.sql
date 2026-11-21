@@ -1,5 +1,9 @@
+
 create or replace function game.interpret_property_command(p_command_text text)
-returns jsonb language plpgsql immutable set search_path to 'pg_catalog','game'
+returns jsonb
+language plpgsql
+immutable
+set search_path to 'pg_catalog','game'
 as $$
 declare t text:=btrim(coalesce(p_command_text,'')); m text[];
 begin
@@ -20,4 +24,5 @@ begin
  m:=regexp_match(t,'^business directory search "([^"]+)" by ([^[:space:]]+)$','i');
  if m is not null then return jsonb_build_object('command_type','business_directory','payload',jsonb_build_object('search',m[1],'actor_ref',m[2],'limit',500)); end if;
  return null;
-end $$;
+end;
+$$;
