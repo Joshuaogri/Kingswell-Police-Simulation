@@ -224,8 +224,8 @@ jobs:
                   raise SystemExit(f"Dedicated person record failed: {page.locator('#status').inner_text()}")
               map_data = page.request.get(base + "/data/kingswell-map-data.json").json()
               property_ref = map_data["properties"][0]["ref"]
-              map_response = page.goto(base + "/city-map.html?property=" + quote(property_ref, safe=""), wait_until="domcontentloaded")
-              if not map_response or map_response.status != 200:
+              map_page_response = page.goto(base + "/city-map.html?property=" + quote(property_ref, safe=""), wait_until="domcontentloaded")
+              if not map_page_response or map_page_response.status != 200:
                   raise SystemExit("Map-to-record route did not load")
               page.wait_for_function(
                   "() => document.querySelector('#dtitle')?.textContent !== 'Select a building or road'",
