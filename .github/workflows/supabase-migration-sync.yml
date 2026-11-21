@@ -1,6 +1,12 @@
 name: Kingswell Supabase Migration Sync
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - "database/migrations/**"
+      - ".github/workflows/supabase-migration-sync.yml"
   workflow_dispatch:
     inputs:
       deploy_to_production:
