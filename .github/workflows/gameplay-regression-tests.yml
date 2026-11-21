@@ -6,7 +6,7 @@ on:
     paths:
       - "database/migrations/**"
       - "database/tests/**"
-      - "scripts/run-gameplay-regression-tests.sh"
+      - "scripts/run-gameplay-regression-tests.sh"\n      - "scripts/seed-gameplay-regression-fixtures.sh"
       - ".github/workflows/gameplay-regression-tests.yml"
   pull_request:
     branches: [main]
@@ -77,6 +77,11 @@ jobs:
           set -euo pipefail
           # No --linked, --remote, project token, or hosted DB credentials.
           supabase db reset --no-seed
+
+      - name: Load deterministic Kingswell gameplay fixtures
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:54322/postgres
+        run: bash scripts/seed-gameplay-regression-fixtures.sh
 
       - name: Verify the test target is the isolated local database
         env:
