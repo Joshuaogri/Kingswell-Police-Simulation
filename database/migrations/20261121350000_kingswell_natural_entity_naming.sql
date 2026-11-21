@@ -207,7 +207,7 @@ where p.id=b.property_id;
 -- real-world surname forms; the business descriptors reflect the actual trade.
 create temporary table kingswell_business_name_map on commit drop as
 with surname_bank as (
- select array[
+ select array(select distinct unnest(array[
  'Smith','Johnson','Williams','Brown','Jones','Miller','Davis','Garcia','Rodriguez','Wilson',
  'Martinez','Anderson','Taylor','Thomas','Hernandez','Moore','Martin','Jackson','Thompson','White',
  'Lopez','Lee','Gonzalez','Harris','Clark','Lewis','Robinson','Walker','Perez','Hall',
@@ -225,7 +225,7 @@ with surname_bank as (
  'Henry','Vasquez','Snyder','Simpson','Crawford','Jimenez','Porter','Mason','Shaw','Gordon',
  'Wagner','Hunter','Romero','Hicks','Dixon','Hunt','Palmer','Robertson','Black','Holmes',
  'Stone','Meyer','Boyd','Mills','Warren','Fox','Rose'
- ]::text[] surnames
+  ]::text[]) order by 1) as surnames
 ),
 ranked as (
  select bp.organisation_id,bp.business_number,bp.ownership_form,bp.sector,bp.subsector,
@@ -236,7 +236,7 @@ named as (
  select x.*,
   (select surnames[((x.group_rank-1)%array_length(surnames,1))+1] from surname_bank) as surname,
   case
-   when x.sector='financial_services' then case when x.group_rank<=168 then 'Capital' else 'Finance' end
+   when x.sector='financial_services' then case when x.group_rank<=167 then 'Capital' else 'Finance' end
    when x.sector='import_export' then case when x.group_rank<=168 then 'International Trading' else 'Mercantile' end
    when x.sector='logistics_warehousing' then case when x.group_rank<=168 then 'Freight' else 'Haulage' end
    when x.sector='transport_services' then 'Transport'
@@ -270,7 +270,7 @@ named as (
 )
 select organisation_id,business_number,
  surname||' '||descriptor||
- case when group_rank>168 then ' '||case when group_rank>336 then 'Group' else 'Company' end else '' end as trading_name,
+ case when group_rank>167 then ' '||case when group_rank>334 then 'Group' else 'Company' end else '' end as trading_name,
  ownership_form
 from named;
 
