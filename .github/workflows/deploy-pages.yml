@@ -178,6 +178,7 @@ jobs:
               if page.locator("#resultCount").inner_text().startswith("0"):
                   raise SystemExit("Directory search did not find the selected canonical reference")
               # Live Supabase-backed directories: paginated search and individual dossiers.
+              page.locator("#q").fill("")
               for tab, minimum in [("people", 100000), ("business", 1000), ("organisation", 1000), ("property", 600)]:
                   page.locator(f'#tabs button[data-type="{tab}"]').click()
                   page.wait_for_function(
