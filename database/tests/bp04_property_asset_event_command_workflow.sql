@@ -36,8 +36,6 @@ begin
   raise exception 'Property event command bypassed actor validation: %',routed;
  end if;
 
- -- Create a rollback-only fictional officer so the positive command path is
- -- tested as well as rejection of an unknown actor.
  select p.id into v_person_id
  from game.persons p
  where not exists(select 1 from game.police_personnel pp where pp.person_id=p.id)
