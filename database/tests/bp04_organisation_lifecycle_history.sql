@@ -10,6 +10,8 @@ declare
  result jsonb;
  v_org_id uuid;
  v_org_ref text;
+ v_business_number text;
+ v_business_dossier jsonb;
  v_person_id uuid;
  v_event_ref text:='LIFECYCLE-CI-TEST-01';
  v_history jsonb;
@@ -55,8 +57,9 @@ begin
   raise exception 'Lifecycle event capture bypassed actor validation: %',result;
  end if;
 
- select id,organisation_ref into v_org_id,v_org_ref
- from game.organisations order by organisation_ref limit 1;
+ select o.id,o.organisation_ref,bp.business_number into v_org_id,v_org_ref,v_business_number
+ from game.organisations o join game.business_profiles bp on bp.organisation_id=o.id
+ order by o.organisation_ref limit 1;
  select id into v_person_id from game.persons order by id limit 1;
  if v_org_id is null or v_person_id is null then
   raise exception 'Deterministic organisation/person fixtures are required for lifecycle history tests.';
@@ -80,6 +83,10 @@ begin
  v_dossier:=game.get_organisation_record(v_org_ref);
  if v_dossier#>>'{lifecycle_history,events,0,event,event_ref}'<>v_event_ref then
   raise exception 'Organisation dossier does not include lifecycle history: %',v_dossier;
+ end if;
+ v_business_dossier:=game.get_business_record(v_business_number);
+ if v_business_dossier#>>'{lifecycle_history,events,0,event,event_ref}'<>v_event_ref then
+  raise exception 'Business dossier does not include lifecycle history: %',v_business_dossier;
  end if;
 
  begin
