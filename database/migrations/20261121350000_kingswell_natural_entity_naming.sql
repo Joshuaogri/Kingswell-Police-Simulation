@@ -1,6 +1,14 @@
 
 begin;
 
+-- Bulk canonical renames are checked set-wise below; disable per-row cross-domain
+-- scans during this migration to avoid 100k-row rescans for each of 3k updates.
+alter table game.roads disable trigger roads_cross_domain_name_separation;
+alter table game.properties disable trigger properties_cross_domain_name_separation;
+alter table game.buildings disable trigger buildings_cross_domain_name_separation;
+alter table game.business_profiles disable trigger business_profiles_cross_domain_name_separation;
+alter table game.organisations disable trigger organisations_cross_domain_name_separation;
+
 -- Canonical natural names for Kingswell's current physical and commercial entities.
 -- Stable IDs, references, ownership, occupancy, employment and geometry are unchanged.
 
@@ -356,6 +364,13 @@ set map_label=p.property_name,updated_at=now()
 from game.properties p
 where pp.property_id=p.id
  and pp.map_label is distinct from p.property_name;
+
+-- Re-enable the permanent future-write protections after the bulk update.
+alter table game.roads enable trigger roads_cross_domain_name_separation;
+alter table game.properties enable trigger properties_cross_domain_name_separation;
+alter table game.buildings enable trigger buildings_cross_domain_name_separation;
+alter table game.business_profiles enable trigger business_profiles_cross_domain_name_separation;
+alter table game.organisations enable trigger organisations_cross_domain_name_separation;
 
 -- Verify core canonical name domains before commit.
 do $$
