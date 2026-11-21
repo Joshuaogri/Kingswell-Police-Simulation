@@ -159,6 +159,87 @@ begin
 end;
 $function$;
 
+
+-- Route the new command through the existing command audit/idempotency and actor-validation chain.
+alter function game.execute_text_command_before_runtime_chain_repair(text,text,uuid,uuid)
+ rename to execute_text_command_before_organisation_lifecycle;
+create or replace function game.execute_text_command_before_runtime_chain_repair(
+ p_command_text text,p_idempotency_key text,p_session_id uuid default null,
+ p_actor_personnel_id uuid default null
+) returns jsonb language plpgsql set search_path to 'pg_catalog','game'
+as $function$
+declare
+ interpreted jsonb;
+ command_type text;
+ command_payload jsonb;
+ command_row game.game_commands%rowtype;
+ actor game.police_personnel%rowtype;
+ result jsonb;
+begin
+ interpreted:=game.interpret_text_command(p_command_text);
+ command_type:=interpreted->>'command_type';
+ command_payload:=coalesce(interpreted->'payload','{}'::jsonb);
+ if command_type='help' then
+  result:=game.execute_text_command_before_organisation_lifecycle(
+   p_command_text,p_idempotency_key,p_session_id,p_actor_personnel_id);
+  return jsonb_set(result,'{available_commands}',
+   coalesce(result->'available_commands','[]'::jsonb)||
+   jsonb_build_array('organisation_lifecycle_event_record'),true);
+ end if;
+ if command_type<>'organisation_lifecycle_event_record' then
+  return game.execute_text_command_before_organisation_lifecycle(
+   p_command_text,p_idempotency_key,p_session_id,p_actor_personnel_id);
+ end if;
+ if p_command_text is null or char_length(btrim(p_command_text)) not between 1 and 4000 then
+  raise exception 'Command text must contain between 1 and 4000 characters';
+ end if;
+ if p_idempotency_key is null or char_length(p_idempotency_key) not between 8 and 200 then
+  raise exception 'A unique idempotency key between 8 and 200 characters is required';
+ end if;
+ insert into game.game_commands(idempotency_key,session_id,actor_personnel_id,
+  command_text,command_type,payload)
+ values(p_idempotency_key,p_session_id,p_actor_personnel_id,p_command_text,
+  command_type,command_payload)
+ on conflict(idempotency_key) do nothing;
+ if not found then
+  select * into command_row from game.game_commands
+   where idempotency_key=p_idempotency_key for update;
+  if command_row.command_text<>p_command_text
+   or command_row.command_type<>command_type
+   or command_row.payload<>command_payload then
+   return jsonb_build_object('ok',false,'code','idempotency_conflict');
+  end if;
+  return coalesce(command_row.result,
+   jsonb_build_object('ok',command_row.status='completed'))||
+   jsonb_build_object('duplicate',true);
+ end if;
+ select * into command_row from game.game_commands
+  where idempotency_key=p_idempotency_key for update;
+ select * into actor from game.police_personnel
+  where personnel_ref=command_payload->>'actor_ref'
+   and employment_status in ('active','seconded');
+ if actor.id is null or
+  (p_actor_personnel_id is not null and p_actor_personnel_id<>actor.id) then
+  result:=jsonb_build_object('ok',false,'code','actor_mismatch',
+   'message','The named command actor must match active or seconded personnel.');
+ else
+  result:=game.execute_property_command(command_row.id,command_type,
+   command_payload,actor.id);
+ end if;
+ if coalesce((result->>'ok')::boolean,false) then
+  result:=result||jsonb_build_object('status','completed','command_id',command_row.id);
+  update game.game_commands set status='completed',result=result,completed_at=now()
+   where id=command_row.id;
+ else
+  update game.game_commands set status='rejected',result=result,
+   rejection_reason=coalesce(result->>'message',result->>'code','Lifecycle command rejected'),
+   completed_at=now() where id=command_row.id;
+  result:=result||jsonb_build_object('command_id',command_row.id);
+ end if;
+ return result;
+end;
+$function$;
+
 -- Enrich existing dossiers with the same authoritative lifecycle timeline.
 alter function game.get_organisation_record(text) rename to get_organisation_record_before_lifecycle;
 create or replace function game.get_organisation_record(p_organisation_ref text)
