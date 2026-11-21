@@ -248,7 +248,17 @@ jobs:
                   "() => document.querySelector('#dtitle')?.textContent !== 'Select a building or road'",
                   timeout=30000,
               )
-              print("Chromium passed: live entity directories and dossiers, dedicated record pages, and bidirectional map/property-record navigation.")
+              if len(map_data.get("landmarks", [])) < 24:
+                  raise SystemExit("Canonical city landmark layer is incomplete")
+              landmark_name = map_data["landmarks"][0]["name"]
+              page.locator("#landmarks").click()
+              if "on" not in page.locator("#landmarks").get_attribute("class"):
+                  raise SystemExit("Landmark map layer did not enable")
+              page.locator("#search").fill(landmark_name)
+              page.wait_for_function("name => document.querySelector('#dtitle')?.textContent === name", landmark_name, timeout=15000)
+              if page.locator("#dtype").inner_text() != "BP-02 CITY LANDMARK":
+                  raise SystemExit("Searching a landmark did not open its individual map record")
+              print("Chromium passed: live entity directories, full record pages, bidirectional property/map navigation, optional landmark layer and landmark search.")
 
               browser.close()
           PY
