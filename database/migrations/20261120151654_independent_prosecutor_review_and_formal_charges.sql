@@ -1,21 +1,99 @@
-create sequence game.prosecutor_ref_seq; create sequence game.charge_ref_seq;
-create table game.prosecutor_profiles(id uuid primary key default gen_random_uuid(),prosecutor_ref text not null unique default ('KWP-'||lpad(nextval('game.prosecutor_ref_seq')::text,7,'0')),person_id uuid not null references game.persons(id),role text not null check(role in ('prosecutor','senior_prosecutor','chief_prosecutor')),status text not null default 'active' check(status in ('active','suspended','left')),appointed_by_personnel_id uuid not null references game.police_personnel(id),appointed_at_game_time timestamptz not null,created_at timestamptz not null default now(),unique(person_id));
-create table game.prosecution_reviews(id uuid primary key default gen_random_uuid(),referral_id uuid not null unique references game.prosecution_referrals(id),prosecutor_id uuid not null references game.prosecutor_profiles(id),decision text not null check(decision in ('accepted','returned','declined')),reason text not null,reviewed_at_game_time timestamptz not null,source_command_id uuid not null references game.game_commands(id),created_at timestamptz not null default now());
-create table game.prosecution_review_events(id uuid primary key default gen_random_uuid(),review_id uuid not null references game.prosecution_reviews(id),event_type text not null check(event_type in ('review_recorded')),prosecutor_id uuid not null references game.prosecutor_profiles(id),event_at_game_time timestamptz not null,reason text not null,source_command_id uuid not null references game.game_commands(id),created_at timestamptz not null default now());
-create table game.formal_charges(id uuid primary key default gen_random_uuid(),charge_ref text not null unique default ('KWCHG-'||lpad(nextval('game.charge_ref_seq')::text,7,'0')),referral_id uuid not null references game.prosecution_referrals(id),case_id uuid not null references game.cases(id),person_id uuid not null references game.persons(id),prosecutor_id uuid not null references game.prosecutor_profiles(id),count_number integer not null check(count_number between 1 and 999),offence_code text not null,charge_title text not null,particulars text not null,status text not null default 'filed' check(status in ('filed','amended','withdrawn')),filed_at_game_time timestamptz not null,source_command_id uuid not null references game.game_commands(id),created_at timestamptz not null default now(),unique(referral_id,count_number));
-create table game.formal_charge_events(id uuid primary key default gen_random_uuid(),charge_id uuid not null references game.formal_charges(id),event_type text not null check(event_type in ('filed','amended','withdrawn')),prosecutor_id uuid not null references game.prosecutor_profiles(id),event_at_game_time timestamptz not null,reason text not null,source_command_id uuid not null references game.game_commands(id),created_at timestamptz not null default now());
-create index prosecutor_profiles_person_idx on game.prosecutor_profiles(person_id); create index prosecutor_profiles_appointor_idx on game.prosecutor_profiles(appointed_by_personnel_id); create index prosecution_reviews_prosecutor_idx on game.prosecution_reviews(prosecutor_id,reviewed_at_game_time); create index prosecution_reviews_referral_idx on game.prosecution_reviews(referral_id); create index prosecution_review_events_review_idx on game.prosecution_review_events(review_id,event_at_game_time); create index prosecution_review_events_prosecutor_idx on game.prosecution_review_events(prosecutor_id); create index prosecution_review_events_command_idx on game.prosecution_review_events(source_command_id); create index formal_charges_referral_idx on game.formal_charges(referral_id); create index formal_charges_case_idx on game.formal_charges(case_id,person_id); create index formal_charges_prosecutor_idx on game.formal_charges(prosecutor_id); create index formal_charges_command_idx on game.formal_charges(source_command_id); create index formal_charge_events_charge_idx on game.formal_charge_events(charge_id,event_at_game_time); create index formal_charge_events_prosecutor_idx on game.formal_charge_events(prosecutor_id); create index formal_charge_events_command_idx on game.formal_charge_events(source_command_id);
-alter table game.prosecutor_profiles enable row level security; alter table game.prosecution_reviews enable row level security; alter table game.prosecution_review_events enable row level security; alter table game.formal_charges enable row level security; alter table game.formal_charge_events enable row level security;
+
+create sequence game.prosecutor_ref_seq;
+create sequence game.charge_ref_seq;
+
+create table game.prosecutor_profiles(
+ id uuid primary key default gen_random_uuid(),
+ prosecutor_ref text not null unique default ('KWP-'||lpad(nextval('game.prosecutor_ref_seq')::text,7,'0')),
+ person_id uuid not null references game.persons(id),
+ role text not null check(role in ('prosecutor','senior_prosecutor','chief_prosecutor')),
+ status text not null default 'active' check(status in ('active','suspended','left')),
+ appointed_by_personnel_id uuid not null references game.police_personnel(id),
+ appointed_at_game_time timestamptz not null,
+ created_at timestamptz not null default now(),
+ unique(person_id)
+);
+create table game.prosecution_reviews(
+ id uuid primary key default gen_random_uuid(),
+ referral_id uuid not null unique references game.prosecution_referrals(id),
+ prosecutor_id uuid not null references game.prosecutor_profiles(id),
+ decision text not null check(decision in ('accepted','returned','declined')),
+ reason text not null,
+ reviewed_at_game_time timestamptz not null,
+ source_command_id uuid not null references game.game_commands(id),
+ created_at timestamptz not null default now()
+);
+create table game.prosecution_review_events(
+ id uuid primary key default gen_random_uuid(),
+ review_id uuid not null references game.prosecution_reviews(id),
+ event_type text not null check(event_type in ('review_recorded')),
+ prosecutor_id uuid not null references game.prosecutor_profiles(id),
+ event_at_game_time timestamptz not null,
+ reason text not null,
+ source_command_id uuid not null references game.game_commands(id),
+ created_at timestamptz not null default now()
+);
+create table game.formal_charges(
+ id uuid primary key default gen_random_uuid(),
+ charge_ref text not null unique default ('KWCHG-'||lpad(nextval('game.charge_ref_seq')::text,7,'0')),
+ referral_id uuid not null references game.prosecution_referrals(id),
+ case_id uuid not null references game.cases(id),
+ person_id uuid not null references game.persons(id),
+ prosecutor_id uuid not null references game.prosecutor_profiles(id),
+ count_number integer not null check(count_number between 1 and 999),
+ offence_code text not null,
+ charge_title text not null,
+ particulars text not null,
+ status text not null default 'filed' check(status in ('filed','amended','withdrawn')),
+ filed_at_game_time timestamptz not null,
+ source_command_id uuid not null references game.game_commands(id),
+ created_at timestamptz not null default now(),
+ unique(referral_id,count_number)
+);
+create table game.formal_charge_events(
+ id uuid primary key default gen_random_uuid(),
+ charge_id uuid not null references game.formal_charges(id),
+ event_type text not null check(event_type in ('filed','amended','withdrawn')),
+ prosecutor_id uuid not null references game.prosecutor_profiles(id),
+ event_at_game_time timestamptz not null,
+ reason text not null,
+ source_command_id uuid not null references game.game_commands(id),
+ created_at timestamptz not null default now()
+);
+
+create index prosecutor_profiles_person_idx on game.prosecutor_profiles(person_id);
+create index prosecutor_profiles_appointor_idx on game.prosecutor_profiles(appointed_by_personnel_id);
+create index prosecution_reviews_prosecutor_idx on game.prosecution_reviews(prosecutor_id,reviewed_at_game_time);
+create index prosecution_reviews_referral_idx on game.prosecution_reviews(referral_id);
+create index prosecution_review_events_review_idx on game.prosecution_review_events(review_id,event_at_game_time);
+create index prosecution_review_events_prosecutor_idx on game.prosecution_review_events(prosecutor_id);
+create index prosecution_review_events_command_idx on game.prosecution_review_events(source_command_id);
+create index formal_charges_referral_idx on game.formal_charges(referral_id);
+create index formal_charges_case_idx on game.formal_charges(case_id,person_id);
+create index formal_charges_prosecutor_idx on game.formal_charges(prosecutor_id);
+create index formal_charges_command_idx on game.formal_charges(source_command_id);
+create index formal_charge_events_charge_idx on game.formal_charge_events(charge_id,event_at_game_time);
+create index formal_charge_events_prosecutor_idx on game.formal_charge_events(prosecutor_id);
+create index formal_charge_events_command_idx on game.formal_charge_events(source_command_id);
+
+alter table game.prosecutor_profiles enable row level security;
+alter table game.prosecution_reviews enable row level security;
+alter table game.prosecution_review_events enable row level security;
+alter table game.formal_charges enable row level security;
+alter table game.formal_charge_events enable row level security;
 revoke all on game.prosecutor_profiles,game.prosecution_reviews,game.prosecution_review_events,game.formal_charges,game.formal_charge_events from public,anon,authenticated;
-grant select,insert,update on game.prosecutor_profiles to service_role; grant select,insert on game.prosecution_reviews,game.prosecution_review_events,game.formal_charges,game.formal_charge_events to service_role; grant usage,select on sequence game.prosecutor_ref_seq,game.charge_ref_seq to service_role;
-create or replace function game.reject_justice_history_mutation() returns trigger language plpgsql set search_path='pg_catalog','game' as $$ begin raise exception 'Prosecution review and charge histories are append-only'; end $$;
-create trigger prosecution_review_events_append_only before update or delete on game.prosecution_review_events for each row execute function game.reject_justice_history_mutation(); create trigger formal_charge_events_append_only before update or delete on game.formal_charge_events for each row execute function game.reject_justice_history_mutation();
-CREATE OR REPLACE FUNCTION game.interpret_justice_command(p_command_text text)
- RETURNS jsonb
- LANGUAGE plpgsql
- IMMUTABLE
- SET search_path TO 'pg_catalog', 'game'
-AS $function$
+grant select,insert,update on game.prosecutor_profiles to service_role;
+grant select,insert on game.prosecution_reviews,game.prosecution_review_events,game.formal_charges,game.formal_charge_events to service_role;
+grant usage,select on sequence game.prosecutor_ref_seq,game.charge_ref_seq to service_role;
+
+create or replace function game.reject_justice_history_mutation()
+returns trigger language plpgsql set search_path='pg_catalog','game' as $$
+begin raise exception 'Prosecution review and charge histories are append-only'; end $$;
+create trigger prosecution_review_events_append_only before update or delete on game.prosecution_review_events for each row execute function game.reject_justice_history_mutation();
+create trigger formal_charge_events_append_only before update or delete on game.formal_charge_events for each row execute function game.reject_justice_history_mutation();
+
+create or replace function game.interpret_justice_command(p_command_text text)
+returns jsonb language plpgsql immutable set search_path='pg_catalog','game' as $$
 declare m text[];
 begin
  m:=regexp_match(p_command_text,'^prosecutor appoint ([A-Za-z0-9_-]+) role (prosecutor|senior_prosecutor|chief_prosecutor) by ([A-Za-z0-9_-]+)$','i');
@@ -27,14 +105,10 @@ begin
  m:=regexp_match(p_command_text,'^prosecution charges ([A-Za-z0-9_-]+) by ([A-Za-z0-9_-]+)$','i');
  if m is not null then return jsonb_build_object('command_type','get_formal_charges','payload',jsonb_build_object('referral_ref',m[1],'prosecutor_ref',m[2]));end if;
  return null;
-end $function$
+end $$;
 
-CREATE OR REPLACE FUNCTION game.execute_justice_command(p_command_id uuid, p_type text, p jsonb, p_actor_id uuid)
- RETURNS jsonb
- LANGUAGE plpgsql
- SECURITY DEFINER
- SET search_path TO 'pg_catalog', 'game'
-AS $function$
+create or replace function game.execute_justice_command(p_command_id uuid,p_type text,p jsonb,p_actor_id uuid)
+returns jsonb language plpgsql security definer set search_path='pg_catalog','game' as $$
 declare n timestamptz; person_row game.persons%rowtype; police game.police_personnel%rowtype; pro game.prosecutor_profiles%rowtype; ref game.prosecution_referrals%rowtype; review game.prosecution_reviews%rowtype; charge game.formal_charges%rowtype;
 begin
  select current_game_time into n from game.simulation_state where id=1 for update;
@@ -79,6 +153,60 @@ begin
   return jsonb_build_object('ok',true,'charges',coalesce((select jsonb_agg(jsonb_build_object('charge_ref',fc.charge_ref,'count_number',fc.count_number,'offence_code',fc.offence_code,'title',fc.charge_title,'particulars',fc.particulars,'status',fc.status,'filed_at',fc.filed_at_game_time) order by fc.count_number) from game.formal_charges fc where fc.referral_id=ref.id),'[]'::jsonb));
  end if;
  return jsonb_build_object('ok',false,'code','unsupported_command');
-end $function$
+end $$;
 
-revoke all on function game.interpret_justice_command(text),game.execute_justice_command(uuid,text,jsonb,uuid) from public,anon,authenticated; grant execute on function game.interpret_justice_command(text),game.execute_justice_command(uuid,text,jsonb,uuid) to service_role;
+create or replace function game.interpret_text_command(p_command_text text)
+returns jsonb language plpgsql immutable set search_path='pg_catalog','game' as $$
+declare r jsonb;
+begin
+ r:=game.interpret_justice_command(p_command_text);
+ if r is not null then return r;end if;
+ r:=game.interpret_prosecution_command(p_command_text);
+ if r is not null then return r;end if;
+ return game.interpret_text_command_before_arrest_custody(p_command_text);
+end $$;
+
+create or replace function game.execute_text_command(p_command_text text,p_idempotency_key text,p_session_id uuid default null,p_actor_personnel_id uuid default null)
+returns jsonb language plpgsql set search_path='pg_catalog','game' as $$
+declare i jsonb;typ text;d jsonb;cmd game.game_commands%rowtype;actor game.police_personnel%rowtype;res jsonb;
+begin
+ i:=game.interpret_text_command(p_command_text);typ:=i->>'command_type';d:=coalesce(i->'payload','{}'::jsonb);
+ if typ='help' then
+  res:=game.execute_text_command_before_arrest_custody(p_command_text,p_idempotency_key,p_session_id,p_actor_personnel_id);
+  return jsonb_set(res,'{available_commands}',(select coalesce(jsonb_agg(distinct x),'[]') from jsonb_array_elements_text(coalesce(res->'available_commands','[]')||jsonb_build_array('appoint_prosecutor','record_prosecution_review','file_formal_charge','get_formal_charges'))x),true);
+ end if;
+ if typ not in ('appoint_prosecutor','record_prosecution_review','file_formal_charge','get_formal_charges') then return game.execute_text_command_before_arrest_custody(p_command_text,p_idempotency_key,p_session_id,p_actor_personnel_id);end if;
+ if p_idempotency_key is null or char_length(p_idempotency_key) not between 8 and 200 then raise exception 'A unique idempotency key is required';end if;
+ insert into game.game_commands(idempotency_key,session_id,actor_personnel_id,command_text,command_type,payload)
+ values(p_idempotency_key,p_session_id,p_actor_personnel_id,p_command_text,typ,d) on conflict(idempotency_key) do nothing;
+ if not found then
+  select * into cmd from game.game_commands where idempotency_key=p_idempotency_key for update;
+  if cmd.command_text<>p_command_text or cmd.command_type<>typ or cmd.payload<>d then return jsonb_build_object('ok',false,'code','idempotency_conflict');end if;
+  return coalesce(cmd.result,jsonb_build_object('ok',cmd.status='completed'))||jsonb_build_object('duplicate',true);
+ end if;
+ select * into cmd from game.game_commands where idempotency_key=p_idempotency_key for update;
+ if typ='appoint_prosecutor' then
+  select * into actor from game.police_personnel where personnel_ref=d->>'actor_ref' and employment_status in ('active','seconded');
+  if actor.id is null or (p_actor_personnel_id is not null and p_actor_personnel_id<>actor.id) then res:=jsonb_build_object('ok',false,'code','actor_mismatch');
+  else res:=game.execute_justice_command(cmd.id,typ,d,actor.id);end if;
+ else
+  res:=game.execute_justice_command(cmd.id,typ,d,null);
+ end if;
+ if coalesce((res->>'ok')::boolean,false) then
+  res:=res||jsonb_build_object('status','completed','command_id',cmd.id);
+  update game.game_commands set status='completed',result=res,completed_at=now() where id=cmd.id;
+ else
+  update game.game_commands set status='rejected',result=res,rejection_reason=coalesce(res->>'message','Justice command rejected'),completed_at=now() where id=cmd.id;
+  res:=res||jsonb_build_object('command_id',cmd.id);
+ end if;
+ return res;
+end $$;
+
+revoke all on function game.interpret_justice_command(text) from public,anon,authenticated;
+revoke all on function game.execute_justice_command(uuid,text,jsonb,uuid) from public,anon,authenticated;
+grant execute on function game.interpret_justice_command(text) to service_role;
+grant execute on function game.execute_justice_command(uuid,text,jsonb,uuid) to service_role;
+revoke all on function game.interpret_text_command(text) from public,anon,authenticated;
+revoke all on function game.execute_text_command(text,text,uuid,uuid) from public,anon,authenticated;
+grant execute on function game.interpret_text_command(text) to service_role;
+grant execute on function game.execute_text_command(text,text,uuid,uuid) to service_role;
