@@ -1,10 +1,5 @@
--- Forensic workflow command handler, text parser and runtime command routing.
-
-CREATE OR REPLACE FUNCTION game.execute_forensic_action(p_command_id uuid, p_command_type text, p_payload jsonb, p_actor_personnel_id uuid DEFAULT NULL::uuid)
- RETURNS jsonb
- LANGUAGE plpgsql
- SET search_path TO 'pg_catalog', 'game'
-AS $function$
+create or replace function game.execute_forensic_action(p_command_id uuid,p_command_type text,p_payload jsonb,p_actor_personnel_id uuid default null)
+returns jsonb language plpgsql set search_path to 'pg_catalog','game' as $function$
 declare
  t timestamptz; a uuid; req uuid; rr text; cid uuid; ev uuid; er text; sid uuid; sr text; ex uuid; xr text; fid uuid; fr text; mid uuid; examiner uuid; receiver uuid; custodian uuid; tr uuid; dec text; notes text; d text; q text; sc text; lb text; pr smallint; fl text; ll text; cond text; seal text; discrepancy text; props text; obs text; interp text; lim text; outcome text; rt text; summ text; rb text; ms text; md text; st text; ver integer; ref text;
 begin
@@ -96,8 +91,7 @@ begin
  end if;
  return jsonb_build_object('ok',false,'code','unsupported_forensic_action','message','Unsupported forensic action.');
 end;
-$function$
-;
+$function$;
 revoke all on function game.execute_forensic_action(uuid,text,jsonb,uuid) from public,anon,authenticated;
 grant execute on function game.execute_forensic_action(uuid,text,jsonb,uuid) to service_role;
 
@@ -205,7 +199,6 @@ begin
 end;
 $function$
 ;
-
 CREATE OR REPLACE FUNCTION game.submit_command(p_command_text text, p_command_type text, p_payload jsonb DEFAULT '{}'::jsonb, p_idempotency_key text DEFAULT NULL::text, p_session_id uuid DEFAULT NULL::uuid, p_actor_personnel_id uuid DEFAULT NULL::uuid)
  RETURNS jsonb
  LANGUAGE plpgsql
