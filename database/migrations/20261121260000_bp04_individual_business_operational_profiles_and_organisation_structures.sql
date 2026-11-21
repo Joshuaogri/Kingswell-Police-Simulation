@@ -257,6 +257,12 @@ begin
         else 'general_operations'
       end as family
     from game.organisation_personnel op
+  ), primary_sites as (
+    select distinct on (sd.organisation_id)
+      sd.organisation_id,sd.organisation_location_id
+    from game.organisation_site_dossiers sd
+    join game.organisation_locations ol on ol.id=sd.organisation_location_id
+    order by sd.organisation_id,ol.is_primary_location desc,sd.site_ref
   )
   insert into game.organisation_department_assignments(
     assignment_ref,organisation_personnel_id,department_id,position_id,
@@ -264,13 +270,7 @@ begin
   )
   select
     'KWASN-'||substr(md5(r.id::text),1,22),
-    r.id,d.id,pos.id,
-    (select sd.organisation_location_id
-     from game.organisation_site_dossiers sd
-     join game.organisation_locations ol on ol.id=sd.organisation_location_id
-     where sd.organisation_id=r.organisation_id
-     order by ol.is_primary_location desc,sd.site_ref
-     limit 1),
+    r.id,d.id,pos.id,ps.organisation_location_id,
     r.valid_from,r.valid_to,
     case when r.is_current then 'current' else 'ended' end,
     'Generated from the existing canonical organisation-personnel employment and job-title record.',
@@ -286,6 +286,7 @@ begin
     on d.organisation_id=r.organisation_id and d.department_type=r.family
   join game.organisation_department_positions pos
     on pos.department_id=d.id and pos.position_title=r.job_title
+  left join primary_sites ps on ps.organisation_id=r.organisation_id
   on conflict(assignment_ref) do nothing;
 
   get diagnostics v_assignments = row_count;
