@@ -1,5 +1,3 @@
--- BP-02: complete Asterfell national geography and record Kingswell's local map reference.
--- Existing geography tables are extended; no duplicate country, region or city tables are created.
 
 alter table game.regions
   add column if not exists region_order smallint,
@@ -64,8 +62,8 @@ create unique index if not exists regions_one_capital_per_country_uidx
 create index if not exists world_countries_capital_city_fk_idx
   on game.world_countries(capital_city_id);
 
--- Initial seed used millimetre-scaled values in metre-named columns.
--- Correct all district envelopes that have not yet been corrected.
+-- Correct the initial district envelope seed: the source values were stored as
+-- millimetres in columns explicitly defined and consumed as metres.
 update game.district_map_areas
 set min_x_m = min_x_m / 1000,
     max_x_m = max_x_m / 1000,
@@ -95,7 +93,7 @@ cross join (values
  ('EST','Eastmarch Region',5,'Eastern country','Eastern river basin, borderland crossings and regional transport corridors.'),
  ('IRV','Ironvale Region',6,'North-east uplands','North-eastern uplands, mineral workings and industrial towns.'),
  ('SCO','South Coast Region',7,'Southern coast west of the capital region','Coastal communities, fishing towns and maritime settlements along the western southern shore.'),
- ('OIS','Outer Isles Region',8,'Offshore south and east','Offshore island groups and maritime communities.')
+ ('OIS','Outer Isles Region',8,'Offshore south and east','Offshore island groups, smaller ports and maritime communities.')
 ) as v(code,name,region_order,relative_position,geographic_description)
 where c.code='AST'
 on conflict (country_id,code) do update
