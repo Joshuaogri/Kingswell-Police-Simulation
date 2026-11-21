@@ -13,6 +13,13 @@ declare
  m text[]; v_type text; v_payload jsonb; v_cmd game.game_commands%rowtype;
  v_actor game.police_personnel%rowtype; v_result jsonb;
 begin
+ -- Property event commands use the dedicated property parser; they are not
+ -- part of the older generic text interpreter's command catalogue.
+ v_payload:=game.interpret_property_command(p_command_text)->'payload';
+ if game.interpret_property_command(p_command_text)->>'command_type'='property_asset_event_record' then
+  v_type:='property_asset_event_record';
+ end if;
+ if v_type is null then
  m:=regexp_match(btrim(coalesce(p_command_text,'')),
   '^scene premises set ([^[:space:]]+) ([^[:space:]]+) (unknown|[^[:space:]]+) (unknown|[^[:space:]]+) because "([^"]+)" by ([^[:space:]]+)$','i');
  if m is not null then
@@ -41,6 +48,7 @@ begin
     end if;
    end if;
   end if;
+ end if;
  end if;
 
  if v_type is null then
