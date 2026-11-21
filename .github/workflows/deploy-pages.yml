@@ -4,7 +4,9 @@ on:
     branches: [main]
     paths:
       - "index.html"
+      - "city-map.html"
       - "geography.html"
+      - "data/**"
       - "docs/geography/kingswell-detailed-road-network.svg"
       - ".github/workflows/deploy-pages.yml"
   workflow_dispatch:
@@ -23,11 +25,55 @@ jobs:
         uses: actions/checkout@v4
       - name: Assemble test centre
         run: |
-          mkdir -p _site
+          mkdir -p _site/data
           cp index.html _site/index.html
+          cp city-map.html _site/city-map.html
           cp geography.html _site/geography.html
           cp docs/geography/kingswell-detailed-road-network.svg _site/map.svg
+          cp -R data/. _site/data/
           touch _site/.nojekyll
+      - name: Verify published map and property data
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          site = Path("_site")
+          required = [
+              "index.html",
+              "city-map.html",
+              "geography.html",
+              "map.svg",
+              "data/kingswell-map-data.json",
+              "data/kingswell-map-data-manifest.json",
+          ]
+          missing = [p for p in required if not (site / p).is_file()]
+          if missing:
+              raise SystemExit(f"Missing Pages assets: {missing}")
+
+          data = json.loads((site / "data/kingswell-map-data.json").read_text())
+          expected = {
+              "properties": 656,
+              "segments": 229,
+              "districts": 12,
+              "neighbourhoods": 24,
+          }
+          for key, count in expected.items():
+              actual = len(data.get(key, []))
+              if actual != count:
+                  raise SystemExit(f"Unexpected {key} count: {actual}; expected {count}")
+
+          units_dir = site / "data" / "units"
+          if not units_dir.is_dir() or not any(units_dir.glob("*.json")):
+              raise SystemExit("Property unit dossiers were not included in Pages artifact")
+
+          print(
+              "Map publication verified:",
+              len(data["properties"]), "properties;",
+              len(data["segments"]), "road segments;",
+              len(list(units_dir.glob("*.json"))), "unit dossier files."
+          )
+          PY
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
