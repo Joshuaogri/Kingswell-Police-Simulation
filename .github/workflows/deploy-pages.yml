@@ -217,7 +217,7 @@ jobs:
                       entity_sections = page.locator("#sections").inner_text().lower()
                       required_by_type = {
                           "business": ["business profile", "business operations", "registered organisation", "premises and sites", "workforce"],
-                          "organisation": ["organisation identity", "organisation profile", "sites and premises"],
+                          "organisation": ["organisation identity", "organisation profile", "governance and dependencies", "subsidiaries", "departments", "control interests", "organisation personnel", "sites and premises"],
                           "property": ["property identity", "location", "property profile", "buildings", "units", "businesses", "organisation sites"],
                       }
                       for required_section in required_by_type[tab]:
