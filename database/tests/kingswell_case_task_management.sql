@@ -16,7 +16,8 @@ begin
  v_ref:=v_create->>'task_ref';
  v_update:=game.update_case_task(v_ref,'in_progress',null,null,'TEST-KWT-OFFICER',null);
  if not coalesce((v_update->>'ok')::boolean,false) or v_update->>'status'<>'in_progress' then raise exception 'Task update failed: %',v_update; end if;
- v_seed:=game.execute_text_command('help','kwt-source-command-0001',null,v_personnel); v_source_command_id:=(v_seed->>'command_id')::uuid;\n v_submission:=game.submit_case_task(v_ref,'TEST-KWT-OFFICER','Interview completed; statement recorded.',v_source_command_id);
+ v_seed:=game.execute_text_command('help','kwt-source-command-0001',null,v_personnel); v_source_command_id:=(v_seed->>'command_id')::uuid;
+ v_submission:=game.submit_case_task(v_ref,'TEST-KWT-OFFICER','Interview completed; statement recorded.',v_source_command_id);
  if not coalesce((v_submission->>'ok')::boolean,false) then raise exception 'Task completion submission failed: %',v_submission; end if;
  v_review:=game.review_case_task_submission(v_submission->>'submission_ref','accepted','Supervisor reviewed the submitted completion record.','TEST-KWT-SUPERVISOR',v_source_command_id);
  if not coalesce((v_review->>'ok')::boolean,false) or v_review#>>'{task_result,status}'<>'completed' then raise exception 'Supervisor review failed: %',v_review; end if;
