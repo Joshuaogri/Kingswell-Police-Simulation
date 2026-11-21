@@ -19,6 +19,7 @@ declare
  v_event_ref text:='LIFECYCLE-CI-TEST-01';
  v_history jsonb;
  v_dossier jsonb;
+ v_prior_count integer;
 begin
  parsed:=game.interpret_text_command(
   'organisation lifecycle event ORG-TEST-01 EVT-TEST-01 name_changed unknown unknown "Registered name changed" "The filed record confirms the organisation changed its registered name." "REGISTRY-TEST-01" "Fictional registry extract" by KNG-TEST-0001'
@@ -74,6 +75,8 @@ begin
  values('KNG-CI-BP04-0001',v_person_id,'KNG-CI-BP04-0001','active',date '2020-01-01')
  on conflict do nothing;
 
+ select count(*) into v_prior_count
+ from game.organisation_lifecycle_events where organisation_id=v_org_id;
  insert into game.organisation_lifecycle_events(
   event_ref,organisation_id,event_type,occurred_on,subject,description,
   actor_person_id,source_reference,source_description
@@ -83,18 +86,21 @@ begin
   v_person_id,'CI-LIFECYCLE-TEST','Deterministic regression fixture'
  );
  v_history:=game.get_organisation_lifecycle_history(v_org_ref);
- if (v_history->>'event_count')::integer<>1
-  or v_history#>>'{events,0,event,event_ref}'<>v_event_ref
-  or v_history#>'{events,0,event,occurred_on}' is distinct from 'null'::jsonb then
+ if (v_history->>'event_count')::integer<>v_prior_count+1
+  or not exists(select 1 from jsonb_array_elements(v_history->'events') e
+    where e#>>'{event,event_ref}'=v_event_ref
+      and e#>'{event,occurred_on}' is not distinct from 'null'::jsonb) then
   raise exception 'Lifecycle history retrieval lost the event or unknown date: %',v_history;
  end if;
 
  v_dossier:=game.get_organisation_record(v_org_ref);
- if v_dossier#>>'{lifecycle_history,events,0,event,event_ref}'<>v_event_ref then
+ if not exists(select 1 from jsonb_array_elements(v_dossier#>'{lifecycle_history,events}') e
+  where e#>>'{event,event_ref}'=v_event_ref) then
   raise exception 'Organisation dossier does not include lifecycle history: %',v_dossier;
  end if;
  v_business_dossier:=game.get_business_record(v_business_number);
- if v_business_dossier#>>'{lifecycle_history,events,0,event,event_ref}'<>v_event_ref then
+ if not exists(select 1 from jsonb_array_elements(v_business_dossier#>'{lifecycle_history,events}') e
+  where e#>>'{event,event_ref}'=v_event_ref) then
   raise exception 'Business dossier does not include lifecycle history: %',v_business_dossier;
  end if;
 
@@ -106,8 +112,6 @@ begin
   if sqlerrm='Append-only lifecycle event update unexpectedly succeeded.' then raise; end if;
  end;
 
- -- Verify command-level idempotency: exact repeats are harmless, but a changed
- -- source description under the same event reference must be rejected.
  select personnel_ref into v_actor_ref
  from game.police_personnel
  where employment_status in ('active','seconded')
