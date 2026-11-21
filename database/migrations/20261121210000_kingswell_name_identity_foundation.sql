@@ -1,6 +1,6 @@
 -- Permanent Kingswell naming foundation. Fictional simulation data only.
+set transaction read write;
 
-create schema if not exists extensions;
 create extension if not exists unaccent with schema extensions;
 create extension if not exists pg_trgm with schema extensions;
 
@@ -120,6 +120,8 @@ begin
   return new;
 end;
 $$;
+
+alter trigger persons_00_assign_unique_middle_name on game.persons rename to persons_10_assign_unique_middle_name;
 
 create trigger persons_00_family_identity_guard
 before insert or update of family_id,family_name on game.persons
