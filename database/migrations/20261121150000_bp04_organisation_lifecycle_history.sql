@@ -157,7 +157,9 @@ begin
    and v_existing.description=btrim(payload->>'description')
    and v_existing.related_organisation_id is not distinct from v_related_org.id
    and v_existing.actor_person_id=v_personnel.person_id
-   and v_existing.source_reference is not distinct from nullif(btrim(payload->>'source_reference'),'') then
+   and v_existing.source_reference is not distinct from nullif(btrim(payload->>'source_reference'),'')
+   and v_existing.source_description is not distinct from
+    coalesce(nullif(btrim(payload->>'source_description'),''),'Source details not supplied.') then
    return jsonb_build_object('ok',true,'record_type','organisation_lifecycle_event',
     'event_ref',v_existing.event_ref,'event',to_jsonb(v_existing),'duplicate',true);
   end if;
