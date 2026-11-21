@@ -1,11 +1,6 @@
-
 alter function game.get_case_review_dossier(text) rename to get_case_review_dossier_before_disclosure;
-CREATE OR REPLACE FUNCTION game.get_case_review_dossier(p_case_ref text)
- RETURNS jsonb
- LANGUAGE plpgsql
- STABLE
- SET search_path TO 'pg_catalog', 'game'
-AS $function$
+create or replace function game.get_case_review_dossier(p_case_ref text)
+returns jsonb language plpgsql stable set search_path='pg_catalog','game' as $$
 declare base jsonb; cid uuid;
 begin
  base:=game.get_case_review_dossier_before_disclosure(p_case_ref);
@@ -18,7 +13,6 @@ begin
    'receipt',(select jsonb_build_object('recipient_kind',dr.recipient_kind,'recipient_person_ref',rp.person_ref,'served_at',dr.served_at_game_time,'acknowledged_at',dr.acknowledged_at_game_time) from game.disclosure_receipts dr join game.persons rp on rp.id=dr.recipient_person_id where dr.package_id=dp.id)
   ) order by dp.created_at_game_time,dp.package_ref),'[]'::jsonb) from game.disclosure_packages dp where dp.case_id=cid)
  ),true);
-end $function$
-;
+end $$;
 revoke all on function game.get_case_review_dossier(text) from public,anon,authenticated;
 grant execute on function game.get_case_review_dossier(text) to service_role;
