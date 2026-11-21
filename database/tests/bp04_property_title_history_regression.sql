@@ -5,10 +5,18 @@ declare v_property uuid; v_ref text; v_json jsonb; v_id uuid;
 begin
  if (select count(*) from game.property_interest_records where interest_type='registered_owner' and valid_to is null)<>656
  then raise exception 'BP04: seeded registered title baseline changed'; end if;
- if (select count(*) from game.property_title_events)<>0
- then raise exception 'BP04: title history unexpectedly contains unverified events'; end if;
- if (select count(*) from game.property_asset_events)<>0
- then raise exception 'BP04: asset event baseline unexpectedly changed'; end if;
+ if (select count(*) from game.property_title_events where event_ref like 'KW-TITLE-INIT-%')<>656
+ then raise exception 'BP04: generated title-register snapshots are missing'; end if;
+ if exists(select 1 from game.property_title_events
+  where coalesce(event_details->>'generated_fictional_baseline','false')<>'true'
+   or occurred_on is not null or event_details->>'historical_transfer_not_inferred'<>'true')
+ then raise exception 'BP04: title snapshots contain unsupported historical claims'; end if;
+ if (select count(*) from game.property_asset_events where event_ref like 'KNG-COND-%')<>656
+ then raise exception 'BP04: generated building condition baseline is missing'; end if;
+ if exists(select 1 from game.property_asset_events
+  where coalesce(event_details->>'generated_fictional_baseline','false')<>'true'
+   or occurred_on is not null or event_details->>'assessment_date_unknown'<>'true')
+ then raise exception 'BP04: building condition baseline contains unsupported dated claims'; end if;
  if to_regprocedure('game.get_property_title_history(text)') is null
  or to_regprocedure('game.get_property_asset_history(text)') is null
  then raise exception 'BP04: property history query missing'; end if;
