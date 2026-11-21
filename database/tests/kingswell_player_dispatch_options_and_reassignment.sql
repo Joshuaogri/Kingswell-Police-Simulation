@@ -7,7 +7,7 @@ declare
  v_pp1 uuid; v_pp2 uuid; v_roster1 uuid; v_roster2 uuid; v_incident uuid;
  v_options jsonb; v_dispatch jsonb; v_reassign jsonb;
  v_old_deployment uuid; v_new_deployment uuid; v_old_history integer; v_new_history integer;
- v_name text; v_clock_after timestamptz;
+ v_name text; v_clock_after timestamptz; v_site_ref text; v_site_link jsonb;
 begin
  if exists(select 1 from game.police_units) or exists(select 1 from game.incidents) then
    raise exception 'Dispatch UI regression requires empty live units and incidents';
@@ -51,6 +51,28 @@ begin
  if v_options->'candidates'->0->>'unit_ref'<>'KNG-TEST-DOPT-UNIT-02' then raise exception 'ETA ranking not reflected in player options: %',v_options; end if;
  select v_options->'candidates'->1->'officers'->0->>'name' into v_name;
  if v_name is null or v_name not ilike '%Alpha%' then raise exception 'Named available officer missing from options: %',v_options; end if;
+ if (v_options#>>'{incident,premises_context,count}')::integer<>0 then
+   raise exception 'Unlinked incident unexpectedly reports premises associations: %',v_options;
+ end if;
+ select site_ref into v_site_ref from game.organisation_site_dossiers
+ where organisation_location_id is not null order by site_ref limit 1;
+ if v_site_ref is null then raise exception 'No canonical site fixture is available for dispatch dossier integration'; end if;
+ v_site_link:=game.record_incident_site_association(
+   'KNG-TEST-DOPT-INCIDENT-01',v_site_ref,'related_site',
+   'Dispatch dossier integration regression fixture','KNG-TEST-DOPT-OFFICER-01',gen_random_uuid()
+ );
+ if coalesce((v_site_link->>'ok')::boolean,false) is not true then
+   raise exception 'Could not record related-site fixture: %',v_site_link;
+ end if;
+ v_options:=game.execute_text_command(
+   'dispatch options for KNG-TEST-DOPT-INCIDENT-01','KNG-TEST-DOPT-OPTIONS-02',null,null
+ );
+ if coalesce((v_options->>'ok')::boolean,false) is not true
+   or (v_options#>>'{incident,premises_context,count}')::integer<>1
+   or v_options#>>'{incident,premises_context,sites,0,relation_type}'<>'related_site'
+   or v_options#>>'{incident,premises_context,sites,0,site_ref}'<>v_site_ref then
+   raise exception 'Dispatch options dossier did not include correctly classified related premises: %',v_options;
+ end if;
 
  v_dispatch:=game.execute_text_command('dispatch KNG-TEST-DOPT-UNIT-01 to KNG-TEST-DOPT-INCIDENT-01','KNG-TEST-DOPT-DISPATCH-01',null,null);
  if coalesce((v_dispatch->>'ok')::boolean,false) is not true then raise exception 'Initial dispatch failed: %',v_dispatch; end if;
