@@ -201,21 +201,33 @@ jobs:
                   )
                   if page.locator("#dTitle").inner_text() in ("Select a record", "Record unavailable"):
                       raise SystemExit(f"{tab} individual record did not load: {page.locator('#dbody').inner_text()}")
-                  if tab == "business":
-                      business_sections = page.locator("#sections").inner_text().lower()
-                      for required_section in ["business profile", "business operations", "registered organisation", "premises and sites", "workforce"]:
-                          if required_section not in business_sections:
-                              raise SystemExit(f"Business dossier is missing {required_section}: {business_sections}")
-                  if tab == "organisation":
-                      organisation_sections = page.locator("#sections").inner_text().lower()
-                      for required_section in ["organisation identity", "organisation profile", "sites and premises"]:
-                          if required_section not in organisation_sections:
-                              raise SystemExit(f"Organisation dossier is missing {required_section}: {organisation_sections}")
-                  if tab == "property":
-                      property_sections = page.locator("#sections").inner_text().lower()
-                      for required_section in ["property identity", "location", "property profile", "buildings", "units", "businesses", "organisation sites"]:
-                          if required_section not in property_sections:
-                              raise SystemExit(f"Property dossier is missing {required_section}: {property_sections}")
+                  if tab in ("business", "organisation", "property"):
+                      href = page.locator('#dbody a[href*="record.html"]').first.get_attribute("href")
+                      if not href:
+                          raise SystemExit(f"{tab} directory preview has no full-record link")
+                      full_response = page.goto(base + "/" + href.removeprefix("./"), wait_until="domcontentloaded")
+                      if not full_response or full_response.status != 200:
+                          raise SystemExit(f"{tab} full record page did not load")
+                      page.wait_for_function(
+                          "() => document.querySelector('#title')?.textContent !== 'Loading individual record…'",
+                          timeout=45000,
+                      )
+                      if page.locator("#title").inner_text() in ("Record unavailable", "Loading individual record…"):
+                          raise SystemExit(f"{tab} full record failed: {page.locator('#status').inner_text()}")
+                      entity_sections = page.locator("#sections").inner_text().lower()
+                      required_by_type = {
+                          "business": ["business profile", "business operations", "registered organisation", "premises and sites", "workforce"],
+                          "organisation": ["organisation identity", "organisation profile", "sites and premises"],
+                          "property": ["property identity", "location", "property profile", "buildings", "units", "businesses", "organisation sites"],
+                      }
+                      for required_section in required_by_type[tab]:
+                          if required_section not in entity_sections:
+                              raise SystemExit(f"{tab} full record is missing {required_section}: {entity_sections}")
+                      page.goto(base + "/records.html", wait_until="domcontentloaded")
+                      page.wait_for_function(
+                          "() => document.querySelector('#dataStatus')?.textContent.includes('Published geographic snapshot loaded')",
+                          timeout=30000,
+                      )
               page.locator('#tabs button[data-type="people"]').click()
               page.wait_for_function("() => { const t=document.querySelector('#resultCount')?.textContent || ''; return t.includes('MATCHING RECORDS') || t.includes('CONNECTION ERROR'); }", timeout=45000)
               selected_ref = page.locator(".record[data-live-id] .ref").first.inner_text()
