@@ -133,7 +133,7 @@ where p.id=g.id and (p.middle_names is null or btrim(p.middle_names)='');
 
 create unique index if not exists persons_unique_full_display_name_uidx
 on game.persons (
-  game.normalise_entity_name(concat_ws(' ',given_name,nullif(middle_names,''),family_name))
+  game.normalise_entity_name(coalesce(given_name,'')||' '||coalesce(nullif(middle_names,''),'')||' '||coalesce(family_name,''))
 );
 
 -- Future BP-03 person generation gets an unused middle-name pair automatically.
