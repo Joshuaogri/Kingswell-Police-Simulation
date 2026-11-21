@@ -9,7 +9,7 @@ as $function$
  select jsonb_build_object(
   'site',to_jsonb(sd),
   'organisation',jsonb_build_object(
-   'id',o.id,'ref',o.organisation_ref,'name',o.name,'status',o.organisation_status,
+   'id',o.id,'ref',o.organisation_ref,'name',o.name,
    'profile',to_jsonb(op),'business',to_jsonb(bp)
   ),
   'site_location',to_jsonb(ol),
