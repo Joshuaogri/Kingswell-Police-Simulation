@@ -22,8 +22,8 @@ for ((first=1; first<=24512; first+=1000)); do
 done
 
 echo "Seeding all 43,412 canonical business employment links in committed batches."
-for ((first=1; first<=43412; first+=5000)); do
-  last=$((first+4999))
+for ((first=1; first<=43412; first+=1000)); do
+  last=$((first+999))
   (( last > 43412 )) && last=43412
   "${psql_cmd[@]}" -c "select game.seed_kingswell_business_employment_batch($first,$last);"
 done
