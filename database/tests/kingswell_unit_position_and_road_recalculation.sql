@@ -16,9 +16,21 @@ begin
  join game.road_segments rs on rs.id=ap.road_segment_id and rs.is_routable
  where p.status='active' and p.id<>(select property_id from game.police_facilities where id=v_facility)
  order by p.property_ref limit 1;
- select ap.id into v_second_position from game.property_access_points ap
- join game.road_segments rs on rs.id=ap.road_segment_id and rs.is_routable
- where ap.id not in (v_origin,v_destination) order by ap.id limit 1;
+ -- Pick a position with a verified police route to the destination. A merely
+ -- routable access point may be on a disconnected road component and produce no legs.
+ for v_candidate in
+  select ap.id
+  from game.property_access_points ap
+  join game.road_segments rs on rs.id=ap.road_segment_id and rs.is_routable
+  where ap.id not in (v_origin,v_destination)
+  order by ap.id
+ loop
+  v_route:=game.calculate_road_route(v_candidate.id,v_destination,'police','fastest',v_clock);
+  if exists(select 1 from game.road_route_legs where route_id=v_route) then
+   v_second_position:=v_candidate.id;
+   exit;
+  end if;
+ end loop;
  if v_origin is null or v_destination is null or v_second_position is null then raise exception 'Missing route test access points'; end if;
  insert into game.persons(person_ref,given_name,family_name,person_status,occupation)
  values('KNG-TEST-PERSON-POS-01','Position','Test','active','Police officer') returning id into v_person;
